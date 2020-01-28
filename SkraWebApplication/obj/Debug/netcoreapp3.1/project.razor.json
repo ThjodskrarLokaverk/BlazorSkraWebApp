@@ -13,14 +13,14 @@
     "TagHelpers": [
       {
         "Kind": "Components.Component",
-        "Name": "SkraWebApplication.Pages.Counter",
+        "Name": "SkraWebApplication.App",
         "AssemblyName": "SkraWebApplication",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "Counter",
+            "TagName": "App",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -32,19 +32,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "SkraWebApplication.Pages.Counter"
+          "Common.TypeName": "SkraWebApplication.App"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "SkraWebApplication.Pages.Counter",
+        "Name": "SkraWebApplication.App",
         "AssemblyName": "SkraWebApplication",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "SkraWebApplication.Pages.Counter",
+            "TagName": "SkraWebApplication.App",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -56,7 +56,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "SkraWebApplication.Pages.Counter",
+          "Common.TypeName": "SkraWebApplication.App",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
@@ -209,14 +209,14 @@
       },
       {
         "Kind": "Components.Component",
-        "Name": "SkraWebApplication.App",
+        "Name": "SkraWebApplication.Pages.Counter",
         "AssemblyName": "SkraWebApplication",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "App",
+            "TagName": "Counter",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -228,19 +228,19 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "SkraWebApplication.App"
+          "Common.TypeName": "SkraWebApplication.Pages.Counter"
         }
       },
       {
         "Kind": "Components.Component",
-        "Name": "SkraWebApplication.App",
+        "Name": "SkraWebApplication.Pages.Counter",
         "AssemblyName": "SkraWebApplication",
         "Documentation": null,
         "TagOutputHint": null,
         "CaseSensitive": true,
         "TagMatchingRules": [
           {
-            "TagName": "SkraWebApplication.App",
+            "TagName": "SkraWebApplication.Pages.Counter",
             "ParentTag": null,
             "TagStructure": 0,
             "Attributes": [],
@@ -252,7 +252,7 @@
         "Diagnostics": [],
         "Metadata": {
           "Runtime.Name": "Components.IComponent",
-          "Common.TypeName": "SkraWebApplication.App",
+          "Common.TypeName": "SkraWebApplication.Pages.Counter",
           "Components.NameMatch": "Components.FullyQualifiedNameMatch"
         }
       },
