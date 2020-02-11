@@ -11,7 +11,7 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  myproject: 'BlazorSkraApp1/BlazorSkraApp1/BlazorSkraApp1.csproj'
+  myproject: 'BlazorSkraApp1/BlazorSkraApp1.csproj'
 
 steps:
 - task: UseDotNet@2
