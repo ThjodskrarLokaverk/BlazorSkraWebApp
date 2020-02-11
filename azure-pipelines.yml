@@ -24,6 +24,10 @@ steps:
   displayName: 'Installing EF Core CLI tools'
   inputs:
     script: 'dotnet tool install --global dotnet-ef'
+- task: CmdLine@2
+  displayName: 'Generating DB script'
+  inputs:
+    script: 'dotnet ef migrations script -i -o $(Build.ArtifactStagingDirectory)\migrate.sql --project $(myproject)'
 - task: DotNetCoreCLI@2
   displayName: 'Publishing App...'
   inputs:
