@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -6,6 +6,28 @@ html, body {
 
 a, .btn-link {
     color: #0366d6;
+}
+.notification-index{
+    width: 25%;
+    height: 100%;
+    margin-left: 6.25%;
+    align-content: center;
+    background-color: #669900;
+    float: left;
+    border-radius: 2;
+}
+.notification-name{
+    text-align: center;
+    align-content: center;
+    color: black;
+    font-family: 'Courier';
+    height: 50px;
+    margin-top: 75px;
+    margin-bottom: 75px;
+}
+#all-notifications-index{
+    width: 100%;
+    height: 200px;
 }
 
 .btn-primary {
@@ -24,6 +46,7 @@ app {
     height: 3.5rem;
     display: flex;
     align-items: center;
+    border: solid;
 }
 
 .main {
@@ -136,6 +159,7 @@ app {
     top: 0.5rem;
 }
 
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
@@ -147,37 +171,5 @@ app {
 
     .main .top-row a, .main .top-row .btn-link {
         margin-left: 0;
-    }
-}
-
-@media (min-width: 768px) {
-    app {
-        flex-direction: row;
-    }
-
-    .sidebar {
-        width: 250px;
-        height: 100vh;
-        position: sticky;
-        top: 0;
-    }
-
-    .main .top-row {
-        position: sticky;
-        top: 0;
-    }
-
-    .main > div {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
-    }
-
-    .navbar-toggler {
-        display: none;
-    }
-
-    .sidebar .collapse {
-        /* Never collapse the sidebar for wide screens */
-        display: block;
     }
 }
