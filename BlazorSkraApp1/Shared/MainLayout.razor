@@ -1,19 +1,20 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="main">
+
     <div class="top-row px-4 auth">
-    <AuthorizeView>
-        <Authorized>
-            <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
-            <form method="post" action="Identity/Account/LogOut">
-                <button type="submit" class="nav-link btn btn-link">Log out</button>
-            </form>
-        </Authorized>
-        <NotAuthorized>
-            <a class="navbar-actions" href="Identity/Account/Register">Register</a>
-            <a class="navbar-actions" href="Identity/Account/Login">Log in</a>
-        </NotAuthorized>
-    </AuthorizeView>
+        <AuthorizeView>
+            <Authorized>
+                <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
+                <form method="post" action="Identity/Account/LogOut">
+                    <button type="submit" class="nav-link btn btn-link">Log out</button>
+                </form>
+            </Authorized>
+            <NotAuthorized>
+                <a class="navbar-actions" href="Identity/Account/Register">Register</a>
+                <a class="navbar-actions" href="Identity/Account/Login">Log in</a>
+            </NotAuthorized>
+        </AuthorizeView>
     </div>
 
     <div class="content px-4">
