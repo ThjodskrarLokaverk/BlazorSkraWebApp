@@ -1,0 +1,31 @@
+@page "/makeAdmin"
+
+<table class="table table-striped">
+    <tr>
+        <th>Nafn</th>
+        <th>Netfang</th>
+        <th>Admin</th>
+    </tr>
+    <tr>
+        <th>Bjarni Bjarnason</th>
+        <th>bjarnibjarnason@skra.is</th>
+        <th><input type="checkbox"></th>
+    </tr>
+    <tr>
+        <th>Gunnar Gunnarsson</th>
+        <th>gunnargunnarsson@skra.is</th>
+        <th><input type="checkbox"></th>
+    </tr>
+    <tr>
+        <th>Jón Jónsson</th>
+        <th>jonjonsson@skra.is</th>
+        <th><input type="checkbox" @onclick="CreateAdmin"></th>
+    </tr>
+</table>
+
+@code {
+    private void CreateAdmin()
+    {
+        // TO DO: make admin
+    }
+}
