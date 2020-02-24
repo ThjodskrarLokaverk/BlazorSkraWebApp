@@ -22,7 +22,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                            <button type="button" class="close">
+                            <button type="button" class="close" @onclick="Cancel">
                                 <span aria-hidden="true">X</span>
                             </button>
                         </div>
@@ -31,7 +31,7 @@
                                    placeholder="Nafn flokks"/>
                             <br />
                             <button class="btn">Vista</button>
-                            <button class="btn">Hætta við</button>
+                            <button class="btn" @onclick="Cancel">Hætta við</button>
                         </div>
                     </div>
                 </div>
@@ -39,12 +39,14 @@
     }
 
 @code{
-    string appname = "BlazorSkraApp";
-
     bool showPopup = false;
     void AddCategory()
     {
         showPopup = true;
+    }
+    void Cancel()
+    {
+        showPopup = false;
     }
     
 }
