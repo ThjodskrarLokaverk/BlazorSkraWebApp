@@ -13,7 +13,40 @@
         <h2 class="notification-name"> Óviðeigandi hegðun </h2>
     </div>
 </div>
+<button class="btn" @onclick="AddCategory">Bæta við flokk</button>
+
+@if(showPopup)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+                            <button type="button" class="close" @onclick="Cancel">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <input class="form-control" type="text"
+                                   placeholder="Nafn flokks"/>
+                            <br />
+                            <button class="btn">Vista</button>
+                            <button class="btn" @onclick="Cancel">Hætta við</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
 
 @code{
-    string appname = "BlazorSkraApp";
+    bool showPopup = false;
+    void AddCategory()
+    {
+        showPopup = true;
+    }
+    void Cancel()
+    {
+        showPopup = false;
+    }
+    
 }
