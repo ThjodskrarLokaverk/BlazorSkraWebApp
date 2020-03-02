@@ -1,31 +1,49 @@
 @page "/makeAdmin"
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Identity;
+@inject UserManager<IdentityUser> _UserManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <table class="table table-striped">
-    <tr>
-        <th>Nafn</th>
-        <th>Netfang</th>
-        <th>Admin</th>
-    </tr>
-    <tr>
-        <th>Bjarni Bjarnason</th>
-        <th>bjarnibjarnason@skra.is</th>
-        <th><input type="checkbox"></th>
-    </tr>
-    <tr>
-        <th>Gunnar Gunnarsson</th>
-        <th>gunnargunnarsson@skra.is</th>
-        <th><input type="checkbox"></th>
-    </tr>
-    <tr>
-        <th>Jón Jónsson</th>
-        <th>jonjonsson@skra.is</th>
-        <th><input type="checkbox" @onclick="CreateAdmin"></th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Nafn</th>
+            <th>Netfang</th>
+            <th>Admin</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in ColUsers)
+        {
+            <tr>
+                <th>@user.UserName</th>
+                <th>@user.Email</th>
+                <th><input type="checkbox"></th>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @code {
-    private void CreateAdmin()
+    List<IdentityUser> ColUsers = new List<IdentityUser>();
+
+    protected override async Task OnInitializedAsync()
     {
-        // TO DO: make admin
+        await GetUsers();
+    }
+    protected Task<List<IdentityUser>> GetUsers()
+    {
+        ColUsers = new List<IdentityUser>();
+        var user = _UserManager.Users.Select(x => new IdentityUser
+        {
+            Id = x.Id,
+            UserName = x.UserName,
+            Email = x.Email
+        });
+        foreach (var item in user)
+        {
+            ColUsers.Add(item);
+        }
+        return Task.FromResult(ColUsers);
     }
 }
