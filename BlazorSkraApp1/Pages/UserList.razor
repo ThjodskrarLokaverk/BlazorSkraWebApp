@@ -1,31 +1,43 @@
 @page "/makeAdmin"
+@using BlazorSkraApp1.Data
+@using Microsoft.AspNetCore.Components
+@using System
+@using System.Collections.Generic
+@using System.Linq
+@using System.Threading.Tasks
 
 <table class="table table-striped">
-    <tr>
-        <th>Nafn</th>
-        <th>Netfang</th>
-        <th>Admin</th>
-    </tr>
-    <tr>
-        <th>Bjarni Bjarnason</th>
-        <th>bjarnibjarnason@skra.is</th>
-        <th><input type="checkbox"></th>
-    </tr>
-    <tr>
-        <th>Gunnar Gunnarsson</th>
-        <th>gunnargunnarsson@skra.is</th>
-        <th><input type="checkbox"></th>
-    </tr>
-    <tr>
-        <th>Jón Jónsson</th>
-        <th>jonjonsson@skra.is</th>
-        <th><input type="checkbox" @onclick="CreateAdmin"></th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Nafn</th>
+            <th>Netfang</th>
+            <th>Admin</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var account in accounts)
+        {
+            <tr>
+                <th>Test</th>
+                <th>@account.Email</th>
+                <th><input type="checkbox"></th>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @code {
-    private void CreateAdmin()
+    
+    protected AccountService accountService;
+    protected List<Account> accounts = new List<Account>();
+    protected Account acc = new Account();
+
+    protected override async Task OnInitializedAsync()
     {
-        // TO DO: make admin
+        await GetAccount();
+    }
+    protected async Task GetAccount()
+    {
+        accounts = await accountService.GetAccountList();
     }
 }
