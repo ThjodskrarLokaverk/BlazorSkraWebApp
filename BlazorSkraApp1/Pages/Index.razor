@@ -1,21 +1,27 @@
 ﻿@page "/"
 
-<div id="all-notifications-index">
-    <div class="notification-index">
-        <h2 class="notification-name"> Öryggistilkynning </h2>
+<div class="row">
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Öryggismál</h5>
+        <p class="card-text">Ýmsir flokkar sem tengjast öryggismálum.</p>
+        <a href="#" class="btn btn-primary">Tilkynna mál</a>
+      </div>
     </div>
-
-    <div class="notification-index">
-        <h2 class="notification-name"> Mannauðsmál </h2>
+  </div>
+  <div class="col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Mannauðsmál</h5>
+        <p class="card-text">Ýmsir þættir sem hafa eitthvað með mannauðsmál að gera.</p>
+        <a href="#" class="btn btn-primary">Tilkynna mál</a>
+      </div>
     </div>
-
-    <div class="notification-index">
-        <h2 class="notification-name"> Óviðeigandi hegðun </h2>
-    </div>
+  </div>
 </div>
 <button class="btn" @onclick="AddCategory">Bæta við flokk</button>
 <br/>
-<a href="Counter">COUNTER</a>
 
 @if(showPopup)
     {
