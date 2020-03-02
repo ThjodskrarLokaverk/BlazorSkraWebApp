@@ -2,7 +2,18 @@
 
 <div class="main">
 
-    <div class="top-row px-4 auth">
+    <div class="pos-f-t">
+    <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-dark p-4">
+        <a href="/makeAdmin"><h5>View users</h5></a>
+        <a href="/create_notification"><h5>Create a new notification</h5></a>
+        </div>
+    </div>
+    <nav class="navbar navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="login-logout">
         <AuthorizeView>
             <Authorized>
                 <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
@@ -15,6 +26,8 @@
                 <a class="navbar-actions" href="Identity/Account/Login">Log in</a>
             </NotAuthorized>
         </AuthorizeView>
+        </div>
+    </nav>
     </div>
 
     <div class="content px-4">
