@@ -10,23 +10,27 @@
         </div>
     </div>
     <nav class="navbar navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="login-logout">
         <AuthorizeView>
             <Authorized>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <a href="/"><img class="logo" src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
+                <div class="login-logout">
                 <a href="Identity/Account/Manage">Hello, @context.User.Identity.Name!</a>
                 <form method="post" action="Identity/Account/LogOut">
                     <button type="submit" class="nav-link btn btn-link">Log out</button>
                 </form>
+                </div>
             </Authorized>
             <NotAuthorized>
+                <a href="/"><img class="logo" src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
+                <div>
                 <a class="navbar-actions" href="Identity/Account/Register">Register</a>
                 <a class="navbar-actions" href="Identity/Account/Login">Log in</a>
+                </div>
             </NotAuthorized>
         </AuthorizeView>
-        </div>
     </nav>
     </div>
 
