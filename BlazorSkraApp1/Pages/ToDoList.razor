@@ -1,0 +1,60 @@
+﻿@page "/todolist"
+
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject IToDoListService service
+
+<h1>To Do List</h1>
+
+<p>This component demonstrates fetching data from Database.</p>
+
+@if (toDoList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var toDoItem in toDoList)
+            {
+                <tr>
+                    <td>@toDoItem.Name</td>
+                    <td>@toDoItem.Status</td>
+                    <td>@toDoItem.DueDate.ToShortDateString()</td>
+                    <td><input type="button" class="btn btn-primary" value="Edit" /></td>
+                    <td><input type="button" class="btn btn-danger" value="Delete" /></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div>
+    <input type="button" data-toggle="modal" data-target="#taskModal" class="btn btn-primary" value="Add Task" @onclick="(() => InitializeTaskObject())" />
+</div>
+
+<TaskDetail TaskObject=taskObject></TaskDetail>
+
+@code {
+    List<ToDo> toDoList;
+    ToDo taskObject = new ToDo();
+
+    protected override async Task OnInitializedAsync()
+    {
+        toDoList = await service.Get();
+    }
+    private void InitializeTaskObject()
+    {
+        taskObject = new ToDo();
+        taskObject.DueDate = DateTime.Now;
+    }
+}

@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorSkraApp1.Areas.Identity;
 using BlazorSkraApp1.Data;
+using BlazorSkraApp1.Services;
 
 namespace BlazorSkraApp1
 {
@@ -41,6 +42,7 @@ namespace BlazorSkraApp1
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddMvc();
+            services.AddTransient<IToDoListService, ToDoListService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -72,10 +74,11 @@ namespace BlazorSkraApp1
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
-            //Create an admin user
+            //Create an admin user and a normal user
             CreateUserAndRoles(serviceProvider).Wait();
         }
-
+        
+        //Create dummy admin and dummy user
         private async Task CreateUserAndRoles(IServiceProvider serviceProvider)
         {
             //initializing custom roles   
@@ -106,7 +109,20 @@ namespace BlazorSkraApp1
                 await UserManager.CreateAsync(user, "Qwerty&123");
             }
             await UserManager.AddToRoleAsync(user, "Admin");
-            
+
+            IdentityUser user1 = await UserManager.FindByEmailAsync("user@user.is");
+
+            if (user1 == null)
+            {
+                user1 = new IdentityUser()
+                {
+                    UserName = "user@user.is",
+                    Email = "user@user.is",
+                };
+                await UserManager.CreateAsync(user1, "Qwerty&123");
+            }
+            await UserManager.AddToRoleAsync(user1, "User");
+
 
         }
     }
