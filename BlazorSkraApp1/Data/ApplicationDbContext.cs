@@ -12,5 +12,11 @@ namespace BlazorSkraApp1.Data
             : base(options)
         {
         }
+        public DbSet<ToDo> ToDoList { get; set; }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
     }
 }
