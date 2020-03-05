@@ -1,12 +1,13 @@
 ﻿@using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject IToDoListService service
+@inject IJSRuntime jsRuntime
 
 <div class="modal" tabindex="-1" role="dialog" id="taskModal">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Task Detail</h5>
+                <h5 class="modal-title">@CustomHeader</h5>              
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -51,12 +52,35 @@
 
 @code {
     [Parameter]
+    public RenderFragment CustomHeader { get; set; }
+
+    [Parameter]
     public ToDo TaskObject { get; set; }
+
+    [Parameter]
+    public Action DataChanged { get; set; }
 
     List<string> TaskStatusList = new List<string>() { "New", "In Progress", "Completed" };
 
+    private async Task CloseTaskModal()
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", "taskModal");
+    }
+
     private async void HandleValidSubmit()
     {
-        await service.Add(TaskObject);
+        if (TaskObject.Id == 0) //Null
+        {
+            await service.Add(TaskObject);
+        }
+        else
+        {
+            await service.Update(TaskObject);
+        }
+
+     
+        await CloseTaskModal(); 
+        // DataChanged ->  is to let the parent (page) know that data has been updated
+        DataChanged?.Invoke(); 
     }
 }
