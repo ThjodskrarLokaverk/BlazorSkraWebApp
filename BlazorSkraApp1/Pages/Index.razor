@@ -19,8 +19,17 @@
       </div>
     </div>
   </div>
+<AuthorizeView>
+  <Authorized>
+    <div class="col-sm-6">
+      <div id="add-category-card" class="card">
+          <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
+          <button class="btn" @onclick="AddCategory"><img class="plus-icon" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
+        </div>
+    </div>
+  </Authorized>
+</AuthorizeView>
 </div>
-<button class="btn" @onclick="AddCategory">Bæta við flokk</button>
 <br/>
 
 @if(showPopup)

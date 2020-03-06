@@ -29,7 +29,14 @@ a, .btn-link {
     width: 100%;
     height: 200px;
 }
-
+.plus-icon{
+    height: 50px;
+    width: 50px;
+}
+#add-category-card{
+    align-items: center;
+    margin-top: 20px;
+}
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
