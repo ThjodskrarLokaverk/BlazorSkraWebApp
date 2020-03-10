@@ -4,121 +4,22 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200309112303_CreateQuestionTables")]
+    partial class CreateQuestionTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
-                {
-                    b.Property<int>("QuestionOrderNum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OptionOrderNum")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FormId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionOptionsOptionId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuestionsQuestionId")
-                        .HasColumnType("int");
-
-                    b.HasKey("QuestionOrderNum", "OptionOrderNum", "FormId");
-
-                    b.HasIndex("FormId");
-
-                    b.HasIndex("QuestionOptionsOptionId");
-
-                    b.HasIndex("QuestionsQuestionId");
-
-                    b.ToTable("Forms");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.FormsInfo", b =>
-                {
-                    b.Property<int>("FormInfoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("FormName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.HasKey("FormInfoId");
-
-                    b.ToTable("FormsInfo");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.QuestionOptions", b =>
-                {
-                    b.Property<int>("OptionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("OptionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.HasKey("OptionId");
-
-                    b.ToTable("QuestionOptions");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.QuestionTypes", b =>
-                {
-                    b.Property<int>("QuestionTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("QuestionTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.HasKey("QuestionTypeId");
-
-                    b.ToTable("QuestionTypes");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.Questions", b =>
-                {
-                    b.Property<int>("QuestionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("QuestionName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<int>("QuestionTypesQuestionTypeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("QuestionId");
-
-                    b.HasIndex("QuestionTypesQuestionTypeId");
-
-                    b.ToTable("Questions");
-                });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.ToDo", b =>
                 {
@@ -141,7 +42,7 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ToDoList");
+                    b.ToTable("ToDo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -342,36 +243,6 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
-                {
-                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "Form")
-                        .WithMany()
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlazorSkraApp1.Data.QuestionOptions", "QuestionOptions")
-                        .WithMany()
-                        .HasForeignKey("QuestionOptionsOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlazorSkraApp1.Data.Questions", "Questions")
-                        .WithMany()
-                        .HasForeignKey("QuestionsQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.Questions", b =>
-                {
-                    b.HasOne("BlazorSkraApp1.Data.QuestionTypes", "QuestionTypes")
-                        .WithMany("QuestionList")
-                        .HasForeignKey("QuestionTypesQuestionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

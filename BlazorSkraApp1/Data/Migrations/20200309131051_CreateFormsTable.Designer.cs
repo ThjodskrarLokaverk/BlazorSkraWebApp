@@ -4,14 +4,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200309131051_CreateFormsTable")]
+    partial class CreateFormsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,18 +29,27 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.Property<int>("OptionOrderNum")
                         .HasColumnType("int");
 
-                    b.Property<int>("FormId")
+                    b.Property<int>("FormInfoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionOptionsOptionId")
+                    b.Property<int?>("FormsInfoFormInfoId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionsQuestionId")
+                    b.Property<int>("OptionId")
                         .HasColumnType("int");
 
-                    b.HasKey("QuestionOrderNum", "OptionOrderNum", "FormId");
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("FormId");
+                    b.Property<int?>("QuestionOptionsOptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionsQuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("QuestionOrderNum", "OptionOrderNum", "FormInfoId");
+
+                    b.HasIndex("FormsInfoFormInfoId");
 
                     b.HasIndex("QuestionOptionsOptionId");
 
@@ -110,7 +121,10 @@ namespace BlazorSkraApp1.Data.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasMaxLength(30);
 
-                    b.Property<int>("QuestionTypesQuestionTypeId")
+                    b.Property<int>("QuestionTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionTypesQuestionTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("QuestionId");
@@ -346,32 +360,24 @@ namespace BlazorSkraApp1.Data.Migrations
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
                 {
-                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "Form")
+                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "FormsInfo")
                         .WithMany()
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("FormsInfoFormInfoId");
 
                     b.HasOne("BlazorSkraApp1.Data.QuestionOptions", "QuestionOptions")
                         .WithMany()
-                        .HasForeignKey("QuestionOptionsOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuestionOptionsOptionId");
 
                     b.HasOne("BlazorSkraApp1.Data.Questions", "Questions")
                         .WithMany()
-                        .HasForeignKey("QuestionsQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuestionsQuestionId");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Questions", b =>
                 {
                     b.HasOne("BlazorSkraApp1.Data.QuestionTypes", "QuestionTypes")
                         .WithMany("QuestionList")
-                        .HasForeignKey("QuestionTypesQuestionTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuestionTypesQuestionTypeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -4,14 +4,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200309134047_FormsFKCompositeKey")]
+    partial class FormsFKCompositeKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,7 +29,7 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.Property<int>("OptionOrderNum")
                         .HasColumnType("int");
 
-                    b.Property<int>("FormId")
+                    b.Property<int>("FormInfoId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestionOptionsOptionId")
@@ -36,9 +38,7 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.Property<int>("QuestionsQuestionId")
                         .HasColumnType("int");
 
-                    b.HasKey("QuestionOrderNum", "OptionOrderNum", "FormId");
-
-                    b.HasIndex("FormId");
+                    b.HasKey("QuestionOrderNum", "OptionOrderNum", "FormInfoId");
 
                     b.HasIndex("QuestionOptionsOptionId");
 
@@ -346,12 +346,6 @@ namespace BlazorSkraApp1.Data.Migrations
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
                 {
-                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "Form")
-                        .WithMany()
-                        .HasForeignKey("FormId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BlazorSkraApp1.Data.QuestionOptions", "QuestionOptions")
                         .WithMany()
                         .HasForeignKey("QuestionOptionsOptionId")
