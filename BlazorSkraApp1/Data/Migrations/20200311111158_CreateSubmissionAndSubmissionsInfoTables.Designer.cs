@@ -4,60 +4,22 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200311111158_CreateSubmissionAndSubmissionsInfoTables")]
+    partial class CreateSubmissionAndSubmissionsInfoTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.Categories", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
-
-                    b.HasKey("CategoryId");
-
-                    b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.CategoriesAssignments", b =>
-                {
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FormId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CategoriesCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("FormsInfoFormId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CategoryId", "FormId");
-
-                    b.HasIndex("CategoriesCategoryId");
-
-                    b.HasIndex("FormsInfoFormId");
-
-                    b.ToTable("CategoriesAssignments");
-                });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
                 {
@@ -101,7 +63,7 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.HasKey("FormId");
 
-                    b.ToTable("Formsinfo");
+                    b.ToTable("FormsInfo");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.QuestionOptions", b =>
@@ -426,17 +388,6 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("BlazorSkraApp1.Data.CategoriesAssignments", b =>
-                {
-                    b.HasOne("BlazorSkraApp1.Data.Categories", "Categories")
-                        .WithMany("CategoriesAssignments")
-                        .HasForeignKey("CategoriesCategoryId");
-
-                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "FormsInfo")
-                        .WithMany("CategoriesAssignments")
-                        .HasForeignKey("FormsInfoFormId");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace BlazorSkraApp1.Data
 {
-    public class FormsInfo
+    public class Categories
     {
         [Key]
-        public int FormId { get; set; }
-        [Required(ErrorMessage = "Form name is required")]
+        public int CategoryId { get; set; }
+        [Required(ErrorMessage = "Category name is required")]
         [StringLength(50, ErrorMessage = "Name is too long.")]
-        public string FormName { get; set; }
+        public string CategoryName { get; set; }
 
         public ICollection<CategoriesAssignments> CategoriesAssignments { get; set; }
     }

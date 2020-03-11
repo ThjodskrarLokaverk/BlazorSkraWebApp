@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Data
         [Key]
         public int OptionId { get; set; }
         [Required(ErrorMessage = "Option name is required")]
-        [StringLength(30, ErrorMessage = "Name is too long.")]
+        [StringLength(50, ErrorMessage = "Name is too long.")]
         public string OptionName { get; set; }
     }
 }

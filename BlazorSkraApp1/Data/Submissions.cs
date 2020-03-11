@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace BlazorSkraApp1.Data
 {
-    public class Forms
+    public class Submissions
     {
         [Required]
         public int QuestionOrderNum { get; set; }
         [Required]
-        public int OptionOrderNum { get; set; }
+        public int AnswerOrderNum { get; set; }
+        public string Answer { get; set; }
+        [Required]
+        public int SubmissionId { get; set; }
         [Required]
         public int FormId { get; set; }
 
         //[Required]
+        public virtual SubmissionsInfo Submission { get; set; }
+        //[Required]
         public virtual FormsInfo Form { get; set; }
         [Required]
         public Questions Questions { get; set; }
-        //[Required] //If we have a text question the QuestionOptions Column is NULL
-        public QuestionOptions QuestionOptions { get; set; }
+
+
+
     }
 }
-
-
-
