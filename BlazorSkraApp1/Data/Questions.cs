@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Data
         [Key]
         public int QuestionId { get; set; }
         [Required(ErrorMessage = "Question name is required")]
-        [StringLength(30, ErrorMessage = "Name is too long.")]
+        [StringLength(50, ErrorMessage = "Name is too long.")]
         public string QuestionName { get; set; }
 
         //public int QuestionTypeId { get; set; }

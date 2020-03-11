@@ -17,14 +17,29 @@ namespace BlazorSkraApp1.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            //Create the Composite key for the Forms table
             modelBuilder.Entity<Forms>()
-                    .HasOne<FormsInfo>(f => f.Form)
+                    .HasOne<FormsInfo>(fi => fi.Form)
                     .WithMany()
-                    .HasForeignKey(f => f.FormId);
+                    .HasForeignKey(fi => fi.FormId);
 
 
             modelBuilder.Entity<Forms>()
                 .HasKey(f => new { f.QuestionOrderNum, f.OptionOrderNum, f.FormId});
+
+            //Create the Composite key for the Submissions table
+            modelBuilder.Entity<Submissions>()
+                .HasOne<SubmissionsInfo>(si => si.Submission)
+                .WithMany()
+                .HasForeignKey(si => si.SubmissionId);
+
+            modelBuilder.Entity<Submissions>()
+                .HasOne<FormsInfo>(fi => fi.Form)
+                .WithMany()
+                .HasForeignKey(fi => fi.FormId);
+
+            modelBuilder.Entity<Submissions>()
+                .HasKey(s => new { s.SubmissionId, s.FormId, s.QuestionOrderNum, s.AnswerOrderNum });
         }
 
         public DbSet<ToDo> ToDoList { get; set; }

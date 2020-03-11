@@ -9,9 +9,9 @@ namespace BlazorSkraApp1.Data
     public class FormsInfo
     {
         [Key]
-        public int FormInfoId { get; set; }
+        public int FormId { get; set; }
         [Required(ErrorMessage = "Form name is required")]
-        [StringLength(30, ErrorMessage = "Name is too long.")]
+        [StringLength(50, ErrorMessage = "Name is too long.")]
         public string FormName { get; set; }
     }
 }
