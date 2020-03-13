@@ -26,7 +26,7 @@ else
     <div class="col-sm-6">
       <div id="add-category-card" class="card">
           <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-          <button class="btn" @onclick="AddCategory"><img class="plus-icon" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
+          <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
         </div>
     </div>
   </Authorized>
@@ -45,11 +45,17 @@ else
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input class="form-control" type="text"
-                                    placeholder="Nafn flokks"/>
-                            <br />
-                            <button class="btn">Vista</button>
-                            <button class="btn" @onclick="Cancel">Hætta við</button>
+                            <EditForm Model="@category" OnValidSubmit="@AddCategory">
+                              <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="hidden" @bind-value="@category.CategoryName" />
+                                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
+                                <ValidationMessage For="@(() => category.CategoryName)" />
+                              </div>
+                                <button type="submit" class="btn btn-primary">Bæta við</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+                                <DataAnnotationsValidator />
+                            </EditForm>
                         </div>
                     </div>
                 </div>
@@ -59,13 +65,13 @@ else
 @code{
 
     List<Categories> categoriesList;
-    Categories taskObject = new Categories();
+    Categories category = new Categories();
     protected override async Task OnInitializedAsync()
     {
         categoriesList = await service.Get();
     }
     bool showPopup = false;
-    void AddCategory()
+    void ShowCategoryPopup()
     {
         showPopup = true;
     }
@@ -73,6 +79,13 @@ else
     {
         showPopup = false;
     }
+
+    protected void AddCategory() 
+    {
+      service.Add(category);
+      showPopup = false;
+    }
+
 
     
 }
