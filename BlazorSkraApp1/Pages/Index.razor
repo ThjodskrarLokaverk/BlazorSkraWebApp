@@ -1,25 +1,27 @@
 ﻿@page "/"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesService service
+@inject IJSRuntime jsRuntime
 
-<div class="row">
-  <div class="col-sm-6">
+@if (categoriesList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+
+  @foreach (var category in categoriesList)
+  {
     <div class="card">
       <div class="card-body">
-        <h5 class="card-title">Öryggismál</h5>
-        <p class="card-text">Ýmsir flokkar sem tengjast öryggismálum.</p>
+        <h5 class="card-title">@category.CategoryName</h5>
         <a href="#" class="btn btn-primary">Tilkynna mál</a>
       </div>
     </div>
-  </div>
-  <div class="col-sm-6">
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Mannauðsmál</h5>
-        <p class="card-text">Ýmsir þættir sem hafa eitthvað með mannauðsmál að gera.</p>
-        <a href="#" class="btn btn-primary">Tilkynna mál</a>
-      </div>
-    </div>
-  </div>
-<AuthorizeView>
+  }
+
+  <AuthorizeView>
   <Authorized>
     <div class="col-sm-6">
       <div id="add-category-card" class="card">
@@ -28,11 +30,10 @@
         </div>
     </div>
   </Authorized>
-</AuthorizeView>
-</div>
-<br/>
+  </AuthorizeView>
+  <br/>
 
-@if(showPopup)
+  @if(showPopup)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
                 <div class="modal-dialog">
@@ -45,7 +46,7 @@
                         </div>
                         <div class="modal-body">
                             <input class="form-control" type="text"
-                                   placeholder="Nafn flokks"/>
+                                    placeholder="Nafn flokks"/>
                             <br />
                             <button class="btn">Vista</button>
                             <button class="btn" @onclick="Cancel">Hætta við</button>
@@ -54,8 +55,15 @@
                 </div>
             </div>
     }
-
+  }
 @code{
+
+    List<Categories> categoriesList;
+    Categories taskObject = new Categories();
+    protected override async Task OnInitializedAsync()
+    {
+        categoriesList = await service.Get();
+    }
     bool showPopup = false;
     void AddCategory()
     {
@@ -65,5 +73,6 @@
     {
         showPopup = false;
     }
+
     
 }
