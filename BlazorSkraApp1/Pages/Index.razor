@@ -5,10 +5,6 @@
 @inject IJSRuntime jsRuntime
 @inject NavigationManager NavigationManager
 
-<head>
-  <link ref="https://cdn.syncfusion.com/ej2/material.css" rel="stylesheet" />
-</head>
-
 @if (categoriesList == null)
 {
     <p><em>Loading...</em></p>
@@ -32,10 +28,7 @@ else
         <button class="add-category-link boxes btn text-uppercase" @onclick="AddCategory">
             <span class="oi oi-plus"></span> Búa til flokk
         </button>
-      </div>
     </div>
-</Authorized>
-</AuthorizeView>
   <br/>
 
   @if(showPopup)
@@ -50,11 +43,17 @@ else
                             </button>
                         </div>
                         <div class="modal-body">
-                            <input class="form-control" type="text"
-                                    placeholder="Nafn flokks"/>
-                            <br />
-                            <button class="btn">Vista</button>
-                            <button class="btn" @onclick="Cancel">Hætta við</button>
+                            <EditForm Model="@category" OnValidSubmit="@AddCategory">
+                              <div class="form-group">
+                                <label for="categoryName">Category Name</label>
+                                <input type="hidden" @bind-value="@category.CategoryName" />
+                                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
+                                <ValidationMessage For="@(() => category.CategoryName)" />
+                              </div>
+                                <button type="submit" class="btn btn-primary">Bæta við</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+                                <DataAnnotationsValidator />
+                            </EditForm>
                         </div>
                     </div>
                 </div>
@@ -64,13 +63,13 @@ else
 @code{
 
     List<Categories> categoriesList;
-    Categories taskObject = new Categories();
+    Categories category = new Categories();
     protected override async Task OnInitializedAsync()
     {
         categoriesList = await service.Get();
     }
     bool showPopup = false;
-    void AddCategory()
+    void ShowCategoryPopup()
     {
         showPopup = true;
     }
@@ -82,5 +81,11 @@ else
     void NotificationList()
     {
       NavigationManager.NavigateTo("/list");
+    }
+                   
+    protected void AddCategory() 
+    {
+      service.Add(category);
+      showPopup = false;
     }
 }
