@@ -1,38 +1,62 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
 
 html, body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: 'Source Sans Pro', Arial, sans-serif;
+    background-color: #f4f4f4;
 }
 
-a, .btn-link {
-    color: #0366d6;
+#logo {
+    margin: 0;
+    margin-left: 80px;
 }
-.notification-index{
-    width: 25%;
-    height: 100%;
-    margin-left: 6.25%;
-    align-content: center;
-    background-color: #669900;
+.navbar {
+    background-color: white;
+}
+
+.custom-toggler.navbar-toggler {
+    border-color: #5e636b;
+}
+
+.oi-plus {
+    color: #5e636b;
+    font-size: 25px;
+    vertical-align: middle;
+    top: -1px;
+}
+
+.add-category {
     float: left;
-    border-radius: 2;
+    margin-left: 15px;
+    margin-top: 40px;
 }
-.notification-name{
-    text-align: center;
-    align-content: center;
-    color: black;
-    font-family: 'Courier';
-    height: 50px;
-    margin-top: 75px;
-    margin-bottom: 75px;
+
+.custom-toggler .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(94,99,107,1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 8h24M4 16h24M4 24h24'/%3E%3C/svg%3E");
 }
-#all-notifications-index{
+
+.linkboxes .col-md-4 .boxes {
+    color: #527d2e;
+    background-color: white;
     width: 100%;
-    height: 200px;
+    height: 100px;
+    box-shadow: -1px 2px 3px #cecece;
+    font-weight: 500;
+    font-size: 20px;
 }
-.plus-icon{
-    height: 50px;
-    width: 50px;
+
+.linkboxes .col-md-4 .add-category-link {
+    color: #5e636b;
 }
+
+.linkboxes .col-md-4 {
+    margin-bottom: 20px;
+}
+
+.col-xs-6 {
+    width: 50%;
+    float: left;
+}
+
 #add-category-card{
     align-items: center;
     margin-top: 20px;
@@ -76,71 +100,8 @@ app {
     text-overflow: ellipsis;
 }
 
-.sidebar {
-    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
-}
-
-    .sidebar .top-row {
-        background-color: rgba(0,0,0,0.4);
-    }
-
-    .sidebar .navbar-brand {
-        font-size: 1.1rem;
-    }
-
-    .navbar-actions{
-        float: right;
-        color: lightgray;
-        flex-direction: row;
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-
-    .sidebar .oi {
-        width: 2rem;
-        font-size: 1.1rem;
-        vertical-align: text-top;
-        top: -2px;
-    }
-
-    .sidebar .nav-item {
-        font-size: 0.9rem;
-        padding-bottom: 0.5rem;
-    }
-
-        .sidebar .nav-item:first-of-type {
-            padding-top: 1rem;
-        }
-
-        .sidebar .nav-item:last-of-type {
-            padding-bottom: 1rem;
-        }
-
-        .sidebar .nav-item a {
-            color: #d7d7d7;
-            border-radius: 4px;
-            height: 3rem;
-            display: flex;
-            align-items: center;
-            line-height: 3rem;
-        }
-
-            .sidebar .nav-item a.active {
-                background-color: rgba(255,255,255,0.25);
-                color: white;
-            }
-
-            .sidebar .nav-item a:hover {
-                background-color: rgba(255,255,255,0.1);
-                color: white;
-            }
-
 .content {
     padding-top: 1.1rem;
-}
-
-.navbar-toggler {
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .valid.modified:not([type=checkbox]) {

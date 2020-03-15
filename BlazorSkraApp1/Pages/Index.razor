@@ -3,6 +3,7 @@
 @using BlazorSkraApp1.Services
 @inject ICategoriesService service
 @inject IJSRuntime jsRuntime
+@inject NavigationManager NavigationManager
 
 @if (categoriesList == null)
 {
@@ -13,24 +14,21 @@ else
 
   @foreach (var category in categoriesList)
   {
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">@category.CategoryName</h5>
-        <a href="#" class="btn btn-primary">Tilkynna mál</a>
+    <div class="linkboxes">
+      <div class="col-md-4 col-xs-6">
+        <button class="boxes btn text-uppercase" @onclick="NotificationList">@category.CategoryName</button>
       </div>
     </div>
   }
 
-  <AuthorizeView>
-  <Authorized>
-    <div class="col-sm-6">
-      <div id="add-category-card" class="card">
-          <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-          <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
-        </div>
+<AuthorizeView>
+<Authorized>
+  <div class="linkboxes">
+      <div class="col-md-4 col-xs-6">
+        <button class="add-category-link boxes btn text-uppercase" @onclick="AddCategory">
+            <span class="oi oi-plus"></span> Búa til flokk
+        </button>
     </div>
-  </Authorized>
-  </AuthorizeView>
   <br/>
 
   @if(showPopup)
@@ -80,12 +78,14 @@ else
         showPopup = false;
     }
 
+    void NotificationList()
+    {
+      NavigationManager.NavigateTo("/list");
+    }
+                   
     protected void AddCategory() 
     {
       service.Add(category);
       showPopup = false;
     }
-
-
-    
 }
