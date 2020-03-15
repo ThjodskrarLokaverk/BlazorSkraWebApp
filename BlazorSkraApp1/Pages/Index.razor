@@ -21,47 +21,50 @@ else
     </div>
   }
 
-<AuthorizeView>
-<Authorized>
-  <div class="linkboxes">
-      <div class="col-md-4 col-xs-6">
-        <button class="add-category-link boxes btn text-uppercase" @onclick="AddCategory">
+  <AuthorizeView>
+    <Authorized>
+      <div class="linkboxes">
+        <div class="col-md-4 col-xs-6">
+          <button class="add-category-link boxes btn text-uppercase" @onclick="AddCategory">
             <span class="oi oi-plus"></span> Búa til flokk
-        </button>
-    </div>
+          </button>
+        </div>
+      </div>
+    </Authorized>
+  </AuthorizeView>
   <br/>
 
   @if(showPopup)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                            <button type="button" class="close" @onclick="Cancel">
-                                <span aria-hidden="true">X</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <EditForm Model="@category" OnValidSubmit="@AddCategory">
-                              <div class="form-group">
-                                <label for="categoryName">Category Name</label>
-                                <input type="hidden" @bind-value="@category.CategoryName" />
-                                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
-                                <ValidationMessage For="@(() => category.CategoryName)" />
-                              </div>
-                                <button type="submit" class="btn btn-primary">Bæta við</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
-                                <DataAnnotationsValidator />
-                            </EditForm>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    }
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+              <button type="button" class="close" @onclick="Cancel">
+                <span aria-hidden="true">X</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@category" OnValidSubmit="@AddCategory">
+              <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="hidden" @bind-value="@category.CategoryName" />
+                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
+                <ValidationMessage For="@(() => category.CategoryName)" />
+              </div>
+              <button type="submit" class="btn btn-primary">Bæta við</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+              <DataAnnotationsValidator />
+            </EditForm>
+          </div>
+        </div>
+      </div>
+    </div>
   }
-@code{
+}
 
+@code {
     List<Categories> categoriesList;
     Categories category = new Categories();
     protected override async Task OnInitializedAsync()
