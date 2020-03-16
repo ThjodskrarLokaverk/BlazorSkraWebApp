@@ -4,14 +4,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200316112006_UpdateCategoriesAssignmentTable#2")]
+    partial class UpdateCategoriesAssignmentTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,19 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.Property<int>("FormId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CategoriesCategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FormsInfoFormId1")
+                        .HasColumnType("int");
+
                     b.HasKey("CategoryId", "FormId");
 
+                    b.HasIndex("CategoriesCategoryId");
+
                     b.HasIndex("FormId");
+
+                    b.HasIndex("FormsInfoFormId1");
 
                     b.ToTable("CategoriesAssignments");
                 });
@@ -93,7 +105,7 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.HasKey("FormId");
 
-                    b.ToTable("FormsInfo");
+                    b.ToTable("Formsinfo");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.QuestionOptions", b =>
@@ -422,6 +434,10 @@ namespace BlazorSkraApp1.Data.Migrations
 
             modelBuilder.Entity("BlazorSkraApp1.Data.CategoriesAssignments", b =>
                 {
+                    b.HasOne("BlazorSkraApp1.Data.Categories", null)
+                        .WithMany("CategoriesAssignments")
+                        .HasForeignKey("CategoriesCategoryId");
+
                     b.HasOne("BlazorSkraApp1.Data.Categories", "Categories")
                         .WithMany()
                         .HasForeignKey("CategoryId")
@@ -433,6 +449,10 @@ namespace BlazorSkraApp1.Data.Migrations
                         .HasForeignKey("FormId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", null)
+                        .WithMany("CategoriesAssignments")
+                        .HasForeignKey("FormsInfoFormId1");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
