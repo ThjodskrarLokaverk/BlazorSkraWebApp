@@ -13,7 +13,5 @@ namespace BlazorSkraApp1.Data
         [Required(ErrorMessage = "Category name is required")]
         [StringLength(50, ErrorMessage = "Name is too long.")]
         public string CategoryName { get; set; }
-
-        public ICollection<CategoriesAssignments> CategoriesAssignments { get; set; }
     }
 }
