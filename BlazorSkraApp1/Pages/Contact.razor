@@ -1,0 +1,55 @@
+﻿@page "/Contact"
+@using MailKit.Net.Smtp;
+@using MimeKit;
+@inject NavigationManager NavigationManager
+@using BlazorSkraApp1.Data
+
+<div class="header">
+    <h4 class="modal-title">Skrifa póst</h4>
+</div>
+            
+<EditForm Model="@mailForm" OnValidSubmit="@SendMail">
+    <div class="form-group">
+        <label for="To">Send To</label>
+        <InputText id="To" class="form-control" @bind-Value="@mailForm.To" />
+        <label for="To">Subject</label>
+        <InputText id="subject" class="form-control" @bind-Value="@mailForm.Subject" />
+        <label for="To">Body</label>
+        <InputTextArea id="body" class="form-control" @bind-Value="@mailForm.Body" />
+    </div>
+    <button type="submit" class="btn btn-primary">Senda póst</button>
+    <DataAnnotationsValidator />
+</EditForm>
+
+@code {
+
+    MailForm mailForm = new MailForm();
+
+    protected void SendMail()
+    {
+        var message = new MimeMessage();
+        //Sender of email here
+        message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
+        //receiver of email
+        message.To.Add(new MailboxAddress(mailForm.To));
+        message.Subject = mailForm.Subject;
+        //aðaltextinn byggður upp
+        message.Body = new TextPart("html")
+        {
+            Text = "Message: " + mailForm.Body
+        };
+
+        using (var client = new SmtpClient())
+        {
+            client.Connect("smtp.gmail.com", 587);
+            //notendanafn og lykilorð á pósthólfinu sem er sent úr
+            client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
+            client.Send(message);
+            client.Disconnect(false);
+            //Notandinn sendur á heimasíðuna eftir að hafa sent póst
+            //Hægt að senda hann t.d á confirmation page seinna meir
+            NavigationManager.NavigateTo("/");
+        }
+
+    }
+}
