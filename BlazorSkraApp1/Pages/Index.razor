@@ -16,6 +16,9 @@ else
   {
     <div class="linkboxes">
       <div class="col-md-4 col-xs-6">
+        <button class="btn btn-link text-right"@onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+          <i class="fas fa-trash" title="Modifier"></i>
+        </button>
         <button class="boxes btn text-uppercase" @onclick="NotificationList">@category.CategoryName</button>
       </div>
     </div>
@@ -64,6 +67,57 @@ else
   }
 }
 
+@if(showDelete)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+              <button type="button" class="close" @onclick="Cancel">
+                <span aria-hidden="true">X</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@category" OnValidSubmit="@AddCategory">
+              <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="hidden" @bind-value="@category.CategoryName" />
+                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
+                <ValidationMessage For="@(() => category.CategoryName)" />
+              </div>
+              <button type="submit" class="btn btn-primary">Bæta við</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+              <DataAnnotationsValidator />
+            </EditForm>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @if(showDelete)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>                
+            </div>
+            <div class="modal-body">
+                <p> Ertu viss um að þú viljir eyða flokknum @category.CategoryName ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                <button type="button" class="btn btn-primary" @onclick="(() => Delete(category))" >Eyða</button>
+            </div>
+        </div>
+    </div>
+  </div>
+  }
+
+
+
 @code {
     List<Categories> categoriesList;
     Categories category = new Categories();
@@ -72,13 +126,22 @@ else
         categoriesList = await service.Get();
     }
     bool showPopup = false;
+    bool showDelete = false;
+
     void ShowCategoryPopup()
     {
         showPopup = true;
     }
+
+    void showDeletePopup(Categories cat)
+    { 
+        category = cat;
+        showDelete = true;
+    }
     void Cancel()
     {
         showPopup = false;
+        showDelete = false;
     }
 
     void NotificationList()
@@ -90,5 +153,20 @@ else
     {
       service.Add(category);
       showPopup = false;
+    }
+    private void PrepareForDelete(Categories task)
+    {
+        category = task;
+    }
+    private async Task Delete(Categories cat)
+    {
+        var task = await service.Delete(cat.CategoryId);
+        showDelete = false;
+    }
+
+    private async void DataChanged()
+    {
+        categoriesList = await service.Get();
+        StateHasChanged();
     }
 }
