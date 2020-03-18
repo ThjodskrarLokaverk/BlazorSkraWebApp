@@ -3,22 +3,74 @@
 html, body {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     background-color: #f4f4f4;
+    height: 100%;
 }
 
 #logo {
     margin: 0;
-    margin-left: 80px;
 }
 .navbar {
     background-color: white;
+    border-bottom: 1.5px solid #e3e3e3;
+}
+
+.dropdown {
+    margin-right: 13px;
+}
+
+.dropdown-content a:focus {
+    background-color: #527d2e;
+    color: white;
+}
+
+.dropdown-content button:focus {
+    background-color: #527d2e;
+    color: white;
+}
+
+.dropdown-content p:hover {
+    background-color: transparent;
+}
+
+.oi-person {
+    color: #5e636b;
+    font-size: 40px;
+    top: 7px;
+}
+
+#sidebar {
+    min-height: 750px;
+    width: 260px;
+    display: block;
+    float: left;
+    background-color: white;
+    border-right: 1.5px solid #e3e3e3;
+    padding-top: 25px;
+    padding-left: 20px;
+}
+
+#sidebar a {
+    font-weight: 500;
+    font-size: 16px;
+    color: #5e636b;
+}
+
+#sidebar a:hover {
+    font-weight: bold;
+    color: #527d2e;
+}
+
+.sidebar-content {
+    padding-bottom: 20px;
 }
 
 .custom-toggler.navbar-toggler {
     border-color: #5e636b;
+    margin-left: 23px;
 }
 
 .oi-plus {
-    color: #5e636b;
+    color: #527d2e;
     font-size: 25px;
     vertical-align: middle;
     top: -1px;
@@ -35,7 +87,7 @@ html, body {
 }
 
 .linkboxes .col-md-4 .boxes {
-    color: #527d2e;
+    color: #5e636b;
     background-color: white;
     width: 100%;
     height: 100px;
@@ -44,8 +96,13 @@ html, body {
     font-size: 20px;
 }
 
+.linkboxes .col-md-4 .boxes:hover {
+    text-decoration: underline;
+    color: #527d2e;
+}
+
 .linkboxes .col-md-4 .add-category-link {
-    color: #5e636b;
+    color: #527d2e;
 }
 
 .linkboxes .col-md-4 {
