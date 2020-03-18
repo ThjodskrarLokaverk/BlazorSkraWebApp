@@ -17,7 +17,10 @@ else
     <div class="linkboxes">
       <div class="col-md-4 col-xs-6">
         <button class="btn btn-link text-right"@onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-          <i class="fas fa-trash" title="Modifier"></i>
+          <i class="fas fa-trash" title="Delete"></i>
+        </button>
+        <button class="btn btn-link text-right"@onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+          <i class="fas fa-pen" title="Edit"></i>
         </button>
         <button class="boxes btn text-uppercase" @onclick="NotificationList">@category.CategoryName</button>
       </div>
@@ -35,6 +38,7 @@ else
       </div>
     </Authorized>
   </AuthorizeView>
+  <br/>
 
   @if(showPopup)
   {
@@ -64,36 +68,8 @@ else
       </div>
     </div>
   }
-}
 
-@if(showDelete)
-  {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Bæta við nýjum flokk</h4>
-              <button type="button" class="close" @onclick="Cancel">
-                <span aria-hidden="true">X</span>
-              </button>
-          </div>
-          <div class="modal-body">
-            <EditForm Model="@category" OnValidSubmit="@AddCategory">
-              <div class="form-group">
-                <label for="categoryName">Category Name</label>
-                <input type="hidden" @bind-value="@category.CategoryName" />
-                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
-                <ValidationMessage For="@(() => category.CategoryName)" />
-              </div>
-              <button type="submit" class="btn btn-primary">Bæta við</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
-              <DataAnnotationsValidator />
-            </EditForm>
-          </div>
-        </div>
-      </div>
-    </div>
-  }
+
   @if(showDelete)
   {
     <div class="modal" tabindex="-1" style="display:block" role="dialog">
@@ -115,7 +91,37 @@ else
   </div>
   }
 
+  @if(showEdit)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Uppfæra @category.CategoryName</h4>
+              <button type="button" class="close" @onclick="Cancel">
+                <span aria-hidden="true">X</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@category" OnValidSubmit="@UpdateCategory">
+              <div class="form-group">
+                <label for="categoryName">Category Name</label>
+                <input type="hidden" @bind-value="@category.CategoryName" />
+                <InputText id="name" class="form-control" @bind-Value="@category.CategoryName" />
+                <ValidationMessage For="@(() => category.CategoryName)" />
+              </div>
+              <button type="submit" class="btn btn-primary">Uppfæra</button>
+              <button type="button" @onclick="Cancel" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+              <DataAnnotationsValidator />
+            </EditForm>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
 
+
+}
 
 @code {
     List<Categories> categoriesList;
@@ -126,10 +132,17 @@ else
     }
     bool showPopup = false;
     bool showDelete = false;
+    bool showEdit = false;
 
     void ShowCategoryPopup()
     {
         showPopup = true;
+    }
+
+      void ShowEditPopup(Categories pickedCategory)
+    {
+        category = pickedCategory;
+        showEdit = true;
     }
 
     void showDeletePopup(Categories cat)
@@ -141,6 +154,7 @@ else
     {
         showPopup = false;
         showDelete = false;
+        showEdit = false;
     }
 
     void NotificationList()
@@ -153,6 +167,13 @@ else
       service.Add(category);
       showPopup = false;
     }
+
+    protected void UpdateCategory() 
+    {
+      service.Update(category);
+      showEdit = false;
+    }
+
     private void PrepareForDelete(Categories task)
     {
         category = task;
