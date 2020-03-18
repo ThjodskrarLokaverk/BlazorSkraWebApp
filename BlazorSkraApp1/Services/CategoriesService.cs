@@ -17,7 +17,7 @@ namespace BlazorSkraApp1.Services
         Task<Categories> Delete(int id);
     }
 
-    public class CategoriesService: ICategoriesService
+    public class CategoriesService : ICategoriesService
     {
         private readonly ApplicationDbContext _context;
 

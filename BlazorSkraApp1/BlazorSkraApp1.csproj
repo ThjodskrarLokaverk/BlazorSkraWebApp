@@ -10,6 +10,8 @@
     <Compile Remove="Data\Migrations\20200309131004_CreateFormsTable.Designer.cs" />
     <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.cs" />
     <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.Designer.cs" />
+    <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.cs" />
+    <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
