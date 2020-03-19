@@ -16,10 +16,12 @@ else
   {
     <div class="linkboxes">
       <div class="col-md-4 col-xs-6">
-        <button class="btn btn-link text-right"@onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-          <i class="fas fa-trash" title="Modifier"></i>
-        </button>
-        <button class="boxes btn text-uppercase" @onclick="NotificationList">@category.CategoryName</button>
+        <div class="boxes btn">
+          <a @onclick="NotificationList" class="text-uppercase">@category.CategoryName</a>
+          <button class="btn btn-link trash-icon" @onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+	          <i class="fas fa-trash" title="Modifier"></i>
+          </button>
+        </div>
       </div>
     </div>
   }
