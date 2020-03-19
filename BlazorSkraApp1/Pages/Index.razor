@@ -16,13 +16,15 @@ else
   {
     <div class="linkboxes">
       <div class="col-md-4 col-xs-6">
-        <button class="btn btn-link text-right"@onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-          <i class="fas fa-trash" title="Delete"></i>
-        </button>
-        <button class="btn btn-link text-right"@onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-          <i class="fas fa-pen" title="Edit"></i>
-        </button>
-        <a class="boxes btn text-uppercase" href="/NotificationList/@category.CategoryId">@category.CategoryName</a>
+        <div class="boxes btn">
+          <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
+          <button class="btn btn-link trash-icon" @onclick="(() => showDeletePopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+	          <i class="fas fa-trash" title="Modifier"></i>
+          </button>
+          <button class="btn btn-link text-right"@onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+            <i class="fas fa-pen" title="Edit"></i>
+          </button>
+        </div>
       </div>
     </div>
   }
@@ -68,7 +70,6 @@ else
       </div>
     </div>
   }
-
 
   @if(showDelete)
   {
@@ -119,8 +120,6 @@ else
       </div>
     </div>
   }
-
-
 }
 
 @code {

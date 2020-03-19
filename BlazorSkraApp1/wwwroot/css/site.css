@@ -38,6 +38,10 @@ html, body {
     top: 7px;
 }
 
+.oi-person:hover {
+    color: #527d2e;
+}
+
 #sidebar {
     min-height: 750px;
     width: 260px;
@@ -87,18 +91,29 @@ html, body {
 }
 
 .linkboxes .col-md-4 .boxes {
-    color: #5e636b;
     background-color: white;
     width: 100%;
     height: 100px;
     box-shadow: -1px 2px 3px #cecece;
+    text-align: center;
     font-weight: 500;
     font-size: 20px;
 }
 
-.linkboxes .col-md-4 .boxes:hover {
+.linkboxes .col-md-4 .boxes a {
+    color: #5e636b;
+    display: inline-block;
+    margin-top: 27.5px;
+    margin-left: 17px;
+}
+
+.linkboxes .col-md-4 .boxes a:hover {
     text-decoration: underline;
     color: #527d2e;
+}
+
+.linkboxes .col-md-4 .boxes:hover {
+    text-decoration: underline;
 }
 
 .linkboxes .col-md-4 .add-category-link {
@@ -114,10 +129,17 @@ html, body {
     float: left;
 }
 
-#add-category-card{
-    align-items: center;
-    margin-top: 20px;
+.trash-icon {
+    float: right;
+    margin-right: -17px;
+    margin-top: -10px;
+    color: #5e636b;
 }
+
+.trash-icon:hover {
+    color: #527d2e;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
