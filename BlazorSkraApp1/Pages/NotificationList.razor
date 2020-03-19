@@ -1,45 +1,90 @@
-@page "/list"
+﻿@page "/NotificationList/{id}"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesAssignmentsService service
+@inject IJSRuntime jsRuntime
 
+@if (categoriesAssignmentsList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
 
+  @foreach (var categoryAssignment in categoriesAssignmentsList)
+  {
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">@categoryAssignment.FormId</h5>
+        <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
+        <a href="#" class="btn btn-primary">Tilkynna mál</a>
+      </div>
+    </div>
+  }
 
-<div class= container >
-<h1>
-    Category
-</h1>
-<table class="table table-striped table-bordered">
-  <thead>
-    <tr>
-      <th scope="col" style="width: 25%">Heiti</th>
-      <th scope="col" style="width: 25%">Skráð af</th>
-      <th scope="col" style="width: 10%"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>
-        <i class="fas fa-pen"></i>
-        <i class="fas fa-trash"></i>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>
-        <i class="fas fa-pen"></i>
-       <i class="fas fa-trash"></i>
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>
-        <i class="fas fa-pen"></i>
-        <i class="fas fa-trash"></i>
-        </td>
-    </tr>
-  </tbody>
-</table>
-</div>
+  <AuthorizeView>
+  <Authorized>
+    <div class="col-sm-6">
+      <div id="add-category-card" class="card">
+          <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
+          <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
+        </div>
+    </div>
+  </Authorized>
+  </AuthorizeView>
+  <br/>
 
+  @if(showPopup)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+                            <button type="button" class="close" @onclick="Cancel">
+                                <span aria-hidden="true">X</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Add functionality here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    }
+  }
+@code{
+
+    [Parameter]
+    public string id{ get; set; }
+
+    List<CategoriesAssignments> categoriesAssignmentsList;
+    CategoriesAssignments categoryAssignment = new CategoriesAssignments();
+    
+    protected override async Task OnInitializedAsync()
+    {
+        var CategoryId = id;
+        categoriesAssignmentsList = await service.Get(CategoryId);
+    }
+
+    bool showPopup = false;
+    
+    void ShowCategoryPopup()
+    {
+        showPopup = true;
+    }
+    
+    void Cancel()
+    {
+        showPopup = false;
+    }
+
+    /*
+    protected void AddCategory() 
+    {
+      service.Add(category);
+      showPopup = false;
+    }
+    */
+
+}
