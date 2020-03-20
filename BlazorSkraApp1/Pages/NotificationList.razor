@@ -63,7 +63,7 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        var CategoryId = id;
+        var CategoryId = Int16.Parse(id);
         categoriesAssignmentsList = await service.Get(CategoryId);
     }
 
