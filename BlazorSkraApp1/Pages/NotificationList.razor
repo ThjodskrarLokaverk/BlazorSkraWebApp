@@ -25,9 +25,10 @@ else
   <AuthorizeView>
   <Authorized>
     <div class="col-sm-6">
-      <div id="add-category-card" class="card">
-          <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-          <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
+        <div id="add-category-card" class="card">
+            <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
+            <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png" /></button>
+            
         </div>
     </div>
   </Authorized>
@@ -40,14 +41,17 @@ else
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+                            <h4 class="modal-title">Bæta við nýjum undirflokk</h4>
                             <button type="button" class="close" @onclick="Cancel">
                                 <span aria-hidden="true">X</span>
                             </button>
+
                         </div>
                         <div class="modal-body">
                             <p>Add functionality here</p>
+                            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
                         </div>
+                        
                     </div>
                 </div>
             </div>
