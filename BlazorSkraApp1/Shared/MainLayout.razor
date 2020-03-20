@@ -35,20 +35,23 @@
 
     @if(showSidebar)
     {
-        <div id="sidebar">
-            <div class="sidebar-content">
-                <a href="/makeAdmin" @onclick="ToggleSidebar">View users</a><br/>
-            </div>
-            <div class="sidebar-content">
-                <a href="/create_notification" @onclick="ToggleSidebar">Create a new notification</a><br/>
-            </div>
-            <div class="sidebar-content" @onclick="ToggleSidebar">
-                <a href="/Counter">Counter</a><br/>
-            </div>
-            <div class="sidebar-content" @onclick="ToggleSidebar">
-                <a href="/todolist">To Do List</a><br/>
-            </div>
-        </div>
+<div id="sidebar">
+    <div class="sidebar-content">
+        <a href="/makeAdmin" @onclick="ToggleSidebar">View users</a><br />
+    </div>
+    <div class="sidebar-content">
+        <a href="/create_notification" @onclick="ToggleSidebar">Create a new notification</a><br />
+    </div>
+    <div class="sidebar-content" @onclick="ToggleSidebar">
+        <a href="/Counter">Counter</a><br />
+    </div>
+    <div class="sidebar-content" @onclick="ToggleSidebar">
+        <a href="/todolist">To Do List</a><br />
+    </div>
+    <div class="sidebar-content" @onclick="ToggleSidebar">
+        <a href="/contact">Senda póst</a><br />
+    </div>
+</div>
     }
 
     <div class="content px-4">
