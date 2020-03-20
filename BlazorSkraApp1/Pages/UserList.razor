@@ -1,49 +1,93 @@
 @page "/makeAdmin"
-@using Microsoft.AspNetCore.Authorization;
+@using BlazorSkraApp1.Services
 @using Microsoft.AspNetCore.Identity;
-@inject UserManager<IdentityUser> _UserManager
+@inject IAdminService service
 @inject AuthenticationStateProvider AuthenticationStateProvider
-
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nafn</th>
-            <th>Netfang</th>
-            <th>Admin</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var user in ColUsers)
-        {
-            <tr>
-                <th>@user.UserName</th>
-                <th>@user.Email</th>
-                <th><input type="checkbox"></th>
-            </tr>
-        }
-    </tbody>
-</table>
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nafn</th>
+                    <th>Netfang</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in usersList)
+                {
+                    <tr>
+                        <th>@user.UserName</th>
+                        <th>@user.Email</th>
+                        <th>
+                            @if (adminUsersList.Contains(user))
+                            {
+                                <button class="btn-danger" @onclick="(() => RemoveAdminRole(user))">Remove Admin</button>
+                            }
+                            else
+                            {
+                                <button class="btn-primary" @onclick="(() => AddAdminRole(user))">Make Admin</button>
+                            }
+                        </th>
+                        <th><button class="btn-danger" @onclick="(() => DeleteUser(user))">Delete user</button></th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </Authorized>
+    <NotAuthorized>
+        <p>You're not authorized to view this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
-    List<IdentityUser> ColUsers = new List<IdentityUser>();
+    // Property used to add or edit the currently selected user
+    IdentityUser user = new IdentityUser();
+    // Collection to display the existing users
+    List<IdentityUser> usersList = new List<IdentityUser>();
+    // Collection to display the admin users
+    List<IdentityUser> adminUsersList = new List<IdentityUser>();
 
     protected override async Task OnInitializedAsync()
     {
         await GetUsers();
+        await GetAdminUsers();
     }
-    protected Task<List<IdentityUser>> GetUsers()
+
+    async Task GetUsers()
     {
-        ColUsers = new List<IdentityUser>();
-        var user = _UserManager.Users.Select(x => new IdentityUser
-        {
-            Id = x.Id,
-            UserName = x.UserName,
-            Email = x.Email
-        });
-        foreach (var item in user)
-        {
-            ColUsers.Add(item);
-        }
-        return Task.FromResult(ColUsers);
+        usersList = await service.Get();
+    }
+
+    async Task GetAdminUsers()
+    {
+        adminUsersList = await service.GetAdminUsers();
+    }
+
+    async Task DeleteUser(IdentityUser user)
+    {
+        // Close the Popup
+        //ShowPopup = false;
+
+        // Delete user
+        await service.Delete(user);
+
+        // Refresh Users
+        await GetUsers();
+    }
+
+    async Task AddAdminRole(IdentityUser user)
+    {
+        //Add user to the Admin role
+        await service.AddAdminRole(user);
+        await GetAdminUsers();
+    }
+
+    async Task RemoveAdminRole(IdentityUser user)
+    {
+        //Remove user from the Admin role
+        await service.RemoveAdminRole(user);
+        await GetAdminUsers();
     }
 }

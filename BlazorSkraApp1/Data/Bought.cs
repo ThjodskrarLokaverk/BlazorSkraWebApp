@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace BlazorSkraApp1.Data
 {
@@ -7,10 +7,10 @@ namespace BlazorSkraApp1.Data
         public User MadeBy { get; set; }
         public bool IsBoughtBy(User user)
         {
-            if(user.customer)
+            if (user.customer)
                 return true;
 
-            if(MadeBy == user)
+            if (MadeBy == user)
                 return true;
 
             return false;
