@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Data
         [Key]
         public int CategoryId { get; set; }
         [Required(ErrorMessage = "Category name is required")]
-        [StringLength(50, ErrorMessage = "Name is too long.")]
+        [StringLength(20, ErrorMessage = "Name is too long.")]
         public string CategoryName { get; set; }
     }
 }
