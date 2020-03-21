@@ -7,126 +7,132 @@
 
 @if (categoriesList == null)
 {
-    <p><em>Loading...</em></p>
+  <p><em>Loading...</em></p>
 }
 else
 {
-
-    @foreach (var category in categoriesList)
-    {
-        <div class="linkboxes">
-            <div class="col-md-4 col-xs-6">
-                <div class="boxes btn">
-                    <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
-                    <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
-                        <i class="fas fa-pen" title="Modifier"></i>
-                    </button>
-                </div>
-            </div>
+  @foreach (var category in categoriesList)
+  {
+    <div class="linkboxes">
+      <div class="col-md-4 col-xs-6">
+        <div class="boxes btn">
+          <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
+          <AuthorizeView Roles="Admin">
+            <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+              <i class="fas fa-pen" title="Modifier"></i>
+            </button>
+          </AuthorizeView>
         </div>
-    }
-    <AuthorizeView>
-        <Authorized>
-            <div class="linkboxes">
-                <div class="col-md-4 col-xs-6">
-                    <button class="add-category-link boxes btn text-uppercase" @onclick="ShowCategoryPopup">
-                        <span class="oi oi-plus"></span> Búa til flokk
-                    </button>
-                </div>
-            </div>
-        </Authorized>
-    </AuthorizeView>
-    <br />
+      </div>
+    </div>
+  }
+  <AuthorizeView Roles="Admin">
+    <div class="linkboxes">
+      <div class="col-md-4 col-xs-6">
+        <button class="add-category-link boxes btn text-uppercase" @onclick="ShowCategoryPopup">
+          <span class="oi oi-plus"></span> Búa til flokk
+        </button>
+      </div>
+    </div>
+  </AuthorizeView>
 
-    @if (showPopup)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                        <button type="button" class="close" @onclick="Cancel">
-                            <span aria-hidden="true">X</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <EditForm Model="@newcategory" OnValidSubmit="@AddCategory">
-                            <div class="form-group">
-                                <label for="categoryName">Nafn flokks</label>
-                                <input type="hidden" @bind-value="@newcategory.CategoryName" />
-                                <InputText id="name" class="form-control" @bind-Value="@newcategory.CategoryName" />
-                                <ValidationMessage For="@(() => newcategory.CategoryName)" />
-                            </div>
-                            <button type="submit" class="btn btn-primary">Bæta við</button>
-                            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-
-                            <DataAnnotationsValidator />
-                        </EditForm>
-                    </div>
-                </div>
-            </div>
+  @if(showPopup)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Bæta við nýjum flokk</h4>
+              <button type="button" class="close" @onclick="Cancel">
+                <span aria-hidden="true">X</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@newcategory" OnValidSubmit="@AddCategory">
+              <div class="form-group">
+                <label for="categoryName">Nafn flokks</label>
+                <input type="hidden" @bind-value="@newcategory.CategoryName" />
+                <InputText id="name" class="form-control" @bind-Value="@newcategory.CategoryName" />
+                <ValidationMessage For="@(() => newcategory.CategoryName)" />
+              </div>
+              <button type="submit" class="btn btn-primary">Bæta við</button>
+              <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal"></button>
+              <DataAnnotationsValidator />
+            </EditForm>
+          </div>
         </div>
+      </div>
+    </div>
+  }
 
-    }
-
-    @if (showEdit)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Uppfæra / Eyða</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <EditForm Model="@currentcategory" OnValidSubmit="@UpdateCategory">
-                            <div class="form-group">
-                                <label for="categoryName">Nafn flokks</label>
-                                <input type="hidden" @bind-value="@currentcategory.CategoryName" />
-                                <InputText id="name" class="form-control" @bind-Value="@currentcategory.CategoryName" />
-                            </div>
-                        </EditForm>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        <button type="button" class="btn btn-primary" @onclick="(() => UpdateCategory())">Uppfæra</button>
-                        <button type="button" class="btn btn-danger" @onclick="(() => showDeletePopup(currentcategory))">Eyða</button>
-
-                    </div>
-                </div>
-            </div>
+  @if(showEdit)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Uppfæra / Eyða</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@currentcategory" OnValidSubmit="@UpdateCategory">
+              <div class="form-group">
+                <label for="categoryName">Nafn flokks</label>
+                <input type="hidden" @bind-value="@currentcategory.CategoryName" />
+                <InputText id="name" class="form-control" @bind-Value="@currentcategory.CategoryName" />
+              </div>
+            </EditForm>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+            <button type="button" class="btn btn-primary" @onclick="(() => UpdateCategory())" >Uppfæra</button>
+            <button type="button" class="btn btn-danger" @onclick="(() => showDeletePopup(currentcategory))" >Eyða</button>
+          </div>
         </div>
-    }
+      </div>
+    </div>
+  }
 
-    @if (showDelete)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Staðfesting</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Ertu viss um að þú viljir eyða flokknum @currentcategory.CategoryName ? </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(currentcategory))">Eyða</button>
-
-                    </div>
-                </div>
-            </div>
+  @if(showDelete)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title"> Staðfesting</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>                
+          </div>
+          <div class="modal-body">
+            <p>Ertu viss um að þú viljir eyða flokknum @currentcategory.CategoryName ? </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+            <button type="button" class="btn btn-danger" @onclick="(() => Delete(currentcategory))" >Eyða</button>
+          </div>
         </div>
-    }
+      </div>
+    </div>
+  }
 }
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> AuthenticationStateTask { get; set; }
     List<Categories> categoriesList;
     Categories newcategory = new Categories();
     Categories currentcategory = new Categories();
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await AuthenticationStateTask;
+        if(authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
+        {
+          var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+
+          if(string.IsNullOrWhiteSpace(returnUrl))
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
+          else
+            NavigationManager.NavigateTo("/", true);
+        }
         categoriesList = await service.Get();
     }
     bool showPopup = false;
@@ -157,11 +163,6 @@ else
         showEdit = false;
     }
 
-    void NotificationList()
-    {
-        NavigationManager.NavigateTo("/list");
-    }
-
     protected async void AddCategory()
     {
         await service.Add(newcategory);
@@ -187,7 +188,6 @@ else
         DataChanged();
         showDelete = false;
     }
-
 
     private async void DataChanged()
     {
