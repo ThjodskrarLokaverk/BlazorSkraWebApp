@@ -16,9 +16,11 @@ else
   {
     <div class="card">
       <div class="card-body">
-        <button class="btn btn-link trash-icon" @onclick="(() => showDeletePopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-	        <i class="fas fa-trash" title="Modifier"></i>
-        </button>
+        <AuthorizeView Roles="Admin">
+            <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+              <i class="fas fa-pen" title="Modifier"></i>
+            </button>
+        </AuthorizeView>
         <h5 class="card-title">@categoryAssignment.FormId</h5>
         <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
         <a href="#" class="btn btn-primary">Tilkynna mál</a>
@@ -66,25 +68,52 @@ else
       </div>
     </div>
   }
+  @if(showEdit)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Uppfæra / Eyða</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@categoryAssignment" OnValidSubmit="@UpdateFormName">
+              <div class="form-group">
+                <label for="FormName">Nafn flokks</label>
+                <input type="hidden" @bind-value="@categoryAssignment.FormsInfo.FormName" />
+                <InputText id="name" class="form-control" @bind-Value="@categoryAssignment.FormsInfo.FormName" />
+              </div>
+            </EditForm>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+            <button type="button" class="btn btn-primary" @onclick="(() => UpdateFormName())" >Uppfæra</button>
+            <button type="button" class="btn btn-danger" @onclick="(() => showDeletePopup(categoryAssignment))" >Eyða</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
   @if(showDelete)
   {
     <div class="modal" tabindex="-1" style="display:block" role="dialog">
-    <div class="modal-dialog">
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Confirmation</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>                
-            </div>
-            <div class="modal-body">
-                <p> Ertu viss um að þú viljir eyða tilkynningunni: @categoryAssignment.FormsInfo.FormName ?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                <button type="button" class="btn btn-primary" @onclick="(() => Delete(categoryAssignment))" >Eyða</button>
-            </div>
+          <div class="modal-header">
+            <h5 class="modal-title"> Staðfesting</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>                
+          </div>
+          <div class="modal-body">
+            <p>Ertu viss um að þú viljir eyða flokknum @categoryAssignment.FormsInfo.FormName ? </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+            <button type="button" class="btn btn-danger" @onclick="(() => Delete(categoryAssignment))" >Eyða</button>
+          </div>
         </div>
+      </div>
     </div>
-  </div>
   }
 
 }
@@ -104,8 +133,7 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        var CategoryId = id;
-        categoriesAssignmentsList = await service.Get(CategoryId);
+        categoriesAssignmentsList = await service.Get(id);
     }
     void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
     {
@@ -140,7 +168,7 @@ else
 
       await service.Add(category);
 
-      categoriesAssignmentsList = await service.Get(id);
+      DataChanged();
 
     }
 
@@ -148,11 +176,24 @@ else
     {
       showDelete = false;
 
-      //await formservice.Delete(category.FormId);
+      await service.Delete(category);
 
-      //await service.Delete(category);
+      await formservice.Delete(category.FormId);
 
-      categoriesAssignmentsList = await service.Get(id);
+      DataChanged();
+    }
+
+    protected async void UpdateFormName()
+    {
+        await formservice.Update(categoryAssignment.FormId);
+        showEdit = false;
+        DataChanged();
+    }
+
+    private async void DataChanged()
+    {
+        categoriesAssignmentsList = await service.Get(id);
+        StateHasChanged();
     }
 
 }
