@@ -2,8 +2,8 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject ICategoriesAssignmentsService service
-@inject IJSRuntime jsRuntime
 @inject IFormsInfoService formservice
+@inject IJSRuntime jsRuntime
 
 @if (categoriesAssignmentsList == null)
 {
@@ -12,112 +12,116 @@
 else
 {
 
-    @foreach (var categoryAssignment in categoriesAssignmentsList)
-    {
-        <div class="card">
-            <div class="card-body">
-                <button class="btn btn-link trash-icon" @onclick="(() => showDeletePopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
-                    <i class="fas fa-trash" title="Modifier"></i>
-                </button>
-                <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
-                <a href="#" class="btn btn-primary">Tilkynna mál</a>
+  @foreach (var categoryAssignment in categoriesAssignmentsList)
+  {
+    <div class="card">
+      <div class="card-body">
+        <button class="btn btn-link trash-icon" @onclick="(() => showDeletePopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+	        <i class="fas fa-trash" title="Modifier"></i>
+        </button>
+        <h5 class="card-title">@categoryAssignment.FormId</h5>
+        <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
+        <a href="#" class="btn btn-primary">Tilkynna mál</a>
+      </div>
+    </div>
+  }
+  <AuthorizeView>
+  <Authorized>
+    <div class="col-sm-6">
+        <div id="add-category-card" class="card">
+            <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
+            <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png" /></button>
+            
+        </div>
+    </div>
+  </Authorized>
+  </AuthorizeView>
+  <br/>
+
+  @if(showPopup)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Bæta við nýrri tilkynningu</h4>
+              <button type="button" class="close" @onclick="Cancel">
+                <span aria-hidden="true">X</span>
+              </button>
+          </div>
+          <div class="modal-body">
+            <EditForm Model="@forminfo" OnValidSubmit="@AddForm">
+              <div class="form-group">
+                <label for="FormName">Form Name</label>
+                <input type="hidden" @bind-value="@forminfo.FormName" />
+                <InputText id="name" class="form-control" @bind-Value="@forminfo.FormName" />
+                <ValidationMessage For="@(() => forminfo.FormName)" />
+              </div>
+              <button type="submit" class="btn btn-primary">Bæta við</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+              <DataAnnotationsValidator />
+            </EditForm>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+  @if(showDelete)
+  {
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>                
+            </div>
+            <div class="modal-body">
+                <p> Ertu viss um að þú viljir eyða tilkynningunni: @categoryAssignment.FormsInfo.FormName ?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                <button type="button" class="btn btn-primary" @onclick="(() => Delete(categoryAssignment))" >Eyða</button>
             </div>
         </div>
-    }
+    </div>
+  </div>
+  }
 
-    <AuthorizeView>
-        <Authorized>
-            <div class="col-sm-6">
-                <div id="add-category-card" class="card">
-                    <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-                    <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png" /></button>
-
-                </div>
-            </div>
-        </Authorized>
-    </AuthorizeView>
-    <br />
-
-    @if (showPopup)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Bæta við nýjum undirflokk</h4>
-                        <button type="button" class="close" @onclick="Cancel">
-                            <span aria-hidden="true">X</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Add functionality here</p>
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    }
-    @if (showDelete)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Confirmation</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p> Ertu viss um að þú viljir eyða tilkynningunni: @categoryAssignment.FormsInfo.FormName ?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        <button type="button" class="btn btn-primary" @onclick="(() => Delete(categoryAssignment))">Eyða</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
 }
 @code{
 
     [Parameter]
-    public string id { get; set; }
+    public string id{ get; set; }
 
     bool showPopup = false;
     bool showDelete = false;
-
     bool showEdit = false;
 
     List<CategoriesAssignments> categoriesAssignmentsList;
 
     FormsInfo forminfo = new FormsInfo();
-
     CategoriesAssignments categoryAssignment = new CategoriesAssignments();
-
+    
     protected override async Task OnInitializedAsync()
     {
         var CategoryId = id;
         categoriesAssignmentsList = await service.Get(CategoryId);
     }
-
-    //bool showPopup = false;
     void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
     {
         categoryAssignment = pickedCategoryAssignment;
         showEdit = true;
     }
     void showDeletePopup(CategoriesAssignments categoryassignments)
-    {
+    { 
         categoryAssignment = categoryassignments;
         showDelete = true;
     }
-
     void ShowCategoryPopup()
     {
         showPopup = true;
     }
-
+    
     void Cancel()
     {
         showPopup = false;
@@ -125,32 +129,30 @@ else
 
     protected async void AddForm()
     {
+      showPopup = false;
+      
+      await formservice.Add(forminfo);
 
-        showPopup = false;
+      int categoryId = Int32.Parse(id);
+      var category = new CategoriesAssignments();
+      category.FormId = forminfo.FormId;
+      category.CategoryId = categoryId;
 
-        await formservice.Add(forminfo);
+      await service.Add(category);
 
-        int categoryId = Int32.Parse(id);
-        var category = new CategoriesAssignments();
-        category.FormId = forminfo.FormId;
-        category.CategoryId = categoryId;
-
-        await service.Add(category);
-
-        categoriesAssignmentsList = await service.Get(id);
+      categoriesAssignmentsList = await service.Get(id);
 
     }
 
     protected async void Delete(CategoriesAssignments category)
     {
-        showDelete = false;
+      showDelete = false;
 
-        //await formservice.Delete(category.FormId);
+      //await formservice.Delete(category.FormId);
 
-        //await service.Delete(category);
+      //await service.Delete(category);
 
-        categoriesAssignmentsList = await service.Get(id);
+      categoriesAssignmentsList = await service.Get(id);
     }
-
 
 }
