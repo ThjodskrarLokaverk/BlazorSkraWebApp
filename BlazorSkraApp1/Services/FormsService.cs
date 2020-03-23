@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Services
     {
         Task<List<Forms>> Get();
         Task<List<Forms>> Get(int FormId);
-        Task<Forms> Get(int FormId, int QuestionOrderNum, int OptionOrderNum);
+        //Task<Questions> GetQuestionsList(int FormId);
         //Task<CategoriesAssignments> Add(CategoriesAssignments CategoriesAssignment);
         //Task<CategoriesAssignments> Update(CategoriesAssignments CategoriesAssignment);
         //Task<CategoriesAssignments> Delete(int id);
@@ -44,15 +44,21 @@ namespace BlazorSkraApp1.Services
                 .ToListAsync();
         }
 
-        public async Task<Forms> Get(int FormId, int QuestionOrderNum, int OptionOrderNum)
+        /*
+        public async Task<List<Questions>> GetQuestionsList(int FormId)
         {
-            Forms form = new Forms();
-            form.FormId = FormId;
-            form.QuestionOrderNum = QuestionOrderNum;
-            form.OptionOrderNum = OptionOrderNum;
-            var formLine = await _context.Forms.FindAsync(QuestionOrderNum, OptionOrderNum, FormId);
-            //var formLine = await _context.Forms.FindAsync(form);
-            return formLine;
+            Questions questionsList = new Questions();
+
+            questionsList = await
+                from question in _context.Questions
+                join form in _context.Forms on question.QuestionId equals form.Questions.QuestionId
+                where form.FormId == FormId
+                select question;
+
+
+                
+            return questionsList;
         }
+        */
     }
 }
