@@ -258,7 +258,6 @@
                 }
 
                 // Handle Roles
-
                 // Is user in administrator role?
                 var UserResult =
                     await _UserManager
@@ -292,7 +291,6 @@
             else
             {
                 // Insert new user
-
                 var NewUser =
                     new IdentityUser
                     {
@@ -347,7 +345,6 @@
             strError = ex.GetBaseException().Message;
         }
     }
-
     async Task EditUser(IdentityUser _IdentityUser)
     {
         // Set the selected user
@@ -376,7 +373,6 @@
         // Open the Popup
         ShowPopup = true;
     }
-
     async Task DeleteUser()
     {
         // Close the Popup
@@ -393,7 +389,6 @@
         // Refresh Users
         GetUsers();
     }
-
     void ClosePopup()
     {
         // Close the Popup

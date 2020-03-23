@@ -77,8 +77,6 @@
         {
             await service.Update(TaskObject);
         }
-
-     
         await CloseTaskModal(); 
         // DataChanged ->  is to let the parent (page) know that data has been updated
         DataChanged?.Invoke(); 

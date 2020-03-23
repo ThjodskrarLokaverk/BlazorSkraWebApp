@@ -126,8 +126,6 @@ namespace BlazorSkraApp1
                 await UserManager.CreateAsync(user1, "Qwerty&123");
             }
             await UserManager.AddToRoleAsync(user1, "User");
-
-
         }
     }
 }

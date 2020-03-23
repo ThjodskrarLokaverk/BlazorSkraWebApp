@@ -54,17 +54,14 @@
         await GetUsers();
         await GetAdminUsers();
     }
-
     async Task GetUsers()
     {
         usersList = await service.Get();
     }
-
     async Task GetAdminUsers()
     {
         adminUsersList = await service.GetAdminUsers();
     }
-
     async Task DeleteUser(IdentityUser user)
     {
         // Close the Popup
@@ -76,14 +73,12 @@
         // Refresh Users
         await GetUsers();
     }
-
     async Task AddAdminRole(IdentityUser user)
     {
         //Add user to the Admin role
         await service.AddAdminRole(user);
         await GetAdminUsers();
     }
-
     async Task RemoveAdminRole(IdentityUser user)
     {
         //Remove user from the Admin role

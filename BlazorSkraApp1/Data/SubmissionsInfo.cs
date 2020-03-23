@@ -10,8 +10,6 @@ namespace BlazorSkraApp1.Data
     {
         [Key]
         public int SubmissionId { get; set; }
-
-        //Tengja við AspNetUser töfluna?
         public string UserId { get; set; }
     }
 }

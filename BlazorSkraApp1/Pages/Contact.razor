@@ -24,16 +24,15 @@
 @code {
 
     MailForm mailForm = new MailForm();
-
     protected void SendMail()
     {
         var message = new MimeMessage();
-        //Sender of email here
+        // Sender's email
         message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
-        //receiver of email
+        // Receiver's email
         message.To.Add(new MailboxAddress(mailForm.To));
         message.Subject = mailForm.Subject;
-        //aðaltextinn byggður upp
+        // Build message text
         message.Body = new TextPart("html")
         {
             Text = "Message: " + mailForm.Body
@@ -42,14 +41,13 @@
         using (var client = new SmtpClient())
         {
             client.Connect("smtp.gmail.com", 587);
-            //notendanafn og lykilorð á pósthólfinu sem er sent úr
+            // Sender's email address and password
             client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
             client.Send(message);
             client.Disconnect(false);
-            //Notandinn sendur á heimasíðuna eftir að hafa sent póst
+            // User redirected to home page after sending the email
             //Hægt að senda hann t.d á confirmation page seinna meir
             NavigationManager.NavigateTo("/");
         }
-
     }
 }

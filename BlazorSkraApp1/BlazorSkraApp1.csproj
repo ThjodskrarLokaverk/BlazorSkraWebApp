@@ -1,30 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <UserSecretsId>aspnet-BlazorSkraApp1-31D1F2CA-0C67-4C49-B6D4-6D2090263150</UserSecretsId>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <UserSecretsId>aspnet-BlazorSkraApp1-31D1F2CA-0C67-4C49-B6D4-6D2090263150</UserSecretsId>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="Data\Migrations\20200309131004_CreateFormsTable.cs" />
-    <Compile Remove="Data\Migrations\20200309131004_CreateFormsTable.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.cs" />
-    <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.Designer.cs" />
-    <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.cs" />
-    <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.Designer.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <Compile Remove="Data\Migrations\20200309131004_CreateFormsTable.cs" />
+        <Compile Remove="Data\Migrations\20200309131004_CreateFormsTable.Designer.cs" />
+        <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.cs" />
+        <Compile Remove="Data\Migrations\20200310091333_FixingFormsFKCompositeKey2.Designer.cs" />
+        <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.cs" />
+        <Compile Remove="Data\Migrations\20200316135844_DropCategoriesAssignmentTable#3.Designer.cs" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="mailkit" Version="2.5.2" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="mailkit" Version="2.5.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.1">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.1" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.1" />
+    </ItemGroup>
 
 </Project>

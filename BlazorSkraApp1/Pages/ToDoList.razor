@@ -6,7 +6,6 @@
 @inject IJSRuntime jsRuntime
 
 <h1>To Do List</h1>
-
 <p>This component demonstrates fetching data from Database.</p>
 
 @if (toDoList == null)
@@ -65,7 +64,6 @@ else
         taskObject = new ToDo();
         taskObject.DueDate = DateTime.Now;
         customHeader = "Add New Task";
-
     }
 
     private async void DataChanged()

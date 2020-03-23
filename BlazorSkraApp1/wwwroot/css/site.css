@@ -143,12 +143,6 @@ html, body {
 
 
 /* Other */
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
-
 app {
     position: relative;
     display: flex;

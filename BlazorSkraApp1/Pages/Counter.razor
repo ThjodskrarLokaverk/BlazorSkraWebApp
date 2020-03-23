@@ -1,6 +1,5 @@
 ﻿@page "/counter"
 
-
 <AuthorizeView Roles="Admin">
     <Authorized>
         <h1>Counter</h1>
@@ -16,7 +15,6 @@
 
 @code {
     private int currentCount = 0;
-
     private void IncrementCount()
     {
         currentCount++;
