@@ -12,7 +12,6 @@ namespace BlazorSkraApp1.Services
         Task<List<CategoriesAssignments>> Get();
         Task<List<CategoriesAssignments>> Get(string id);
         Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
-        //Task<CategoriesAssignments> Update(CategoriesAssignments CategoriesAssignment);
         Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
     }
 
