@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Services
     {
         Task<List<CategoriesAssignments>> Get();
         Task<List<CategoriesAssignments>> Get(string id);
-        Task<CategoriesAssignments> Add(CategoriesAssignments CategoriesAssignment);
+        Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
         //Task<CategoriesAssignments> Update(CategoriesAssignments CategoriesAssignment);
         Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
     }
@@ -54,7 +54,7 @@ namespace BlazorSkraApp1.Services
 
         public async Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment)
         {
-            var category = await _context.CategoriesAssignments.FindAsync(categoryAssignment.FormId);
+            var category = await _context.CategoriesAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);
             _context.CategoriesAssignments.Remove(category);
             await _context.SaveChangesAsync();
             return category;

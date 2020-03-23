@@ -104,8 +104,7 @@ else
     
     protected override async Task OnInitializedAsync()
     {
-        var CategoryId = id;
-        categoriesAssignmentsList = await service.Get(CategoryId);
+        categoriesAssignmentsList = await service.Get(id);
     }
     void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
     {
@@ -140,7 +139,7 @@ else
 
       await service.Add(category);
 
-      categoriesAssignmentsList = await service.Get(id);
+      DataChanged(category);
 
     }
 
@@ -148,11 +147,17 @@ else
     {
       showDelete = false;
 
-      //await formservice.Delete(category.FormId);
+      await service.Delete(category);
 
-      //await service.Delete(category);
+      await formservice.Delete(category.FormId);
 
-      categoriesAssignmentsList = await service.Get(id);
+      DataChanged(category);
+    }
+
+    private async void DataChanged(CategoriesAssignments category)
+    {
+        categoriesAssignmentsList = await service.Get(id);
+        StateHasChanged();
     }
 
 }
