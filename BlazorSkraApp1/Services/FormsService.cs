@@ -39,26 +39,10 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.Forms
                 .Where(f => f.FormId == FormId)
-                .Include(q => q.Questions)
                 .Include(o => o.QuestionOptions)
+                .Include(q => q.Questions)
+                    .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
         }
-
-        /*
-        public async Task<List<Questions>> GetQuestionsList(int FormId)
-        {
-            Questions questionsList = new Questions();
-
-            questionsList = await
-                from question in _context.Questions
-                join form in _context.Forms on question.QuestionId equals form.Questions.QuestionId
-                where form.FormId == FormId
-                select question;
-
-
-                
-            return questionsList;
-        }
-        */
     }
 }
