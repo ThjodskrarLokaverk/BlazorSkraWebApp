@@ -47,6 +47,7 @@ namespace BlazorSkraApp1
             services.AddTransient<ICategoriesAssignmentsService, CategoriesAssignmentsService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFormsService, FormsService>();
+            services.AddTransient<IFormsInfoService, FormsInfoService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

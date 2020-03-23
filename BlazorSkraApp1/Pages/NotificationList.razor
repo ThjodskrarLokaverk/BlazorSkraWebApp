@@ -2,6 +2,7 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject ICategoriesAssignmentsService service
+@inject IFormsInfoService formservice
 @inject IJSRuntime jsRuntime
 
 @if (categoriesAssignmentsList == null)
@@ -11,80 +12,188 @@
 else
 {
 
-  @foreach (var categoryAssignment in categoriesAssignmentsList)
-  {
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">@categoryAssignment.FormId</h5>
-        <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
-        <a href="#" class="btn btn-primary">Tilkynna mál</a>
-      </div>
-    </div>
-  }
-
-  <AuthorizeView>
-  <Authorized>
-    <div class="col-sm-6">
-      <div id="add-category-card" class="card">
-          <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-          <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png"/></button>
+    @foreach (var categoryAssignment in categoriesAssignmentsList)
+    {
+        <div class="card">
+            <div class="card-body">
+                <AuthorizeView Roles="Admin">
+                    <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
+                        <i class="fas fa-pen" title="Modifier"></i>
+                    </button>
+                </AuthorizeView>
+                <h5 class="card-title">@categoryAssignment.FormId</h5>
+                <h4 class="card-title">@categoryAssignment.FormsInfo.FormName</h4>
+                <a href="#" class="btn btn-primary">Tilkynna mál</a>
+            </div>
         </div>
-    </div>
-  </Authorized>
-  </AuthorizeView>
-  <br/>
+    }
+    <AuthorizeView>
+        <Authorized>
+            <div class="col-sm-6">
+                <div id="add-category-card" class="card">
+                    <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
+                    <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png" /></button>
 
-  @if(showPopup)
+                </div>
+            </div>
+        </Authorized>
+    </AuthorizeView>
+    <br />
+
+    @if (showPopup)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                            <button type="button" class="close" @onclick="Cancel">
-                                <span aria-hidden="true">X</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Add functionality here</p>
-                        </div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Bæta við nýrri tilkynningu</h4>
+                        <button type="button" class="close" @onclick="Cancel">
+                            <span aria-hidden="true">X</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="@forminfo" OnValidSubmit="@AddForm">
+                            <div class="form-group">
+                                <label for="FormName">Form Name</label>
+                                <input type="hidden" @bind-value="@forminfo.FormName" />
+                                <InputText id="name" class="form-control" @bind-Value="@forminfo.FormName" />
+                                <ValidationMessage For="@(() => forminfo.FormName)" />
+                            </div>
+                            <button type="submit" class="btn btn-primary">Bæta við</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+                            <DataAnnotationsValidator />
+                        </EditForm>
                     </div>
                 </div>
             </div>
+        </div>
     }
-  }
+    @if (showEdit)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Uppfæra / Eyða</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <EditForm Model="@categoryAssignment" OnValidSubmit="@UpdateFormName">
+                            <div class="form-group">
+                                <label for="FormName">Nafn flokks</label>
+                                <input type="hidden" @bind-value="@categoryAssignment.FormsInfo.FormName" />
+                                <InputText id="name" class="form-control" @bind-Value="@categoryAssignment.FormsInfo.FormName" />
+                            </div>
+                        </EditForm>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                        <button type="button" class="btn btn-primary" @onclick="(() => UpdateFormName())">Uppfæra</button>
+                        <button type="button" class="btn btn-danger" @onclick="(() => showDeletePopup(categoryAssignment))">Eyða</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (showDelete)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> Staðfesting</h5>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Ertu viss um að þú viljir eyða flokknum @categoryAssignment.FormsInfo.FormName ? </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(categoryAssignment))">Eyða</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+}
 @code{
 
     [Parameter]
-    public string id{ get; set; }
+    public string id { get; set; }
+
+    int categoryId;
+    bool showPopup = false;
+    bool showDelete = false;
+    bool showEdit = false;
 
     List<CategoriesAssignments> categoriesAssignmentsList;
+
+    FormsInfo forminfo = new FormsInfo();
     CategoriesAssignments categoryAssignment = new CategoriesAssignments();
-    
+
     protected override async Task OnInitializedAsync()
     {
-        var CategoryId = Int16.Parse(id);
-        categoriesAssignmentsList = await service.Get(CategoryId);
+        categoryId = Int16.Parse(id);
+        categoriesAssignmentsList = await service.Get(categoryId);
     }
-
-    bool showPopup = false;
-    
+    void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
+    {
+        categoryAssignment = pickedCategoryAssignment;
+        showEdit = true;
+    }
+    void showDeletePopup(CategoriesAssignments categoryassignments)
+    {
+        categoryAssignment = categoryassignments;
+        showDelete = true;
+    }
     void ShowCategoryPopup()
     {
         showPopup = true;
     }
-    
+
     void Cancel()
     {
         showPopup = false;
     }
 
-    /*
-    protected void AddCategory() 
+    protected async void AddForm()
     {
-      service.Add(category);
-      showPopup = false;
-    }
-    */
+        showPopup = false;
 
+        await formservice.Add(forminfo);
+
+        var category = new CategoriesAssignments();
+        category.FormId = forminfo.FormId;
+        category.CategoryId = categoryId;
+
+        await service.Add(category);
+
+        DataChanged();
+
+    }
+
+    protected async void Delete(CategoriesAssignments category)
+    {
+        showDelete = false;
+
+        await service.Delete(category);
+
+        await formservice.Delete(category.FormId);
+
+        DataChanged();
+    }
+
+    protected async void UpdateFormName()
+    {
+        await formservice.Update(categoryAssignment.FormId);
+        showEdit = false;
+        DataChanged();
+    }
+
+    private async void DataChanged()
+    {
+        categoriesAssignmentsList = await service.Get(categoryId);
+        StateHasChanged();
+    }
 }

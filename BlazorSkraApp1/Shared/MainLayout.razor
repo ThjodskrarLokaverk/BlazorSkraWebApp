@@ -2,12 +2,14 @@
 
 <div class="main">
     <nav class="navbar">
+        <AuthorizeView Roles="Admin">
+            <button class="navbar-toggler custom-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" @onclick="ToggleSidebar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </AuthorizeView>
         <AuthorizeView>
             <Authorized>
-                <button class="navbar-toggler custom-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" @onclick="ToggleSidebar">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <a href="/" id="logo"><img src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
+                <a href="/"><img src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
                 <div class="dropdown">
                     <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="oi oi-person"></span>
@@ -23,13 +25,6 @@
                     </div>
                 </div>
             </Authorized>
-            <NotAuthorized>
-                <a href="/"><img class="logo" src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
-                <div>
-                    <a class="navbar-actions" href="Identity/Account/Register">Register</a>
-                    <a class="navbar-actions" href="Identity/Account/Login">Log in</a>
-                </div>
-            </NotAuthorized>
         </AuthorizeView>
     </nav>
 
@@ -37,16 +32,19 @@
     {
         <div id="sidebar">
             <div class="sidebar-content">
-                <a href="/makeAdmin" @onclick="ToggleSidebar">View users</a><br/>
+                <a href="/makeAdmin" @onclick="ToggleSidebar">View users</a><br />
             </div>
             <div class="sidebar-content">
-                <a href="/create_notification" @onclick="ToggleSidebar">Create a new notification</a><br/>
+                <a href="/create_notification" @onclick="ToggleSidebar">Create a new notification</a><br />
             </div>
             <div class="sidebar-content" @onclick="ToggleSidebar">
-                <a href="/Counter">Counter</a><br/>
+                <a href="/Counter">Counter</a><br />
             </div>
             <div class="sidebar-content" @onclick="ToggleSidebar">
-                <a href="/todolist">To Do List</a><br/>
+                <a href="/todolist">To Do List</a><br />
+            </div>
+            <div class="sidebar-content" @onclick="ToggleSidebar">
+                <a href="/contact">Senda póst</a><br />
             </div>
         </div>
     }
