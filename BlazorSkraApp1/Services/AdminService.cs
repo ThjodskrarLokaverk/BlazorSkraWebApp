@@ -30,27 +30,28 @@ namespace BlazorSkraApp1.Services
             _context = context;
             _userManager = userManager;
         }
-
-
-
+        // Returns a list of all users
         public async Task<List<IdentityUser>> Get()
         {
             var userList = _userManager.Users.ToListAsync();
             return await userList;
         }
 
+        // Returns the specified user
         public async Task<IdentityUser> Get(string userId)
         {
             var user = await _userManager.FindByIdAsync(userId);
             return user;
         }
 
+        // Creates the specified user in the database
         public async Task<IdentityUser> Add(IdentityUser user)
         {
             await _userManager.CreateAsync(user);
             return user;
         }
 
+        // Updates the specified user
         public async Task<IdentityUser> Update(IdentityUser user)
         {
             //Find user
@@ -61,24 +62,28 @@ namespace BlazorSkraApp1.Services
             return user;
         }
 
+        // Deletes the specified user
         public async Task<IdentityUser> Delete(IdentityUser user)
         {
             await _userManager.DeleteAsync(user);
             return user;
         }
 
+        // Gives the specified user the role of admin
         public async Task<IdentityUser> AddAdminRole(IdentityUser user)
         {
             await _userManager.AddToRoleAsync(user, "Admin");
             return user;
         }
 
+        // Takes the admin role from the specified user
         public async Task<IdentityUser> RemoveAdminRole(IdentityUser user)
         {
             await _userManager.RemoveFromRoleAsync(user, "Admin");
             return user; 
         }
 
+        // Returns a list of all admin users
         public async Task<List<IdentityUser>> GetAdminUsers()
         {
             var adminUsersList = (from userRoles in await _userManager.GetUsersInRoleAsync("Admin")
@@ -86,6 +91,7 @@ namespace BlazorSkraApp1.Services
             return adminUsersList;
         }
 
+        // Returns all roles of the specified user
         public async Task<string> GetRoles(IdentityUser user)
         {
             var roleList = await _userManager.GetRolesAsync(user);

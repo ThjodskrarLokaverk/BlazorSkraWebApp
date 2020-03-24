@@ -10,7 +10,7 @@ namespace BlazorSkraApp1.Services
     public interface ICategoriesAssignmentsService
     {
         Task<List<CategoriesAssignments>> Get();
-        Task<List<CategoriesAssignments>> Get(int CategoryID);
+        Task<List<CategoriesAssignments>> Get(int CategoryId);
         Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
         Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
     }
@@ -24,6 +24,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
+        // Returns a list of category assignments
         public async Task<List<CategoriesAssignments>> Get()
         {
             return await _context.CategoriesAssignments
@@ -32,6 +33,7 @@ namespace BlazorSkraApp1.Services
                 .ToListAsync();
         }
 
+        // Returns a list of all category assignments for the specified category
         public async Task<List<CategoriesAssignments>> Get(int CategoryId)
         {
             var categories = (from category in _context.CategoriesAssignments
@@ -43,6 +45,7 @@ namespace BlazorSkraApp1.Services
             return await categories;
         }
 
+        // Creates the specified category assignment in the database
         public async Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment)
         {
             _context.CategoriesAssignments.Add(categoryAssignment);
@@ -50,6 +53,7 @@ namespace BlazorSkraApp1.Services
             return categoryAssignment;
         }
 
+        // Deletes the specified category assignment from the database
         public async Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment)
         {
             var category = await _context.CategoriesAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);

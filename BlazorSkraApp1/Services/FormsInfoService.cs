@@ -10,10 +10,10 @@ namespace BlazorSkraApp1.Services
 {
     public interface IFormsInfoService
     {
-        Task<FormsInfo> Add(FormsInfo forminfo);
+        Task<FormsInfo> Add(FormsInfo formInfo);
 
-        Task<FormsInfo> Delete(int formid);
-        Task<FormsInfo> Update(int formid);
+        Task<FormsInfo> Delete(int formId);
+        Task<FormsInfo> Update(int formId);
     }
     public class FormsInfoService : IFormsInfoService
     {
@@ -23,23 +23,28 @@ namespace BlazorSkraApp1.Services
         {
             _context = context;
         }
-        public async Task<FormsInfo> Add(FormsInfo forminfo)
+
+        // Creates the specified form in the database
+        public async Task<FormsInfo> Add(FormsInfo formInfo)
         {
-            _context.FormsInfo.Add(forminfo);
+            _context.FormsInfo.Add(formInfo);
             await _context.SaveChangesAsync();
-            return forminfo;
+            return formInfo;
         }
-        public async Task<FormsInfo> Delete(int formid)
+
+        // Deletes the specified form from the database
+        public async Task<FormsInfo> Delete(int formId)
         {
-            var form = await _context.FormsInfo.FindAsync(formid);
+            var form = await _context.FormsInfo.FindAsync(formId);
             _context.FormsInfo.Remove(form);
             await _context.SaveChangesAsync();
             return form;
         }
 
-        public async Task<FormsInfo> Update(int formid)
+        // Updates the specified form
+        public async Task<FormsInfo> Update(int formId)
         {
-            var form = await _context.FormsInfo.FindAsync(formid);
+            var form = await _context.FormsInfo.FindAsync(formId);
             _context.Entry(form).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return form;
