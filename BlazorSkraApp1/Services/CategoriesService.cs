@@ -25,17 +25,21 @@ namespace BlazorSkraApp1.Services
         {
             _context = context;
         }
+
+        // Returns a list of all categories
         public async Task<List<Categories>> Get()
         {
             return await _context.Categories.ToListAsync();
         }
 
+        // Returns the specified category
         public async Task<Categories> Get(int CategoryId)
         {
             var categories = await _context.Categories.FindAsync(CategoryId);
             return categories;
         }
 
+        // Creates the specified category in the database
         public async Task<Categories> Add(Categories category)
         {
             _context.Categories.Add(category);
@@ -43,6 +47,7 @@ namespace BlazorSkraApp1.Services
             return category;
         }
 
+        // Updates the specified category in the database
         public async Task<Categories> Update(Categories category)
         {
             _context.Entry(category).State = EntityState.Modified;
@@ -50,6 +55,7 @@ namespace BlazorSkraApp1.Services
             return category;
         }
 
+        // Deletes the specified category from the database
         public async Task<Categories> Delete(int CategoryId)
         {
             var category = await _context.Categories.FindAsync(CategoryId);

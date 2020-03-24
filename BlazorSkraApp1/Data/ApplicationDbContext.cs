@@ -23,7 +23,6 @@ namespace BlazorSkraApp1.Data
                     .WithMany()
                     .HasForeignKey(fi => fi.FormId);
 
-
             modelBuilder.Entity<Forms>()
                 .HasKey(f => new { f.QuestionOrderNum, f.OptionOrderNum, f.FormId});
 
@@ -66,9 +65,6 @@ namespace BlazorSkraApp1.Data
         public DbSet<Submissions> Submissions { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<CategoriesAssignments> CategoriesAssignments { get; set; }
-
-
-
 
         public override int SaveChanges()
         {
