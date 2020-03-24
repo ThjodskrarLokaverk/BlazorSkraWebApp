@@ -8,7 +8,6 @@
             </button>
         </AuthorizeView>
         <AuthorizeView>
-            <Authorized>
                 <a href="/"><img src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
                 <div class="dropdown">
                     <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -24,7 +23,6 @@
                         </div>
                     </div>
                 </div>
-            </Authorized>
         </AuthorizeView>
     </nav>
 
@@ -32,10 +30,10 @@
     {
         <div id="sidebar">
             <div class="sidebar-content">
-                <a href="/makeAdmin" @onclick="ToggleSidebar">View users</a><br />
+                <a href="/makeAdmin" @onclick="ToggleSidebar">Starfsmannalisti</a><br />
             </div>
             <div class="sidebar-content">
-                <a href="/create_notification" @onclick="ToggleSidebar">Create a new notification</a><br />
+                <a href="/create_notification" @onclick="ToggleSidebar">Búa til tilkynningatýpu</a><br />
             </div>
             <div class="sidebar-content" @onclick="ToggleSidebar">
                 <a href="/Counter">Counter</a><br />
