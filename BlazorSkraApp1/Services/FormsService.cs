@@ -31,7 +31,7 @@ namespace BlazorSkraApp1.Services
             return await _context.Forms
                 .Include(f => f.FormId)
                 .Include(q => q.Questions)
-                .Include(o => o.QuestionOptions)
+                .Include(o => o.Options)
                 .ToListAsync();
         }
 
@@ -39,7 +39,7 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.Forms
                 .Where(f => f.FormId == FormId)
-                .Include(o => o.QuestionOptions)
+                .Include(o => o.Options)
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();

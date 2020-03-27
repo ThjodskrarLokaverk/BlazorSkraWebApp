@@ -20,7 +20,7 @@ namespace BlazorSkraApp1.Data
         [Required]
         public Questions Questions { get; set; }
         //[Required] //If we have a text question the QuestionOptions Column is NULL
-        public QuestionOptions QuestionOptions { get; set; }
+        public Options Options { get; set; }
     }
 }
 

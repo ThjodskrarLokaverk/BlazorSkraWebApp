@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BlazorSkraApp1.Data
 {
-    public class QuestionOptions
+    public class Options
     {
         [Key]
         public int OptionId { get; set; }
