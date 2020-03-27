@@ -1,7 +1,8 @@
 ﻿@page "/Notification/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
-@inject IFormsService service
+@inject IQuestionsFormAssignmentService questionservice
+@inject IOptionsQuestionAssignmnentsService optionservice
 @inject IJSRuntime jsRuntime
 
 @if (questionsList == null)
@@ -15,7 +16,7 @@ else
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">@question.Questions.QuestionName</h5>
-            @foreach(var option in questionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
             {
                 <p>@option.Options.OptionName</p>
             }
@@ -28,13 +29,16 @@ else
     [Parameter]
     public string id{ get; set; }
 
-    List<Forms> questionsList;
+    List<QuestionsFormAssignments> questionsList;
+    List<OptionsQuestionAssignmnents> optionsList;
+    
     Forms question = new Forms();
     
     protected override async Task OnInitializedAsync()
     {
         var FormId = Int16.Parse(id);
-        questionsList = await service.Get(FormId);
+        questionsList = await questionservice.Get(FormId);
+        optionsList = await optionservice.Get();
     }
 
 }
