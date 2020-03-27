@@ -11,9 +11,10 @@ namespace BlazorSkraApp1.Services
     public interface IFormsInfoService
     {
         Task<FormsInfo> Add(FormsInfo formInfo);
-
         Task<FormsInfo> Delete(int formId);
         Task<FormsInfo> Update(int formId);
+        Task<FormsInfo> Get(int formId);
+        Task<List<FormsInfo>> Get();
     }
     public class FormsInfoService : IFormsInfoService
     {
@@ -48,6 +49,15 @@ namespace BlazorSkraApp1.Services
             _context.Entry(form).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return form;
+        }
+
+        public async Task<FormsInfo> Get(int formId)
+        {
+            return await _context.FormsInfo.FindAsync(formId);
+        }
+        public async Task<List<FormsInfo>> Get()
+        {
+            return await _context.FormsInfo.ToListAsync();
         }
     }
 }

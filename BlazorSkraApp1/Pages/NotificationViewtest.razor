@@ -10,14 +10,15 @@
 }
 else
 {
-
-    @foreach(var question in questionsList.Where(question => question.QuestionOrderNum == 1))
+    @foreach(var question in questionsList)
     {
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">@question.Questions.QuestionName</h5>
-            <p>@question.Questions.QuestionTypes.QuestionTypeName</p>
-            <p>@question.Options.OptionName</p>
+            @foreach(var option in questionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+            {
+                <p>@option.Options.OptionName</p>
+            }
             </div>
         </div>
     }
