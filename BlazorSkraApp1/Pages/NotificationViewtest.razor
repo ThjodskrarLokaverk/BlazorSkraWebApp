@@ -4,14 +4,14 @@
 @inject IFormsService service
 @inject IJSRuntime jsRuntime
 
-@if (QuestionsList == null)
+@if (questionsList == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
 
-    @foreach (var question in QuestionsList)
+    @foreach(var question in questionsList.Where(question => question.QuestionOrderNum == 1))
     {
         <div class="card">
             <div class="card-body">
@@ -27,13 +27,13 @@ else
     [Parameter]
     public string id{ get; set; }
 
-    List<Forms> QuestionsList;
+    List<Forms> questionsList;
     Forms question = new Forms();
     
     protected override async Task OnInitializedAsync()
     {
         var FormId = Int16.Parse(id);
-        QuestionsList = await service.Get(FormId);
+        questionsList = await service.Get(FormId);
     }
 
 }
