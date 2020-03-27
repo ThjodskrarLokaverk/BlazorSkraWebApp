@@ -16,9 +16,41 @@ else
         <div class="card">
             <div class="card-body">
             <h5 class="card-title">@question.Questions.QuestionName</h5>
-            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+            @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
             {
-                <p>@option.Options.OptionName</p>
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                }
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Text")
+            {
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <label for="@option.Options.OptionName">@option.Options.OptionName</label> <br>
+                    <textarea id="@option.Options.OptionName" rows="1" cols="60"> Skrifið hér... </textarea> <br>
+                }
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+            {
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <label for="@option.Options.OptionName">@option.Options.OptionName</label> <br>
+                    <textarea id="@option.Options.OptionName" rows="5" cols="100"> Skrifið hér... </textarea> <br>
+                }
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Checkbox")
+            {
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                }
+            }
+            else
+            {
+                <h3>Somtehing went wrong...</h3>
             }
             </div>
         </div>
