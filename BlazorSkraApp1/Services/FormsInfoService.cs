@@ -11,7 +11,6 @@ namespace BlazorSkraApp1.Services
     public interface IFormsInfoService
     {
         Task<FormsInfo> Add(FormsInfo formInfo);
-
         Task<FormsInfo> Delete(int formId);
         Task<FormsInfo> Update(int formId);
     }

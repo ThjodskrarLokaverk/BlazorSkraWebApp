@@ -18,7 +18,7 @@ else
                 <div class="boxes btn">
                     <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
                     <AuthorizeView Roles="Admin">
-                        <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                        <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
                             <i class="fas fa-pen" title="Modifier"></i>
                         </button>
                     </AuthorizeView>

@@ -1,41 +1,71 @@
-@page "/create_notification"
-
-<h1>Create new notification</h1>
-
-<form class="container">
-  <div class="form-group">
-    <label for="inputEmail3" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
-      <input type="email" class="form-control" id="inputEmail3" placeholder="Email">
-    </div>
-  </div>
-  <div class="form-group">
-    <label for="inputPassword3" class="col-sm-2 control-label">Name</label>
-    <div class="col-sm-10">
-      <input type="password" class="form-control" id="inputPassword3" placeholder="Name of notification">
-    </div>
-  </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <div class="checkbox">
-        <label>
-          <input type="checkbox"> Persónuvernd
-        </label>
-      </div>
-    </div>
-  </div>
-
-</form>
+@page "/CreateNotification"
 
 
-
-@* <button class="btn btn-primary" @onclick="IncrementCount">Click me</button> *@
-@*     
-@code {
-    private int currentCount = 0;
-    private int whatever ;
-    private void IncrementCount(){
-        currentCount++;
-    }
     
-} *@
+    <form id="creation-form">
+        <h1>Ný tegund tilkynningar</h1>
+        <div class="form-group row">
+            <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+            <div class="col-sm-10">
+                <select id="categories" class="form-control">
+                    <!-- Breyta þannig að það komi sjálfkrafa flokkurinn sem notandi kom úr -->
+                    <!-- Pæling að hafa "Búa til nýjan flokk" valkost í þessum dropdown glugga líka -->
+                    <option>Veldu flokk</option>
+                    <option>Öryggi</option>
+                    <option>Einelti</option>
+                    <option>Gæðamál</option>
+                    <option>Áreitni</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="Heiti tilkynningar">
+            </div>
+        </div>
+        @for(int i = 0; i < questionCount; i++)
+        {
+            <div class="form-group row form-inline" id="question-box">
+                <input type="text" class="form-control" id="question-name" placeholder="Titill efnis">
+                <select id="question-type" class="form-control">
+                    <option>Veldu tegund</option>
+                    <option id="text-box">Textabox</option>
+                    <option id="multiple">Fjölval</option>
+                    <option is="radio">Eitt val</option>
+                    <option id="date">Dagsetning</option>
+                </select>
+                <a @onclick="SaveQuestion">
+                    <i class="fas fa-save question-icons"></i>
+                </a>
+                <a @onclick="DeleteQuestion">
+                    <i class="fas fa-trash-alt question-icons"></i>
+                </a>
+            </div>
+        }
+        <div class="form-group row">
+            <div class="col-sm-10">
+                <span id="plus-icon" class="oi oi-plus"></span>
+                <a id="add-question-link" @onclick="CreateNewQuestion">Bæta við breytu</a>
+            </div>
+        </div>
+        <button class="btn btn-secondary">Vista form</button>
+    </form>
+
+@code {
+    private int questionCount = 0;
+    private void CreateNewQuestion()
+    {
+        questionCount++;
+    }
+
+    private void DeleteQuestion()
+    {
+        questionCount--;
+    }
+
+    private void SaveQuestion()
+    {
+        // TO DO
+    }
+}
