@@ -18,7 +18,7 @@ else
                 <div class="boxes btn">
                     <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
                     <AuthorizeView Roles="Admin">
-                        <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                        <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
                             <i class="fas fa-pen" title="Modifier"></i>
                         </button>
                     </AuthorizeView>
@@ -37,14 +37,15 @@ else
     </AuthorizeView>
 
     @if(showAdd)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog">
+    {   
+        <div @onclick="Cancel"></div>
+        <div id = "addCategory" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Bæta við nýjum flokk</h4>
                         <button type="button" class="close" @onclick="Cancel">
-                            <span aria-hidden="true">X</span>
+                            <span aria-hidden="true">x</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -56,7 +57,7 @@ else
                                 <ValidationMessage For="@(() => newCategory.CategoryName)" />
                             </div>
                             <button type="submit" class="btn btn-primary">Bæta við</button>
-                            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal"></button>
+                            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
                             <DataAnnotationsValidator />
                         </EditForm>
                     </div>
@@ -67,11 +68,11 @@ else
 
     @if(showEdit)
     {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal" tabindex="-1" style="display:block" role="dialog" >
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Uppfæra / Eyða</h5>
+                        <h4 class="modal-title">Uppfæra / Eyða</h4>
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">

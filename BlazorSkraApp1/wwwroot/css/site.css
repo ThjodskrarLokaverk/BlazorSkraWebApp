@@ -117,21 +117,15 @@ html, body {
     float: left;
 }
 
-.trash-icon {
+.edit-icon {
     float: right;
     margin-right: -17px;
     margin-top: -10px;
     color: #5e636b;
 }
 
-.trash-icon:hover {
+.edit-icon:hover {
     color: #527d2e;
-}
-
-.add-category {
-    float: left;
-    margin-left: 15px;
-    margin-top: 40px;
 }
 
 .oi-plus {
@@ -141,14 +135,57 @@ html, body {
     top: -1px;
 }
 
+/* Notification creation page */
 
-/* Other */
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+#creation-form {
+    width: 65%;
+    margin: 0 auto;
 }
 
+#question-box {
+    border: solid 1px;
+    border-radius: 0.1cm;
+    border-color: #ccd4dc;
+    height: 100px;
+    margin-left: 0;
+    background-color: white;
+    margin-right: -1px;
+}
+
+#question-name {
+    width: 60%;
+    margin: 10px;
+}
+
+#question-type {
+    width: 25%;
+    margin: 10px;
+}
+
+.question-icons {
+    font-size: 25px;
+    margin: 10px;
+    color: #5e636b;
+}
+
+.question-icons:hover {
+    color: #527d2e;
+}
+
+#plus-icon {
+    font-size: 15px;
+    color: #527d2e;
+}
+
+#add-question-link {
+    color: #527d2e;
+}
+
+#add-question-link:hover {
+    text-decoration: underline;
+}
+
+/* Other */
 app {
     position: relative;
     display: flex;
@@ -227,6 +264,15 @@ app {
   }
 
 
+
+.modal-content{
+    border: solid #527d2e ;
+}
+
+.modal-header h4{
+    color: #527d2e;
+      
+ }
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
