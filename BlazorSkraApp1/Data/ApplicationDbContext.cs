@@ -93,8 +93,8 @@ namespace BlazorSkraApp1.Data
         public DbSet<Submissions> Submissions { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<CategoriesAssignments> CategoriesAssignments { get; set; }
-        public DbSet<CategoriesAssignments> QuestionsFormAssignments { get; set; }
-        public DbSet<CategoriesAssignments> OptionsQuestionAssignmnents { get; set; }
+        public DbSet<QuestionsFormAssignments> QuestionsFormAssignments { get; set; }
+        public DbSet<OptionsQuestionAssignmnents> OptionsQuestionAssignmnents { get; set; }
         
         
 
