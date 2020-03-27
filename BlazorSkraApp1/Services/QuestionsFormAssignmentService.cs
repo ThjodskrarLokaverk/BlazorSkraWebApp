@@ -10,6 +10,7 @@ namespace BlazorSkraApp1.Services
     public interface IQuestionsFormAssignmentService
     {
         Task <List<QuestionsFormAssignments>> Get(int id);
+        Task <QuestionsFormAssignments> Add(QuestionsFormAssignments question);
     }
     public class QuestionsFormAssignmentService : IQuestionsFormAssignmentService
     {
@@ -27,6 +28,13 @@ namespace BlazorSkraApp1.Services
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
+        }
+
+        public async Task<QuestionsFormAssignments> Add(QuestionsFormAssignments question)
+        {
+            _context.QuestionsFormAssignments.Add(question);
+            await _context.SaveChangesAsync();
+            return question;
         }
     }
 }

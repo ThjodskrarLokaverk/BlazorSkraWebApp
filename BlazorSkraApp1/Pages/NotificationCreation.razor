@@ -1,7 +1,13 @@
 @page "/CreateNotification"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject IOptionsQuestionAssignmnentsService oqaservice
+@inject IQuestionsFormAssignmentService qfaservice
+@inject IQuestionsService qservice
+@inject IOptionsService opservice
+@inject ICategoriesService catservice
+@inject IJSRuntime jsRuntime
 
-
-    
     <form id="creation-form">
         <h1>Ný tegund tilkynningar</h1>
         <div class="form-group row">
@@ -11,17 +17,22 @@
                     <!-- Breyta þannig að það komi sjálfkrafa flokkurinn sem notandi kom úr -->
                     <!-- Pæling að hafa "Búa til nýjan flokk" valkost í þessum dropdown glugga líka -->
                     <option>Veldu flokk</option>
-                    <option>Öryggi</option>
-                    <option>Einelti</option>
-                    <option>Gæðamál</option>
-                    <option>Áreitni</option>
+                    @if(categories == null){
+                        <option>loading...</option>
+                    }
+                    else{
+                    foreach (var category in categories)
+                    {
+                        <option>@category.CategoryName</option>
+                    }
+                    }
                 </select>
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" placeholder="Heiti tilkynningar">
+                <input type="text" class="form-control" placeholder="Heiti tilkynningar" name="categoryAssignmentName">
             </div>
         </div>
         @for(int i = 0; i < questionCount; i++)
@@ -32,7 +43,7 @@
                     <option>Veldu tegund</option>
                     <option id="text-box">Textabox</option>
                     <option id="multiple">Fjölval</option>
-                    <option is="radio">Eitt val</option>
+                    <option id="radio">Eitt val</option>
                     <option id="date">Dagsetning</option>
                 </select>
                 <a @onclick="SaveQuestion">
@@ -53,6 +64,22 @@
     </form>
 
 @code {
+    public int categoryId {get; set;}
+    public string categoryAssignmentName {get; set;}
+    public string questionName {get; set;}
+    public string optionType {get; set;}
+    public List<string> options {get; set;}
+    
+    List<Categories> categories;
+    CategoriesAssignments currentassignment = new CategoriesAssignments();
+    Questions currentquestion = new Questions();
+    Options currentoption = new Options();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await catservice.Get();
+    }
+
     private int questionCount = 0;
     private void CreateNewQuestion()
     {

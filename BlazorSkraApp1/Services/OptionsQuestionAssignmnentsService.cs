@@ -9,6 +9,7 @@ namespace BlazorSkraApp1.Services
     public interface IOptionsQuestionAssignmnentsService
     {
         Task<List<OptionsQuestionAssignmnents>> Get();
+        Task<OptionsQuestionAssignmnents> Add(OptionsQuestionAssignmnents option);
     }
     public class OptionsQuestionAssignmnentsService : IOptionsQuestionAssignmnentsService
     {
@@ -24,6 +25,13 @@ namespace BlazorSkraApp1.Services
             return await _context.OptionsQuestionAssignmnents
                 .Include(o => o.Options)
                 .ToListAsync();
+        }
+
+        public async Task<OptionsQuestionAssignmnents> Add(OptionsQuestionAssignmnents option)
+        {
+            _context.OptionsQuestionAssignmnents.Add(option);
+            await _context.SaveChangesAsync();
+            return option;
         }
     }
 }
