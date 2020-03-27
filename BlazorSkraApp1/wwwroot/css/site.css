@@ -228,6 +228,15 @@ app {
 
 
 
+.modal-content{
+    border: solid #527d2e ;
+}
+
+.modal-header h4{
+    color: #527d2e;
+      
+ }
+
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {
         display: none;
