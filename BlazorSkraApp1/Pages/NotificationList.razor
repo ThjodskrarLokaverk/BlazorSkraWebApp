@@ -4,6 +4,7 @@
 @inject ICategoriesAssignmentsService service
 @inject IFormsInfoService formservice
 @inject IJSRuntime jsRuntime
+@inject ICategoriesService service1
 
 @if (categoriesAssignmentsList == null)
 {
@@ -12,51 +13,42 @@
 else
 {
     <div class="container">
-        <h2>Undirflokkar</h2>
-        <p>Smelltu á viðeigandi undirflokk til að skrá tilkynningu honum tengdum:</p>
-        <table class="table table-hover">
-            <thead>
+        <h2>@category.CategoryName</h2>
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
                 <tr>
-                    <th>Heiti flokks</th>
-                    <AuthorizeView>
-                        <th>Stofnandi</th>
-                        <th>Stofndags</th>
-                        
-                    </AuthorizeView>
+                    <th>Tilkynningarheiti</th>
+                    <th>Stofnandi</th>
+                    <th style="width: 1%">Stofndags</th>
+                    <AuthorizeView Roles="Admin"> <th style="width: 5%"></th> </AuthorizeView>
                 </tr>
             </thead>
             <tbody>
                 
                 @foreach (var categoryAssignment in categoriesAssignmentsList)
                 {
-                    <tr>
-                        <td onclick="location.href='#'"> @categoryAssignment.FormsInfo.FormName</td>
-                        <AuthorizeView Roles="Admin">
+                    <tr class="assignment-name">
+                        <td onclick="location.href='#'"> @categoryAssignment.FormsInfo.FormName </td>
                             <td>x</td>
                             <td>y</td>
-                            <button class="btn btn-link trash-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
-                                <i class="fas fa-pen" title="Modifier"></i>
-                            </button>
+                        <AuthorizeView Roles="Admin">
+                            <td>
+                                <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
+                                    <i class="fas fa-pen" title="Modifier"></i>
+                                </button>
+                            </td>
                         </AuthorizeView>
                     </tr>
                 }
             </tbody>
         </table>
     </div>
-
-
-    <AuthorizeView>
-        <Authorized>
-            <div class="col-sm-6">
-                <div id="add-category-card" class="card">
-                    <h5 id="add-category-title" class="card-title">Bæta við flokk</h5>
-                    <button class="btn" @onclick="ShowCategoryPopup"><img class="plus-icon" style="width: 50px; height: 50px;" src="https://image.flaticon.com/icons/png/512/3/3910.png" /></button>
-
-                </div>
-            </div>
-        </Authorized>
+    <AuthorizeView Roles="Admin">   
+        <div class="container" style="width:100%">
+                <button type="button" class="btn btn-outline-success btn-block" @onclick="ShowCategoryPopup">Bæta við flokk</button>
+        </div>
     </AuthorizeView>
-    <br />
+    
 
     @if (showPopup)
     {
@@ -72,13 +64,13 @@ else
                     <div class="modal-body">
                         <EditForm Model="@forminfo" OnValidSubmit="@AddForm">
                             <div class="form-group">
-                                <label for="FormName">Form Name</label>
+                                <label for="FormName">Heiti tilkynningar</label>
                                 <input type="hidden" @bind-value="@forminfo.FormName" />
                                 <InputText id="name" class="form-control" @bind-Value="@forminfo.FormName" />
                                 <ValidationMessage For="@(() => forminfo.FormName)" />
                             </div>
                             <button type="submit" class="btn btn-primary">Bæta við</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hætta við</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" @onclick="Cancel">Hætta við </button>
                             <DataAnnotationsValidator />
                         </EditForm>
                     </div>
@@ -144,6 +136,7 @@ else
     bool showPopup = false;
     bool showDelete = false;
     bool showEdit = false;
+    Categories category = new Categories();
 
     List<CategoriesAssignments> categoriesAssignmentsList;
 
@@ -154,6 +147,7 @@ else
     {
         categoryId = Int16.Parse(id);
         categoriesAssignmentsList = await service.Get(categoryId);
+        category = await service1.Get(categoryId);
     }
     void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
     {
@@ -173,6 +167,8 @@ else
     void Cancel()
     {
         showPopup = false;
+        showDelete = false;
+        showEdit = false;
     }
 
     protected async void AddForm()
@@ -187,6 +183,8 @@ else
 
         await service.Add(category);
 
+        forminfo = new FormsInfo();
+
         DataChanged();
 
     }
@@ -198,6 +196,8 @@ else
         await service.Delete(category);
 
         await formservice.Delete(category.FormId);
+
+        showEdit = false;
 
         DataChanged();
     }
