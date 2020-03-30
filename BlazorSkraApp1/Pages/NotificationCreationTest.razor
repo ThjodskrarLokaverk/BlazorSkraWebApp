@@ -1,0 +1,186 @@
+@page "/CN"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject IOptionsQuestionAssignmnentsService oqaservice
+@inject IQuestionsFormAssignmentService qfaservice
+@inject IQuestionsService qservice
+@inject IOptionsService opservice
+@inject ICategoriesService catservice
+@inject IFormsInfoService fiservice
+@inject IQuestionTypesService qtservice
+@inject ICategoriesAssignmentsService qasservice
+@inject IJSRuntime jsRuntime
+
+    <form id="creation-form">
+        <EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
+        <h1>Ný tegund tilkynningar</h1>
+        <div class="form-group row">
+            <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+            <div class="col-sm-10">
+                <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
+                    <option value="">Veldu flokk</option>
+                    @if(categoriesList == null)
+                    {
+                        <option>loading...</option>
+                    }
+                    else
+                    {
+                        foreach (var category in categoriesList)
+                        {
+                            <option value="@System.Convert.ToString(category.CategoryId)" >@category.CategoryName</option>
+                        }
+                    }
+                </InputSelect>
+                </div>
+                <div class="modal-body">
+                    <label for="categories" class="col-sm-2 col-form-label">Tilkynning</label>
+                    <div class="col-sm-10">
+                        <InputSelect @bind-Value="_SelectedFormId" id="formsinfo" class="form-control">
+                            <option value="">Veldu tilkynningu</option>
+                            @if(formsinfoList == null)
+                            {
+                                <option>loading...</option>
+                            }
+                            else
+                            {
+                                foreach (var form in formsinfoList)
+                                {
+                                    <option value="@System.Convert.ToString(form.FormId)" >@form.FormName</option>
+                                }
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="QuestionName">Nafn spurningar</label>
+                        <input type="hidden" @bind-value="@currentQuestion.QuestionName" />
+                        <InputText id="name" class="form-control" @bind-Value="@currentQuestion.QuestionName" />
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="SelectedQuestion" class="col-sm-2 col-form-label">Tegund</label>
+                        <InputSelect @bind-Value="_SelectedQuestionTypeId" id="categories" class="form-control">
+                            <option value="">Veldu tegund</option>
+                            @if(questionTypesList == null){
+                                <option>loading...</option>
+                            }
+                            else{
+                            foreach (var type in questionTypesList)
+                            {
+                                <option value="@System.Convert.ToString(type.QuestionTypeId)" >@type.QuestionTypeName</option>
+                            }
+                            }
+                        </InputSelect>
+                    </div>
+                </div>
+                @if(_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
+                {
+                    <div class="form-group row form-inline" id="question-box">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="OptionName">Valkostur 1</label>
+                                <input type="hidden" @bind-value="@_CurrentNewOption1" />
+                                <InputText id="name" class="form-control" @bind-Value="@_CurrentNewOption1" />
+                            </div>
+                        </div>
+                        <a @onclick="DeleteQuestion">
+                            <i class="fas fa-trash-alt question-icons"></i>
+                        </a>
+                    </div>
+                    <div class="form-group row form-inline" id="question-box">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="OptionName">Valkostur 2</label>
+                                <input type="hidden" @bind-value="@_CurrentNewOption2" />
+                                <InputText id="name" class="form-control" @bind-Value="@_CurrentNewOption2" />
+                            </div>
+                        </div>
+                        <a @onclick="DeleteQuestion">
+                            <i class="fas fa-trash-alt question-icons"></i>
+                        </a>
+                    </div>
+                }
+        </div>
+        <p>Til þess að vista nýju tilkynningartýpuna og fyrstu spurningu</p>
+        <button class="btn btn-secondary" type="submit" >Vista</button>
+        </EditForm>
+    </form>
+
+@code {
+    
+    List<Categories> categoriesList;
+    List<QuestionTypes> questionTypesList;
+    List<FormsInfo> formsinfoList;
+    string _SelectedCategoryId;
+    string _SelectedQuestionTypeId;
+    string _SelectedFormId;
+    string _CurrentNewOption1;
+    string _CurrentNewOption2;
+    List<Options> optionlist;
+    CategoriesAssignments currentAssignment = new CategoriesAssignments();
+    FormsInfo currentForm = new FormsInfo();
+    Categories currentCategory = new Categories();
+
+    Questions currentQuestion = new Questions();
+    Options currentOption1 = new Options();
+    Options currentOption2 = new Options();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categoriesList = await catservice.Get();
+        questionTypesList = await qtservice.Get();
+        formsinfoList = await fiservice.Get();
+    }
+
+    private int questionCount = 0;
+    private void CreateNewQuestion()
+    {
+        questionCount++;
+    }
+
+    private void DeleteQuestion()
+    {
+        questionCount--;
+    }
+    
+    private async void AddFirst()
+    {
+
+        CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
+        _CategoriesAssignments.CategoryId = Int32.Parse(_SelectedCategoryId);
+        _CategoriesAssignments.FormId = Int32.Parse(_SelectedFormId);
+
+        await qasservice.Add(_CategoriesAssignments); // Skila eintakinu
+
+        QuestionTypes _QuestionTypes = new QuestionTypes();
+        _QuestionTypes = await qtservice.Get(Int32.Parse(_SelectedQuestionTypeId));
+        
+        currentQuestion.QuestionTypes = _QuestionTypes;
+
+        Questions test = new Questions();
+
+        test = await qservice.Add(currentQuestion); // Skila eintakinu
+
+        //currentOption1.OptionName = _CurrentNewOption1;
+        //await opservice.Add(currentOption1);
+
+        //currentOption2.OptionName = _CurrentNewOption2;
+        //await opservice.Add(currentOption2);
+        
+        System.Console.WriteLine( _SelectedCategoryId );
+        System.Console.WriteLine( _SelectedFormId );
+        System.Console.WriteLine( currentQuestion.QuestionName );
+        System.Console.WriteLine( _SelectedQuestionTypeId );
+        System.Console.WriteLine( _CurrentNewOption1 );
+        System.Console.WriteLine( _CurrentNewOption2 );
+        System.Console.WriteLine( currentOption1.OptionId );
+        System.Console.WriteLine( currentOption2.OptionId );
+        System.Console.WriteLine( test.QuestionId );
+    }
+    private void SaveQuestion()
+    {
+
+    }
+}

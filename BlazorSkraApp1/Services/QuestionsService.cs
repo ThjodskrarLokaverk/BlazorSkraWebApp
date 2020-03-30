@@ -10,6 +10,7 @@ namespace BlazorSkraApp1.Services
     public interface IQuestionsService
     {
         Task<Questions> Add(Questions question);
+
     }
     public class QuestionsService : IQuestionsService
     {
@@ -19,7 +20,12 @@ namespace BlazorSkraApp1.Services
         {
             _context = context;
         }
+        public async Task<Questions> GetQuestion(int id)
+        {
+            var question = await _context.Questions.FindAsync(id);
 
+            return question;
+        }
         public async Task<Questions> Add(Questions question)
         {
             _context.Questions.Add(question);
