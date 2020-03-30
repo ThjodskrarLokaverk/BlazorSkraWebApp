@@ -33,22 +33,12 @@
                 </InputSelect>
                 </div>
                 <div class="modal-body">
-                    <label for="categories" class="col-sm-2 col-form-label">Tilkynning</label>
                     <div class="col-sm-10">
-                        <InputSelect @bind-Value="_SelectedFormId" id="formsinfo" class="form-control">
-                            <option value="">Veldu tilkynningu</option>
-                            @if(formsinfoList == null)
-                            {
-                                <option>loading...</option>
-                            }
-                            else
-                            {
-                                foreach (var form in formsinfoList)
-                                {
-                                    <option value="@System.Convert.ToString(form.FormId)" >@form.FormName</option>
-                                }
-                            }
-                        </InputSelect>
+                        <div class="form-group">
+                        <label for="FormName">Nafn Tilkynningar</label>
+                        <input type="hidden" @bind-value="@currentForm.FormName" />
+                        <InputText id="name" class="form-control" @bind-Value="@currentForm.FormName" />
+                    </div>
                     </div>
                 </div>
                 <div class="modal-body">
@@ -147,10 +137,14 @@
     
     private async void AddFirst()
     {
+        FormsInfo temp = new FormsInfo();
+        temp = await fiservice.Add(currentForm);
+
+        System.Console.WriteLine( temp.FormId );
 
         CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
         _CategoriesAssignments.CategoryId = Int32.Parse(_SelectedCategoryId);
-        _CategoriesAssignments.FormId = Int32.Parse(_SelectedFormId);
+        _CategoriesAssignments.FormId = temp.FormId;
 
         await qasservice.Add(_CategoriesAssignments); // Skila eintakinu
 
@@ -160,14 +154,29 @@
         currentQuestion.QuestionTypes = _QuestionTypes;
 
         Questions test = new Questions();
-
         test = await qservice.Add(currentQuestion); // Skila eintakinu
+        System.Console.WriteLine( test.QuestionId );
 
-        //currentOption1.OptionName = _CurrentNewOption1;
-        //await opservice.Add(currentOption1);
+        QuestionsFormAssignments qfa = new QuestionsFormAssignments();
+        qfa.FormId = temp.FormId;
+        qfa.QuestionId = test.QuestionId;
+        qfa.QuestionOrderNum = 1;
 
-        //currentOption2.OptionName = _CurrentNewOption2;
-        //await opservice.Add(currentOption2);
+        await qfaservice.Add(qfa);
+
+        Options temp2 = new Options();
+        currentOption1.OptionName = _CurrentNewOption1;
+        temp2 = await opservice.Add(currentOption1);
+
+        OptionsQuestionAssignmnents temp3 = new OptionsQuestionAssignmnents();
+        temp3.OptionId = temp2.OptionId;
+        temp3.FormId = temp.FormId;
+        temp3.OptionOrderNum = 1;
+        temp3.QuestionOrderNum = 1;
+
+        OptionsQuestionAssignmnents temp4 = new OptionsQuestionAssignmnents();
+
+        temp4 = await oqaservice.Add(temp3);
         
         System.Console.WriteLine( _SelectedCategoryId );
         System.Console.WriteLine( _SelectedFormId );
@@ -177,7 +186,6 @@
         System.Console.WriteLine( _CurrentNewOption2 );
         System.Console.WriteLine( currentOption1.OptionId );
         System.Console.WriteLine( currentOption2.OptionId );
-        System.Console.WriteLine( test.QuestionId );
     }
     private void SaveQuestion()
     {

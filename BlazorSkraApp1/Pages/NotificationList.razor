@@ -179,7 +179,10 @@ else
     {
         showPopup = false;
 
-        await formservice.Add(forminfo);
+        FormsInfo test = new FormsInfo();
+        test = await formservice.Add(forminfo);
+
+        System.Console.WriteLine(forminfo.FormId);
 
         var category = new CategoriesAssignments();
         category.FormId = forminfo.FormId;
