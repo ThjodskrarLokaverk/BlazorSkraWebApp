@@ -9,7 +9,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IQuestionsFormAssignmentService
     {
-        Task <List<QuestionsFormAssignments>> Get(int id);
+        Task <List<QuestionsFormAssignments>> Get(int formId);
         Task <QuestionsFormAssignments> Add(QuestionsFormAssignments question);
     }
     public class QuestionsFormAssignmentService : IQuestionsFormAssignmentService
@@ -21,10 +21,10 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public async Task<List<QuestionsFormAssignments>> Get(int FormId)
+        public async Task<List<QuestionsFormAssignments>> Get(int formId)
         {
             return await _context.QuestionsFormAssignments
-                .Where(f => f.FormId == FormId)
+                .Where(f => f.FormId == formId)
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();

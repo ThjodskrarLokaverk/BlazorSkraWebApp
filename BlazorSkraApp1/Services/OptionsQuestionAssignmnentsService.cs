@@ -9,6 +9,7 @@ namespace BlazorSkraApp1.Services
     public interface IOptionsQuestionAssignmnentsService
     {
         Task<List<OptionsQuestionAssignmnents>> Get();
+        Task<List<OptionsQuestionAssignmnents>> Get(int formId);
         Task<OptionsQuestionAssignmnents> Add(OptionsQuestionAssignmnents option);
     }
     public class OptionsQuestionAssignmnentsService : IOptionsQuestionAssignmnentsService
@@ -23,6 +24,14 @@ namespace BlazorSkraApp1.Services
         public async Task<List<OptionsQuestionAssignmnents>> Get()
         {
             return await _context.OptionsQuestionAssignmnents
+                .Include(o => o.Options)
+                .ToListAsync();
+        }
+
+        public async Task<List<OptionsQuestionAssignmnents>> Get(int formId)
+        {
+            return await _context.OptionsQuestionAssignmnents
+                .Where(f => f.FormId == formId)
                 .Include(o => o.Options)
                 .ToListAsync();
         }
