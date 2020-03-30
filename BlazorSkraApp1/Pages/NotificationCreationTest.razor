@@ -71,8 +71,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="OptionName">Valkostur 1</label>
-                                <input type="hidden" @bind-value="@_CurrentNewOption1" />
-                                <InputText id="name" class="form-control" @bind-Value="@_CurrentNewOption1" />
+                                <input type="hidden" @bind-value="@currentOption1.OptionName" />
+                                <InputText id="name" class="form-control" @bind-Value="@currentOption1.OptionName" />
                             </div>
                         </div>
                         <a @onclick="DeleteQuestion">
@@ -83,8 +83,8 @@
                         <div class="modal-body">
                             <div class="form-group">
                                 <label for="OptionName">Valkostur 2</label>
-                                <input type="hidden" @bind-value="@_CurrentNewOption2" />
-                                <InputText id="name" class="form-control" @bind-Value="@_CurrentNewOption2" />
+                                <input type="hidden" @bind-value="@currentOption2.OptionName" />
+                                <InputText id="name" class="form-control" @bind-Value="@currentOption2.OptionName" />
                             </div>
                         </div>
                         <a @onclick="DeleteQuestion">
@@ -99,20 +99,16 @@
     </form>
 
 @code {
-    
+    //Listar sem eru fyrir options í select
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
-    List<FormsInfo> formsinfoList;
+    
+    //Breytur sem eru notaðar vegna þess að inputselect styður ekki Int32
     string _SelectedCategoryId;
     string _SelectedQuestionTypeId;
-    string _SelectedFormId;
-    string _CurrentNewOption1;
-    string _CurrentNewOption2;
-    List<Options> optionlist;
-    CategoriesAssignments currentAssignment = new CategoriesAssignments();
+    //Breytur sem þarf að senda inn í gagnagrunn
     FormsInfo currentForm = new FormsInfo();
     Categories currentCategory = new Categories();
-
     Questions currentQuestion = new Questions();
     Options currentOption1 = new Options();
     Options currentOption2 = new Options();
@@ -121,7 +117,6 @@
     {
         categoriesList = await catservice.Get();
         questionTypesList = await qtservice.Get();
-        formsinfoList = await fiservice.Get();
     }
 
     private int questionCount = 0;
@@ -137,58 +132,54 @@
     
     private async void AddFirst()
     {
-        FormsInfo temp = new FormsInfo();
-        temp = await fiservice.Add(currentForm);
+        //Nýju formi bætt við
+        currentForm = await fiservice.Add(currentForm);
 
-        System.Console.WriteLine( temp.FormId );
-
+        //Búið til eintak af CategoriesAssignments og Category ig Form tengt saman.
         CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
         _CategoriesAssignments.CategoryId = Int32.Parse(_SelectedCategoryId);
-        _CategoriesAssignments.FormId = temp.FormId;
+        _CategoriesAssignments.FormId = currentForm.FormId;
+        await qasservice.Add(_CategoriesAssignments);
 
-        await qasservice.Add(_CategoriesAssignments); // Skila eintakinu
-
+        //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
         QuestionTypes _QuestionTypes = new QuestionTypes();
         _QuestionTypes = await qtservice.Get(Int32.Parse(_SelectedQuestionTypeId));
-        
         currentQuestion.QuestionTypes = _QuestionTypes;
+        currentQuestion = await qservice.Add(currentQuestion);
 
-        Questions test = new Questions();
-        test = await qservice.Add(currentQuestion); // Skila eintakinu
-        System.Console.WriteLine( test.QuestionId );
-
+        //Búið til eintak af QuestionsFormAssignments. CurrentQuestion tengd við form og sagt til um númer hvað spurningin er
         QuestionsFormAssignments qfa = new QuestionsFormAssignments();
-        qfa.FormId = temp.FormId;
-        qfa.QuestionId = test.QuestionId;
+        qfa.FormId = currentForm.FormId;
+        qfa.QuestionId = currentQuestion.QuestionId;
         qfa.QuestionOrderNum = 1;
-
         await qfaservice.Add(qfa);
 
-        Options temp2 = new Options();
-        currentOption1.OptionName = _CurrentNewOption1;
-        temp2 = await opservice.Add(currentOption1);
+        //Ef spurningin er með RadioButton eða Checkbox
+        if(currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
+        {
+        //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu  
+        currentOption1 = await opservice.Add(currentOption1);
 
-        OptionsQuestionAssignmnents temp3 = new OptionsQuestionAssignmnents();
-        temp3.OptionId = temp2.OptionId;
-        temp3.FormId = temp.FormId;
-        temp3.OptionOrderNum = 1;
-        temp3.QuestionOrderNum = 1;
-
-        OptionsQuestionAssignmnents temp4 = new OptionsQuestionAssignmnents();
-
-        temp4 = await oqaservice.Add(temp3);
+        OptionsQuestionAssignmnents FirstOQA = new OptionsQuestionAssignmnents();
+        FirstOQA.OptionId = currentOption1.OptionId;
+        FirstOQA.FormId = currentForm.FormId;
+        FirstOQA.OptionOrderNum = 1;
+        FirstOQA.QuestionOrderNum = 1;
+        FirstOQA = await oqaservice.Add(FirstOQA);
         
-        System.Console.WriteLine( _SelectedCategoryId );
-        System.Console.WriteLine( _SelectedFormId );
-        System.Console.WriteLine( currentQuestion.QuestionName );
-        System.Console.WriteLine( _SelectedQuestionTypeId );
-        System.Console.WriteLine( _CurrentNewOption1 );
-        System.Console.WriteLine( _CurrentNewOption2 );
-        System.Console.WriteLine( currentOption1.OptionId );
-        System.Console.WriteLine( currentOption2.OptionId );
-    }
-    private void SaveQuestion()
-    {
+        //Sama og fyrir ofan, nema fyrir option númer 2
+        currentOption2 = await opservice.Add(currentOption2);
 
+        OptionsQuestionAssignmnents SecondOQA = new OptionsQuestionAssignmnents();
+        SecondOQA.OptionId = currentOption2.OptionId;
+        SecondOQA.FormId = currentForm.FormId;
+        SecondOQA.OptionOrderNum = 2;
+        SecondOQA.QuestionOrderNum = 1;
+        SecondOQA = await oqaservice.Add(SecondOQA);
+        }
+        //Ef þetta er spurning með textainput
+        else
+        {
+        }
     }
 }
