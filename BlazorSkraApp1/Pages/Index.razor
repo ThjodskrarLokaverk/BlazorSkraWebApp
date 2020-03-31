@@ -40,7 +40,6 @@ else
     {   
         <div id = "addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
-
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Bæta við nýjum flokk</h4>
@@ -56,8 +55,8 @@ else
                                 <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
                                 <ValidationMessage For="@(() => newCategory.CategoryName)" />
                             </div>
-                            <button type="submit" class="btn btn-primary">Bæta við</button>
-                            <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                            <button type="submit" class="btn approve-btn">Bæta við</button>
+                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
                             <DataAnnotationsValidator />
                         </EditForm>
                     </div>
@@ -85,8 +84,8 @@ else
                         </EditForm>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        <button type="button" class="btn btn-primary" @onclick="(() => UpdateCategory())" >Uppfæra</button>
+                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                        <button type="button" class="btn approve-btn" @onclick="(() => UpdateCategory())" >Uppfæra</button>
                         <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup(currentCategory))" >Eyða</button>
                     </div>
                 </div>
@@ -101,14 +100,14 @@ else
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title"> Staðfesting</h5>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>                
+                        <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <p>Ertu viss um að þú viljir eyða flokknum @currentCategory.CategoryName ? </p>
+                        <p>Ertu viss um að þú viljir eyða flokknum @currentCategory.CategoryName? </p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(currentCategory))" >Eyða</button>
+                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(currentCategory))">Eyða</button>
                     </div>
                 </div>
             </div>

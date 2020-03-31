@@ -24,13 +24,12 @@ else
                 </tr>
             </thead>
             <tbody>
-                
                 @foreach (var categoryAssignment in categoriesAssignmentsList)
                 {
                     <tr class="assignment-name">
                         <td onclick="location.href='#'"> @categoryAssignment.FormsInfo.FormName </td>
-                            <td>x</td>
-                            <td>y</td>
+                        <td>x</td>
+                        <td>y</td>
                         <AuthorizeView Roles="Admin">
                             <td>
                                 <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
