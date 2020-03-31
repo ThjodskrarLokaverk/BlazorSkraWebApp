@@ -30,7 +30,6 @@ namespace BlazorSkraApp1.Services
         {
             _context.FormsInfo.Add(formInfo);
             await _context.SaveChangesAsync();
-            System.Console.WriteLine(formInfo.FormId);
             return formInfo;
         }
 

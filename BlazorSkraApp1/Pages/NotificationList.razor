@@ -30,7 +30,7 @@ else
                 @foreach (var categoryAssignment in categoriesAssignmentsList)
                 {
                     <tr>
-                        <td onclick="location.href='#'"> @categoryAssignment.FormsInfo.FormName</td>
+                        <td onclick="location.href='/Notification/@categoryAssignment.FormsInfo.FormId'"> @categoryAssignment.FormsInfo.FormName</td>
                         <AuthorizeView Roles="Admin">
                             <td>x</td>
                             <td>y</td>
