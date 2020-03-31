@@ -48,6 +48,11 @@ namespace BlazorSkraApp1
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFormsService, FormsService>();
             services.AddTransient<IFormsInfoService, FormsInfoService>();
+            services.AddTransient<IQuestionsFormAssignmentService, QuestionsFormAssignmentService>();
+            services.AddTransient<IOptionsQuestionAssignmnentsService, OptionsQuestionAssignmnentsService>();
+            services.AddTransient<IQuestionsService, QuestionsService>();
+            services.AddTransient<IOptionsService, OptionsService>();
+            services.AddTransient<IQuestionTypesService, QuestionTypesService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -26,10 +26,8 @@ else
             <tbody>
                 @foreach (var categoryAssignment in categoriesAssignmentsList)
                 {
-                    <tr class="assignment-name">
-                        <td onclick="location.href='#'"> @categoryAssignment.FormsInfo.FormName </td>
-                        <td>x</td>
-                        <td>y</td>
+                    <tr>
+                        <td onclick="location.href='/Notification/@categoryAssignment.FormsInfo.FormId'"> @categoryAssignment.FormsInfo.FormName</td>
                         <AuthorizeView Roles="Admin">
                             <td>
                                 <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
@@ -174,7 +172,10 @@ else
     {
         showPopup = false;
 
-        await formservice.Add(forminfo);
+        FormsInfo test = new FormsInfo();
+        test = await formservice.Add(forminfo);
+
+        System.Console.WriteLine(forminfo.FormId);
 
         var category = new CategoriesAssignments();
         category.FormId = forminfo.FormId;
