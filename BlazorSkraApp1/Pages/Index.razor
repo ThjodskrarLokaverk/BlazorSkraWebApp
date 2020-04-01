@@ -47,8 +47,9 @@ else
                             <span aria-hidden="true">x</span>
                         </button>
                     </div>
-                    <div class="modal-body">
-                        <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
+                    <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
+                        <div class="modal-body">
+
                             <div class="form-group">
                                 <label for="categoryName">Nafn flokks</label>
                                 <input type="hidden" @bind-value="@newCategory.CategoryName" />
@@ -56,12 +57,13 @@ else
                                 <ValidationMessage For="@(() => newCategory.CategoryName)" />
                             </div>
                             <DataAnnotationsValidator />
-                        </EditForm>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn approve-btn">Bæta við</button>
-                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                    </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn approve-btn">Bæta við</button>
+                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                        </div>
+                    </EditForm>
                 </div>
             </div>
         </div>
