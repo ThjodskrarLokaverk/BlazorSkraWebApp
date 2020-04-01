@@ -55,8 +55,9 @@ else
                                 <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
                                 <ValidationMessage For="@(() => newCategory.CategoryName)" />
                             </div>
-                            <button type="submit" class="btn approve-btn">Bæta við</button>
                             <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                            <button type="submit" class="btn approve-btn">Bæta við</button>
+
                             <DataAnnotationsValidator />
                         </EditForm>
                     </div>
