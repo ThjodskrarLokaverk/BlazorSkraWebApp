@@ -52,7 +52,7 @@ else
 
                             <div class="form-group">
                                 <label for="categoryName">Nafn flokks</label>
-                                <input type="hidden" @bind-value="@newCategory.CategoryName" />
+                                
                                 <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
                                 <ValidationMessage For="@(() => newCategory.CategoryName)" />
                             </div>
