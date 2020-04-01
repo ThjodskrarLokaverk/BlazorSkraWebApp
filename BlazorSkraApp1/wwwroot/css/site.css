@@ -218,6 +218,16 @@ html, body {
     width: 170px;
 }
 
+.table-icon {
+    float: right;
+    color: #5e636b;
+    width: 30px !important;
+}
+
+.table-icon:hover {
+    color: #527d2e;
+}
+
 /* Other */
 .approve-btn {
     background-color: #527d2e;
