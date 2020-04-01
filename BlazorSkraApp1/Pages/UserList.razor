@@ -24,11 +24,11 @@
                             <td>
                                 @if (adminUsersList.Contains(user))
                                 {
-                                    <button class="btn btn-danger" @onclick="(() => ShowRemovePopup(user))">Gera að notanda</button>
+                                    <button class="btn cancel-btn" @onclick="(() => ShowRemovePopup(user))">Óvirkja stjórnanda</button>
                                 }
                                 else
                                 {
-                                    <button class="btn approve-btn" @onclick="(() => ShowAddPopup(user))">Gera að stjórnanda</button>
+                                    <button class="btn approve-btn" @onclick="(() => ShowAddPopup(user))">Virkja stjórnanda</button>
                                 }
                             </td>
                             <td><button class="btn btn-danger" @onclick="(() => DeleteUser(user))">Eyða notanda</button></td>
