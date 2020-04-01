@@ -20,7 +20,12 @@ else
     {
         <div class="card">
             <div class="card-body">
-            <h5 class="card-title">@question.Questions.QuestionName</h5>
+            <div>
+                <h5 class="card-title">@question.Questions.QuestionName</h5>
+                <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup())" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                    <i class="fas fa-pen" title="Modifier"></i>
+                </button>
+            </div>
             @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
             {
                 @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
@@ -155,6 +160,55 @@ else
     </EditForm> 
 </form>
 
+@if(showEdit)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Uppfæra / Eyða</h4>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times; </button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@currentQuestion" OnValidSubmit="@UpdateQuestion">
+                        <div class="form-group">
+                            <label for="categoryName">Nafn flokks</label>
+                            <input type="hidden" @bind-value="@currentQuestion.QuestionName" />
+                            <InputText id="name" class="form-control" @bind-Value="@currentQuestion.QuestionName" />
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn approve-btn" @onclick="(() => UpdateQuestion())" >Uppfæra</button>
+                    <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup())" >Eyða</button>
+                    <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if(showDelete)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Staðfesting</h5>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Ertu viss um að þú viljir eyða flokknum @currentQuestion.QuestionName? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @onclick="(() => Delete())">Eyða</button>
+                    <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
 @code {
 
     //Listar sem eru fyrir options í select
@@ -177,11 +231,14 @@ else
     //Breytur til þess að birta spurningar sem hafa verið sendar inn
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
-    Forms question = new Forms();
     
     //Breytur sem halda utan um fjölda spurninga
     private int questionCount = 1;
     private int optionCount = 2;
+
+    //Breytur til þess að birta edit/delete
+    bool showDelete = false;
+    bool showEdit = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -190,22 +247,41 @@ else
         questionTypesList = await qtservice.Get();
     }
 
-    private void CreateNewQuestion()
-    {
-        questionCount++;
-    }
-
-    private void DeleteQuestion()
-    {
-        questionCount--;
-    }
     private void CreateNewOption()
     {
         optionCount++;
     }
+
     private void DeleteOption()
     {
         optionCount--;
+    }
+
+    void ShowEditPopup()
+    {
+        showEdit = true;
+    }
+
+    void ShowDeletePopup()
+    {
+        showEdit = false;
+        showDelete = true;
+    }
+
+    void Cancel()
+    {
+        showDelete = false;
+        showEdit = false;
+    }
+
+    void Delete()
+    {
+        
+    }
+
+    void UpdateQuestion()
+    {
+
     }
 
     private async void AddFirst()

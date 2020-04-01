@@ -10,6 +10,8 @@ namespace BlazorSkraApp1.Services
     public interface IQuestionsService
     {
         Task<Questions> Add(Questions question);
+        Task<Questions> Update(Questions question);
+        Task<Questions> Delete(Questions question);
 
     }
     public class QuestionsService : IQuestionsService
@@ -31,6 +33,21 @@ namespace BlazorSkraApp1.Services
             _context.Questions.Add(question);
             await _context.SaveChangesAsync();
             return question;
+        }
+        public async Task<Questions> Update(Questions question)
+        {
+            var updatedQuestion = await _context.Questions.FindAsync(question.QuestionId, question.QuestionTypes.QuestionTypeId);
+            _context.Entry(updatedQuestion).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return updatedQuestion;
+
+        }
+        public async Task<Questions> Delete(Questions question)
+        {
+            var deletedQuestion = await _context.Questions.FindAsync(question.QuestionId, question.QuestionTypes.QuestionTypeId);
+            _context.Questions.Remove(deletedQuestion);
+            await _context.SaveChangesAsync();
+            return deletedQuestion;
         }
     }
 }
