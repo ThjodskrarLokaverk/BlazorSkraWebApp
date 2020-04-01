@@ -274,19 +274,64 @@ html, body {
 
 .table-striped {
     border: solid 2px;
+    border-color: #5e636b;
  }
 
- .table-striped > tbody > tr > td {
+.table-striped > tbody > tr > td {
     border-top: solid 0.5px #527d2e;
     border-bottom: solid 0.5px;
-    border-color: #527d2e;
- }
+    border-color: #5e636b;
+    vertical-align: middle;
+}
 
- .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
     background-color: #bad6a3;
-  }
+}
+
+#user-thead {
+    background-color: #5e636b;
+}
+
+#user-thead > tr > th {
+    border-color: #5e636b;
+    color: white;
+}
+
+.table-striped > tbody > tr > td > button {
+    width: 170px;
+}
+
+.table-icon {
+    float: right;
+    color: #5e636b;
+    width: 30px !important;
+}
+
+.table-icon:hover {
+    color: #527d2e;
+}
 
 /* Other */
+.approve-btn {
+    background-color: #527d2e;
+    color: white;
+}
+
+.approve-btn:hover {
+    background-color: #466b27;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #5e636b;
+    color: white;
+}
+
+.cancel-btn:hover {
+    background-color: #494d53;
+    color: white;
+}
+
 app {
     position: relative;
     display: flex;

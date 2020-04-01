@@ -53,10 +53,38 @@ namespace BlazorSkraApp1.Data
 
             modelBuilder.Entity<CategoriesAssignments>()
                 .HasKey(ca => new { ca.CategoryId, ca.FormId});
+
+            //Create the Composite key for the QuestionsFormAssignments table
+            modelBuilder.Entity<QuestionsFormAssignments>()
+                    .HasOne<Questions>(q => q.Questions)
+                    .WithMany()
+                    .HasForeignKey(q => q.QuestionId);
+
+            modelBuilder.Entity<QuestionsFormAssignments>()
+                    .HasOne<FormsInfo>(f => f.FormsInfo)
+                    .WithMany()
+                    .HasForeignKey(f => f.FormId);
+
+            modelBuilder.Entity<QuestionsFormAssignments>()
+                .HasKey(qfa => new { qfa.FormId, qfa.QuestionOrderNum });
+
+            //Create the Composite key for the OptionsQuestionAssignmnents table
+            modelBuilder.Entity<OptionsQuestionAssignmnents>()
+                    .HasOne<Options>(o => o.Options)
+                    .WithMany()
+                    .HasForeignKey(o => o.OptionId);
+
+            modelBuilder.Entity<OptionsQuestionAssignmnents>()
+                    .HasOne<QuestionsFormAssignments>(qfa => qfa.QuestionsFormAssignments)
+                    .WithMany()
+                    .HasForeignKey(qfa => new { qfa.FormId, qfa.QuestionOrderNum });
+
+            modelBuilder.Entity<OptionsQuestionAssignmnents>()
+                .HasKey(oqa => new { oqa.FormId, oqa.QuestionOrderNum, oqa.OptionOrderNum });
         }
 
         public DbSet<ToDo> ToDoList { get; set; }
-        public DbSet<QuestionOptions> QuestionOptions { get; set; }
+        public DbSet<Options> Options { get; set; }
         public DbSet<QuestionTypes> QuestionTypes { get; set; }
         public DbSet<Questions> Questions { get; set; }
         public DbSet<FormsInfo> FormsInfo { get; set; }
@@ -65,6 +93,10 @@ namespace BlazorSkraApp1.Data
         public DbSet<Submissions> Submissions { get; set; }
         public DbSet<Categories> Categories { get; set; }
         public DbSet<CategoriesAssignments> CategoriesAssignments { get; set; }
+        public DbSet<QuestionsFormAssignments> QuestionsFormAssignments { get; set; }
+        public DbSet<OptionsQuestionAssignmnents> OptionsQuestionAssignmnents { get; set; }
+        
+        
 
         public override int SaveChanges()
         {
