@@ -312,6 +312,13 @@ html, body {
 }
 
 /* Other */
+
+.up-down{
+    margin: none;
+    padding-top: none;
+    color:white;
+    height: 1.95rem;
+}
 .approve-btn {
     background-color: #527d2e;
     color: white;
