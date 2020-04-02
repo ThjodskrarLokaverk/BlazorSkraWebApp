@@ -58,15 +58,18 @@ else
         </div>
     }
 }
-<form id="creation-form">
-    <EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
-        <h1>Ný tegund tilkynningar</h1>
-        <div class="form-group row">
-            <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
-            <div class="col-sm-10">
-                <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
+
+<EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
+    <ObjectGraphDataAnnotationsValidator />
+    <ValidationSummary />
+
+    <h1>Ný tegund tilkynningar</h1>
+    <div class="form-group row">
+        <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+        <div class="col-sm-10">
+            <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
                 <option value="">Veldu flokk</option>
-                @if(categoriesList == null)
+                @if (categoriesList == null)
                 {
                     <option>loading...</option>
                 }
@@ -74,65 +77,62 @@ else
                 {
                     foreach (var category in categoriesList)
                     {
-                        <option value="@System.Convert.ToString(category.CategoryId)" >@category.CategoryName</option>
+                        <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
                     }
                 }
-                </InputSelect>
-            </div>
+            </InputSelect>
         </div>
+    </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
         <div class="col-sm-10">
-            <input type="hidden" @bind-value="@currentForm.FormName" />
             <InputText id="name" class="form-control" @bind-Value="@currentForm.FormName" />
         </div>
     </div>
     <div class="form-group row form-inline" id="question-box">
-        <input type="hidden" @bind-value="@currentQuestion.QuestionName" />
         <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@currentQuestion.QuestionName" />
         <InputSelect @bind-Value="_SelectedQuestionTypeId" id="question-type" class="form-control">
-                    <option value="">Veldu tegund</option>
-                    @if(questionTypesList == null){
-                        <option>loading...</option>
-                    }
-                    else{
-                    foreach (var type in questionTypesList)
-                    {
-                        <option value="@System.Convert.ToString(type.QuestionTypeId)" >@type.QuestionTypeName</option>
-                    }
-                    }
+            <option value="">Veldu tegund</option>
+            @if (questionTypesList == null)
+            {
+                <option>loading...</option>
+            }
+            else
+            {
+                foreach (var type in questionTypesList)
+                {
+                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                }
+            }
         </InputSelect>
         <button type="submit">
             <i class="fas fa-save question-icons"></i>
         </button>
     </div>
-    @if(_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
+    @if (_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
     {
         <div class="form-group row form-inline" id="question-box">
             <label for="OptionName">Valkostur 1</label>
-            <input type="hidden" @bind-value="@currentOption1.OptionName" />
             <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption1.OptionName" />
         </div>
-            <div class="form-group row form-inline" id="question-box">
+        <div class="form-group row form-inline" id="question-box">
             <label for="OptionName">Valkostur 2</label>
-            <input type="hidden" @bind-value="@currentOption2.OptionName" />
             <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption2.OptionName" />
         </div>
-        if(optionCount == 3)
+        if (optionCount == 3)
         {
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 3</label>
-                <input type="hidden" @bind-value="@currentOption3.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption3.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
                 </a>
             </div>
         }
-        if(optionCount == 4){
+        if (optionCount == 4)
+        {
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 3</label>
-                <input type="hidden" @bind-value="@currentOption3.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption3.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
@@ -140,14 +140,13 @@ else
             </div>
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 4</label>
-                <input type="hidden" @bind-value="@currentOption4.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption4.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
                 </a>
             </div>
         }
-        if(!(optionCount == 4))
+        if (!(optionCount == 4))
         {
             <div class="form-group row">
                 <div class="col-sm-10">
@@ -157,8 +156,8 @@ else
             </div>
         }
     }
-    </EditForm> 
-</form>
+</EditForm> 
+
 
 @if(showEdit)
 {
