@@ -12,6 +12,7 @@ namespace BlazorSkraApp1.Services
         Task<Options> Add(Options option);
         Task<Options> Update(Options option);
         Task<Options> Delete(Options option);
+        Task<Options> Get(int optionId);
     }
     public class OptionsService : IOptionsService
     {
@@ -41,6 +42,10 @@ namespace BlazorSkraApp1.Services
             _context.Options.Remove(deletedOption);
             await _context.SaveChangesAsync();
             return deletedOption;
+        }
+        public async Task<Options> Get(int optionId)
+        {
+            return await _context.Options.FindAsync(optionId);
         }
     }
 }
