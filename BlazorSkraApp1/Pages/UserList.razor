@@ -1,5 +1,6 @@
 @page "/UserList"
 @using BlazorSkraApp1.Services
+@using System.Linq
 @using Microsoft.AspNetCore.Identity;
 @inject IAdminService service
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -9,7 +10,8 @@
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="th-sm"><a class="text-uppercase" @onclick="SortByName">Nafn</a></th>
+                        <th class="text-uppercase"> Nafn <button class="btn up-down" @onclick="(() => doSort())" ><i class="fas fa-sort-alpha-up"
+                        +></i> </button> </th>
                         <th class="text-uppercase">Netfang</th>
                         <th class="text-uppercase">Breyta hlutverki</th>
                         <th></th>
@@ -91,16 +93,17 @@
     List<IdentityUser> usersList = new List<IdentityUser>();
     // Collection to display the admin users
     List<IdentityUser> adminUsersList = new List<IdentityUser>();
+
+    List<IdentityUser> sortedList = new List<IdentityUser>();
     bool showAddPopup = false;
     bool showRemovePopup = false;
+    bool sort = false;
+
     private void SortByName()
     {
         for(int i = 0; i < (user.UserName.Length - 1); i++)
         {
-            if(user.UserName[i] > user.UserName[i+1])
-            {
-                
-            }
+           
         }
     }
 
@@ -109,10 +112,16 @@
         await GetUsers();
         await GetAdminUsers();
     }
-
+    
+    void doSort()
+    {
+        usersList = sortedList;
+        StateHasChanged();
+    }
     async Task GetUsers()
     {
         usersList = await service.Get();
+        sortedList = usersList.OrderBy(x => x.UserName).ToList();
     }
 
     async Task GetAdminUsers()
@@ -162,4 +171,5 @@
         await GetAdminUsers();
         showRemovePopup = false;
     }
+    
 }
