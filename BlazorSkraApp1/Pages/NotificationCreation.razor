@@ -60,8 +60,8 @@ else
 }
 
 <EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
-    <ObjectGraphDataAnnotationsValidator />
-    <ValidationSummary />
+    @*<ObjectGraphDataAnnotationsValidator />
+    <ValidationSummary />*@
 
     <h1>Ný tegund tilkynningar</h1>
     <div class="form-group row">
@@ -172,14 +172,12 @@ else
                     <EditForm Model="@deleteQuestion" OnValidSubmit="@UpdateQuestion">
                         <div class="form-group">
                             <label for="deleteQuestionName">Nafn spurningar</label>
-                            <input type="hidden" @bind-value="@deleteQuestion.QuestionName" />
                             <InputText id="name" class="form-control" @bind-Value="@deleteQuestion.QuestionName" />
                         </div>
                         <div class="form-group">
                             @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
                             {
                                 <label for="deleteOptionName">Nafn valkosts</label>
-                                <input type="hidden" @bind-value="@option.Options.OptionName" />
                                 <InputText id="name" class="form-control" @bind-Value="@option.Options.OptionName" />
                             }
                         </div>
