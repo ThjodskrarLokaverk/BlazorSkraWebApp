@@ -10,7 +10,9 @@ namespace BlazorSkraApp1.Services
     public interface IQuestionsFormAssignmentService
     {
         Task <List<QuestionsFormAssignments>> Get(int formId);
-        Task <QuestionsFormAssignments> Add(QuestionsFormAssignments question);
+        Task<QuestionsFormAssignments> Add(QuestionsFormAssignments question);
+        Task<QuestionsFormAssignments> Delete(QuestionsFormAssignments question);
+
     }
     public class QuestionsFormAssignmentService : IQuestionsFormAssignmentService
     {
@@ -35,6 +37,14 @@ namespace BlazorSkraApp1.Services
             _context.QuestionsFormAssignments.Add(question);
             await _context.SaveChangesAsync();
             return question;
+        }
+
+        public async Task<QuestionsFormAssignments> Delete(QuestionsFormAssignments question)
+        {
+            var deletedQuestion = await _context.QuestionsFormAssignments.FindAsync(question.FormId, question.QuestionOrderNum);
+            _context.QuestionsFormAssignments.Remove(deletedQuestion);
+            await _context.SaveChangesAsync();
+            return deletedQuestion;
         }
     }
 }
