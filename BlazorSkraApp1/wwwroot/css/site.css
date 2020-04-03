@@ -1,5 +1,6 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
 
+
 html, body {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     background-color: #f4f4f4;
@@ -312,6 +313,14 @@ html, body {
 }
 
 /* Other */
+
+.search-button{
+    color: black;
+}
+
+.searchUsers{
+    margin-bottom: 1rem;
+}
 
 .up-down{
     margin: none;

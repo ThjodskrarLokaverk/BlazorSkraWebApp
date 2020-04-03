@@ -7,11 +7,12 @@
 <AuthorizeView Roles="Admin">
     <Authorized>
         <div class="container">
+            <input class = "searchUsers" type="text" placeholder="Leita.." @bind-value="@searchString"/>
+            <button class="btn search-button" @onclick="@searchUsers"><i class="fas fa-search"></i> </button>
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="text-uppercase"> Nafn <button class="btn up-down" @onclick="(() => doSort())" ><i class="fas fa-sort-alpha-up"
-                        +></i> </button> </th>
+                        <th class="text-uppercase"> Nafn <button class="btn up-down" @onclick="(() => doSort())" ><i class="fas fa-sort-alpha-up" ></i> </button> </th>
                         <th class="text-uppercase">Netfang</th>
                         <th class="text-uppercase">Breyta hlutverki</th>
                         <th></th>
@@ -93,19 +94,13 @@
     List<IdentityUser> usersList = new List<IdentityUser>();
     // Collection to display the admin users
     List<IdentityUser> adminUsersList = new List<IdentityUser>();
-
+    // Collection to display sorted user list
     List<IdentityUser> sortedList = new List<IdentityUser>();
+
+    List<IdentityUser> searchList = new List<IdentityUser>();
     bool showAddPopup = false;
     bool showRemovePopup = false;
-    bool sort = false;
-
-    private void SortByName()
-    {
-        for(int i = 0; i < (user.UserName.Length - 1); i++)
-        {
-           
-        }
-    }
+    private string searchString;
 
     protected override async Task OnInitializedAsync()
     {
@@ -121,8 +116,15 @@
     async Task GetUsers()
     {
         usersList = await service.Get();
-        sortedList = usersList.OrderBy(x => x.UserName).ToList();
+        sortedList = await service.GetSortedList();
     }
+    
+    async Task searchUsers()
+   {
+       searchList = await service.GetSearchList(searchString);
+       usersList = searchList;
+       StateHasChanged();
+   } 
 
     async Task GetAdminUsers()
     {
