@@ -11,54 +11,6 @@
 @inject ICategoriesAssignmentsService qasservice
 @inject IJSRuntime jsRuntime
 
-@if (questionsList == null){}
-else
-{
-    <h4>Tilkynningin þín:</h4> <br>
-    <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p> <br>
-    @foreach(var question in questionsList)
-    {
-        <div class="card">
-            <div class="card-body">
-            <div>
-                <h5 class="card-title">@question.Questions.QuestionName</h5>
-                <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-                    <i class="fas fa-pen" title="Modifier"></i>
-                </button>
-            </div>
-            @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                {
-                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                }
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                {
-                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                }
-            }
-            else
-            {
-                <h3>Something went wrong...</h3>
-            }
-            </div>
-        </div>
-    }
-}
-
 <EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
     @*<ObjectGraphDataAnnotationsValidator />
     <ValidationSummary />*@
@@ -89,6 +41,62 @@ else
             <InputText id="name" class="form-control" @bind-Value="@currentForm.FormName" />
         </div>
     </div>
+    <hr>
+    <br>
+    @if (questionsList == null){}
+    else
+    {
+        <h4>Tilkynningin þín:</h4>
+        <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p>
+        @foreach(var question in questionsList)
+        {
+            <div class="card">
+                <div class="card-body">
+                <div>
+                    <h5 class="card-title">@question.Questions.QuestionName</h5>
+                    <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                        <i class="fas fa-pen" title="Modifier"></i>
+                    </button>
+                </div>
+                @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
+                {
+                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
+                {
+                        <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+                {
+                        <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+                {
+                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
+                }
+                else
+                {
+                    <h3>Something went wrong...</h3>
+                }
+                </div>
+            </div>
+        }
+            <br>
+            <hr>
+            <br>
+    }
+    @if (!(questionsList == null))
+    {
+        <h4>Bæta við spurningu:</h4>
+    }
     <div class="form-group row form-inline" id="question-box">
         <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@currentQuestion.QuestionName" />
         <InputSelect @bind-Value="_SelectedQuestionTypeId" id="question-type" class="form-control">
@@ -315,9 +323,9 @@ else
 
         foreach(var option in deleteOptionsDown.Where( option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
         {
-                deleteOption = await opservice.Get(option.OptionId);
-                await opservice.Delete(deleteOption);
-                await oqaservice.Delete(option);
+            deleteOption = await opservice.Get(option.OptionId);
+            await opservice.Delete(deleteOption);
+            await oqaservice.Delete(option);
         }
 
         questionsList = await qfaservice.Get(currentForm.FormId);
