@@ -48,6 +48,8 @@ namespace BlazorSkraApp1
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFormsService, FormsService>();
             services.AddTransient<IFormsInfoService, FormsInfoService>();
+            services.AddTransient<ISubmissionsInfoService, SubmissionsInfoService>();
+            services.AddTransient<ISubmissionsService, SubmissionsService>();
             services.AddTransient<IQuestionsFormAssignmentService, QuestionsFormAssignmentService>();
             services.AddTransient<IOptionsQuestionAssignmnentsService, OptionsQuestionAssignmnentsService>();
             services.AddTransient<IQuestionsService, QuestionsService>();

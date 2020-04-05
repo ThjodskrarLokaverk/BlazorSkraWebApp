@@ -9,7 +9,7 @@
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="th-sm"><a class="text-uppercase" @onclick="SortByName">Nafn</a></th>
+                        <th class="text-uppercase">Nafn</th>
                         <th class="text-uppercase">Netfang</th>
                         <th class="text-uppercase">Breyta hlutverki</th>
                         <th></th>
@@ -40,7 +40,7 @@
         @if(showAddPopup)
         {
             <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"> Breyta hlutverki notanda</h5>
@@ -60,7 +60,7 @@
         @if(showRemovePopup)
         {
             <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title"> Breyta hlutverki notanda</h5>
@@ -93,16 +93,6 @@
     List<IdentityUser> adminUsersList = new List<IdentityUser>();
     bool showAddPopup = false;
     bool showRemovePopup = false;
-    private void SortByName()
-    {
-        for(int i = 0; i < (user.UserName.Length - 1); i++)
-        {
-            if(user.UserName[i] > user.UserName[i+1])
-            {
-                
-            }
-        }
-    }
 
     protected override async Task OnInitializedAsync()
     {

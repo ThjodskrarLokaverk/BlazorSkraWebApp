@@ -180,7 +180,7 @@ else
     Forms question = new Forms();
     
     //Breytur sem halda utan um fjölda spurninga
-    private int questionCount = 1;
+    private int questionCount = 0;
     private int optionCount = 2;
 
     protected override async Task OnInitializedAsync()
@@ -210,7 +210,7 @@ else
 
     private async void AddFirst()
     {
-        if(questionCount == 1)
+        if(questionCount == 0)
         {
         //Nýju formi bætt við
         currentForm = await fiservice.Add(currentForm);
