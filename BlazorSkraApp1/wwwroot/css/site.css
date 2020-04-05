@@ -1,5 +1,6 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
 
+
 html, body {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     background-color: #f4f4f4;
@@ -15,7 +16,7 @@ html, body {
 
 .custom-toggler.navbar-toggler {
     border-color: #5e636b;
-    margin-left: 23px;
+    margin-left: 23 px;
 }
 
 .custom-toggler .navbar-toggler-icon {
@@ -26,19 +27,13 @@ html, body {
     margin-right: 13px;
 }
 
-.dropdown-content a:focus {
-    background-color: #527d2e;
-    color: white;
-}
+
 
 .dropdown-content button:focus {
     background-color: #527d2e;
     color: white;
 }
 
-.dropdown-content p:hover {
-    background-color: transparent;
-}
 
 .oi-person {
     color: #5e636b;
@@ -52,16 +47,7 @@ html, body {
 
 
 /* Sidebar */
-#sidebar {
-    min-height: 750px;
-    width: 260px;
-    display: block;
-    float: left;
-    background-color: white;
-    border-right: 1.5px solid #e3e3e3;
-    padding-top: 25px;
-    padding-left: 20px;
-}
+
 
 #sidebar a {
     font-weight: 500;
@@ -187,7 +173,105 @@ html, body {
     text-decoration: underline;
 }
 
-/* Tables */
+/* dropdown menu */
+.dropdown-toggle::after {
+    display: none;
+}
+
+.dropdown{
+    margin-left: 1%;
+}
+
+.first-dropdown-wrapper .dropdown-menu {
+    padding: none;
+    border: none;
+    margin-top: 0.5rem;
+    background-color:transparent;
+}
+
+.first-dropdown-wrapper .dropdown-menu a:hover{
+    background-color:#171a15;
+    
+}
+
+.first-dropdown-wrapper .dropdown-item{
+    color: white;
+    border-bottom: solid #ccd4dc 0.3px;
+    background-color: #343a40;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem
+}
+
+.second-dropdown-wrapper{
+    padding: none;
+    border: none;
+}
+
+
+.second-dropdown-wrapper .dropdown-item {
+    color: white;
+    border-bottom: solid #ccd4dc 0.3px;
+    border-top: solid #ccd4dc 0.3px;
+    background-color: #343a40;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    margin:none;
+}
+
+#username{
+    color: white;
+    border-bottom: solid #ccd4dc 0.3px;
+    border-top: solid #ccd4dc 0.3px;
+    background-color: #343a40;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    margin:none;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.dropdown-menu.dropdown-menu-right{
+    background-color: transparent;
+    border:none;
+}
+
+.second-dropdown-wrapper a:hover {
+    background-color:#171a15;
+}
+
+
+.second-dropdown-wrapper button:hover {
+    background-color:#171a15
+}
+
+#username:hover {
+    background-color:#171a15
+}
+
+.first-dropdown-wrapper .dropdown-menu :first-child{
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+}
+
+.dropdown-menu :last-child{
+    border-bottom:none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+#firstdropdown{
+    background-color: white;
+    border: none;
+}
+
+
+.logOut{
+    border-bottom:none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+/* noficationTable */
 
 .table-striped {
     border: solid 2px;
@@ -229,6 +313,21 @@ html, body {
 }
 
 /* Other */
+
+.search-button{
+    color: black;
+}
+
+.searchUsers{
+    margin-bottom: 1rem;
+}
+
+.up-down{
+    margin: none;
+    padding-top: none;
+    color:white;
+    height: 1.95rem;
+}
 .approve-btn {
     background-color: #527d2e;
     color: white;

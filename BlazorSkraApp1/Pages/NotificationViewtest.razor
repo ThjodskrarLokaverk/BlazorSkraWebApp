@@ -43,7 +43,7 @@ else
                 {
                     @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                     {
-                        <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
                         <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                     }
                 }
@@ -69,10 +69,8 @@ else
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
     List<Options> options;
-
     SubmissionsInfo submissionsInfo = new SubmissionsInfo();
     Submissions submission = new Submissions();
-
     string[] answers;
 
     protected override async Task OnInitializedAsync()
@@ -80,7 +78,7 @@ else
         var FormId = Int16.Parse(id);
         questionsList = await questionservice.Get(FormId);
         optionsList = await optionservice.Get(FormId);
-        answers = new string[questionsList.Count];
+        answers = new string[questionsList.Count + 1];
 
         for(int i = 0; i < answers.Length; i++)
         {
@@ -111,20 +109,11 @@ else
         {
             submission.SubmissionId = submissionsInfo.SubmissionId;
             submission.QuestionOrderNum = question.QuestionOrderNum;
-            submission.AnswerOrderNum = question.QuestionOrderNum;      // option order num
-            Console.WriteLine(question.QuestionOrderNum);
+            submission.AnswerOrderNum = question.QuestionOrderNum;      // option order num BREYTA
             submission.Answer = answers[question.QuestionOrderNum];
             submission.FormId = question.FormId;
             submission.QuestionsQuestionId = question.QuestionId;
             await subservice.Add(submission);
         }
-
-        // Submissions table
-            // QuestionOrderNum
-            // AnswerOrderNum
-                // SubmissionId
-                // FormId
-            // Answer
-            // QuestionsQuestionsId
     }
 }

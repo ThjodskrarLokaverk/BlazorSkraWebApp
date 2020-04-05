@@ -11,6 +11,8 @@ namespace BlazorSkraApp1.Services
     public interface IAdminService
     {
         Task<List<IdentityUser>> Get();
+        Task<List<IdentityUser>> GetSearchList(string searchString);
+        Task<List<IdentityUser>> GetSortedList();
         Task<IdentityUser> Get(string userId);
         Task<IdentityUser> Add(IdentityUser user);
         Task<IdentityUser> Update(IdentityUser user);
@@ -42,6 +44,18 @@ namespace BlazorSkraApp1.Services
         {
             var user = await _userManager.FindByIdAsync(userId);
             return user;
+        }
+
+        public async Task<List<IdentityUser>> GetSearchList(string searchString)
+        {
+            var searchList = _userManager.Users.Where(x => x.UserName.Contains(searchString)).ToListAsync();
+            return  await searchList;
+        }
+
+        public async Task<List<IdentityUser>> GetSortedList()
+        {
+            var sortedList = _userManager.Users.OrderBy(x => x.UserName).ToListAsync();
+            return  await sortedList;
         }
 
         // Creates the specified user in the database

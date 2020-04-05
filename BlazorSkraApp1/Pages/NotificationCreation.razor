@@ -11,57 +11,17 @@
 @inject ICategoriesAssignmentsService qasservice
 @inject IJSRuntime jsRuntime
 
-@if (questionsList == null){}
-else
-{
-    <h4>Tilkynningin þín:</h4> <br>
-    <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p> <br>
-    @foreach(var question in questionsList)
-    {
-        <div class="card">
-            <div class="card-body">
-            <h5 class="card-title">@question.Questions.QuestionName</h5>
-            @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                {
-                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                }
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                {
-                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                }
-            }
-            else
-            {
-                <h3>Something went wrong...</h3>
-            }
-            </div>
-        </div>
-    }
-}
-<form id="creation-form">
-    <EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
-        <h1>Ný tegund tilkynningar</h1>
-        <div class="form-group row">
-            <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
-            <div class="col-sm-10">
-                <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
+<EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
+    @*<ObjectGraphDataAnnotationsValidator />
+    <ValidationSummary />*@
+
+    <h1>Ný tegund tilkynningar</h1>
+    <div class="form-group row">
+        <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+        <div class="col-sm-10">
+            <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
                 <option value="">Veldu flokk</option>
-                @if(categoriesList == null)
+                @if (categoriesList == null)
                 {
                     <option>loading...</option>
                 }
@@ -69,65 +29,118 @@ else
                 {
                     foreach (var category in categoriesList)
                     {
-                        <option value="@System.Convert.ToString(category.CategoryId)" >@category.CategoryName</option>
+                        <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
                     }
                 }
-                </InputSelect>
-            </div>
+            </InputSelect>
         </div>
+    </div>
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
         <div class="col-sm-10">
-            <input type="hidden" @bind-value="@currentForm.FormName" />
             <InputText id="name" class="form-control" @bind-Value="@currentForm.FormName" />
         </div>
     </div>
+    <hr>
+    <br>
+    @if (questionsList == null){}
+    else
+    {
+        <h4>Tilkynningin þín:</h4>
+        <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p>
+        @foreach(var question in questionsList)
+        {
+            <div class="card">
+                <div class="card-body">
+                <div>
+                    <h5 class="card-title">@question.Questions.QuestionName</h5>
+                    <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                        <i class="fas fa-pen" title="Modifier"></i>
+                    </button>
+                </div>
+                @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
+                {
+                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
+                {
+                        <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+                {
+                        <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
+                }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+                {
+                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
+                }
+                else
+                {
+                    <h3>Something went wrong...</h3>
+                }
+                </div>
+            </div>
+        }
+            <br>
+            <hr>
+            <br>
+    }
+    @if (!(questionsList == null))
+    {
+        <h4>Bæta við spurningu:</h4>
+    }
     <div class="form-group row form-inline" id="question-box">
-        <input type="hidden" @bind-value="@currentQuestion.QuestionName" />
         <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@currentQuestion.QuestionName" />
         <InputSelect @bind-Value="_SelectedQuestionTypeId" id="question-type" class="form-control">
-                    <option value="">Veldu tegund</option>
-                    @if(questionTypesList == null){
-                        <option>loading...</option>
-                    }
-                    else{
-                    foreach (var type in questionTypesList)
-                    {
-                        <option value="@System.Convert.ToString(type.QuestionTypeId)" >@type.QuestionTypeName</option>
-                    }
-                    }
+            <option value="">Veldu tegund</option>
+            @if (questionTypesList == null)
+            {
+                <option>loading...</option>
+            }
+            else
+            {
+                foreach (var type in questionTypesList)
+                {
+                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                }
+            }
         </InputSelect>
         <button type="submit">
             <i class="fas fa-save question-icons"></i>
         </button>
     </div>
-    @if(_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
+    @if (_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
     {
         <div class="form-group row form-inline" id="question-box">
             <label for="OptionName">Valkostur 1</label>
-            <input type="hidden" @bind-value="@currentOption1.OptionName" />
             <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption1.OptionName" />
         </div>
-            <div class="form-group row form-inline" id="question-box">
+        <div class="form-group row form-inline" id="question-box">
             <label for="OptionName">Valkostur 2</label>
-            <input type="hidden" @bind-value="@currentOption2.OptionName" />
             <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption2.OptionName" />
         </div>
-        if(optionCount == 3)
+        if (optionCount == 3)
         {
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 3</label>
-                <input type="hidden" @bind-value="@currentOption3.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption3.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
                 </a>
             </div>
         }
-        if(optionCount == 4){
+        if (optionCount == 4)
+        {
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 3</label>
-                <input type="hidden" @bind-value="@currentOption3.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption3.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
@@ -135,14 +148,13 @@ else
             </div>
             <div class="form-group row form-inline" id="question-box">
                 <label for="OptionName">Valkostur 4</label>
-                <input type="hidden" @bind-value="@currentOption4.OptionName" />
                 <InputText placeholder="Valkostur 1" id="name" class="form-control" @bind-Value="@currentOption4.OptionName" />
                 <a>
                     <i class="fas fa-trash-alt question-icons"></i>
                 </a>
             </div>
         }
-        if(!(optionCount == 4))
+        if (!(optionCount == 4))
         {
             <div class="form-group row">
                 <div class="col-sm-10">
@@ -152,14 +164,73 @@ else
             </div>
         }
     }
-    </EditForm> 
-</form>
+</EditForm> 
+
+
+@if(showEdit)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog" >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Uppfæra / Eyða</h4>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times; </button>
+                </div>
+                <div class="modal-body">
+                    <EditForm Model="@deleteQuestion" OnValidSubmit="@UpdateQuestion">
+                        <div class="form-group">
+                            <label for="deleteQuestionName">Nafn spurningar</label>
+                            <InputText id="name" class="form-control" @bind-Value="@deleteQuestion.QuestionName" />
+                        </div>
+                        <div class="form-group">
+                            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
+                            {
+                                <label for="deleteOptionName">Nafn valkosts</label>
+                                <InputText id="name" class="form-control" @bind-Value="@option.Options.OptionName" />
+                            }
+                        </div>
+                    </EditForm>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn approve-btn" @onclick="(() => UpdateQuestion())" >Uppfæra</button>
+                    <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup(deleteQuestion))" >Eyða</button>
+                    <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if(showDelete)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Staðfesting</h5>
+                    <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Ertu viss um að þú viljir eyða flokknum @deleteQuestion.QuestionName? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" @onclick="(() => Delete(deleteQuestion))">Eyða</button>
+                    <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
 
     //Listar sem eru fyrir options í select
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
+
+    //Breytur úr listum til þess að hægt sé að edita/deletea
+    QuestionsFormAssignments deleteQuestionDown = new QuestionsFormAssignments();
+    Questions deleteQuestion = new Questions();
 
     //Breytur sem eru notaðar vegna þess að inputselect styður ekki Int32
     string _SelectedCategoryId;
@@ -177,11 +248,15 @@ else
     //Breytur til þess að birta spurningar sem hafa verið sendar inn
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
-    Forms question = new Forms();
     
     //Breytur sem halda utan um fjölda spurninga
     private int questionCount = 0;
     private int optionCount = 2;
+
+    //Breytur til þess að birta edit/delete
+    bool showDelete = false;
+    bool showEdit = false;
+    bool firstDeleted = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -190,27 +265,122 @@ else
         questionTypesList = await qtservice.Get();
     }
 
-    private void CreateNewQuestion()
-    {
-        questionCount++;
-    }
-
-    private void DeleteQuestion()
-    {
-        questionCount--;
-    }
     private void CreateNewOption()
     {
         optionCount++;
     }
+
     private void DeleteOption()
     {
         optionCount--;
     }
 
+    private async void ShowEditPopup(QuestionsFormAssignments question)
+    {
+        deleteQuestionDown = question;
+
+        deleteQuestion = await qservice.GetQuestion(deleteQuestionDown.Questions.QuestionId);
+        showEdit = true;
+    }
+
+    void ShowDeletePopup(Questions question)
+    {
+        showEdit = false;
+        showDelete = true;
+    }
+
+    void Cancel()
+    {
+        showDelete = false;
+        showEdit = false;
+    }
+
+    protected async void UpdateQuestion()
+    {
+        Options editOption = new Options();
+
+        await qservice.Update(deleteQuestion);
+
+        foreach(var option in optionsList)
+        {
+            editOption = await opservice.Get(option.OptionId);
+            await opservice.Update(editOption);
+        }
+
+        showEdit = false;
+        StateHasChanged();
+    }
+
+    private async Task Delete(Questions deleteQuestion)
+    {
+        //Setja fyrirvara um hversu vel við viljum gera þetta. Gæti tekið mjög lengann tíma að framkvæma aðgerðina
+        //Spurning hvort við viljum bara aftengja eina töflu og láta draslið sitja í hinum
+        Options deleteOption = new Options();
+        int realQuestionCount = deleteQuestionDown.QuestionOrderNum;
+        await qservice.Delete(deleteQuestion);
+
+        List<OptionsQuestionAssignmnents> deleteOptionsDown = await oqaservice.Get(deleteQuestionDown.FormId);
+
+        foreach(var option in deleteOptionsDown.Where( option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
+        {
+            deleteOption = await opservice.Get(option.OptionId);
+            await opservice.Delete(deleteOption);
+            await oqaservice.Delete(option);
+        }
+
+        questionsList = await qfaservice.Get(currentForm.FormId);
+        optionsList = await oqaservice.Get(currentForm.FormId);
+
+        QuestionsFormAssignments updatedQuestionsFormsAssignments = new QuestionsFormAssignments();
+        OptionsQuestionAssignmnents updatedOptionsQuestionAssignments = new OptionsQuestionAssignmnents();
+
+        foreach(var question in questionsList.Where(question => question.QuestionOrderNum >= realQuestionCount))
+        {
+            if(question.QuestionOrderNum == realQuestionCount)
+            {
+                await qfaservice.Delete(question);
+            }
+            else
+            {
+                updatedQuestionsFormsAssignments.FormId = question.FormId;
+                updatedQuestionsFormsAssignments.QuestionId = question.QuestionId;
+                updatedQuestionsFormsAssignments.QuestionOrderNum = question.QuestionOrderNum - 1;
+                await qfaservice.Delete(question);
+                await qfaservice.Add(updatedQuestionsFormsAssignments);
+
+                foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    updatedOptionsQuestionAssignments.OptionOrderNum = option.OptionOrderNum;
+                    updatedOptionsQuestionAssignments.FormId = option.FormId;
+                    updatedOptionsQuestionAssignments.OptionId = option.OptionId;
+                    updatedOptionsQuestionAssignments.QuestionOrderNum = updatedOptionsQuestionAssignments.QuestionOrderNum;
+                    await oqaservice.Delete(option);
+                    await oqaservice.Add(updatedOptionsQuestionAssignments);
+                }
+            }
+        }
+
+        if(realQuestionCount == 2)
+        {
+            questionCount--;
+            firstDeleted = true;
+        }
+        else if(realQuestionCount == 1)
+        {
+            firstDeleted = true;
+        }
+        else
+        {
+            questionCount--;
+        }
+        
+        showDelete = false;
+        StateHasChanged();
+    }
+
     private async void AddFirst()
     {
-        if(questionCount == 0)
+        if(questionCount == 0 && firstDeleted == false)
         {
         //Nýju formi bætt við
         currentForm = await fiservice.Add(currentForm);
