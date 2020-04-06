@@ -42,12 +42,13 @@ namespace BlazorSkraApp1
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
             services.AddMvc();
-            services.AddTransient<IToDoListService, ToDoListService>();
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<ICategoriesAssignmentsService, CategoriesAssignmentsService>();
             services.AddTransient<IAdminService, AdminService>();
             services.AddTransient<IFormsService, FormsService>();
             services.AddTransient<IFormsInfoService, FormsInfoService>();
+            services.AddTransient<ISubmissionsInfoService, SubmissionsInfoService>();
+            services.AddTransient<ISubmissionsService, SubmissionsService>();
             services.AddTransient<IQuestionsFormAssignmentService, QuestionsFormAssignmentService>();
             services.AddTransient<IOptionsQuestionAssignmnentsService, OptionsQuestionAssignmnentsService>();
             services.AddTransient<IQuestionsService, QuestionsService>();

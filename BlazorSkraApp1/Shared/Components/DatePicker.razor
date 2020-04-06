@@ -1,0 +1,76 @@
+﻿<div class="row">
+    <div class="col-md-6">
+        <table>
+            <tr>
+                <td>
+                    <select class="form-control" @bind="Day">
+                        @for (int i = 1; i <= 31; i++)
+                        {
+                            <option>@i</option>
+                        }
+
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" @bind="Month">
+                        @for (int i = 1; i <= 12; i++)
+                        {
+                            <option value="@i">@Months[i - 1]</option>
+                        }
+
+                    </select>
+                </td>
+                <td>
+                    <select class="form-control" @bind="Year">
+                        @for (int i = DateTime.Now.Year-100; i <=DateTime.Now.Year+5 ; i++)
+                        {
+                            <option> @i</option>
+                        }
+
+                    </select>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-info" @onclick="OnSelectClick">Select Date</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+@code {
+    public int Day { get; set; }
+    public int Month { get; set; }
+    public int Year { get; set; }
+
+    public string[] Months { get; set; } =
+    {
+        "Janúar",
+        "Febrúar",
+        "Mars",
+        "Apríl",
+        "Maí",
+        "Júní",
+        "Júlí",
+        "Ágúst",
+        "September",
+        "Október",
+        "Nóvember",
+        "Desember"
+    };
+
+    [Parameter]
+    public EventCallback<DateTime> DateSelected { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Day = DateTime.Now.Day;
+        Month = DateTime.Now.Month;
+        Year = DateTime.Now.Year;
+    }
+    public Task OnSelectClick()
+    {
+        DateTime dt = new DateTime(Year, Month, Day);
+        return DateSelected.InvokeAsync(dt);
+    }
+
+}
