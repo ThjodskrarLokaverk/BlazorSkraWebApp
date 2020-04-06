@@ -36,8 +36,10 @@ else
                             <td>x</td>
                             <td>y</td>
                             <td>
-                                <button class="btn btn-link btn-xs table-icon" @onclick="(() => ShowEditPopup(categoryAssignment))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
-                                    <i class="fas fa-pen" title="Modifier"></i>
+                                <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                    <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                        <i class="fas fa-pen" title="Modifier"></i>
+                                    </a>
                                 </button>
                             </td>
                             <td>
@@ -58,32 +60,6 @@ else
         </div>
     </AuthorizeView>
 
-    @if (showEdit)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Uppfæra</h5>
-                        <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <EditForm Model="@categoryAssignment" OnValidSubmit="@UpdateFormName">
-                            <div class="form-group">
-                                <label for="FormName">Nafn tilkynningar</label>
-                                <input type="hidden" @bind-value="@categoryAssignment.FormsInfo.FormName" />
-                                <InputText id="name" class="form-control" @bind-Value="@categoryAssignment.FormsInfo.FormName" />
-                            </div>
-                        </EditForm>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn approve-btn" @onclick="(() => UpdateFormName())">Uppfæra</button>
-                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
     @if (showDelete)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
@@ -111,12 +87,10 @@ else
     public string id { get; set; }
     private int categoryId;
     private bool showDelete = false;
-    private bool showEdit = false;
     Categories category = new Categories();
 
     List<CategoriesAssignments> categoriesAssignmentsList;
 
-    FormsInfo forminfo = new FormsInfo();
     CategoriesAssignments categoryAssignment = new CategoriesAssignments();
 
     protected override async Task OnInitializedAsync()
@@ -124,11 +98,6 @@ else
         categoryId = Int16.Parse(id);
         categoriesAssignmentsList = await service.Get(categoryId);
         category = await service1.Get(categoryId);
-    }
-    private void ShowEditPopup(CategoriesAssignments pickedCategoryAssignment)
-    {
-        categoryAssignment = pickedCategoryAssignment;
-        showEdit = true;
     }
     private void ShowDeletePopup(CategoriesAssignments categoryassignments)
     {
@@ -139,7 +108,6 @@ else
     private void Cancel()
     {
         showDelete = false;
-        showEdit = false;
     }
 
     protected async void Delete(CategoriesAssignments category)
@@ -150,15 +118,6 @@ else
 
         await formservice.Delete(category.FormId);
 
-        showEdit = false;
-
-        DataChanged();
-    }
-
-    protected async void UpdateFormName()
-    {
-        await formservice.Update(categoryAssignment.FormId);
-        showEdit = false;
         DataChanged();
     }
 

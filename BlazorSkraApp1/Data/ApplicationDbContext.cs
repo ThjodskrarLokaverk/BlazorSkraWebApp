@@ -83,7 +83,7 @@ namespace BlazorSkraApp1.Data
                 .HasKey(oqa => new { oqa.FormId, oqa.QuestionOrderNum, oqa.OptionOrderNum });
         }
 
-        public DbSet<ToDo> ToDoList { get; set; }
+
         public DbSet<Options> Options { get; set; }
         public DbSet<QuestionTypes> QuestionTypes { get; set; }
         public DbSet<Questions> Questions { get; set; }
