@@ -37,7 +37,10 @@ namespace BlazorSkraApp1.Services
         }
         public async Task<List<Submissions>> Get()
         {
-            return await _context.Submissions.ToListAsync();
+            return await _context.Submissions
+                .Include(i => i.Submission)
+                .Include(f => f.Form)
+                .ToListAsync();
         }
     }
 }
