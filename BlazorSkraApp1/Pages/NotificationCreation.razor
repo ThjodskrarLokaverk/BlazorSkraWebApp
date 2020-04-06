@@ -52,13 +52,15 @@ else
                         <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                     }
                 }
-                else
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "Date")
                 {
-                    <h3>Something went wrong...</h3>
-                    // hk adds
                     <h4>Use DatePicker Component</h4>
                     <DatePicker DateSelected="OnDateSelected"> </DatePicker>
                     <h4>Selected Date:@SelectedDate </h4>
+                }
+                else
+                {
+                    <h3>Something went wrong...</h3>
                 }
             </div>
         </div>
