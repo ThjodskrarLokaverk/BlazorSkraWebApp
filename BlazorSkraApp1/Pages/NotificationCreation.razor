@@ -1,6 +1,7 @@
 @page "/CreateNotification"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@using BlazorSkraApp1.Models.InputModels
 @inject IOptionsQuestionAssignmnentsService oqaservice
 @inject IQuestionsFormAssignmentService qfaservice
 @inject IQuestionsService qservice
@@ -11,7 +12,58 @@
 @inject ICategoriesAssignmentsService qasservice
 @inject IJSRuntime jsRuntime
 
-<EditForm Model="@currentCategory" OnValidSubmit="AddFirst">
+@if (questionsList == null){}
+else
+{
+    <h4>Tilkynningin þín:</h4>
+    <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p>
+    @foreach(var question in questionsList)
+    {
+        <div class="card">
+            <div class="card-body">
+            <div>
+                <h5 class="card-title">@question.Questions.QuestionName</h5>
+                <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
+                    <i class="fas fa-pen" title="Modifier"></i>
+                </button>
+            </div>
+            @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
+            {
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                }
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
+            {
+                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+            {
+                    <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
+            }
+            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+            {
+                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                }
+            }
+            else
+            {
+                <h3>Something went wrong...</h3>
+            }
+            </div>
+        </div>
+    }
+        <br>
+        <hr>
+        <br>
+}
+
+<EditForm Model="@Notification" OnValidSubmit="AddFirst">
     @*<ObjectGraphDataAnnotationsValidator />
     <ValidationSummary />*@
 
@@ -19,7 +71,7 @@
     <div class="form-group row">
         <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
         <div class="col-sm-10">
-            <InputSelect @bind-Value="_SelectedCategoryId" id="categories" class="form-control">
+            <InputSelect @bind-Value="@Notification.CategoryId" id="categories" class="form-control">
                 <option value="">Veldu flokk</option>
                 @if (categoriesList == null)
                 {
@@ -38,68 +90,18 @@
     <div class="form-group row">
         <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
         <div class="col-sm-10">
-            <InputText id="name" class="form-control" @bind-Value="@currentForm.FormName" />
+            <InputText id="name" class="form-control" @bind-Value="@Notification.NewFormName" />
         </div>
     </div>
     <hr>
     <br>
-    @if (questionsList == null){}
-    else
-    {
-        <h4>Tilkynningin þín:</h4>
-        <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p>
-        @foreach(var question in questionsList)
-        {
-            <div class="card">
-                <div class="card-body">
-                <div>
-                    <h5 class="card-title">@question.Questions.QuestionName</h5>
-                    <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-                        <i class="fas fa-pen" title="Modifier"></i>
-                    </button>
-                </div>
-                @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
-                {
-                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                    {
-                        <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                    }
-                }
-                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
-                {
-                        <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
-                }
-                else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
-                {
-                        <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
-                }
-                else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
-                {
-                    @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                    {
-                        <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                    }
-                }
-                else
-                {
-                    <h3>Something went wrong...</h3>
-                }
-                </div>
-            </div>
-        }
-            <br>
-            <hr>
-            <br>
-    }
     @if (!(questionsList == null))
     {
         <h4>Bæta við spurningu:</h4>
     }
     <div class="form-group row form-inline" id="question-box">
-        <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@currentQuestion.QuestionName" />
-        <InputSelect @bind-Value="_SelectedQuestionTypeId" id="question-type" class="form-control">
+        <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@Notification.QuestionName" /> 
+        <InputSelect @bind-Value="@Notification.QuestionTypeId" id="question-type" class="form-control">
             <option value="">Veldu tegund</option>
             @if (questionTypesList == null)
             {
@@ -117,7 +119,7 @@
             <i class="fas fa-save question-icons"></i>
         </button>
     </div>
-    @if (_SelectedQuestionTypeId == "2" || _SelectedQuestionTypeId == "5")
+    @if (Notification.QuestionTypeId == "2" || Notification.QuestionTypeId == "5")
     {
         <div class="form-group row form-inline" id="question-box">
             <label for="OptionName">Valkostur 1</label>
@@ -224,6 +226,9 @@
 
 @code {
 
+    //Tilraun
+    NotificationInputModel Notification = new NotificationInputModel();
+
     //Listar sem eru fyrir options í select
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
@@ -232,14 +237,9 @@
     QuestionsFormAssignments deleteQuestionDown = new QuestionsFormAssignments();
     Questions deleteQuestion = new Questions();
 
-    //Breytur sem eru notaðar vegna þess að inputselect styður ekki Int32
-    string _SelectedCategoryId;
-    string _SelectedQuestionTypeId;
-
     //Breytur sem þarf að senda inn í gagnagrunn
     FormsInfo currentForm = new FormsInfo();
     Categories currentCategory = new Categories();
-    Questions currentQuestion = new Questions();
     Options currentOption1 = new Options();
     Options currentOption2 = new Options();
     Options currentOption3 = new Options();
@@ -250,7 +250,7 @@
     List<OptionsQuestionAssignmnents> optionsList;
     
     //Breytur sem halda utan um fjölda spurninga
-    private int questionCount = 1;
+    private int questionCount = 0;
     private int optionCount = 2;
 
     //Breytur til þess að birta edit/delete
@@ -316,7 +316,7 @@
         //Setja fyrirvara um hversu vel við viljum gera þetta. Gæti tekið mjög lengann tíma að framkvæma aðgerðina
         //Spurning hvort við viljum bara aftengja eina töflu og láta draslið sitja í hinum
         Options deleteOption = new Options();
-        int realQuestionCount = deleteQuestionDown.QuestionOrderNum;
+        int deleteQuestionCount = deleteQuestionDown.QuestionOrderNum;
         await qservice.Delete(deleteQuestion);
 
         List<OptionsQuestionAssignmnents> deleteOptionsDown = await oqaservice.Get(deleteQuestionDown.FormId);
@@ -331,41 +331,17 @@
         questionsList = await qfaservice.Get(currentForm.FormId);
         optionsList = await oqaservice.Get(currentForm.FormId);
 
-        QuestionsFormAssignments updatedQuestionsFormsAssignments = new QuestionsFormAssignments();
-        OptionsQuestionAssignmnents updatedOptionsQuestionAssignments = new OptionsQuestionAssignmnents();
-
-        foreach(var question in questionsList.Where(question => question.QuestionOrderNum >= realQuestionCount))
+        foreach(var question in questionsList.Where(question => question.QuestionOrderNum == deleteQuestionCount))
         {
-            if(question.QuestionOrderNum == realQuestionCount)
-            {
-                await qfaservice.Delete(question);
-            }
-            else
-            {
-                updatedQuestionsFormsAssignments.FormId = question.FormId;
-                updatedQuestionsFormsAssignments.QuestionId = question.QuestionId;
-                updatedQuestionsFormsAssignments.QuestionOrderNum = question.QuestionOrderNum - 1;
-                await qfaservice.Delete(question);
-                await qfaservice.Add(updatedQuestionsFormsAssignments);
-
-                foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                {
-                    updatedOptionsQuestionAssignments.OptionOrderNum = option.OptionOrderNum;
-                    updatedOptionsQuestionAssignments.FormId = option.FormId;
-                    updatedOptionsQuestionAssignments.OptionId = option.OptionId;
-                    updatedOptionsQuestionAssignments.QuestionOrderNum = updatedOptionsQuestionAssignments.QuestionOrderNum;
-                    await oqaservice.Delete(option);
-                    await oqaservice.Add(updatedOptionsQuestionAssignments);
-                }
-            }
+            await qfaservice.Delete(question);
         }
 
-        if(realQuestionCount == 2)
+        if(deleteQuestionCount == 2)
         {
             questionCount--;
             firstDeleted = true;
         }
-        else if(realQuestionCount == 1)
+        else if(deleteQuestionCount == 1)
         {
             firstDeleted = true;
         }
@@ -380,15 +356,16 @@
 
     private async void AddFirst()
     {
-        if(questionCount == 1 && firstDeleted == false)
+        if(questionCount == 0 && firstDeleted == false)
         {
         //Nýju formi bætt við
+        currentForm.FormName = Notification.NewFormName;
         currentForm = await fiservice.Add(currentForm);
         questionCount++;
 
         //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
         CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
-        _CategoriesAssignments.CategoryId = Int32.Parse(_SelectedCategoryId);
+        _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
         _CategoriesAssignments.FormId = currentForm.FormId;
         await qasservice.Add(_CategoriesAssignments);
         }
@@ -398,8 +375,10 @@
         }
 
         //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
+        Questions currentQuestion = new Questions();
         QuestionTypes _QuestionTypes = new QuestionTypes();
-        _QuestionTypes = await qtservice.Get(Int32.Parse(_SelectedQuestionTypeId));
+        _QuestionTypes = await qtservice.Get(Int32.Parse(Notification.QuestionTypeId));
+        currentQuestion.QuestionName = Notification.QuestionName;
         currentQuestion.QuestionTypes = _QuestionTypes;
         currentQuestion = await qservice.Add(currentQuestion);
 
@@ -416,12 +395,12 @@
             //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu  
             currentOption1 = await opservice.Add(currentOption1);
 
-            OptionsQuestionAssignmnents FirstOQA = new OptionsQuestionAssignmnents();
-            FirstOQA.OptionId = currentOption1.OptionId;
-            FirstOQA.FormId = currentForm.FormId;
-            FirstOQA.OptionOrderNum = 1;
-            FirstOQA.QuestionOrderNum = questionCount;
-            FirstOQA = await oqaservice.Add(FirstOQA);
+            OptionsQuestionAssignmnents OQA = new OptionsQuestionAssignmnents();
+            OQA.OptionId = currentOption1.OptionId;
+            OQA.FormId = currentForm.FormId;
+            OQA.OptionOrderNum = 1;
+            OQA.QuestionOrderNum = questionCount;
+            OQA = await oqaservice.Add(OQA);
             
             //Sama og fyrir ofan, nema fyrir option númer 2
             currentOption2 = await opservice.Add(currentOption2);
@@ -460,9 +439,7 @@
             }
         }
         //Ef þetta er spurning með textainput
-        else
-        {
-        }
+        else{}
 
         ClearAll();
     }
@@ -473,9 +450,8 @@
         questionsList = await qfaservice.Get(currentForm.FormId);
         optionsList = await oqaservice.Get(currentForm.FormId);
         
-        _SelectedQuestionTypeId = "";
-        Questions replaceQuestion = new Questions();
-        currentQuestion = replaceQuestion;
+        NotificationInputModel replaceNotification = new NotificationInputModel();
+        Notification = replaceNotification;
 
         Options replaceOption1 = new Options();
         currentOption1 = replaceOption1;
