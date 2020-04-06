@@ -2,8 +2,11 @@
 @attribute [Authorize]
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@using System
+@using System.Collections
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
+@inject IOptionsService oservice
 @inject ISubmissionsInfoService subinfoservice
 @inject ISubmissionsService subservice
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -23,12 +26,10 @@ else
                 <h5 class="card-title">@question.Questions.QuestionName</h5>
                 @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
                 {
-                    int choiceIndex = 0;
                     @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                     {
-                        <input class="form-check-input" type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName" @onchange="@((eventArgs) => OnChange((string)eventArgs.Value, question.QuestionOrderNum))"/>
+                        <input class="form-check-input" type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName" @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
                         <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
-                        choiceIndex++;
                     }
                 }
                 else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
@@ -43,7 +44,7 @@ else
                 {
                     @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                     {
-                        <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName" @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
                         <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                     }
                 }
@@ -61,17 +62,16 @@ else
 @code{
     [Parameter]
     public string id { get; set; }
-
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     System.Security.Claims.ClaimsPrincipal currentUser;
-
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
-    List<Options> options;
     SubmissionsInfo submissionsInfo = new SubmissionsInfo();
     Submissions submission = new Submissions();
     string[] answers;
+    int[] answersOrderNum;
+    List<String> multipleAnswers = new List<String>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -79,24 +79,38 @@ else
         questionsList = await questionservice.Get(FormId);
         optionsList = await optionservice.Get(FormId);
         answers = new string[questionsList.Count + 1];
+        answersOrderNum = new int[questionsList.Count + 1];
 
         for(int i = 0; i < answers.Length; i++)
         {
             answers[i] = "";
+            answersOrderNum[i] = 0;
         }
     }
 
-    private void OnChange(string chosenOption, int questionOrderNum)
+    private void SaveRadioValue(string chosenOption, int questionOrderNum, int optionOrderNum)
     {
         answers[questionOrderNum] = chosenOption;
-        /*foreach(var option in optionsList.Where(option => option.OptionOrderNum == chosenOption))
+        answersOrderNum[questionOrderNum] = optionOrderNum;
+    }
+
+    private void SaveCheckboxValue(bool chosenOption, int questionOrderNum, int optionOrderNum)
+    {
+        if(chosenOption)
         {
-            answers[questionOrderNum] = chosenOption.ToString();
-            foreach(var o in options.Where(o => o.OptionId == options.OptionId))
+            foreach(var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
+                    && option.OptionOrderNum == optionOrderNum))
             {
-                answers[questionOrderNum] = o.OptionName;
+                multipleAnswers.Add(option.Options.OptionName);
             }
-        }*/
+        }
+        answersOrderNum[questionOrderNum] = optionOrderNum;
+        string combine = "";
+        foreach(var s in multipleAnswers)
+        {
+            combine += s + ", ";
+        }
+        answers[questionOrderNum] = combine;
     }
 
     private async void SubmitForm()
@@ -109,8 +123,8 @@ else
         {
             submission.SubmissionId = submissionsInfo.SubmissionId;
             submission.QuestionOrderNum = question.QuestionOrderNum;
-            submission.AnswerOrderNum = question.QuestionOrderNum;      // option order num BREYTA
             submission.Answer = answers[question.QuestionOrderNum];
+            submission.AnswerOrderNum = answersOrderNum[question.QuestionOrderNum];
             submission.FormId = question.FormId;
             submission.QuestionsQuestionId = question.QuestionId;
             await subservice.Add(submission);
