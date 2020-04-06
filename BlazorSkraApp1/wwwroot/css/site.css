@@ -7,6 +7,21 @@ html, body {
     height: 100%;
 }
 
+/* Edit Notification */
+
+#NewFormName {
+    width: 50%;
+}
+
+.edit-notification {
+    float: left;
+    margin-left: 10px;
+}
+
+#a-tag {
+    color: #5e636b;
+}
+
 /* Navigation bar */
 .navbar {
     background-color: white;
