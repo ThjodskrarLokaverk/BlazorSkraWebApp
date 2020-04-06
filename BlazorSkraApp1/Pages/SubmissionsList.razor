@@ -1,0 +1,63 @@
+@page "/Submissions"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ISubmissionsService submissionservice
+@inject IJSRuntime jsRuntime
+
+@if (submissionList == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+     <div class="container">
+        <h2>Innsendar tilkynningar</h2>
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nafn tilkynningar</th>
+                    <th>Notandi</th>
+                    <th style="width: 1%">Innsent</th>
+                </tr>
+            </thead>
+            <tbody>
+    @foreach(var submission in submissionList)
+    {
+        if((AddToAlreadyPosted(submission)) == false){}
+        else
+        {
+            <tr>
+                <td>@submission.Form.FormName</td>
+                <td>@submission.Submission.UserId</td>
+                <td>Dags</td>
+            </tr>
+        }
+    }
+            </tbody>
+        </table>
+    </div>
+}
+@code{
+    List<Submissions> alreadyPosted = new List<Submissions>();
+    List<Submissions> submissionList;
+    protected override async Task OnInitializedAsync()
+    {
+        submissionList = await submissionservice.Get();
+    }
+    public bool AddToAlreadyPosted(Submissions s)
+    {
+        
+        Submissions sub = alreadyPosted.Find(id => id.SubmissionId == s.SubmissionId);
+
+        foreach(var submission in alreadyPosted)
+        {
+            if(s.SubmissionId == submission.SubmissionId)
+            {
+                return false;
+            }
+        }
+
+        alreadyPosted.Add(s);
+        return true;
+    }
+}
