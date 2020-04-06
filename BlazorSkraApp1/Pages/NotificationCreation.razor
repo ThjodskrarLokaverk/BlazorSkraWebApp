@@ -2,6 +2,7 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Shared.Components
 @inject IOptionsQuestionAssignmnentsService oqaservice
 @inject IQuestionsFormAssignmentService qfaservice
 @inject IQuestionsService qservice
@@ -12,60 +13,64 @@
 @inject ICategoriesAssignmentsService qasservice
 @inject IJSRuntime jsRuntime
 
-@if (questionsList == null){}
+@if (questionsList == null) { }
 else
 {
     <h4>Tilkynningin þín:</h4>
     <p>Vinsamlegast ekki yfirgefa þessa síðu fyrr en þú hefur klárað að fylla út tilkynninguna</p>
-    @foreach(var question in questionsList)
+    @foreach (var question in questionsList)
     {
         <div class="card">
             <div class="card-body">
-            <div>
-                <h5 class="card-title">@question.Questions.QuestionName</h5>
-                <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-                    <i class="fas fa-pen" title="Modifier"></i>
-                </button>
-            </div>
-            @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                <div>
+                    <h5 class="card-title">@question.Questions.QuestionName</h5>
+                    <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(question))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete">
+                        <i class="fas fa-pen" title="Modifier"></i>
+                    </button>
+                </div>
+                @if (@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
                 {
-                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
                 }
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
-            {
-                    <textarea placeholder="Skrifið hér..." rows="5" cols="100"/> <br>
-            }
-            else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
-            {
-                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
                 {
-                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    <textarea placeholder="Skrifið hér..." rows="1" cols="60" /> <br>
                 }
-            }
-            else
-            {
-                <h3>Something went wrong...</h3>
-            }
+                else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+                {
+                    <textarea placeholder="Skrifið hér..." rows="5" cols="100" /> <br>
+                }
+                else if (@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+                {
+                    @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                    {
+                        <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName">
+                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                    }
+                }
+                else
+                {
+                    <h3>Something went wrong...</h3>
+                    // hk adds
+                    <h4>Use DatePicker Component</h4>
+                    <DatePicker DateSelected="OnDateSelected"> </DatePicker>
+                    <h4>Selected Date:@SelectedDate </h4>
+                }
             </div>
         </div>
     }
-        <br>
-        <hr>
-        <br>
+    <br>
+    <hr>
+    <br>
 }
 
 <EditForm Model="@Notification" OnValidSubmit="AddFirst">
     @*<ObjectGraphDataAnnotationsValidator />
-    <ValidationSummary />*@
+        <ValidationSummary />*@
 
     <h1>Ný tegund tilkynningar</h1>
     <div class="form-group row">
@@ -100,7 +105,7 @@ else
         <h4>Bæta við spurningu:</h4>
     }
     <div class="form-group row form-inline" id="question-box">
-        <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@Notification.QuestionName" /> 
+        <InputText placeholder="Titill spurningar" type="text" class="form-control" id="question-name" @bind-Value="@Notification.QuestionName" />
         <InputSelect @bind-Value="@Notification.QuestionTypeId" id="question-type" class="form-control">
             <option value="">Veldu tegund</option>
             @if (questionTypesList == null)
@@ -166,12 +171,12 @@ else
             </div>
         }
     }
-</EditForm> 
+</EditForm>
 
 
-@if(showEdit)
+@if (showEdit)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog" >
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -185,7 +190,7 @@ else
                             <InputText id="name" class="form-control" @bind-Value="@deleteQuestion.QuestionName" />
                         </div>
                         <div class="form-group">
-                            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
+                            @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
                             {
                                 <label for="deleteOptionName">Nafn valkosts</label>
                                 <InputText id="name" class="form-control" @bind-Value="@option.Options.OptionName" />
@@ -194,8 +199,8 @@ else
                     </EditForm>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn approve-btn" @onclick="(() => UpdateQuestion())" >Uppfæra</button>
-                    <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup(deleteQuestion))" >Eyða</button>
+                    <button type="button" class="btn approve-btn" @onclick="(() => UpdateQuestion())">Uppfæra</button>
+                    <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup(deleteQuestion))">Eyða</button>
                     <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
                 </div>
             </div>
@@ -203,7 +208,7 @@ else
     </div>
 }
 
-@if(showDelete)
+@if (showDelete)
 {
     <div class="modal" tabindex="-1" style="display:block" role="dialog">
         <div class="modal-dialog">
@@ -248,7 +253,7 @@ else
     //Breytur til þess að birta spurningar sem hafa verið sendar inn
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
-    
+
     //Breytur sem halda utan um fjölda spurninga
     private int questionCount = 0;
     private int optionCount = 2;
@@ -301,7 +306,7 @@ else
 
         await qservice.Update(deleteQuestion);
 
-        foreach(var option in optionsList)
+        foreach (var option in optionsList)
         {
             editOption = await opservice.Get(option.OptionId);
             await opservice.Update(editOption);
@@ -321,7 +326,7 @@ else
 
         List<OptionsQuestionAssignmnents> deleteOptionsDown = await oqaservice.Get(deleteQuestionDown.FormId);
 
-        foreach(var option in deleteOptionsDown.Where( option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
+        foreach (var option in deleteOptionsDown.Where(option => option.QuestionOrderNum == deleteQuestionDown.QuestionOrderNum))
         {
             deleteOption = await opservice.Get(option.OptionId);
             await opservice.Delete(deleteOption);
@@ -331,17 +336,17 @@ else
         questionsList = await qfaservice.Get(currentForm.FormId);
         optionsList = await oqaservice.Get(currentForm.FormId);
 
-        foreach(var question in questionsList.Where(question => question.QuestionOrderNum == deleteQuestionCount))
+        foreach (var question in questionsList.Where(question => question.QuestionOrderNum == deleteQuestionCount))
         {
             await qfaservice.Delete(question);
         }
 
-        if(deleteQuestionCount == 2)
+        if (deleteQuestionCount == 2)
         {
             questionCount--;
             firstDeleted = true;
         }
-        else if(deleteQuestionCount == 1)
+        else if (deleteQuestionCount == 1)
         {
             firstDeleted = true;
         }
@@ -349,25 +354,25 @@ else
         {
             questionCount--;
         }
-        
+
         showDelete = false;
         StateHasChanged();
     }
 
     private async void AddFirst()
     {
-        if(questionCount == 0 && firstDeleted == false)
+        if (questionCount == 0 && firstDeleted == false)
         {
-        //Nýju formi bætt við
-        currentForm.FormName = Notification.NewFormName;
-        currentForm = await fiservice.Add(currentForm);
-        questionCount++;
+            //Nýju formi bætt við
+            currentForm.FormName = Notification.NewFormName;
+            currentForm = await fiservice.Add(currentForm);
+            questionCount++;
 
-        //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
-        CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
-        _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
-        _CategoriesAssignments.FormId = currentForm.FormId;
-        await qasservice.Add(_CategoriesAssignments);
+            //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
+            CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
+            _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
+            _CategoriesAssignments.FormId = currentForm.FormId;
+            await qasservice.Add(_CategoriesAssignments);
         }
         else
         {
@@ -390,9 +395,9 @@ else
         await qfaservice.Add(qfa);
 
         //Ef spurningin er með RadioButton eða Checkbox
-        if(currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
+        if (currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
         {
-            //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu  
+            //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu
             currentOption1 = await opservice.Add(currentOption1);
 
             OptionsQuestionAssignmnents OQA = new OptionsQuestionAssignmnents();
@@ -401,7 +406,7 @@ else
             OQA.OptionOrderNum = 1;
             OQA.QuestionOrderNum = questionCount;
             OQA = await oqaservice.Add(OQA);
-            
+
             //Sama og fyrir ofan, nema fyrir option númer 2
             currentOption2 = await opservice.Add(currentOption2);
 
@@ -412,7 +417,7 @@ else
             SecondOQA.QuestionOrderNum = questionCount;
             SecondOQA = await oqaservice.Add(SecondOQA);
 
-            if(!(currentOption3.OptionName == null))
+            if (!(currentOption3.OptionName == null))
             {
                 //Sama og fyrir ofan, nema fyrir option 3
                 currentOption3 = await opservice.Add(currentOption3);
@@ -425,7 +430,7 @@ else
                 ThirdOQA = await oqaservice.Add(ThirdOQA);
             }
 
-            if(!(currentOption4.OptionName == null))
+            if (!(currentOption4.OptionName == null))
             {
                 //Sama og fyrir ofan, nema fyrir option 4
                 currentOption4 = await opservice.Add(currentOption4);
@@ -439,7 +444,7 @@ else
             }
         }
         //Ef þetta er spurning með textainput
-        else{}
+        else { }
 
         ClearAll();
     }
@@ -449,7 +454,7 @@ else
         //Birta þær spurningar sem hafa verið sendar inn
         questionsList = await qfaservice.Get(currentForm.FormId);
         optionsList = await oqaservice.Get(currentForm.FormId);
-        
+
         NotificationInputModel replaceNotification = new NotificationInputModel();
         Notification = replaceNotification;
 
@@ -468,5 +473,12 @@ else
         optionCount = 2;
 
         StateHasChanged();
+    }
+
+    public DateTime SelectedDate { get; set; }
+
+    public void OnDateSelected(DateTime dt)
+    {
+        SelectedDate = dt;
     }
 }
