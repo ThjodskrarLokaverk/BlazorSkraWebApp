@@ -4,6 +4,9 @@
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IJSRuntime jsRuntime
+@using MailKit.Net.Smtp;
+@using MimeKit;
+@inject IMailService service
 
 @if (questionsList == null)
 {
@@ -26,7 +29,7 @@ else
             }
             else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
             {
-                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>
+                    <textarea placeholder="Skrifið hér..." rows="1" cols="60"/> <br>;
             }
             else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
             {
@@ -47,14 +50,17 @@ else
             </div>
         </div>
     }
+    <button type="button" class="btn btn-danger" @onclick="(() => sendMailTest())" >Senda</button>
 }
 
-@code{
+@code {
     [Parameter]
     public string id{ get; set; }
 
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
+    MailForm mailForm = new MailForm();
+    string messageBody = "";
     
     protected override async Task OnInitializedAsync()
     {
@@ -63,4 +69,8 @@ else
         optionsList = await optionservice.Get(FormId);
     }
 
+    void sendMailTest(){
+        var FormId = Int16.Parse(id);
+        service.sendMail(FormId);
+    }
 }
