@@ -3,7 +3,7 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using System
-@using System.Collections
+@using BlazorSkraApp1.Shared.Components
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IOptionsService oservice
@@ -48,15 +48,20 @@ else
                         <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                     }
                 }
+                else if(@question.Questions.QuestionTypes.QuestionTypeName == "Date")
+                {
+                    <DatePicker DateSelected="OnDateSelected"> </DatePicker>
+                    SaveDateValue(SelectedDate, question.QuestionOrderNum);
+                }
                 else
                 {
-                    <h3>Something went wrong...</h3>
+                    <h5>Something went wrong...</h5>
                 }
                 </div>
             </div>
         </div>
     }
-    <button @onclick="SubmitForm">Senda</button>
+    <button @onclick="SubmitForm">Senda inn tilkynningu</button>
 }
 
 @code{
@@ -86,6 +91,18 @@ else
             answers[i] = "";
             answersOrderNum[i] = 0;
         }
+    }
+
+    public DateTime SelectedDate { get; set; }
+
+    public void OnDateSelected(DateTime dt)
+    {
+        SelectedDate = dt;
+    }
+
+    private void SaveDateValue(DateTime selectedDate, int questionOrderNum)
+    {
+        answers[questionOrderNum] = selectedDate.ToShortDateString();
     }
 
     private void SaveRadioValue(string chosenOption, int questionOrderNum, int optionOrderNum)
