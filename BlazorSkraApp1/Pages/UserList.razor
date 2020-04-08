@@ -34,7 +34,7 @@
                                     <button class="btn approve-btn" @onclick="(() => ShowAddPopup(user))">Virkja stjórnanda</button>
                                 }
                             </td>
-                            <td><button class="btn btn-danger" @onclick="(() => DeleteUser(user))">Eyða notanda</button></td>
+                            <td><button class="btn btn-danger" @onclick="(() => ShowDeletePopup(user))">Eyða notanda</button></td>
                         </tr>
                     }
                 </tbody>
@@ -53,8 +53,8 @@
                             <p>Ertu viss um að þú viljir gera @user.UserName að stjórnanda?</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Nei</button>
                             <button type="button" class="btn approve-btn" @onclick="(() => AddAdminRole(user))">Já</button>
+                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Nei</button>
                         </div>
                     </div>
                 </div>
@@ -73,8 +73,28 @@
                             <p>Ertu viss um að þú viljir taka stjórnendaréttindi af @user.UserName?</p>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Nei</button>
                             <button type="button" class="btn approve-btn" @onclick="(() => RemoveAdminRole(user))">Já</button>
+                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Nei</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if(showDeletePopup)
+        {
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Eyða notanda</h5>
+                            <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Ertu viss um að þú viljir eyða notandanum @user.UserName?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn approve-btn" @onclick="(() => DeleteUser(user))">Já</button>
+                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Nei</button>
                         </div>
                     </div>
                 </div>
@@ -100,6 +120,7 @@
     List<IdentityUser> searchList = new List<IdentityUser>();
     bool showAddPopup = false;
     bool showRemovePopup = false;
+    bool showDeletePopup = false;
     private string searchString;
 
     protected override async Task OnInitializedAsync()
@@ -135,6 +156,7 @@
     {
         showAddPopup = false;
         showRemovePopup = false;
+        showDeletePopup = false;
     }
 
     private void ShowAddPopup(IdentityUser pickedUser)
@@ -149,6 +171,12 @@
         showRemovePopup = true;
     }
 
+    private void ShowDeletePopup(IdentityUser pickedUser)
+    {
+        user = pickedUser;
+        showDeletePopup = true;
+    }
+
     async Task DeleteUser(IdentityUser user)
     {
         // Delete user
@@ -156,6 +184,7 @@
 
         // Refresh Users
         await GetUsers();
+        showDeletePopup = false;
     }
 
     async Task AddAdminRole(IdentityUser user)
