@@ -20,7 +20,7 @@ else
 {
     @foreach(var question in questionsList)
     {
-        <div class="container">
+        <div class="container @faded">
             <div class="card">
                 <div class="card-body form-check">
                 <h5 class="card-title">@question.Questions.QuestionName</h5>
@@ -61,9 +61,26 @@ else
             </div>
         </div>
     }
-    <button @onclick="SubmitForm">Senda inn tilkynningu</button>
+    <button class="@faded" @onclick="SubmitForm">Senda inn tilkynningu</button>
 }
-
+@if(confirmation)
+    {
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title"> Staðfesting</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Tilkynningin er skráð og verður komið til skila.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
 @code{
     [Parameter]
     public string id { get; set; }
@@ -77,6 +94,8 @@ else
     string[] answers;
     int[] answersOrderNum;
     List<String> multipleAnswers = new List<String>();
+    bool confirmation = false;
+    string faded = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -145,6 +164,11 @@ else
             submission.FormId = question.FormId;
             submission.QuestionsQuestionId = question.QuestionId;
             await subservice.Add(submission);
+
         }
+
+        faded = "faded";
+        confirmation = true;
+        StateHasChanged();
     }
 }

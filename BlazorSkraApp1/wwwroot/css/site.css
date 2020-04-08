@@ -329,6 +329,10 @@ html, body {
 
 /* Other */
 
+.faded{
+    opacity: 0.1;
+}
+
 .search-button{
     color: black;
 }
