@@ -11,7 +11,7 @@
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
                     <a class="dropdown-item" href="/CreateNotification">Búa til nýja tegund tilkynningar</a>
-                    <a class="dropdown-item" href="/Submissions">Sjá innsendar tilkynningar</a>
+                    <a class="dropdown-item" href="/Submissions/All">Sjá innsendar tilkynningar</a>
                     <a class="dropdown-item" href="/contact">Senda póst </a>
                 </div>
                 </div>
@@ -26,7 +26,7 @@
                     <div class="second-dropdown-wrapper">
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                            <span class=dropdown-item id="username">@context.User.Identity.Name</span>
-                            <a class="dropdown-item" href="#">Innsendar tilkynningar</a>
+                            <a class="dropdown-item" href="/Submissions/Me">Innsendar tilkynningar</a>
                             <form class="logOut" method="post" action="Identity/Account/LogOut">
                                 <button type="submit" class="dropdown-item">Skrá út</button>
                             </form>
