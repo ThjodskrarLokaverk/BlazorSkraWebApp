@@ -11,6 +11,7 @@
 @inject ISubmissionsService subservice
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
+@inject IMailService mailservice
 
 @if (questionsList == null)
 {
@@ -154,6 +155,9 @@ else
         currentUser = (await authenticationStateTask).User;
         submissionsInfo.UserId = currentUser.Identity.Name.ToString();
         submissionsInfo = await subinfoservice.Add(submissionsInfo);
+        // Henda út þessu userEmail þegar við erum búin að útfæra það að
+        // admin setji inn email sem notification submit sendist á.
+        var userEmail = currentUser.Identity.Name.ToString();
 
         foreach(var question in questionsList)
         {
@@ -164,9 +168,16 @@ else
             submission.FormId = question.FormId;
             submission.QuestionsQuestionId = question.QuestionId;
             await subservice.Add(submission);
-
         }
-
+        sendMail(userEmail);
+        faded = "faded";
+        confirmation = true;
+        StateHasChanged();
+    }
+    private void sendMail(string userEmail)
+    {
+        var FormId = Int16.Parse(id);
+        mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail);
         faded = "faded";
         confirmation = true;
         StateHasChanged();
