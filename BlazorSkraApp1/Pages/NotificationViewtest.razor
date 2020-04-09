@@ -10,6 +10,8 @@
 @inject ISubmissionsInfoService subinfoservice
 @inject ISubmissionsService subservice
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IMailService mailservice
+
 @inject IJSRuntime jsRuntime
 
 @if (questionsList == null)
@@ -30,6 +32,7 @@ else
                     {
                         <input class="form-check-input" type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName" @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
                         <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                        
                     }
                 }
                 else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
@@ -76,6 +79,7 @@ else
     Submissions submission = new Submissions();
     string[] answers;
     int[] answersOrderNum;
+ 
     List<String> multipleAnswers = new List<String>();
 
     protected override async Task OnInitializedAsync()
@@ -92,6 +96,7 @@ else
             answersOrderNum[i] = 0;
         }
     }
+    
 
     public DateTime SelectedDate { get; set; }
 
@@ -132,9 +137,13 @@ else
 
     private async void SubmitForm()
     {
+        
         currentUser = (await authenticationStateTask).User;
         submissionsInfo.UserId = currentUser.Identity.Name.ToString();
         submissionsInfo = await subinfoservice.Add(submissionsInfo);
+        // Henda út þessu userEmail þegar við erum búin að útfæra það að
+        // admin setji inn email sem notification submit sendist á.
+        var userEmail = currentUser.Identity.Name.ToString();
 
         foreach(var question in questionsList)
         {
@@ -144,7 +153,13 @@ else
             submission.AnswerOrderNum = answersOrderNum[question.QuestionOrderNum];
             submission.FormId = question.FormId;
             submission.QuestionsQuestionId = question.QuestionId;
-            await subservice.Add(submission);
+            await subservice.Add(submission);          
         }
+        sendMail(userEmail);
+    }
+    private void sendMail(string userEmail)
+    {
+    var FormId = Int16.Parse(id);
+    mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail);
     }
 }
