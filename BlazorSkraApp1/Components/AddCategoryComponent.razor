@@ -1,0 +1,69 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesService service
+
+<AuthorizeView Roles="Admin">
+    <div class="linkboxes">
+        <div class="col-md-4 col-xs-6">
+            <button class="add-category-link boxes btn text-uppercase" @onclick="PopUpDisplayToggle">
+                <span class="oi oi-plus"></span> Búa til flokk
+            </button>
+        </div>
+    </div>
+</AuthorizeView>
+
+
+@if (showPopUp)
+{
+    <div id="addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Bæta við nýjum flokk</h4>
+                    <button type="button" class="close" @onclick="PopUpDisplayToggle">
+                        <span aria-hidden="true">x</span>
+                    </button>
+                </div>
+                <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="categoryName">Nafn flokks</label>
+                            <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
+                            <ValidationMessage For="@(() => newCategory.CategoryName)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn approve-btn">Bæta við</button>
+                        <button type="button" class="btn cancel-btn" @onclick="PopUpDisplayToggle" data-dismiss="modal">Hætta við</button>
+                    </div>
+                    <DataAnnotationsValidator />
+                </EditForm>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public EventCallback<Categories> OnAdd { get; set; }
+
+    Categories newCategory = new Categories();
+    bool showPopUp = false;
+
+    public void PopUpDisplayToggle()
+    {
+        showPopUp = !showPopUp;
+    }
+
+    protected async void AddCategory()
+    {
+        await service.Add(newCategory);
+        PopUpDisplayToggle();
+        //Here we are calling a function in the parent component that takes in an instance of the categories class
+        //We use this to be able to add the category to a list of categories in the parent component dynamically
+        await OnAdd.InvokeAsync(newCategory);
+        newCategory = new Categories();
+    }
+}

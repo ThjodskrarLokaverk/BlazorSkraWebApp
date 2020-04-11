@@ -1,201 +1,66 @@
 ﻿@page "/"
 @using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Services
 @inject ICategoriesService service
 @inject IJSRuntime jsRuntime
 @inject NavigationManager NavigationManager
 
-@if (categories == null)
+@if (categoriesList == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    @foreach (var category in categories)
+    @foreach (var category in categoriesList)
     {
         <div class="linkboxes">
             <div class="col-md-4 col-xs-6">
                 <div class="boxes btn">
                     <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
-                    <AuthorizeView Roles="Admin">
-                        <button class="btn btn-link edit-icon" @onclick="(() => ShowEditPopup(category))" data-toggle="modal" data-target="#confirmDeleteModal" value="Delete" >
-                            <i class="fas fa-pen" title="Modifier"></i>
-                        </button>
-                    </AuthorizeView>
-                </div>
-            </div>
-        </div>
-    }
-    <AuthorizeView Roles="Admin">
-        <div class="linkboxes">
-            <div class="col-md-4 col-xs-6">
-                <button class="add-category-link boxes btn text-uppercase" @onclick="ShowAddPopup">
-                    <span class="oi oi-plus"></span> Búa til flokk
-                </button>
-            </div>
-        </div>
-    </AuthorizeView>
-
-    @if(showAdd)
-    {
-        <div id="addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                        <button type="button" class="close" @onclick="Cancel">
-                            <span aria-hidden="true">x</span>
-                        </button>
-                    </div>
-                    <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
-                        <div class="modal-body">
-
-                            <div class="form-group">
-                                <label for="categoryName">Nafn flokks</label>
-                                
-                                <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
-                                <ValidationMessage For="@(() => newCategory.CategoryName)" />
-                            </div>
-                            <DataAnnotationsValidator />
-
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn approve-btn">Bæta við</button>
-                            <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                        </div>
-                    </EditForm>
+                    <EditCategoryComponent currentCategory="@category" OnEdit="EditCategoryHandler" OnDelete="DeleteCategoryHandler"></EditCategoryComponent>
                 </div>
             </div>
         </div>
     }
 
-    @if(showEdit)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog" >
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Uppfæra / Eyða</h4>
-                        <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times; </button>
-                    </div>
-                    <div class="modal-body">
-                        <EditForm Model="@currentCategory" OnValidSubmit="@UpdateCategory">
-                            <div class="form-group">
-                                <label for="categoryName">Nafn flokks</label>
-                                <input type="hidden" @bind-value="@currentCategory.CategoryName" />
-                                <InputText id="name" class="form-control" @bind-Value="@currentCategory.CategoryName" />
-                            </div>
-                        </EditForm>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn approve-btn" @onclick="(() => UpdateCategory())" >Uppfæra</button>
-                        <button type="button" class="btn btn-danger" @onclick="(() => ShowDeletePopup(currentCategory))" >Eyða</button>
-                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
-
-    @if(showDelete)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Staðfesting</h5>
-                        <button type="button" class="close" data-dismiss="modal" @onclick="Cancel">&times;</button>
-                    </div>
-                    <div class="modal-body">
-                        <p>Ertu viss um að þú viljir eyða flokknum @currentCategory.CategoryName? </p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" @onclick="(() => Delete(currentCategory))">Eyða</button>
-                        <button type="button" class="btn cancel-btn" @onclick="Cancel" data-dismiss="modal">Hætta við</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    }
+    <AddCategoryComponent OnAdd="AddCategoryHandler"></AddCategoryComponent>
 }
 
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
-    List<Categories> categories;
-    Categories newCategory = new Categories();
-    Categories currentCategory = new Categories();
+    List<Categories> categoriesList;
+
     protected override async Task OnInitializedAsync()
     {
+        //Fetch the list of categories from the database
+        categoriesList = await service.Get();
+
         var authenticationState = await AuthenticationStateTask;
-        if(authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
+        if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
         {
             var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
 
-            if(string.IsNullOrWhiteSpace(returnUrl))
-              NavigationManager.NavigateTo("/Identity/Account/Login", true);
+            if (string.IsNullOrWhiteSpace(returnUrl))
+                NavigationManager.NavigateTo("/Identity/Account/Login", true);
             else
-              NavigationManager.NavigateTo("/", true);
+                NavigationManager.NavigateTo("/", true);
         }
-        categories = await service.Get();
-    }
-    bool showAdd = false;
-    bool showDelete = false;
-    bool showEdit = false;
-
-    void ShowAddPopup()
-    {
-        showAdd = true;
     }
 
-    void ShowEditPopup(Categories pickedCategory)
+    void AddCategoryHandler(Categories category)
     {
-        currentCategory = pickedCategory;
-        showEdit = true;
+        categoriesList.Add(category);
     }
 
-    void ShowDeletePopup(Categories cat)
+    void EditCategoryHandler(Categories category)
     {
-        showEdit = false;
-        currentCategory = cat;
-        showDelete = true;
-    }
-    void Cancel()
-    {
-        showAdd = false;
-        showDelete = false;
-        showEdit = false;
+        categoriesList.First(c => c.CategoryId == category.CategoryId).CategoryName = category.CategoryName;
     }
 
-    protected async void AddCategory()
+    void DeleteCategoryHandler(Categories category)
     {
-        await service.Add(newCategory);
-        showAdd = false;
-        DataChanged();
-        newCategory = new Categories();
-    }
-
-    protected async void UpdateCategory()
-    {
-        await service.Update(currentCategory);
-        showEdit = false;
-        DataChanged();
-    }
-
-    private void PrepareForDelete(Categories task)
-    {
-        currentCategory = task;
-    }
-    private async Task Delete(Categories cat)
-    {
-        var task = await service.Delete(cat.CategoryId);
-        DataChanged();
-        showDelete = false;
-    }
-
-    private async void DataChanged()
-    {
-        categories = await service.Get();
-        StateHasChanged();
+        categoriesList.Remove(category);
     }
 }
