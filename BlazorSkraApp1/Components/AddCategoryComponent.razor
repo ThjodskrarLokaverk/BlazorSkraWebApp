@@ -59,8 +59,7 @@
     {
         await service.Add(newCategory);
         PopUpDisplayToggle();
-        //Here we are calling a function in the parent component that takes in an instance of the categories class
-        //We use this to be able to add the category to a list of categories in the parent component dynamically
+        //An instance of the added category is passed to a chosen function in the Parent Component of this component
         await OnAdd.InvokeAsync(newCategory);
         newCategory = new Categories();
     }

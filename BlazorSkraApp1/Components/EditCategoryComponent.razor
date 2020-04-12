@@ -82,22 +82,18 @@
 
     protected async void EditCategory()
     {
-        //Categories editedCategory = currentCategory;
         await service.Update(currentCategory);
         PopUpDisplayToggle();
-        //Here we are calling a function in the parent component that takes in an instance of the categories class
-        //We use this to be able to update the category on the list of categories in the parent component dynamically
+        //An instance of the edited category is passed to a chosen function in the Parent Component of this component
         await OnEdit.InvokeAsync(currentCategory);
     }
 
     protected async void DeleteCategory()
     {
-        //Categories editedCategory = currentCategory;
         await service.Delete(currentCategory.CategoryId);
         DeletePopUpDisplayToggle();
         PopUpDisplayToggle();
-        //Here we are calling a function in the parent component that takes in an instance of the categories class
-        //We use this to be able to update the category on the list of categories in the parent component dynamically
+        //An instance of the deleted category is passed to a chosen function in the Parent Component of this component
         await OnDelete.InvokeAsync(currentCategory);
     }
 }
