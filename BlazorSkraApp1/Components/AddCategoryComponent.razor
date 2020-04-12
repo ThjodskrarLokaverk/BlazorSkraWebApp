@@ -3,7 +3,7 @@
 @using BlazorSkraApp1.Services
 @inject ICategoriesService service
 
-<AuthorizeView Roles="Admin">
+<AuthorizeView Roles="Admin" Context="authContext">
     <div class="linkboxes">
         <div class="col-md-4 col-xs-6">
             <button class="add-category-link boxes btn text-uppercase" @onclick="PopUpDisplayToggle">
@@ -11,39 +11,37 @@
             </button>
         </div>
     </div>
-</AuthorizeView>
 
-
-@if (showPopUp)
-{
-    <div id="addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                    <button type="button" class="close" @onclick="PopUpDisplayToggle">
-                        <span aria-hidden="true">x</span>
-                    </button>
-                </div>
-                <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="categoryName">Nafn flokks</label>
-                            <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
-                            <ValidationMessage For="@(() => newCategory.CategoryName)" />
+    @if (showPopUp)
+    {
+        <div id="addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Bæta við nýjum flokk</h4>
+                        <button type="button" class="close" @onclick="PopUpDisplayToggle">
+                            <span aria-hidden="true">x</span>
+                        </button>
+                    </div>
+                    <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="categoryName">Nafn flokks</label>
+                                <InputText id="name" class="form-control" @bind-Value="@newCategory.CategoryName" />
+                                <ValidationMessage For="@(() => newCategory.CategoryName)" />
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn approve-btn">Bæta við</button>
-                        <button type="button" class="btn cancel-btn" @onclick="PopUpDisplayToggle" data-dismiss="modal">Hætta við</button>
-                    </div>
-                    <DataAnnotationsValidator />
-                </EditForm>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn approve-btn">Bæta við</button>
+                            <button type="button" class="btn cancel-btn" @onclick="PopUpDisplayToggle" data-dismiss="modal">Hætta við</button>
+                        </div>
+                        <DataAnnotationsValidator />
+                    </EditForm>
+                </div>
             </div>
         </div>
-    </div>
-}
-
+    }
+</AuthorizeView>
 
 @code {
     [Parameter]
