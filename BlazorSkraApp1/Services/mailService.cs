@@ -13,7 +13,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void mailBuilder(short FormId,  int submissionId, string userEmail);
+        void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
     }
 
     public class MailService : IMailService
@@ -84,13 +84,22 @@ namespace BlazorSkraApp1.Services
         }
         
     
-        public async void mailBuilder(short FormId,  int submissionId, string userEmail)
+        public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
             questionsList = await GetQuestions(FormId);
             userMail = userEmail;
 
             string newLine = Environment.NewLine;
+
+            if (anonymous == false)
+            {
+                emailBody += "Sendandi tilkynningar: " + userEmail + newLine + newLine;
+            }
+            else
+            {
+                emailBody += "Sendandi tilkynningar óskaði eftir nafnleynd" + newLine + newLine;
+            }
             
             foreach(var question in questionsList)
             {
@@ -100,7 +109,7 @@ namespace BlazorSkraApp1.Services
                 {
                    emailBody += "Svar: " + answer.Answer + newLine + newLine;  
                 }
-            } 
+            }
             sendMail();
         }
 

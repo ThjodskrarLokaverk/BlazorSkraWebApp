@@ -19,12 +19,14 @@
 }
 else
 {
+    <div class="container @faded">
     @foreach(var question in questionsList)
     {
-        <div class="container @faded">
+        <div class="container ">
             <div class="card">
                 <div class="card-body form-check">
                 <h5 class="card-title">@question.Questions.QuestionName</h5>
+
                 @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
                 {
                     @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
@@ -54,6 +56,7 @@ else
                     <DatePicker DateSelected="OnDateSelected"> </DatePicker>
                     SaveDateValue(SelectedDate, question.QuestionOrderNum);
                 }
+                
                 else
                 {
                     <h5>Something went wrong...</h5>
@@ -61,9 +64,14 @@ else
                 </div>
             </div>
         </div>
+
     }
+    <input class="form-check-input @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+    <label for="anonymous"> Vinsamlegast hakaðu við ef þú vilt senda tilkynninguna nafnlaust</label><br>
     <button class="@faded" @onclick="SubmitForm">Senda inn tilkynningu</button>
+    </div>
 }
+
 @if(confirmation)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
@@ -85,6 +93,7 @@ else
 @code{
     [Parameter]
     public string id { get; set; }
+    public bool anonymous { get; set; }
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     System.Security.Claims.ClaimsPrincipal currentUser;
@@ -97,6 +106,8 @@ else
     List<String> multipleAnswers = new List<String>();
     bool confirmation = false;
     string faded = "";
+
+    
 
     protected override async Task OnInitializedAsync()
     {
@@ -150,6 +161,12 @@ else
         answers[questionOrderNum] = combine;
     }
 
+    void updateAnon(bool anon)
+   {
+       anonymous = anon;
+       
+   }
+
     private async void SubmitForm()
     {
         currentUser = (await authenticationStateTask).User;
@@ -177,9 +194,7 @@ else
     private void sendMail(string userEmail)
     {
         var FormId = Int16.Parse(id);
-        mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail);
-        faded = "faded";
-        confirmation = true;
+        mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
         StateHasChanged();
     }
 }
