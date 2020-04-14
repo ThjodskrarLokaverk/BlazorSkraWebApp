@@ -49,16 +49,19 @@ else
         }
     }
 
+    //Dynamically adds categories, created with the AddCategoryComponent
     void AddCategoryHandler(Categories category)
     {
         categoriesList.Add(category);
     }
 
+    //Dynamically edits categories, edited with the EditCategoryComponent
     void EditCategoryHandler(Categories category)
     {
         categoriesList.First(c => c.CategoryId == category.CategoryId).CategoryName = category.CategoryName;
     }
 
+    //Dynamically deletes categories deleted with the EditCategoryComponent
     void DeleteCategoryHandler(Categories category)
     {
         categoriesList.Remove(category);
