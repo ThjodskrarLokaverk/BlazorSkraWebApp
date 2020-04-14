@@ -188,6 +188,36 @@ html, body {
     text-decoration: underline;
 }
 
+/* notification submit page */
+.radio-check-Submit{
+    margin-left: 0px;
+    padding-left: 25px;
+}
+
+.card{
+    border: none;
+    border-radius: none;
+}
+
+.sub-margin{
+    margin-bottom: 10px;
+}
+
+.sub-container{
+    background-color:white;
+    margin:none;
+    border: 1px solid #5e636b;
+
+}
+
+.submit-form{
+    padding: 10px;
+    background-color:#527d2e;
+    color:white;
+    margin-bottom: 30px;
+    margin-left: 20px;
+}
+
 /* dropdown menu */
 .dropdown-toggle::after {
     display: none;
