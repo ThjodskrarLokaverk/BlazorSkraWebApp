@@ -168,9 +168,16 @@ else
    }
 
     private async void SubmitForm()
-    {
+    {   
         currentUser = (await authenticationStateTask).User;
+        if (anonymous == false)
+        {
         submissionsInfo.UserId = currentUser.Identity.Name.ToString();
+        }
+        else
+        {
+            submissionsInfo.UserId = "Anonymous";
+        }
         submissionsInfo = await subinfoservice.Add(submissionsInfo);
         // Henda út þessu userEmail þegar við erum búin að útfæra það að
         // admin setji inn email sem notification submit sendist á.
