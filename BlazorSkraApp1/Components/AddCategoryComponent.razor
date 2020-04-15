@@ -14,14 +14,12 @@
 
     @if (showPopUp)
     {
-        <div id="addCategory" class="modal" style="display:block" tabindex="-1" role="dialog">
+        <div class="modal" tabindex="-1" style="display:block" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h4 class="modal-title">Bæta við nýjum flokk</h4>
-                        <button type="button" class="close" @onclick="PopUpDisplayToggle">
-                            <span aria-hidden="true">x</span>
-                        </button>
+                        <button type="button" class="close" data-dismiss="modal" @onclick="PopUpDisplayToggle">&times;</button>
                     </div>
                     <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
                         <div class="modal-body">

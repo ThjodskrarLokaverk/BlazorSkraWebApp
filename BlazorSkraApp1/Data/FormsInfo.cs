@@ -10,8 +10,8 @@ namespace BlazorSkraApp1.Data
     {
         [Key]
         public int FormId { get; set; }
-        [Required(ErrorMessage = "Velja þarf heiti tilkynningar")] //Form name is required
-        [StringLength(50, ErrorMessage = "Heiti tilkynningar er of langt")] //Name is too long.
+        [Required(ErrorMessage = "Velja þarf heiti tilkynningar")]
+        [StringLength(50, ErrorMessage = "Heiti tilkynningar má ekki innihalda fleiri en 50 stafi")]
         public string FormName { get; set; }
     }
 }

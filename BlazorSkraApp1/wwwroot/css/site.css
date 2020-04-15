@@ -42,13 +42,10 @@ html, body {
     margin-right: 13px;
 }
 
-
-
 .dropdown-content button:focus {
     background-color: #527d2e;
     color: white;
 }
-
 
 .oi-person {
     color: #5e636b;
@@ -60,9 +57,7 @@ html, body {
     color: #527d2e;
 }
 
-
 /* Sidebar */
-
 
 #sidebar a {
     font-weight: 500;
