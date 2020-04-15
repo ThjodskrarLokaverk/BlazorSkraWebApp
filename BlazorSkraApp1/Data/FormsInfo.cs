@@ -13,5 +13,7 @@ namespace BlazorSkraApp1.Data
         [Required(ErrorMessage = "Velja þarf heiti tilkynningar")] //Form name is required
         [StringLength(20, ErrorMessage = "Heiti tilkynningar er of langt")] //Name is too long.
         public string FormName { get; set; }
+        [EmailAddress]
+        public string DestinationEmail { get; set; }
     }
 }
