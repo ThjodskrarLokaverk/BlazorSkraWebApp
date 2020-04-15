@@ -8,7 +8,7 @@
         <i class="fas fa-pen" title="Modifier"></i>
     </button>
 
-    @if (showPopUp)
+    @if (showEditPopUp)
     {
         <div class="modal" tabindex="-1" style="display:block" role="dialog">
             <div class="modal-dialog modal-dialog-centered">
@@ -67,12 +67,12 @@
     public EventCallback<Categories> OnDelete { get; set; }
     [Parameter]
     public Categories currentCategory { get; set; }
-    bool showPopUp = false;
+    bool showEditPopUp = false;
     bool showDeletePopUp = false;
 
     public void PopUpDisplayToggle()
     {
-        showPopUp = !showPopUp;
+        showEditPopUp = !showEditPopUp;
     }
 
     public void DeletePopUpDisplayToggle()
