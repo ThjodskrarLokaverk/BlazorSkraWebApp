@@ -98,6 +98,12 @@ else
             <InputText id="name" class="form-control" @bind-Value="@Notification.NewFormName" />
         </div>
     </div>
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
+        <div class="col-sm-2">
+            <InputText id="email" class="form-control" @bind-Value="@Notification.DestinationEmail" />
+        </div>
+    </div>
     <hr>
     <br>
     @if (!(questionsList == null))
@@ -365,9 +371,9 @@ else
         {
             //Nýju formi bætt við
             currentForm.FormName = Notification.NewFormName;
+            currentForm.DestinationEmail = Notification.DestinationEmail;
             currentForm = await fiservice.Add(currentForm);
             questionCount++;
-
             //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
             CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
             _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);

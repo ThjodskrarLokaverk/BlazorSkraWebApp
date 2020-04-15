@@ -11,6 +11,7 @@ namespace BlazorSkraApp1.Models.InputModels
     {
         public string CategoryId { get; set; }
         public string NewFormName { get; set; }
+        public string DestinationEmail { get; set; }
         public string QuestionName { get; set; }
         public string QuestionTypeId { get; set; }
         public List<Options> Options { get; set; }

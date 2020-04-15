@@ -23,6 +23,7 @@ namespace BlazorSkraApp1.Services
         string emailBody = "";
         List<Submissions> subList;
         string userMail;
+        FormsInfo destinationEmail = new FormsInfo();
 
         
 
@@ -41,7 +42,7 @@ namespace BlazorSkraApp1.Services
             //Sender of email here
             message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
             //receiver of email
-            message.To.Add(new MailboxAddress(userMail));
+            message.To.Add(new MailboxAddress(destinationEmail.DestinationEmail));
             message.Subject = "Tilkynning";
             //aðaltextinn byggður upp
 
@@ -82,12 +83,18 @@ namespace BlazorSkraApp1.Services
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
         }
+
+        public async Task<FormsInfo> GetForm(int formId)
+        {
+            return await _context.FormsInfo.FindAsync(formId);
+        }
         
     
         public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
             questionsList = await GetQuestions(FormId);
+            destinationEmail = await GetForm(FormId);
             userMail = userEmail;
 
             string newLine = Environment.NewLine;
