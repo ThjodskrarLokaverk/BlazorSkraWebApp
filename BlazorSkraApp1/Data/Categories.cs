@@ -10,8 +10,8 @@ namespace BlazorSkraApp1.Data
     {
         [Key]
         public int CategoryId { get; set; }
-        [Required(ErrorMessage = "Velja þarf nafn flokks")] 
-        [StringLength(20, ErrorMessage = "Nafn er of langt")] 
+        [Required(ErrorMessage = "Velja þarf nafn flokks")]
+        [StringLength(20, ErrorMessage = "Nafn flokks má ekki innihalda fleiri en 20 stafi")]
         public string CategoryName { get; set; }
     }
 }
