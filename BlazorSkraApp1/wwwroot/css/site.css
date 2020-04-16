@@ -31,7 +31,7 @@ html, body {
 
 .custom-toggler.navbar-toggler {
     border-color: #5e636b;
-    margin-left: 23 px;
+    margin-left: 23px;
 }
 
 .custom-toggler .navbar-toggler-icon {
@@ -140,33 +140,45 @@ html, body {
     margin: 0 auto;
 }
 
-#question-box {
+.textbox {
+    width: 90%;
+}
+
+.question-wrapper {
     border: solid 1px;
     border-radius: 0.1cm;
     border-color: #ccd4dc;
-    height: 100px;
     margin-left: 0;
     background-color: white;
     margin-right: -1px;
 }
 
+.option-wrapper {
+    padding: 30px;
+}
+
+#question-box {
+    height: 110px;
+}
+
 #question-name {
     width: 60%;
-    margin: 10px;
+    margin: 15px;
 }
 
 #question-type {
     width: 25%;
-    margin: 10px;
+    margin: 15px;
 }
 
-.question-icons {
+#save-icon {
+    float: right;
     font-size: 25px;
     margin: 10px;
     color: #5e636b;
 }
 
-.question-icons:hover {
+#save-icon:hover {
     color: #527d2e;
 }
 
@@ -181,6 +193,35 @@ html, body {
 
 #add-question-link:hover {
     text-decoration: underline;
+}
+
+#question-title {
+    display: inline;
+}
+
+#title-edit {
+    width: 91%;
+    margin: 0;
+    overflow: auto;
+}
+
+#i-pen {
+    float: right;
+    cursor: pointer;
+    color: #5e636b;
+}
+
+#i-pen:hover {
+    color: #527d2e;
+}
+
+#trash-icon {
+    cursor: pointer;
+    color: #5e636b;
+}
+
+#trash-icon:hover {
+    color: #527d2e;
 }
 
 /* notification submit page */
