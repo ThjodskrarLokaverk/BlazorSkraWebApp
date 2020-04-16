@@ -41,6 +41,12 @@
                 <InputText id="name" class="form-control" @bind-Value="@Notification.NewFormName" />
             </div>
         </div>
+        <div class="form-group row">
+          <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
+          <div class="col-sm-2">
+              <InputText id="email" class="form-control" @bind-Value="@Notification.DestinationEmail" />
+          </div>
+        </div>
         @if (questionsList == null)
         { }
         else
