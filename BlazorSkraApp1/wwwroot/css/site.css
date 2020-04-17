@@ -171,11 +171,26 @@ html, body {
     margin: 15px;
 }
 
+#question-name-validation {
+    width: 60%;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: -15px;
+}
+
+#question-type-validation {
+    width: 25%;
+    margin-left: 15px;
+    margin-top: -15px;
+}
+
 #save-icon {
     float: right;
     font-size: 25px;
     margin: 10px;
     color: #5e636b;
+    border: solid;
+    border-color: red;
 }
 
 #save-icon:hover {
@@ -248,8 +263,6 @@ html, body {
 
 .submit-form{
     padding: 10px;
-    background-color:#527d2e;
-    color:white;
     margin-bottom: 30px;
     margin-left: 20px;
 }

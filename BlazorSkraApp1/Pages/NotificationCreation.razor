@@ -33,18 +33,21 @@
                         }
                     }
                 </InputSelect>
+                <ValidationMessage For="@(() => Notification.CategoryId)" />
             </div>
         </div>
         <div class="form-group row">
             <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
             <div class="col-sm-10">
                 <InputText id="name" class="form-control" @bind-Value="@Notification.NewFormName" />
+                <ValidationMessage For="@(() => Notification.NewFormName)" />
             </div>
         </div>
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
-          <div class="col-sm-2">
+          <div class="col-sm-10">
               <InputText id="email" class="form-control" @bind-Value="@Notification.DestinationEmail" />
+              <ValidationMessage For="@(() => Notification.DestinationEmail)" />
           </div>
         </div>
         @if (questionsList == null)
@@ -134,6 +137,8 @@
                         <button type="submit" id="save-icon" class="btn btn-link">
                             <i class="fas fa-save"></i>
                         </button>
+                        <ValidationMessage id="question-name-validation" For="@(() => Notification.QuestionName)" />
+                        <ValidationMessage id="question-type-validation" For="@(() => Notification.QuestionTypeId)" />
                     </div>
                 </div>
                 @if (Notification.QuestionTypeId == "2" || Notification.QuestionTypeId == "5")
@@ -201,6 +206,7 @@
         <button class="btn approve-btn">Vista tegund tilkynningar</button>
         <button class="btn btn-danger">Eyða tegund tilkynningar</button>
         <br><br>
+        <DataAnnotationsValidator />
     </EditForm>
 
 
@@ -292,7 +298,6 @@
         bool showDelete = false;
         bool showEdit = false;
         bool firstDeleted = false;
-        bool first = true;
 
         protected override async Task OnInitializedAsync()
         {

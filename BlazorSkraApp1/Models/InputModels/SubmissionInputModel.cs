@@ -9,6 +9,7 @@ namespace BlazorSkraApp1.Models.InputModels
 {
     public class SubmissionInputModel
     {
+
         public int FormId;
         public string[] Answers;
         public int[] AnswersOrderNum;
