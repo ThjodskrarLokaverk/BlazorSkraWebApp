@@ -10,12 +10,12 @@ namespace BlazorSkraApp1.Data
     {
         [Key]
         public int QuestionId { get; set; }
-        [Required(ErrorMessage = "Question name is required")]
-        [StringLength(50, ErrorMessage = "Name is too long.")]
+        [Required(ErrorMessage = "Fylla þarf út spurningu")]
+        [StringLength(50, ErrorMessage = "Spurning má ekki innihalda fleiri en 50 stafi")]
         public string QuestionName { get; set; }
 
         //public int QuestionTypeId { get; set; }
-        [Required(ErrorMessage = "Question has to have a valid type")]
+        [Required(ErrorMessage = "Velja þarf spurningategund")]
         public QuestionTypes QuestionTypes { get; set; }
     }
 }
