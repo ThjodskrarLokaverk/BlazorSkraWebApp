@@ -363,6 +363,12 @@ html, body {
     opacity: 0.1;
 }
 
+#success-icon{
+    color: white;
+    height: 20px;
+    width: 20px;
+}
+
 .search-button{
     color: black;
 }
