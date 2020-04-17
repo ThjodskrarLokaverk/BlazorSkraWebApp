@@ -397,6 +397,7 @@
             {
                 //Nýju formi bætt við
                 currentForm.FormName = Notification.NewFormName;
+                currentForm.DestinationEmail = Notification.DestinationEmail;
                 currentForm = await fiservice.Add(currentForm);
                 questionCount++;
 
@@ -414,8 +415,7 @@
             //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
             Questions currentQuestion = new Questions();
             QuestionTypes _QuestionTypes = new QuestionTypes();
-            int temp = Int32.Parse(Notification.QuestionTypeId);
-            _QuestionTypes = await qtservice.Get(temp);
+            _QuestionTypes = await qtservice.Get(Int32.Parse(Notification.QuestionTypeId));
             currentQuestion.QuestionName = Notification.QuestionName;
             currentQuestion.QuestionTypes = _QuestionTypes;
             currentQuestion = await qservice.Add(currentQuestion);
@@ -491,6 +491,7 @@
             NotificationInputModel replaceNotification = new NotificationInputModel();
             replaceNotification.NewFormName = Notification.NewFormName;
             replaceNotification.CategoryId = Notification.CategoryId;
+            replaceNotification.DestinationEmail = Notification.DestinationEmail;
             Notification = replaceNotification;
 
             Options replaceOption1 = new Options();
