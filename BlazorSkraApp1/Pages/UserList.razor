@@ -127,12 +127,12 @@
 </AuthorizeView>
 
 @code {
-    // Property used to add or edit the currently selected user
-    IdentityUser selectedUser = new IdentityUser();
     // Collection to display the existing users
     List<IdentityUser> userList;
     // Collection to display the admin users
     List<IdentityUser> adminUsersList;
+    // Property used to add or edit the currently selected user
+    IdentityUser selectedUser = new IdentityUser();
     private string searchString;
 
     protected override async Task OnInitializedAsync()
