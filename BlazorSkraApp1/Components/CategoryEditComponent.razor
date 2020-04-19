@@ -1,0 +1,86 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesService service
+@inject IJSRuntime jsRuntime
+
+<AuthorizeView Roles="Admin" Context="authContext">
+    <!-- Edit Category popup modal -->
+    <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Breyta flokk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <EditForm Model="@categoryModel" OnValidSubmit="@EditCategory">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="categoryName">Nafn flokks</label>
+                            <InputText id="name" class="form-control" @bind-Value="@categoryModel.CategoryName" />
+                            <ValidationMessage For="@(() => categoryModel.CategoryName)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn approve-btn" aria-labelledby="Submit">Uppfæra</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" aria-labelledby="Delete" data-toggle="modal" data-target="#confirmationModal">Eyða</button>
+                        <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-labelledby="Close">Hætta við</button>
+                    </div>
+                    <DataAnnotationsValidator />
+                </EditForm>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Category popup -->
+    <ConfirmationModalComponent OnClick="DeleteCategory">
+        <CustomHeader>Eyða flokk</CustomHeader>
+        <CustomBody>Ertu viss um að þú viljir eyða flokknum @(selectedCategory.CategoryName)?</CustomBody>
+        <CustomButtonText>Eyða</CustomButtonText>
+    </ConfirmationModalComponent>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public EventCallback<Categories> OnEdit { get; set; }
+    [Parameter]
+    public EventCallback<Categories> OnDelete { get; set; }
+    [Parameter]
+    public Categories selectedCategory { get; set; }
+    Categories categoryModel = new Categories();
+
+    //This function runs when the parent component sets or resets the parameters
+    protected override void OnParametersSet()
+    {
+        categoryModel.CategoryName = selectedCategory.CategoryName;
+    }
+
+    protected async void EditCategory()
+    {
+        //Save made changes to the selectedCategory
+        selectedCategory.CategoryName = categoryModel.CategoryName;
+
+        //Update the category in the database
+        await service.Update(selectedCategory);
+
+        //Update data in parent component
+        await OnEdit.InvokeAsync(selectedCategory);
+
+        await CloseModal("editCategoryModal");
+    }
+
+    protected async void DeleteCategory()
+    {
+        await service.Delete(selectedCategory.CategoryId);
+        //Update data in parent component
+        await OnDelete.InvokeAsync(selectedCategory);
+    }
+
+    //Closes the modal with the id modalID
+    private async Task CloseModal(string modalId)
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", modalId);
+    }
+}
