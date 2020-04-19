@@ -15,7 +15,7 @@ html, body {
 
 .edit-notification {
     float: left;
-    margin-left: 10px;
+    margin-top:20px;
 }
 
 #a-tag {
@@ -537,6 +537,14 @@ app {
     color: #527d2e;
       
  }
+
+#ExceptionModal{
+    color: red;
+}
+
+#modal-content-exception{
+    border: solid red;
+}
 
 @media (max-width: 767.98px) {
     .main .top-row:not(.auth) {

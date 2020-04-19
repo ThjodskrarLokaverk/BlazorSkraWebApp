@@ -58,7 +58,14 @@ else
     //Dynamically edits categories, edited with the EditCategoryComponent
     void EditCategoryHandler(Categories category)
     {
-        categoriesList.First(c => c.CategoryId == category.CategoryId).CategoryName = category.CategoryName;
+        try
+        {
+           categoriesList.First(c => c.CategoryId == category.CategoryId).CategoryName = category.CategoryName; 
+        }
+        catch (Exception)
+        {
+            
+        }
     }
 
     //Dynamically deletes categories deleted with the EditCategoryComponent
