@@ -5,7 +5,12 @@
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
-                <p>Sorry, there's nothing at this address.</p>
+                @*<h3 class="text-center">Síða fannst ekki</h3>
+                <p class="text-center">Því miður gátum við ekki fundið síðuna sem þú baðst um</p>
+                <a class="btn approve-btn btn-lg d-flex justify-content-center vert" href="/" role="button">Fara á forsíðu</a>*@
+                <h3 class="text-center">Page not found</h3>
+                <p class="text-center">Unfortunately the page you requested can not be found</p>
+                <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Go to front page</a>
             </LayoutView>
         </NotFound>
     </Router>
