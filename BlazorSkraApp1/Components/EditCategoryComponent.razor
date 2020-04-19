@@ -82,18 +82,40 @@
 
     protected async void EditCategory()
     {
-        await service.Update(currentCategory);
-        PopUpDisplayToggle();
-        //An instance of the edited category is passed to a chosen function in the Parent Component of this component
-        await OnEdit.InvokeAsync(currentCategory);
+        try{
+            await service.Update(currentCategory);
+            PopUpDisplayToggle();
+            //An instance of the edited category is passed to a chosen function in the Parent Component of this component
+            await OnEdit.InvokeAsync(currentCategory);
+        }
+
+        catch(System.InvalidOperationException)
+        {
+            // catch exception that occurs when user click twice on the modifier pen when updating category. 
+            //Doesn't have affect on the application
+        }
+        catch(Exception)
+        {
+            // unhandled Exception 
+            // ættum við kannski að gera pop up glugga sem segir að mögulega hafi eitthvað farið úrskeiðis, vinsamlegast athugaðu það og reyndu aftur ef þörf er á?
+            // 
+        }
     }
 
     protected async void DeleteCategory()
     {
-        await service.Delete(currentCategory.CategoryId);
-        DeletePopUpDisplayToggle();
-        PopUpDisplayToggle();
-        //An instance of the deleted category is passed to a chosen function in the Parent Component of this component
-        await OnDelete.InvokeAsync(currentCategory);
-    }
+        try
+        {
+            await service.Delete(currentCategory.CategoryId);
+            DeletePopUpDisplayToggle();
+            PopUpDisplayToggle();
+            //An instance of the deleted category is passed to a chosen function in the Parent Component of this component
+            await OnDelete.InvokeAsync(currentCategory);
+        }
+        catch(Exception)
+        {
+            // Catches Exception that occurs when user click twice on "eyða". Doesn't have any affect on the application.Exception
+            // log into log file?
+        }
+    }   
 }

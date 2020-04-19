@@ -55,10 +55,17 @@
 
     protected async void AddCategory()
     {
-        await service.Add(newCategory);
-        PopUpDisplayToggle();
-        //An instance of the added category is passed to a chosen function in the Parent Component of this component
-        await OnAdd.InvokeAsync(newCategory);
-        newCategory = new Categories();
+        try
+        {
+            await service.Add(newCategory);
+            PopUpDisplayToggle();
+            //An instance of the added category is passed to a chosen function in the Parent Component of this component
+            await OnAdd.InvokeAsync(newCategory);
+            newCategory = new Categories();
+        }
+        catch(System.InvalidOperationException)
+        {
+            //catches when user click twice on add category. Doesn't have any affects on the application.
+        }
     }
 }

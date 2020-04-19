@@ -398,93 +398,100 @@
 
         private async void AddFirst()
         {
-            if (questionCount == 0 && firstDeleted == false)
-            {
-                //Nýju formi bætt við
-                currentForm.FormName = Notification.NewFormName;
-                currentForm.DestinationEmail = Notification.DestinationEmail;
-                currentForm = await fiservice.Add(currentForm);
-                questionCount++;
-
-                //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
-                CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
-                _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
-                _CategoriesAssignments.FormId = currentForm.FormId;
-                await qasservice.Add(_CategoriesAssignments);
-            }
-            else
-            {
-                questionCount++;
-            }
-
-            //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
-            Questions currentQuestion = new Questions();
-            QuestionTypes _QuestionTypes = new QuestionTypes();
-            _QuestionTypes = await qtservice.Get(Int32.Parse(Notification.QuestionTypeId));
-            currentQuestion.QuestionName = Notification.QuestionName;
-            currentQuestion.QuestionTypes = _QuestionTypes;
-            currentQuestion = await qservice.Add(currentQuestion);
-
-            //Búið til eintak af QuestionsFormAssignments. CurrentQuestion tengd við form og sagt til um númer hvað spurningin er
-            QuestionsFormAssignments qfa = new QuestionsFormAssignments();
-            qfa.FormId = currentForm.FormId;
-            qfa.QuestionId = currentQuestion.QuestionId;
-            qfa.QuestionOrderNum = questionCount;
-            await qfaservice.Add(qfa);
-
-            //Ef spurningin er með RadioButton eða Checkbox
-            if (currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
-            {
-                //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu
-                currentOption1 = await opservice.Add(currentOption1);
-
-                OptionsQuestionAssignmnents OQA = new OptionsQuestionAssignmnents();
-                OQA.OptionId = currentOption1.OptionId;
-                OQA.FormId = currentForm.FormId;
-                OQA.OptionOrderNum = 1;
-                OQA.QuestionOrderNum = questionCount;
-                OQA = await oqaservice.Add(OQA);
-
-                //Sama og fyrir ofan, nema fyrir option númer 2
-                currentOption2 = await opservice.Add(currentOption2);
-
-                OptionsQuestionAssignmnents SecondOQA = new OptionsQuestionAssignmnents();
-                SecondOQA.OptionId = currentOption2.OptionId;
-                SecondOQA.FormId = currentForm.FormId;
-                SecondOQA.OptionOrderNum = 2;
-                SecondOQA.QuestionOrderNum = questionCount;
-                SecondOQA = await oqaservice.Add(SecondOQA);
-
-                if (!(currentOption3.OptionName == null))
+            try{
+                if (questionCount == 0 && firstDeleted == false)
                 {
-                    //Sama og fyrir ofan, nema fyrir option 3
-                    currentOption3 = await opservice.Add(currentOption3);
+                    //Nýju formi bætt við
+                    currentForm.FormName = Notification.NewFormName;
+                    currentForm.DestinationEmail = Notification.DestinationEmail;
+                    currentForm = await fiservice.Add(currentForm);
+                    questionCount++;
 
-                    OptionsQuestionAssignmnents ThirdOQA = new OptionsQuestionAssignmnents();
-                    ThirdOQA.OptionId = currentOption3.OptionId;
-                    ThirdOQA.FormId = currentForm.FormId;
-                    ThirdOQA.OptionOrderNum = 3;
-                    ThirdOQA.QuestionOrderNum = questionCount;
-                    ThirdOQA = await oqaservice.Add(ThirdOQA);
+                    //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
+                    CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
+                    _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
+                    _CategoriesAssignments.FormId = currentForm.FormId;
+                    await qasservice.Add(_CategoriesAssignments);
+                }
+                else
+                {
+                    questionCount++;
                 }
 
-                if (!(currentOption4.OptionName == null))
+                //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
+                Questions currentQuestion = new Questions();
+                QuestionTypes _QuestionTypes = new QuestionTypes();
+                _QuestionTypes = await qtservice.Get(Int32.Parse(Notification.QuestionTypeId));
+                currentQuestion.QuestionName = Notification.QuestionName;
+                currentQuestion.QuestionTypes = _QuestionTypes;
+                currentQuestion = await qservice.Add(currentQuestion);
+
+                //Búið til eintak af QuestionsFormAssignments. CurrentQuestion tengd við form og sagt til um númer hvað spurningin er
+                QuestionsFormAssignments qfa = new QuestionsFormAssignments();
+                qfa.FormId = currentForm.FormId;
+                qfa.QuestionId = currentQuestion.QuestionId;
+                qfa.QuestionOrderNum = questionCount;
+                await qfaservice.Add(qfa);
+
+                //Ef spurningin er með RadioButton eða Checkbox
+                if (currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
                 {
-                    //Sama og fyrir ofan, nema fyrir option 4
-                    currentOption4 = await opservice.Add(currentOption4);
+                    //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu
+                    currentOption1 = await opservice.Add(currentOption1);
 
-                    OptionsQuestionAssignmnents FourthOQA = new OptionsQuestionAssignmnents();
-                    FourthOQA.OptionId = currentOption4.OptionId;
-                    FourthOQA.FormId = currentForm.FormId;
-                    FourthOQA.OptionOrderNum = 4;
-                    FourthOQA.QuestionOrderNum = questionCount;
-                    FourthOQA = await oqaservice.Add(FourthOQA);
+                    OptionsQuestionAssignmnents OQA = new OptionsQuestionAssignmnents();
+                    OQA.OptionId = currentOption1.OptionId;
+                    OQA.FormId = currentForm.FormId;
+                    OQA.OptionOrderNum = 1;
+                    OQA.QuestionOrderNum = questionCount;
+                    OQA = await oqaservice.Add(OQA);
+
+                    //Sama og fyrir ofan, nema fyrir option númer 2
+                    currentOption2 = await opservice.Add(currentOption2);
+
+                    OptionsQuestionAssignmnents SecondOQA = new OptionsQuestionAssignmnents();
+                    SecondOQA.OptionId = currentOption2.OptionId;
+                    SecondOQA.FormId = currentForm.FormId;
+                    SecondOQA.OptionOrderNum = 2;
+                    SecondOQA.QuestionOrderNum = questionCount;
+                    SecondOQA = await oqaservice.Add(SecondOQA);
+
+                    if (!(currentOption3.OptionName == null))
+                    {
+                        //Sama og fyrir ofan, nema fyrir option 3
+                        currentOption3 = await opservice.Add(currentOption3);
+
+                        OptionsQuestionAssignmnents ThirdOQA = new OptionsQuestionAssignmnents();
+                        ThirdOQA.OptionId = currentOption3.OptionId;
+                        ThirdOQA.FormId = currentForm.FormId;
+                        ThirdOQA.OptionOrderNum = 3;
+                        ThirdOQA.QuestionOrderNum = questionCount;
+                        ThirdOQA = await oqaservice.Add(ThirdOQA);
+                    }
+
+                    if (!(currentOption4.OptionName == null))
+                    {
+                        //Sama og fyrir ofan, nema fyrir option 4
+                        currentOption4 = await opservice.Add(currentOption4);
+
+                        OptionsQuestionAssignmnents FourthOQA = new OptionsQuestionAssignmnents();
+                        FourthOQA.OptionId = currentOption4.OptionId;
+                        FourthOQA.FormId = currentForm.FormId;
+                        FourthOQA.OptionOrderNum = 4;
+                        FourthOQA.QuestionOrderNum = questionCount;
+                        FourthOQA = await oqaservice.Add(FourthOQA);
+                    }
                 }
-            }
-            //Ef þetta er spurning með textainput
-            else { }
+                //Ef þetta er spurning með textainput
+                else { }
 
-            ClearAll();
+                ClearAll();
+            }
+            catch(Exception)
+            {
+                // Catch Exception that occur when user push twice on save button - it doesn't have any affect.
+                //hér gætum við sett inn log  í logfile??
+            }
         }
 
         private async void ClearAll()
