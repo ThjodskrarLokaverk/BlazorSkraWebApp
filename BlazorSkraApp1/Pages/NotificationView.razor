@@ -31,15 +31,20 @@ else
 
                         @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
                         {
-                            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                            {
-                                <input class="form-check-input radio-check-Submit" type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName" @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
-                                <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
-                            }
+                            <fieldset id="radio-group">
+                                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                {
+                                    <input class="form-check-input radio-check-Submit" type="radio" name="radio-group" value="@option.Options.OptionName"
+                                        @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
+                                    <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                }
+                            </fieldset>
+                            
                         }
                         else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
                         {
-                            <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum]" @bind-value:event="oninput"/>
+                            <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox required" @bind-value="@submissionInput.Answers[question.QuestionOrderNum]" @bind-value:event="oninput"/>
+                            <ValidationMessage For="@(() => submissionInput.Answers)" />
                         }
                         else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
                         {
@@ -67,6 +72,7 @@ else
                     </div>
                 </div>
             }
+            <DataAnnotationsValidator />
         </EditForm>
         <div class="container">
             <div class="card sub-margin">

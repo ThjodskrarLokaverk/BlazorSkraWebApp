@@ -16,6 +16,7 @@ namespace BlazorSkraApp1.Models.InputModels
         [StringLength(50, ErrorMessage = "Heiti tilkynningar má ekki innihalda fleiri en 50 stafi")]
         public string NewFormName { get; set; }
         [Required(ErrorMessage = "Velja þarf netfang sem tekur við útfylltum eyðublöðum")]
+        [EmailAddress(ErrorMessage = "Þetta tölvupóstfang er ekki til")]
         public string DestinationEmail { get; set; }
         [Required(ErrorMessage = "Velja þarf titil spurningar")]
         [StringLength(50, ErrorMessage = "Spurning má ekki innihalda fleiri en 50 stafi")]
