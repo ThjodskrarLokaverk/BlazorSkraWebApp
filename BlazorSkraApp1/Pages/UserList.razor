@@ -1,4 +1,5 @@
 @page "/UserList"
+@using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Services
 @using Microsoft.AspNetCore.Identity;
 @inject IAdminService service
@@ -18,8 +19,8 @@
                     <thead id="user-thead">
                         <tr>
                             <th class="text-uppercase">
-                                 Nafn 
-                                <button class="btn up-down" @onclick="(() => SortUsersAscending())"><i class="fas fa-sort-alpha-up"></i> </button> 
+                                Nafn
+                                <button class="btn up-down" @onclick="(() => SortUsersAscending())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
                             <th class="text-uppercase">Netfang</th>
                             <th class="text-uppercase">Breyta hlutverki</th>
@@ -41,13 +42,13 @@
                                     }
                                     else
                                     {
-                                        <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#addAdminModal" class="btn approve-btn">
+                                        <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#makeAdminModal" class="btn approve-btn">
                                             Virkja stjórnanda
                                         </button>
                                     }
                                 </td>
                                 <td>
-                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#deleteUserModal" class="btn btn-danger">
+                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn btn-danger">
                                         Eyða notanda
                                     </button>
                                 </td>
@@ -57,68 +58,15 @@
                 </table>
             </div>
 
-            <!-- Add user to admin role popup -->
-            <div class="modal fade" id="addAdminModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Setja í stjórnendahlutverk</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Ertu viss um að þú viljir gera @selectedUser.UserName að stjórnanda?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close" @onclick="(() => AddAdminRole(selectedUser))">Já</button>
-                            <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Add and remove user from admin role popup modal -->
+            <UserAdminRoleToggleComponent selectedUser="selectedUser" OnMakeAdmin="MakeAdminHandler" OnRemoveAdmin="RemoveAdminHandler"></UserAdminRoleToggleComponent>
 
-            <!-- Remove user from admin role popup -->
-            <div class="modal fade" id="removeAdminModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Fjarlægja úr stjórnendahlutverki</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Ertu viss um að þú viljir fjarlægja @selectedUser.UserName úr stjórnendahlutverki?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close" @onclick="(() => RemoveAdminRole(selectedUser))">Já</button>
-                            <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- delete user popup -->
-            <div class="modal fade" id="deleteUserModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalTitle">Eyða notanda</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">
-                            <p>Ertu viss um að þú viljir eyða notandanum @(selectedUser.UserName)?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close" @onclick="(() => DeleteUser(selectedUser))">Já</button>
-                            <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- Delete Category popup modal -->
+            <ConfirmationModalComponent OnClick="DeleteUser">
+                <CustomHeader>Eyða notanda</CustomHeader>
+                <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.UserName)?</CustomBody>
+                <CustomButtonText>Eyða</CustomButtonText>
+            </ConfirmationModalComponent>
         }
     </Authorized>
     <NotAuthorized>
@@ -127,9 +75,9 @@
 </AuthorizeView>
 
 @code {
-    // Collection to display the existing users
+    // Collection to display the users
     List<IdentityUser> userList;
-    // Collection to display the admin users
+    // Collection containing admin users
     List<IdentityUser> adminUsersList;
     // Property used to add or edit the currently selected user
     IdentityUser selectedUser = new IdentityUser();
@@ -137,18 +85,10 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetAdminUsers();
-        await GetUsers();
-    }
-
-    async Task GetUsers()
-    {
-        userList = await service.Get();
-    }
-
-    async Task GetAdminUsers()
-    {
+        //Get a list of admin users
         adminUsersList = await service.GetAdminUsers();
+        //Get a list of users
+        userList = await service.Get();
     }
 
     private void SelectUser(IdentityUser user)
@@ -156,27 +96,27 @@
         selectedUser = user;
     }
 
-    //Add user to the Admin role
-    async Task AddAdminRole(IdentityUser user)
+    protected async void DeleteUser()
     {
-        await service.AddAdminRole(user);
+        try
+        {
+            await service.Delete(selectedUser);
+            userList.Remove(selectedUser);
+        }
+        catch(Exception)
+        {
+
+        }
+    }
+
+    protected void MakeAdminHandler(IdentityUser user)
+    {
         adminUsersList.Add(user);
-        StateHasChanged();
     }
 
-    //Remove user from the Admin role
-    async Task RemoveAdminRole(IdentityUser user)
+    protected void RemoveAdminHandler(IdentityUser user)
     {
-        await service.RemoveAdminRole(user);
         adminUsersList.Remove(user);
-        StateHasChanged();
-    }
-
-    async Task DeleteUser(IdentityUser user)
-    {
-        await service.Delete(user);
-        userList.Remove(user);
-        StateHasChanged();
     }
 
     async Task SearchUsers()
@@ -197,4 +137,4 @@
         userList = userList.OrderByDescending(x => x.UserName).ToList();
         StateHasChanged();
     }
-}
+    }
