@@ -7,13 +7,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.AspNetCore.Identity;
 using MailKit.Net.Smtp;
 using MimeKit;
-
+using Microsoft.JSInterop;
+using BlazorSkraApp1.Reports;
+using BlazorSkraApp1.Models.InputModels;
 
 namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
         void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
+        void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
     public class MailService : IMailService
@@ -24,8 +27,6 @@ namespace BlazorSkraApp1.Services
         List<Submissions> subList;
         string userMail;
         FormsInfo destinationEmail = new FormsInfo();
-
-        
 
         private readonly ApplicationDbContext _context;
 
@@ -60,7 +61,7 @@ namespace BlazorSkraApp1.Services
             }
         }
 
-         public async Task<List<Submissions>> GetAnswers(int submissionId)
+        public async Task<List<Submissions>> GetAnswers(int submissionId)
         {
             return await _context.Submissions
                 .Include(i => i.Submission)
@@ -75,7 +76,7 @@ namespace BlazorSkraApp1.Services
             return categories;
         }
 
-         public async Task<List<QuestionsFormAssignments>> GetQuestions(int formId)
+        public async Task<List<QuestionsFormAssignments>> GetQuestions(int formId)
         {
             return await _context.QuestionsFormAssignments
                 .Where(f => f.FormId == formId)
@@ -118,6 +119,34 @@ namespace BlazorSkraApp1.Services
                 }
             }
             sendMail();
+        }
+
+        public async void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
+        {
+            subList = await GetAnswers(submissionId);
+            questionsList = await GetQuestions(FormId);
+            var Form = await GetForm(FormId);
+            userMail = userEmail;
+            List<Report> iReport = new List<Report>();
+
+            foreach(var question in questionsList)
+            {      
+                foreach(var answer in subList.Where(answer => answer.QuestionsQuestionId == question.Questions.QuestionId))
+                {
+                   iReport.Add(new Report(){ UserName = userEmail, FormName = Form.FormName, Question = question.Questions.QuestionName, Answer = answer.Answer});
+                }
+            }
+
+            GeneratePDF(js, iReport);
+        }
+
+        public void GeneratePDF(IJSRuntime js, List<Report> iReport)
+        {
+            PrepareReport iPrepareReport = new PrepareReport();
+            js.InvokeAsync<Report>(
+                "SaveAsFile",
+                "Submission.pdf",
+                Convert.ToBase64String(iPrepareReport.PDFReport(iReport)));
         }
 
     }
