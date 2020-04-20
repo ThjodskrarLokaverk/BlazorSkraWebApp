@@ -35,7 +35,7 @@
     </div>
 
     <!-- Delete Category popup -->
-    <ConfirmationModalComponent OnClick="DeleteCategory">
+    <ConfirmationModalComponent OnClick="DeleteCategoryHandler">
         <CustomHeader>Eyða flokk</CustomHeader>
         <CustomBody>Ertu viss um að þú viljir eyða flokknum @(selectedCategory.CategoryName)?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
@@ -85,7 +85,7 @@
         }
     }
 
-    protected async void DeleteCategory()
+    protected async void DeleteCategoryHandler()
     {
         try
         {
