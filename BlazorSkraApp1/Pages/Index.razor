@@ -1,69 +1,27 @@
 ﻿@page "/"
-@using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Components
-@using BlazorSkraApp1.Services
-@inject ICategoriesService service
-@inject IJSRuntime jsRuntime
 @inject NavigationManager NavigationManager
 
-@if (categoriesList == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    @foreach (var category in categoriesList)
-    {
-        <div class="linkboxes">
-            <div class="col-md-4 col-xs-6">
-                <div class="boxes btn">
-                    <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
-                    <EditCategoryComponent currentCategory="@category" OnEdit="EditCategoryHandler" OnDelete="DeleteCategoryHandler"></EditCategoryComponent>
-                </div>
-            </div>
-        </div>
-    }
-
-    <AddCategoryComponent OnAdd="AddCategoryHandler"></AddCategoryComponent>
-}
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <CategoryAdminViewComponent></CategoryAdminViewComponent>
+    </Authorized>
+    <NotAuthorized>
+        <CategoryViewComponent></CategoryViewComponent>
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
-    List<Categories> categoriesList;
 
     protected override async Task OnInitializedAsync()
     {
-        //Fetch the list of categories from the database
-        categoriesList = await service.Get();
-
+        //If a user is not logged in he gets rerouted to the login page
         var authenticationState = await AuthenticationStateTask;
         if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
         {
-            var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
-
-            if (string.IsNullOrWhiteSpace(returnUrl))
-                NavigationManager.NavigateTo("/Identity/Account/Login", true);
-            else
-                NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo("/Identity/Account/Login", true);
         }
-    }
-
-    //Dynamically adds categories, created with the AddCategoryComponent
-    void AddCategoryHandler(Categories category)
-    {
-        categoriesList.Add(category);
-    }
-
-    //Dynamically edits categories, edited with the EditCategoryComponent
-    void EditCategoryHandler(Categories category)
-    {
-        categoriesList.First(c => c.CategoryId == category.CategoryId).CategoryName = category.CategoryName;
-    }
-
-    //Dynamically deletes categories deleted with the EditCategoryComponent
-    void DeleteCategoryHandler(Categories category)
-    {
-        categoriesList.Remove(category);
     }
 }

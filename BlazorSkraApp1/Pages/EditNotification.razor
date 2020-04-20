@@ -16,10 +16,19 @@
             <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
             <div class="col-sm-10" id="">
                 <InputText id="NewFormName" class="form-control edit-notification" @bind-Value="@FormInfo.FormName" />
-                <button type="button" @onclick="(() => UpdateFormName(FormInfo))" class="btn approve-btn edit-notification">Uppfæra nafn</button>
             </div>
         </div>
+         <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tölvupóstfang: </label>
+            <div class="col-sm-10" id="">
+                <InputText id="NewFormName" class="form-control edit-notification" @bind-Value="@FormInfo.DestinationEmail" />
+            </div> 
+        </div>
     </EditForm>
+
+
+@* //<button type="button" @onclick="(() => UpdateFormName(FormInfo))" class="btn approve-btn edit-notification">Uppfæra nafn</button> *@
+
 
 @if (questionsList == null){}
 else
@@ -64,6 +73,7 @@ else
             }
             </div>
         </div>
+        <button type="button" @onclick="(() => UpdateFormName(FormInfo))" class="btn approve-btn edit-notification">Uppfæra</button> 
     }
 }
 @if(showEdit)

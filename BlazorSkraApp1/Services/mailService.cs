@@ -26,7 +26,7 @@ namespace BlazorSkraApp1.Services
         string emailBody = "";
         List<Submissions> subList;
         string userMail;
-        FormsInfo destinationEmail = new FormsInfo();
+        FormsInfo formsInfo = new FormsInfo();
 
         private readonly ApplicationDbContext _context;
 
@@ -43,9 +43,8 @@ namespace BlazorSkraApp1.Services
             //Sender of email here
             message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
             //receiver of email
-            message.To.Add(new MailboxAddress(destinationEmail.DestinationEmail));
-            message.Subject = "Tilkynning";
-            //aðaltextinn byggður upp
+            message.To.Add(new MailboxAddress(formsInfo.DestinationEmail));
+            message.Subject = "Ný tilkynning - Heiti: " + formsInfo.FormName + " - " +  "Dagsetning: " + DateTime.Now.ToShortDateString();
 
             builder.TextBody = emailBody;
 
@@ -95,7 +94,7 @@ namespace BlazorSkraApp1.Services
         {
             subList = await GetAnswers(submissionId);
             questionsList = await GetQuestions(FormId);
-            destinationEmail = await GetForm(FormId);
+            formsInfo = await GetForm(FormId);
             userMail = userEmail;
 
             string newLine = Environment.NewLine;

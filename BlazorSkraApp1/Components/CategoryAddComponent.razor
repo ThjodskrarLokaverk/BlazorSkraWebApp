@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesService service
+@inject IJSRuntime jsRuntime
+
+<AuthorizeView Roles="Admin" Context="authContext">
+    <!-- Add Category popup modal -->
+    <div class="modal fade" id="addCategoryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="form">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Bæta við nýjum flokk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <EditForm Model="@newCategory" OnValidSubmit="@AddCategory">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="categoryName">Nafn flokks</label>
+                            <InputText class="form-control" @bind-Value="@newCategory.CategoryName" />
+                            <ValidationMessage For="@(() => newCategory.CategoryName)" />
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn approve-btn" aria-label="Submit">Bæta við</button>
+                        <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Hætta við</button>
+                    </div>
+                    <DataAnnotationsValidator />
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public EventCallback<Categories> OnAdd { get; set; }
+    Categories newCategory;
+
+    protected override void OnParametersSet()
+    {
+        newCategory = new Categories();
+    }
+
+    protected async void AddCategory()
+    {
+        try
+        {
+            //Add category to database
+            await service.Add(newCategory);
+
+            //Update data in parent component
+            //An instance of the added category is passed to a function passed by the parent component
+            await OnAdd.InvokeAsync(newCategory);
+
+            await CloseModal("addCategoryModal");
+        }
+        catch (System.InvalidOperationException)
+        {
+            //catches when user click twice on add category. Doesn't have any affects on the application.
+        }
+    }
+
+    //Closes the modal with the id modalID
+    private async Task CloseModal(string modalId)
+    {
+        await jsRuntime.InvokeAsync<object>("CloseModal", modalId);
+    }
+}
