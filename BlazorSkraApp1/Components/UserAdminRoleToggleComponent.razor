@@ -19,7 +19,7 @@
                 <p>Ertu viss um að þú viljir gera @selectedUser.UserName að stjórnanda?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close" @onclick="MakeAdmin">Já</button>
+                <button @onclick="MakeAdmin" type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close">Já</button>
                 <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
             </div>
         </div>
@@ -40,7 +40,7 @@
                 <p>Ertu viss um að þú viljir fjarlægja @selectedUser.UserName úr stjórnendahlutverki?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close" @onclick="RemoveAdmin">Já</button>
+                <button @onclick="RemoveAdmin" type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close">Já</button>
                 <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
             </div>
         </div>
