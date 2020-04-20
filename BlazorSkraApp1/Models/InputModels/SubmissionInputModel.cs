@@ -10,21 +10,19 @@ namespace BlazorSkraApp1.Models.InputModels
 {
     public class SubmissionInputModel
     {
-
-        public int FormId;
-        //[Required(ErrorMessage = "Required")]
-        //[StringLength(500, ErrorMessage = "Hámarks stafafjöldi er 500 stafir")]
-        //public string[] Answers;
+        public int FormId { get; set; }
+        public string Test { get; set; }
         public RequiredString[] Answers { get; set; }
-        public int[] AnswersOrderNum;
-        public List<string> MultipleAnswers;
-        public bool Confirmation;
-        public DateTime SelectedDate;
+        public int[] AnswersOrderNum { get; set; }
+        public List<string> MultipleAnswers { get; set; }
+        public bool Confirmation { get; set; }
+        public DateTime SelectedDate { get; set; }
     }
 
     public class RequiredString
     {
-        [Required]
+        [Required(ErrorMessage = "ATH!!")]
+        [StringLength(100, MinimumLength = 1)]
         public string Value { get; set; }
     }
 }
