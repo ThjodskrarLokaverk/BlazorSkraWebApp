@@ -18,7 +18,8 @@ namespace BlazorSkraApp1.Models.InputModels
 
     public class RequiredString
     {
-        [Required(ErrorMessage = "ATH!!")]
+        [Required(ErrorMessage = "Reitur má ekki vera auður")]
+        [MaxLength(100, ErrorMessage = "Svar má ekki vera lengra en 100 stafir")]
         public string Value { get; set; }
     }
 }
