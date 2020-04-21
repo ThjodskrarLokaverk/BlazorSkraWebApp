@@ -1,0 +1,77 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@using Microsoft.AspNetCore.Identity;
+@inject IAdminService service
+@inject IJSRuntime jsRuntime
+
+<!-- Add user to admin role popup -->
+<div class="modal fade" id="makeAdminModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Setja í stjórnendahlutverk</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ertu viss um að þú viljir gera @selectedUser.UserName að stjórnanda?</p>
+            </div>
+            <div class="modal-footer">
+                <button @onclick="MakeAdmin" type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close">Já</button>
+                <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Remove user from admin role popup -->
+<div class="modal fade" id="removeAdminModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">Fjarlægja úr stjórnendahlutverki</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Ertu viss um að þú viljir fjarlægja @selectedUser.UserName úr stjórnendahlutverki?</p>
+            </div>
+            <div class="modal-footer">
+                <button @onclick="RemoveAdmin" type="button" class="btn approve-btn" data-dismiss="modal" aria-label="Close">Já</button>
+                <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Nei</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<IdentityUser> OnMakeAdmin { get; set; }
+    [Parameter]
+    public EventCallback<IdentityUser> OnRemoveAdmin { get; set; }
+    [Parameter]
+    public IdentityUser selectedUser { get; set; }
+
+    //Mak user Admin
+    async Task MakeAdmin()
+    {
+        //Add user to admin role in database
+        await service.AddAdminRole(selectedUser);
+
+        //Update data in parent component
+        await OnMakeAdmin.InvokeAsync(selectedUser);
+    }
+
+    //Remove user from the Admin role
+    async Task RemoveAdmin()
+    {
+        //Remove user from admin role in database
+        await service.RemoveAdminRole(selectedUser);
+
+        //Update data in parent component
+        await OnRemoveAdmin.InvokeAsync(selectedUser);
+    }
+}
