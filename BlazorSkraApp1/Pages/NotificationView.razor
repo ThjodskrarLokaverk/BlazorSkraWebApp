@@ -4,6 +4,7 @@
 @using BlazorSkraApp1.Models.InputModels
 @using System
 @using BlazorSkraApp1.Shared.Components
+@using Microsoft.AspNetCore.Identity;
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IOptionsService oservice
@@ -12,6 +13,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice
+@inject IAdminService adminService
 
 @if (questionsList == null)
 {
@@ -24,115 +26,124 @@
 else
 {
     <div class="container @faded sub-container">
-        <EditForm Model="submissionInput" OnValidSubmit="SubmitForm">
+        <EditForm Model="@editContext" OnSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
-            @foreach(var question in questionsList)
+            @foreach (var question in questionsList)
             {
                 <div class="container">
                     <div class="card">
                         <div class="card-body form-check">
                             <h5 class="card-title">@question.Questions.QuestionName</h5>
-                        @if(@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
-                        {
-                            <fieldset id="radio-group">
-                                @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                                {
-                                    <input class="form-check-input radio-check-Submit" type="radio" name="radio-group" value="@option.Options.OptionName"
-                                        @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
-                                    <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
-                                }
-                            </fieldset>
-                        }
-                        else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
-                        {
-                            <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
-                            <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
-                        }
-                        else if(@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
-                        {
-                            <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum].Value" @bind-value:event="oninput"/>
-                        }
-                        else if(@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
-                        {
-                            @foreach(var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                            @if (@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
                             {
-                                <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName"
-                                    @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))"/>
-                                <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                                <fieldset id="radio-group">
+                                    @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                    {
+                                        <input class="form-check-input radio-check-Submit" type="radio" name="radio-group" value="@option.Options.OptionName"
+                                               @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))" />
+                                        <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                    }
+                                </fieldset>
                             }
-                        }
-                        else if(@question.Questions.QuestionTypes.QuestionTypeName == "Date")
-                        {
-                            <DatePicker DateSelected="SaveDate"></DatePicker>
-                            SaveDateDown(question.QuestionOrderNum);
-                        }
-                        
-                        else
-                        {
-                            <h5>Something went wrong...</h5>
-                        }
+                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
+                            {
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum - 1].Value" />
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum - 1].Value)" />
+                            }
+                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+                            {
+                                <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum - 1].Value" @bind-value:event="oninput" />
+                            }
+                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+                            {
+                                @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                {
+                                    <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName"
+                                           @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))" />
+                                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                                }
+                            }
+                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "Date")
+                            {
+                                <DatePicker DateSelected="SaveDate"></DatePicker>
+                                SaveDateDown(question.QuestionOrderNum);
+                            }
+
+                            else
+                            {
+                                <h5>Something went wrong...</h5>
+                            }
                         </div>
                     </div>
                 </div>
             }
             <div class="container">
                 <div class="card sub-margin">
-                    <div class= "card-body form-check">
+                    <div class="card-body form-check">
                         <input class="form-check-input @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
                         <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda tilkynninguna nafnlaust</label><br>
                     </div>
                 </div>
-                <button class="@faded submit-form btn approve-btn">Senda inn tilkynningu</button>
+                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn tilkynningu</button>
             </div>
         </EditForm>
     </div>
-    <br><br><br>
+    <br>
+    <br>
+    <br>
 }
 
-@if(confirmation)
-    {
-        <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title"> Staðfesting</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p>Tilkynningin er skráð og verður komið til skila.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
-                    </div>
+@if (confirmation)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Staðfesting</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Tilkynningin er skráð og verður komið til skila.</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
-    }
+    </div>
+}
 
-@if(_subFail)
-    {
-         <div class="modal" tabindex="-1" style="display:block" role="dialog">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" id="modal-content-exception">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
-                    </div>
-                    <div class="modal-body">
-                        <p>Tilkynningin komst ekki til skila, vinsamlegast reyndur aftur.</p>
-                    </div>
-                    <div class="modal-footer">
-                        <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
-                    </div>
+@if (_subFail)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="modal-content-exception">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Tilkynningin komst ekki til skila, vinsamlegast reyndur aftur.</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
-  
-    }
+    </div>
+}
 
 @code{
     //Id á tilkynningu sem á að birta
     [Parameter]
     public string id { get; set; }
-    
+
+    //To access info about current user
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    IdentityUser currentUser;
+
+    private EditContext editContext;
+
+
     //Á tilkynningin að vera send inn nafnlaust eða ekki
     public bool anonymous { get; set; }
 
@@ -157,19 +168,26 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        editContext = new EditContext(submissionInput);
+
+        //Get current user
+        var userName = (await authenticationStateTask).User.Identity.Name;
+        currentUser = await adminService.Get(userName);
+
         submissionInput.FormId = Int16.Parse(id);
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
-        submissionInput.Answers = new RequiredString[questionsList.Count + 1];
-        submissionInput.AnswersOrderNum = new int[questionsList.Count + 1];
+        submissionInput.Answers = new RequiredString[questionsList.Count];
+        submissionInput.AnswersOrderNum = new int[questionsList.Count];
         submissionInput.MultipleAnswers = new List<string>();
 
-        for(int i = 0; i < submissionInput.Answers.Length; i++)
+        for (int i = 0; i < submissionInput.Answers.Length; i++)
         {
             submissionInput.Answers[i] = new RequiredString();
             submissionInput.Answers[i].Value = "";
             submissionInput.AnswersOrderNum[i] = 0;
         }
+        Console.WriteLine("initialization done");
     }
 
     private void SaveDate(DateTime date)
@@ -190,17 +208,17 @@ else
 
     private void SaveCheckboxValue(bool chosenOption, int questionOrderNum, int optionOrderNum)
     {
-        if(chosenOption)
+        if (chosenOption)
         {
-            foreach(var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
-                    && option.OptionOrderNum == optionOrderNum))
+            foreach (var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
+                     && option.OptionOrderNum == optionOrderNum))
             {
                 submissionInput.MultipleAnswers.Add(option.Options.OptionName);
             }
         }
         submissionInput.AnswersOrderNum[questionOrderNum] = optionOrderNum;
         string combine = "";
-        foreach(var s in submissionInput.MultipleAnswers)
+        foreach (var s in submissionInput.MultipleAnswers)
         {
             combine += s + ", ";
         }
@@ -208,55 +226,60 @@ else
     }
 
     void updateAnon(bool anon)
-   {
-       anonymous = anon;
-   }
+    {
+        anonymous = anon;
+    }
 
     private async void SubmitForm()
     {
-        try
-        {
-            currentUser = (await authenticationStateTask).User;
-            if (anonymous == false)
-            {
-                submissionsInfo.UserId = currentUser.Identity.Name.ToString();
-            }
-            else
-            {
-                submissionsInfo.UserId = "Anonymous";
-            }
-            submissionsInfo = await subinfoservice.Add(submissionsInfo);
-            // Henda út þessu userEmail þegar við erum búin að útfæra það að
-            // admin setji inn email sem notification submit sendist á.
-            var userEmail = currentUser.Identity.Name.ToString();
+        var isValid = editContext.Validate();
 
-            foreach(var question in questionsList)
+        if (!isValid)
+        {
+            Console.WriteLine("Submission is invalid");
+        }
+        else
+        {
+            try
             {
-                submission.SubmissionId = submissionsInfo.SubmissionId;
-                submission.QuestionOrderNum = question.QuestionOrderNum;
-                submission.Answer = submissionInput.Answers[question.QuestionOrderNum].Value;
-                submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum];
+                //Create a submission in the database
+                submissionsInfo.UserId = currentUser.Id;
+                submissionsInfo = await subinfoservice.Add(submissionsInfo);
+
+                //Save the Id of the form and the submission with all answers
                 submission.FormId = submissionInput.FormId;
-                submission.QuestionsQuestionId = question.QuestionId;
-                await subservice.Add(submission);
+                submission.SubmissionId = submissionsInfo.SubmissionId;
+
+                //Save the answer to each question and save to database
+                foreach (var question in questionsList)
+                {
+                    submission.QuestionsQuestionId = question.QuestionId;
+                    submission.QuestionOrderNum = question.QuestionOrderNum;
+                    submission.Answer = submissionInput.Answers[question.QuestionOrderNum -1].Value;
+                    submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum - 1];
+
+                    //Save answer to the question in the database
+                    await subservice.Add(submission);
+                }
+                sendMail(currentUser.Email);
+                faded = "faded";
+                confirmation = true;
+                StateHasChanged();
             }
-            sendMail(userEmail);
-            faded = "faded";
-            confirmation = true;
-            StateHasChanged();
-        }
-        catch (System.InvalidOperationException)
-        {
-            // Catch Exception that occur when user push twice on "senda tilkynningu" - it doesn't have any affect.
-            _subFail = false;
-            //bæta við í logfile?
-            StateHasChanged();
+            catch (System.InvalidOperationException)
+            {
+                // Catch Exception that occur when user push twice on "senda tilkynningu" - it doesn't have any affect.
+                _subFail = false;
+                //bæta við í logfile?
+                StateHasChanged();
+            }
+
+            catch (Exception)
+            {
+                _subFail = true;
+            }
         }
 
-        catch (Exception)
-        {
-            _subFail = true;
-        }
     }
 
     private void sendMail(string userEmail)

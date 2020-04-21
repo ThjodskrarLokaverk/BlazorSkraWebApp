@@ -13,7 +13,7 @@ namespace BlazorSkraApp1.Services
         Task<List<IdentityUser>> Get();
         Task<List<IdentityUser>> GetSearchList(string searchString);
         Task<List<IdentityUser>> GetSortedList();
-        Task<IdentityUser> Get(string userId);
+        Task<IdentityUser> Get(string userName);
         Task<IdentityUser> Add(IdentityUser user);
         Task<IdentityUser> Update(IdentityUser user);
         Task<IdentityUser> Delete(IdentityUser user);
@@ -39,10 +39,10 @@ namespace BlazorSkraApp1.Services
             return await userList;
         }
 
-        // Returns the specified user
-        public async Task<IdentityUser> Get(string userId)
+        // Get user by Name
+        public async Task<IdentityUser> Get(string userName)
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.FindByNameAsync(userName);
             return user;
         }
 
