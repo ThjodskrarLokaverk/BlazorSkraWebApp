@@ -47,12 +47,12 @@ else
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
                             {
-                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum - 1].Value" />
-                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum - 1].Value)" />
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
                             {
-                                <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum - 1].Value" @bind-value:event="oninput" />
+                                <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum].Value" @bind-value:event="oninput" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
                             {
@@ -255,8 +255,8 @@ else
                 {
                     submission.QuestionsQuestionId = question.QuestionId;
                     submission.QuestionOrderNum = question.QuestionOrderNum;
-                    submission.Answer = submissionInput.Answers[question.QuestionOrderNum -1].Value;
-                    submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum - 1];
+                    submission.Answer = submissionInput.Answers[question.QuestionOrderNum].Value;
+                    submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum];
 
                     //Save answer to the question in the database
                     await subservice.Add(submission);

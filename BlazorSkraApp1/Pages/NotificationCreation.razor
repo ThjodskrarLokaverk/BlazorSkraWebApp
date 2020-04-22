@@ -407,17 +407,12 @@
                     currentForm.FormName = Notification.NewFormName;
                     currentForm.DestinationEmail = Notification.DestinationEmail;
                     currentForm = await fiservice.Add(currentForm);
-                    questionCount++;
 
                     //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
                     CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
                     _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
                     _CategoriesAssignments.FormId = currentForm.FormId;
                     await qasservice.Add(_CategoriesAssignments);
-                }
-                else
-                {
-                    questionCount++;
                 }
 
                 //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
@@ -494,6 +489,7 @@
                 // Catch Exception that occur when user push twice on save button - it doesn't have any affect.
                 //hér gætum við sett inn log  í logfile??
             }
+            questionCount++;
         }
 
         private async void ClearAll()
