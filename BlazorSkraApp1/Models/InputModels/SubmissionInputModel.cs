@@ -7,7 +7,6 @@ namespace BlazorSkraApp1.Models.InputModels
     public class SubmissionInputModel
     {
         public int FormId { get; set; }
-        public string Test { get; set; }
         [ValidateComplexType]
         public RequiredString[] Answers { get; set; }
         public int[] AnswersOrderNum { get; set; }
@@ -19,7 +18,6 @@ namespace BlazorSkraApp1.Models.InputModels
     public class RequiredString
     {
         [Required(ErrorMessage = "Reitur má ekki vera auður")]
-        [MaxLength(100, ErrorMessage = "Svar má ekki vera lengra en 100 stafir")]
         public string Value { get; set; }
     }
 }

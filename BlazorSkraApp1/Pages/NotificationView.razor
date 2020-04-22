@@ -26,7 +26,7 @@
 else
 {
     <div class="container @faded sub-container">
-        <EditForm Model="@editContext" OnSubmit="@SubmitForm">
+        <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
             @foreach (var question in questionsList)
             {
@@ -52,7 +52,8 @@ else
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
                             {
-                                <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" @bind-value="@submissionInput.Answers[question.QuestionOrderNum].Value" @bind-value:event="oninput" />
+                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
                             {
@@ -184,10 +185,8 @@ else
         for (int i = 0; i < submissionInput.Answers.Length; i++)
         {
             submissionInput.Answers[i] = new RequiredString();
-            submissionInput.Answers[i].Value = "";
             submissionInput.AnswersOrderNum[i] = 0;
         }
-        Console.WriteLine("initialization done");
     }
 
     private void SaveDate(DateTime date)
@@ -232,54 +231,43 @@ else
 
     private async void SubmitForm()
     {
-        var isValid = editContext.Validate();
-
-        if (!isValid)
+        try
         {
-            Console.WriteLine("Submission is invalid");
+            //Create a submission in the database
+            submissionsInfo.UserId = currentUser.Id;
+            submissionsInfo = await subinfoservice.Add(submissionsInfo);
+
+            //Save the Id of the form and the submission with all answers
+            submission.FormId = submissionInput.FormId;
+            submission.SubmissionId = submissionsInfo.SubmissionId;
+
+            //Save the answer to each question and save to database
+            foreach (var question in questionsList)
+            {
+                submission.QuestionsQuestionId = question.QuestionId;
+                submission.QuestionOrderNum = question.QuestionOrderNum;
+                submission.Answer = submissionInput.Answers[question.QuestionOrderNum].Value;
+                submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum];
+
+                //Save answer to the question in the database
+                await subservice.Add(submission);
+            }
+            sendMail(currentUser.Email);
+            faded = "faded";
+            confirmation = true;
+            StateHasChanged();
         }
-        else
+        catch (System.InvalidOperationException)
         {
-            try
-            {
-                //Create a submission in the database
-                submissionsInfo.UserId = currentUser.Id;
-                submissionsInfo = await subinfoservice.Add(submissionsInfo);
-
-                //Save the Id of the form and the submission with all answers
-                submission.FormId = submissionInput.FormId;
-                submission.SubmissionId = submissionsInfo.SubmissionId;
-
-                //Save the answer to each question and save to database
-                foreach (var question in questionsList)
-                {
-                    submission.QuestionsQuestionId = question.QuestionId;
-                    submission.QuestionOrderNum = question.QuestionOrderNum;
-                    submission.Answer = submissionInput.Answers[question.QuestionOrderNum].Value;
-                    submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum];
-
-                    //Save answer to the question in the database
-                    await subservice.Add(submission);
-                }
-                sendMail(currentUser.Email);
-                faded = "faded";
-                confirmation = true;
-                StateHasChanged();
-            }
-            catch (System.InvalidOperationException)
-            {
-                // Catch Exception that occur when user push twice on "senda tilkynningu" - it doesn't have any affect.
-                _subFail = false;
-                //bæta við í logfile?
-                StateHasChanged();
-            }
-
-            catch (Exception)
-            {
-                _subFail = true;
-            }
+            // Catch Exception that occur when user push twice on "senda tilkynningu" - it doesn't have any affect.
+            _subFail = false;
+            //bæta við í logfile?
+            StateHasChanged();
         }
-
+        catch (Exception)
+        {
+            _subFail = true;
+        }
     }
 
     private void sendMail(string userEmail)
