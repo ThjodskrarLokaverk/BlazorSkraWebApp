@@ -74,11 +74,13 @@
                             </div>
                             @if (@question.Questions.QuestionTypes.QuestionTypeId == 2)
                             {
-                                @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                                {
-                                    <input type="radio" name="@option.Options.OptionName" value="@option.Options.OptionName">
-                                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
-                                }
+                                <fieldset id="radio-group">
+                                    @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                    {
+                                        <input type="radio" name="radio-group" value="@option.Options.OptionName">
+                                        <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                                    }
+                                </fieldset>
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
@@ -405,17 +407,12 @@
                     currentForm.FormName = Notification.NewFormName;
                     currentForm.DestinationEmail = Notification.DestinationEmail;
                     currentForm = await fiservice.Add(currentForm);
-                    questionCount++;
 
                     //Búið til eintak af CategoriesAssignments og Category og Form tengt saman.
                     CategoriesAssignments _CategoriesAssignments = new CategoriesAssignments();
                     _CategoriesAssignments.CategoryId = Int32.Parse(Notification.CategoryId);
                     _CategoriesAssignments.FormId = currentForm.FormId;
                     await qasservice.Add(_CategoriesAssignments);
-                }
-                else
-                {
-                    questionCount++;
                 }
 
                 //Það QuestionType sem var valið sótt og bætt við í currentQuestion. Henni síðan bætt við sem spurningu
@@ -492,6 +489,7 @@
                 // Catch Exception that occur when user push twice on save button - it doesn't have any affect.
                 //hér gætum við sett inn log  í logfile??
             }
+            questionCount++;
         }
 
         private async void ClearAll()

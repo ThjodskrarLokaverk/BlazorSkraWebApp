@@ -1,21 +1,23 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using BlazorSkraApp1.Data;
+using System.ComponentModel.DataAnnotations;
 
 namespace BlazorSkraApp1.Models.InputModels
 {
     public class SubmissionInputModel
     {
+        public int FormId { get; set; }
+        [ValidateComplexType]
+        public RequiredString[] Answers { get; set; }
+        public int[] AnswersOrderNum { get; set; }
+        public List<string> MultipleAnswers { get; set; }
+        public bool Confirmation { get; set; }
+        public DateTime SelectedDate { get; set; }
+    }
 
-        public int FormId;
-        public string[] Answers;
-        public int[] AnswersOrderNum;
-        public List<string> MultipleAnswers;
-        public bool Confirmation;
-        public DateTime SelectedDate;
-
+    public class RequiredString
+    {
+        [Required(ErrorMessage = "Reitur má ekki vera auður")]
+        public string Value { get; set; }
     }
 }
