@@ -39,9 +39,10 @@ else
                                 <fieldset id="radio-group">
                                     @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                     {
-                                        <input class="form-check-input radio-check-Submit" type="radio" name="radio-group" value="@option.Options.OptionName"
+                                        @* <input class="form-check-input radio-check-Submit" type="radio" name="radio-group" value="@option.Options.OptionName"
                                                @onchange="@((eventArgs) => SaveRadioValue((string)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))" />
                                         <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                        <InputRadio name="radio-group" @bind="submissionInput.Answers[question.QuestionOrderNum].Value" /> *@
                                     }
                                 </fieldset>
                             }
