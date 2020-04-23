@@ -72,7 +72,7 @@
                                     </a>
                                 </div>
                             </div>
-                            @if (@question.Questions.QuestionTypes.QuestionTypeId == 2)
+                            @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
                                 <fieldset id="radio-group">
                                     @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
@@ -82,7 +82,7 @@
                                     }
                                 </fieldset>
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
+                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
                                 <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox" />
                             }
