@@ -36,7 +36,7 @@ else
                     <div class="card">
                         <div class="card-body form-check">
                             <h5 class="card-title">@question.Questions.QuestionName</h5>
-                            @if (@question.Questions.QuestionTypes.QuestionTypeName == "Radio")
+                            @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
                         <fieldset id="radio-group">
                             @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
@@ -47,15 +47,15 @@ else
                             }
                         </fieldset>
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextShort")
+                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
                                 <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "TextLong")
+                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
                             {
                                 <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "Multiple")
+                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
@@ -64,7 +64,7 @@ else
                                     <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                                 }
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeName == "Date")
+                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
                             {
                                 <DatePicker DateSelected="SaveDate"></DatePicker>
                                 SaveDateDown(question.QuestionOrderNum);
