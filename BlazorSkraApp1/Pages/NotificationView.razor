@@ -267,8 +267,14 @@ else
 
     private void sendMail(string userEmail)
     {
-        var FormId = Int16.Parse(id);
-        mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
-        StateHasChanged();
-    }
+        try{
+            var FormId = Int16.Parse(id);
+            mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
+            StateHasChanged();
+        }    
+        catch(Exception)
+        {
+            _subFail = true;
+        }
+    }   
 }

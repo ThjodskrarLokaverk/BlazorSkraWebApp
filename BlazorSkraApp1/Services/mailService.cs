@@ -37,6 +37,7 @@ namespace BlazorSkraApp1.Services
 
         public void sendMail()
         {   
+            try{
             //message.Body = myList;
             var message = new MimeMessage();
             var builder = new BodyBuilder ();
@@ -57,6 +58,11 @@ namespace BlazorSkraApp1.Services
                 client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
                 client.Send(message);
                 client.Disconnect(false);
+            }
+            }
+            catch(Exception)
+            {
+                // hello world
             }
         }
 
@@ -87,9 +93,7 @@ namespace BlazorSkraApp1.Services
         public async Task<FormsInfo> GetForm(int formId)
         {
             return await _context.FormsInfo.FindAsync(formId);
-        }
-        
-    
+        }    
         public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
