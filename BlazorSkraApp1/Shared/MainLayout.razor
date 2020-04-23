@@ -2,12 +2,13 @@
 
 <div class="main">
     <nav class="navbar">
+        <div class="container">
         <AuthorizeView Roles="Admin">
-            <div class="dropdown">
-                <button class="dropdown-toggle" type="button" id="firstdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown" >
+                <button class="dropdown-toggle"  type="button" id="firstdropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <i class="fas fa-bars fa-lg"></i>
                 </button>
-                <div class="first-dropdown-wrapper">
+                <div class="first-dropdown-wrapper" >
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
                     <a class="dropdown-item" href="/CreateNotification">Búa til nýja tegund tilkynningar</a>
@@ -18,7 +19,8 @@
                 </div>
         </AuthorizeView>
         <AuthorizeView>
-                <a href="/"><img src="https://www.skra.is/library/Myndir/Um-okkur/Tjodskra_ens_small.png?proc=250x250" alt="Thjodskra_logo"></a>
+                 
+                <a href="/"><img class="logo" src="https://i.ibb.co/72YQ76D/imageedit-6-8256998525.png" alt="logo-transparent" border="0"></a>
                 <div class="dropdown">
                     <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="oi oi-person"></span>
@@ -34,9 +36,10 @@
                     </div>
                 </div>
         </AuthorizeView>
+        </div>
     </nav>
 
-    <div class="content px-4">
+    <div class="content px-4 container">
         @Body
     </div>
 </div>

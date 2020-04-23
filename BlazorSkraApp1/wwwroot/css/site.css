@@ -1,12 +1,32 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
 
+:root{
+    --one: #BFC0C0;
+
+    --two: #ff7733;
+
+    --three: #102542;
+    
+    --four: #ff5e6c;
+    
+    --five: #c89666;
+   
+}
 
 html, body {
     font-family: 'Source Sans Pro', Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: var(--one);
     height: 100%;
 }
 
+.fa-lg{
+    background-color: var(--two);
+}
+
+.logo{
+    width: 75px;
+    height: 75px;
+}
 /* Edit Notification */
 
 #NewFormName {
@@ -24,14 +44,20 @@ html, body {
 
 /* Navigation bar */
 .navbar {
-    background-color: white;
-    border-bottom: 1.5px solid #e3e3e3;
+    background-color: var(--two);
+    border-bottom: 3px solid var(--four);
     height: 80px;
 }
 
 .custom-toggler.navbar-toggler {
-    border-color: #5e636b;
     margin-left: 23px;
+    
+    
+}
+
+.fa-bars{
+    background-color: var(--two);
+    margin:none;
 }
 
 .custom-toggler .navbar-toggler-icon {
@@ -40,8 +66,8 @@ html, body {
 
 .dropdown {
     margin-right: 13px;
+ 
 }
-
 .dropdown-content button:focus {
     background-color: #527d2e;
     color: white;
@@ -77,17 +103,18 @@ html, body {
 
 /* Body */
 .linkboxes .col-md-4 .boxes {
-    background-color: white;
+    background-color:var(--three);
     width: 100%;
     height: 100px;
     box-shadow: -1px 2px 3px #cecece;
     text-align: center;
     font-weight: 500;
     font-size: 20px;
+
 }
 
 .linkboxes .col-md-4 .boxes a {
-    color: #5e636b;
+    color: white;
     display: inline-block;
     margin-top: 27.5px;
     margin-left: 17px;
@@ -268,12 +295,29 @@ html, body {
 }
 
 /* dropdown menu */
+
+.dropdown-toggle{
+    background-color: var(--two);
+    border: solid 2px black;
+}
 .dropdown-toggle::after {
     display: none;
 }
 
+#firstdropdown{
+    background-color: var(--two);
+}
+
 .dropdown{
     margin-left: 1%;
+    background-color: var(--two);
+
+}
+.first-dropdown-wrapper{
+    background-color: var(--two);
+    color: var(--two);
+
+
 }
 
 .first-dropdown-wrapper .dropdown-menu {
@@ -284,9 +328,9 @@ html, body {
 }
 
 .first-dropdown-wrapper .dropdown-menu a:hover{
-    background-color:#171a15;
-    
+    background-color:var(--two);
 }
+
 
 .first-dropdown-wrapper .dropdown-item{
     color: white;
@@ -370,6 +414,10 @@ html, body {
 .table-striped {
     border: solid 2px;
     border-color: #5e636b;
+ }
+
+ .tableBody{
+     background-color: white;
  }
 
 .table-striped > tbody > tr > td {
