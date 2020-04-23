@@ -4,22 +4,52 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BlazorSkraApp1.Data.Migrations
+namespace BlazorSkraApp1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200310090110_FixingFormsFKCompositeKey")]
-    partial class FixingFormsFKCompositeKey
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "3.1.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.Categories", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.CategoriesAssignments", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FormId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "FormId");
+
+                    b.HasIndex("FormId");
+
+                    b.ToTable("CategoriesAssignments");
+                });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
                 {
@@ -32,7 +62,7 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.Property<int>("FormId")
                         .HasColumnType("int");
 
-                    b.Property<int>("QuestionOptionsOptionId")
+                    b.Property<int?>("OptionsOptionId")
                         .HasColumnType("int");
 
                     b.Property<int>("QuestionsQuestionId")
@@ -42,7 +72,7 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.HasIndex("FormId");
 
-                    b.HasIndex("QuestionOptionsOptionId");
+                    b.HasIndex("OptionsOptionId");
 
                     b.HasIndex("QuestionsQuestionId");
 
@@ -51,22 +81,25 @@ namespace BlazorSkraApp1.Data.Migrations
 
             modelBuilder.Entity("BlazorSkraApp1.Data.FormsInfo", b =>
                 {
-                    b.Property<int>("FormInfoId")
+                    b.Property<int>("FormId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("DestinationEmail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FormName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
-                    b.HasKey("FormInfoId");
+                    b.HasKey("FormId");
 
                     b.ToTable("FormsInfo");
                 });
 
-            modelBuilder.Entity("BlazorSkraApp1.Data.QuestionOptions", b =>
+            modelBuilder.Entity("BlazorSkraApp1.Data.Options", b =>
                 {
                     b.Property<int>("OptionId")
                         .ValueGeneratedOnAdd()
@@ -75,12 +108,33 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.Property<string>("OptionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.HasKey("OptionId");
 
-                    b.ToTable("QuestionOptions");
+                    b.ToTable("Options");
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.OptionsQuestionAssignmnents", b =>
+                {
+                    b.Property<int>("FormId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionOrderNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OptionOrderNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FormId", "QuestionOrderNum", "OptionOrderNum");
+
+                    b.HasIndex("OptionId");
+
+                    b.ToTable("OptionsQuestionAssignmnents");
                 });
 
             modelBuilder.Entity("BlazorSkraApp1.Data.QuestionTypes", b =>
@@ -92,8 +146,8 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.Property<string>("QuestionTypeName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
 
                     b.HasKey("QuestionTypeId");
 
@@ -109,8 +163,8 @@ namespace BlazorSkraApp1.Data.Migrations
 
                     b.Property<string>("QuestionName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
 
                     b.Property<int>("QuestionTypesQuestionTypeId")
                         .HasColumnType("int");
@@ -122,28 +176,68 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("BlazorSkraApp1.Data.ToDo", b =>
+            modelBuilder.Entity("BlazorSkraApp1.Data.QuestionsFormAssignments", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("FormId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionOrderNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("FormId", "QuestionOrderNum");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("QuestionsFormAssignments");
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.Submissions", b =>
+                {
+                    b.Property<int>("SubmissionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FormId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("QuestionOrderNum")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AnswerOrderNum")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Answer")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<int>("QuestionsQuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SubmissionId", "FormId", "QuestionOrderNum", "AnswerOrderNum");
+
+                    b.HasIndex("FormId");
+
+                    b.HasIndex("QuestionsQuestionId");
+
+                    b.ToTable("Submissions");
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.SubmissionsInfo", b =>
+                {
+                    b.Property<int>("SubmissionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DueDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(30)")
-                        .HasMaxLength(30);
-
-                    b.Property<string>("Status")
-                        .IsRequired()
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("SubmissionId");
 
-                    b.ToTable("ToDoList");
+                    b.ToTable("SubmissionsInfo");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -346,6 +440,21 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("BlazorSkraApp1.Data.CategoriesAssignments", b =>
+                {
+                    b.HasOne("BlazorSkraApp1.Data.Categories", "Categories")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "FormsInfo")
+                        .WithMany()
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("BlazorSkraApp1.Data.Forms", b =>
                 {
                     b.HasOne("BlazorSkraApp1.Data.FormsInfo", "Form")
@@ -354,15 +463,28 @@ namespace BlazorSkraApp1.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorSkraApp1.Data.QuestionOptions", "QuestionOptions")
+                    b.HasOne("BlazorSkraApp1.Data.Options", "Options")
                         .WithMany()
-                        .HasForeignKey("QuestionOptionsOptionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("OptionsOptionId");
 
                     b.HasOne("BlazorSkraApp1.Data.Questions", "Questions")
                         .WithMany()
                         .HasForeignKey("QuestionsQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.OptionsQuestionAssignmnents", b =>
+                {
+                    b.HasOne("BlazorSkraApp1.Data.Options", "Options")
+                        .WithMany()
+                        .HasForeignKey("OptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.QuestionsFormAssignments", "QuestionsFormAssignments")
+                        .WithMany()
+                        .HasForeignKey("FormId", "QuestionOrderNum")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -372,6 +494,42 @@ namespace BlazorSkraApp1.Data.Migrations
                     b.HasOne("BlazorSkraApp1.Data.QuestionTypes", "QuestionTypes")
                         .WithMany("QuestionList")
                         .HasForeignKey("QuestionTypesQuestionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.QuestionsFormAssignments", b =>
+                {
+                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "FormsInfo")
+                        .WithMany()
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.Questions", "Questions")
+                        .WithMany()
+                        .HasForeignKey("QuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BlazorSkraApp1.Data.Submissions", b =>
+                {
+                    b.HasOne("BlazorSkraApp1.Data.FormsInfo", "Form")
+                        .WithMany()
+                        .HasForeignKey("FormId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.Questions", "Questions")
+                        .WithMany()
+                        .HasForeignKey("QuestionsQuestionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BlazorSkraApp1.Data.SubmissionsInfo", "Submission")
+                        .WithMany()
+                        .HasForeignKey("SubmissionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

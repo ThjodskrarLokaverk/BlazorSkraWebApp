@@ -18,6 +18,7 @@ namespace BlazorSkraApp1.Models.InputModels
     public class RequiredString
     {
         [Required(ErrorMessage = "Reitur má ekki vera auður")]
+        [StringLength(500, ErrorMessage = "Hámarks stafafjöldi er 500 stafir")]
         public string Value { get; set; }
     }
 }
