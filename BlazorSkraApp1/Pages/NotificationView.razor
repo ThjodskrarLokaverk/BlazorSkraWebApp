@@ -41,8 +41,9 @@ else
                                     @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                     {
                                         <label>
-                                        <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
-                                        <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                            <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                            @option.Options.OptionName
+                                        </label><br>
                                         
                                     }
                                     <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
