@@ -29,7 +29,6 @@ else
     <div class="container @faded sub-container">
         <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
-            <ValidationSummary />
             @foreach (var question in questionsList)
             {
                 <div class="container">
@@ -38,22 +37,26 @@ else
                             <h5 class="card-title">@question.Questions.QuestionName</h5>
                             @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
-                        <fieldset id="radio-group">
-                            @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
-                            {
-                                <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
-                                <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
-                                @* <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" /> *@
-                            }
-                        </fieldset>
+                                <fieldset id="radio-group">
+                                    @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                    {
+                                        <label>
+                                        <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                        <label class="radio-check-Submit" for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                        
+                                    }
+                                    <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
+                                </fieldset>
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
                                 <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
                             {
                                 <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
                             {
@@ -63,6 +66,7 @@ else
                                            @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))" />
                                     <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                                 }
+                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
                             {

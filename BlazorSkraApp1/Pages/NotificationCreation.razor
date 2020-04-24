@@ -94,7 +94,7 @@
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
-                                    <input type="checkbox" class="form-control" name="@option.Options.OptionName" value="@option.Options.OptionName" />
+                                    <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName" />
                                     <label for="@option.Options.OptionName"> @option.Options.OptionName</label>
                                 }
                             }
@@ -143,7 +143,7 @@
                         <ValidationMessage id="question-type-validation" For="@(() => Notification.QuestionTypeId)" />
                     </div>
                 </div>
-                @if (Notification.QuestionTypeId == "2" || Notification.QuestionTypeId == "5")
+                @if (Notification.QuestionTypeId == "4" || Notification.QuestionTypeId == "5")
                 {
                     <div class="option-wrapper">
                         <div class="form-group row">
@@ -431,7 +431,7 @@
                 await qfaservice.Add(qfa);
 
                 //Ef spurningin er með RadioButton eða Checkbox
-                if (currentQuestion.QuestionTypes.QuestionTypeId == 2 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
+                if (currentQuestion.QuestionTypes.QuestionTypeId == 4 || currentQuestion.QuestionTypes.QuestionTypeId == 5)
                 {
                     //Fyrsta option bætt við í option töfluna og síðan búið til eintak af OptionsQuestionAssignments og option-inn tengdur við spurningu
                     currentOption1 = await opservice.Add(currentOption1);
