@@ -4,7 +4,26 @@
             <tr>
                 <td>
                     <select class="form-control" @bind="@Day">
-                        @for (int i = 1; i <= 31; i++)
+                        @if(Month == 2)
+                        {
+                            if(((Year % 4 == 0) && (Year % 100 != 0)) || (Year % 400 == 0))
+                            {
+                                number = 29;
+                            }
+                            else
+                            {
+                                number = 28;
+                            }
+                        }
+                        else if(Month == 4 || Month == 6 || Month == 9 || Month == 11)
+                        {
+                            number = 30;
+                        }
+                        else
+                        {
+                            number = 31;
+                        }
+                        @for (int i = 1; i <= number; i++)
                         {
                             <option value="@i">@i</option>
                         }
@@ -27,8 +46,14 @@
                     </select>
                 </td>
                 <td>
-                        @if(@confirmed == false){<button type="button" class="btn btn-success" @onclick="OnSelectClick">Velja Dag</button>}
-                        else {<button type="button" class="btn btn-success">Dagur valinn</button>}
+                    @if(@confirmed == false)
+                    {
+                        <button type="button" class="btn btn-success" @onclick="OnSelectClick">Velja Dag</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success">Dagur valinn</button>
+                    }
                 </td>
             </tr>
         </table>
@@ -39,6 +64,7 @@
     public int Day { get; set; }
     public int Month { get; set; }
     public int Year { get; set; }
+    private int number = 0;
 
     bool confirmed = false;
 
