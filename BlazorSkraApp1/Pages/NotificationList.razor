@@ -110,5 +110,8 @@ else
 
         //remove the notification/form from the list on this page
         categoriesAssignmentsList.Remove(selectedCategoryAssignment);
+
+        //refresh UI
+        StateHasChanged();
     }
 }
