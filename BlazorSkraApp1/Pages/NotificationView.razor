@@ -186,11 +186,11 @@ else
         submissionInput.FormId = Int16.Parse(id);
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
-        submissionInput.ShortText = new RequiredShortText[1];
-        submissionInput.LongText = new RequiredLongText[3];
-        submissionInput.Radio = new RequiredRadio[0];
+        submissionInput.ShortText = new RequiredShortText[2];
+        submissionInput.LongText = new RequiredLongText[2];
+        submissionInput.Radio = new RequiredRadio[2];
         submissionInput.Checkbox = new RequiredCheckbox[1];
-        submissionInput.Date = new RequiredDate[0];
+        submissionInput.Date = new RequiredDate[1];
         //submissionInput.AnswersOrderNum = new int[questionsList.Count];
         submissionInput.MultipleAnswers = new List<string>();
 
