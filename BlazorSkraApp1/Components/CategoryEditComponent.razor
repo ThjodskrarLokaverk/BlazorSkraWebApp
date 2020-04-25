@@ -1,8 +1,10 @@
 ﻿@using Microsoft.AspNetCore.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@using Serilog
 @inject ICategoriesService service
 @inject IJSRuntime jsRuntime
+
 
 <AuthorizeView Roles="Admin" Context="authContext">
     <!-- Edit Category popup modal -->
@@ -49,6 +51,16 @@
     public EventCallback<Categories> OnDelete { get; set; }
     [Parameter]
     public Categories selectedCategory { get; set; }
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    String currentUser;
+    protected override async Task OnInitializedAsync()
+    {
+        
+        var user = (await authenticationStateTask).User.Identity.Name;
+        currentUser = user;
+    }
     Categories categoryModel = new Categories();
 
     //This function runs when the parent component sets or resets the parameters
@@ -62,6 +74,7 @@
         try
         {
             //Save made changes to the selectedCategory
+            var oldName = selectedCategory.CategoryName;
             selectedCategory.CategoryName = categoryModel.CategoryName;
 
             //Update the category in the database
@@ -71,6 +84,8 @@
             await OnEdit.InvokeAsync(selectedCategory);
 
             await CloseModal("editCategoryModal");
+            Log.Information($"Flokknum {oldName} var breytt í {selectedCategory.CategoryName} af {currentUser} ");
+            
         }
         catch (System.InvalidOperationException)
         {
@@ -81,7 +96,6 @@
         {
             // unhandled Exception 
             // ættum við kannski að gera pop up glugga sem segir að mögulega hafi eitthvað farið úrskeiðis, vinsamlegast athugaðu það og reyndu aftur ef þörf er á?
-            // 
         }
     }
 
@@ -92,11 +106,11 @@
             await service.Delete(selectedCategory.CategoryId);
             //Update data in parent component
             await OnDelete.InvokeAsync(selectedCategory);
+            Log.Information($"Flokknum '{selectedCategory.CategoryName}' var eytt af {currentUser} ");
         }
         catch (Exception)
         {
             // Catches Exception that occurs when user click twice on "eyða". Doesn't have any affect on the application.Exception
-            // log into log file?
         }
     }
 
