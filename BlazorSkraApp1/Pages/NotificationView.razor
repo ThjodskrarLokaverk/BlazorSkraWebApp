@@ -37,17 +37,14 @@ else
                             <h5 class="card-title">@question.Questions.QuestionName</h5>
                             @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
-                                <fieldset id="radio-group">
                                     @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                     {
                                         <label>
-                                            <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                            <InputRadioComponent SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                             @option.Options.OptionName
                                         </label><br>
-                                        
                                     }
-                                    <ValidationMessage For="@(() => submissionInput.Radio[question.QuestionTypeOrderNum].Value)" />
-                                </fieldset>
+                                <ValidationMessage For="@(() => submissionInput.Radio[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
@@ -63,11 +60,13 @@ else
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
-                                    <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName"
-                                           @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum, question.QuestionTypeOrderNum))" />
-                                    <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                                    @* <input class="form-check-input" type="checkbox" name="@question.QuestionOrderNum" value="@option.Options.OptionName"
+                                           @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, question.QuestionOrderNum))" /> *@
+                                           <input class="form-check-input" type="checkbox" name="@question.QuestionOrderNum" value="@option.Options.OptionName"
+                                           @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, question.QuestionOrderNum))" />
+                                    <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
                                 }
-                                System.Console.WriteLine("Hversu oft fer ég hingað????");
+                                Console.WriteLine("Check value: " + submissionInput.Checkbox[question.QuestionTypeOrderNum].Value);
                                 <ValidationMessage For="@(() => submissionInput.Checkbox[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
@@ -91,7 +90,7 @@ else
                         <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda tilkynninguna nafnlaust</label><br>
                     </div>
                 </div>
-                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn tilkynningu</button>
+                <button id="button-test" type="submit" class="@faded submit-form btn approve-btn">Senda inn tilkynningu</button>
             </div>
         </EditForm>
     </div>
@@ -178,11 +177,11 @@ else
         submissionInput.FormId = Int16.Parse(id);
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
-        submissionInput.ShortText = new RequiredShortText[2];
-        submissionInput.LongText = new RequiredLongText[2];
-        submissionInput.Radio = new RequiredRadio[1];
+        submissionInput.ShortText = new RequiredShortText[0];
+        submissionInput.LongText = new RequiredLongText[0];
+        submissionInput.Radio = new RequiredRadio[0];
         submissionInput.Checkbox = new RequiredCheckbox[2];
-        submissionInput.Date = new RequiredDate[1];
+        submissionInput.Date = new RequiredDate[0];
         submissionInput.MultipleAnswers = new List<string>();
 
         for(int i = 0; i < submissionInput.ShortText.Length; i++)
@@ -214,15 +213,17 @@ else
     {
         submissionInput.SelectedDate = date;
     }
-
     private void SaveDateDown(int questionOrderNum)
     {
         submissionInput.Date[questionOrderNum].Value = submissionInput.SelectedDate.ToShortDateString();
     }
 
-    private void SaveCheckboxValue(bool chosenOption, int questionOrderNum, int optionOrderNum, int questionTypeOrderNum)
+    private void SaveCheckboxValue(int questionTypeOrderNum, int checkboxName)
     {
-        if(!chosenOption)
+        jsRuntime.InvokeAsync<object>("GetCheckedBoxes", checkboxName).ToString();
+        Console.WriteLine("Check value: " + submissionInput.Checkbox[questionTypeOrderNum].Value);
+
+        /*if(!chosenOption)
         {
             foreach (var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
                      && option.OptionOrderNum == optionOrderNum))
@@ -244,12 +245,7 @@ else
             combine += s + ", ";
         }
         submissionInput.Checkbox[questionTypeOrderNum].Value = combine;
-        Console.WriteLine("Combine: " + combine);
-    }
-
-    private void ClearMultipleAnswers()
-    {
-        submissionInput.MultipleAnswers.Clear();
+        Console.WriteLine("Combine: " + combine);*/
     }
 
     void updateAnon(bool anon)
@@ -260,6 +256,7 @@ else
     private async void SubmitForm()
     {
         Console.WriteLine("HALLO");
+
         try
         {
             //Create a submission in the database
