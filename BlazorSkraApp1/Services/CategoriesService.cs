@@ -35,8 +35,7 @@ namespace BlazorSkraApp1.Services
         // Returns the specified category
         public async Task<Categories> Get(int CategoryId)
         {
-            var categories = await _context.Categories.FindAsync(CategoryId);
-            return categories;
+            return await _context.Categories.FindAsync(CategoryId); 
         }
 
         // Creates the specified category in the database

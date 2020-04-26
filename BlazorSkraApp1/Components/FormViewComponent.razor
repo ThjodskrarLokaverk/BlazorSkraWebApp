@@ -1,0 +1,93 @@
+﻿@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Shared.Components
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="d-flex justify-content-center">@selectedFormName</h3>
+    </div>
+    <div class="card-body">
+        <p>Flokkur: @selectedCategory</p>
+        <p>Tölvupóstsfang: @selectedDestinationEmail</p>
+    </div>
+</div>
+
+@if (questionsList == null)
+{
+    <h3>Create questions</h3>
+}
+else
+{
+    <div class="question-wrapper">
+        @foreach (var question in questionsList)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <div id="title-edit">
+                        <h5 id="question-title" class="card-title">@question.Questions.QuestionName</h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
+                    {
+                        <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox" />
+                    }
+                    else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
+                    {
+                        <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" />
+                    }
+                    else if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
+                    {
+                        <fieldset id="radio-group">
+                            @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                            {
+                                <input type="radio" name="radio-group" value="@option.Options.OptionName">
+                                <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
+                            }
+                        </fieldset>
+                    }
+                    else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
+                    {
+                        @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                        {
+                            <input type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName" />
+                            <label for="@option.Options.OptionName"> @option.Options.OptionName</label>
+                        }
+                    }
+                    else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
+                    {
+                        <DatePicker DateSelected="OnDateSelected"> </DatePicker>
+                    }
+                    else
+                    {
+                        <h5>Question type not handled...</h5>
+                    }
+                </div>
+            </div>
+        }
+        <button class="submit" disabled>Senda inn tilkynningu</button>
+    </div>
+}
+<hr>
+<br>
+
+@code {
+    //[Parameter]
+    //public IEnumerable<QuestionsFormAssignments> questionsList { get; set; }
+    [Parameter]
+    public List<QuestionsFormAssignments> questionsList { get; set; }
+    [Parameter]
+    public List<OptionsQuestionAssignmnents> optionsList { get; set; }
+    [Parameter]
+    public string selectedFormName { get; set; }
+    [Parameter]
+    public string selectedCategory { get; set; }
+    [Parameter]
+    public string selectedDestinationEmail { get; set; }
+
+    public DateTime SelectedDate { get; set; }
+
+    public void OnDateSelected(DateTime dt)
+    {
+        SelectedDate = dt;
+    }
+}

@@ -3,20 +3,14 @@
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
 @using BlazorSkraApp1.Shared.Components
-@inject IOptionsQuestionAssignmnentsService oqaservice
-@inject IQuestionsFormAssignmentService qfaservice
-@inject IQuestionsService qservice
-@inject IOptionsService opservice
-@inject ICategoriesService catservice
-@inject IFormsInfoService fiservice
-@inject IQuestionTypesService qtservice
-@inject ICategoriesAssignmentsService qasservice
-@inject IJSRuntime jsRuntime
+@using BlazorSkraApp1.Components
+@inject ICategoriesService categoriesService
+@inject IQuestionTypesService questionTypesService
 <!-- Create form -->
 @if (!formSuccess)
 {
     <EditForm Model="@formInputModel" OnValidSubmit="CreateForm">
-        <h3>Ný tegund tilkynningar</h3>
+        <h3>Nýtt eyðublað</h3>
         <div class="form-group row">
             <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
             <div class="col-sm-10">
@@ -33,6 +27,9 @@
                             <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
                             }
                         }
+                    /**/
+                    /**/
+                    /**/
                 </InputSelect>
                 <ValidationMessage For="@(() => formInputModel.CategoryId)" />
             </div>
@@ -56,58 +53,58 @@
     </EditForm>
 }
 
-
-<!-- Display the created Form here -->
-
 <!-- Create questions for form -->
 @if (formSuccess)
 {
-<EditForm Model="@questionInputModel" OnValidSubmit="CreateQuestion">
-    <div class="question-wrapper">
-        <div class="card">
-            <div class="card-body" id="question-box">
-                <div class="form-group row form-inline">
-                    <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
-                    <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
-                        <option value="">Veldu tegund</option>
-                        @if (questionTypesList == null)
-                            {
-                            <option>loading...</option>
-                            }
-                            else
-                            {
-                                foreach (var type in questionTypesList)
+    <!-- Display the created Form here -->
+    <FormViewComponent questionsList="@createdQuestionsList" optionsList="@createdOptionsList" selectedFormName="@selectedFormName" selectedCategory="@selectedCategory" selectedDestinationEmail="@selectedDestinationEmail"></FormViewComponent>
+
+    <EditForm Model="@questionInputModel" OnValidSubmit="CreateQuestion">
+        <div class="question-wrapper">
+            <div class="card">
+                <div class="card-body" id="question-box">
+                    <div class="form-group row form-inline">
+                        <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
+                        <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
+                            <option value="">Veldu tegund</option>
+                            @if (questionTypesList == null)
                                 {
-                                <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                                <option>loading...</option>
                                 }
-                            }
-                    </InputSelect>
-                    <button type="submit" id="save-icon" class="btn btn-link">
-                        <i class="fas fa-save"></i>
-                    </button>
+                                else
+                                {
+                                    foreach (var type in questionTypesList)
+                                    {
+                                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                                    }
+                                }
+                        </InputSelect>
+                        <button type="submit" id="save-icon" class="btn btn-link">
+                            <i class="fas fa-save"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
-            @if (questionInputModel.QuestionTypeId == "4" || questionInputModel.QuestionTypeId == "5")
-            {
-                foreach (var option in questionInputModel.Options)
+                @if (questionInputModel.QuestionTypeId == "4" || questionInputModel.QuestionTypeId == "5")
                 {
-                    <div class="option-wrapper">
-                        <div class="form-group row">
-                            <label for="optionName" class="col-form-label">Valkostur 1</label>
-                            <div class="col-sm-4">
-                                <InputText id="optionName" class="form-control" placeholder="Valkostur 1" @bind-Value="@option.OptionName" />
+                    foreach (var option in questionInputModel.Options)
+                    {
+                        <div class="option-wrapper">
+                            <div class="form-group row">
+                                <label for="optionName" class="col-form-label">Valkostur 1</label>
+                                <div class="col-sm-4">
+                                    <InputText id="optionName" class="form-control" placeholder="Valkostur 1" @bind-Value="@option.OptionName" />
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
-            }
+            </div>
         </div>
-    </div>
-    <br>
-    <button type="submit" class="btn approve-btn">Bæta spurningu við eyðublað</button>
-    <br><br>
-    <DataAnnotationsValidator />
-</EditForm>
+        <br>
+        <button type="submit" class="btn approve-btn">Bæta spurningu við eyðublað</button>
+        <br><br>
+        <DataAnnotationsValidator />
+    </EditForm>
 }
 
 
@@ -121,6 +118,9 @@
     //Display
     List<QuestionsFormAssignments> createdQuestionsList;
     List<OptionsQuestionAssignmnents> createdOptionsList;
+    public string selectedFormName;
+    public string selectedCategory;
+    public string selectedDestinationEmail;
     bool formSuccess = false;
     bool questionSuccess = false;
 
@@ -132,12 +132,17 @@
     protected override async Task OnInitializedAsync()
     {
         //Fylla lista af categories og spurningartýpum sem eru í boði
-        categoriesList = await catservice.Get();
-        questionTypesList = await qtservice.Get();
+        categoriesList = await categoriesService.Get();
+        questionTypesList = await questionTypesService.Get();
     }
 
-    private void CreateForm()
+    private async void CreateForm()
     {
+        var category = await categoriesService.Get(Int16.Parse(formInputModel.CategoryId));
+        selectedCategory = category.CategoryName;
+        selectedFormName = formInputModel.FormName;
+        selectedDestinationEmail = formInputModel.DestinationEmail;
+
         formSuccess = true;
     }
 
