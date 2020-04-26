@@ -27,7 +27,7 @@
 else
 {
     <div class="container @faded sub-container">
-        <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
+        <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm" OnInvalidSubmit="@Invalid">
             <ObjectGraphDataAnnotationsValidator />
             @foreach (var question in questionsList)
             {
@@ -41,38 +41,39 @@ else
                                     @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                     {
                                         <label>
-                                            <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
+                                            <InputRadioComponent name="radio-group" SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                             @option.Options.OptionName
                                         </label><br>
                                         
                                     }
-                                    <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
+                                    <ValidationMessage For="@(() => submissionInput.Radio[question.QuestionTypeOrderNum].Value)" />
                                 </fieldset>
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
-                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
-                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
                             {
-                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.Answers[question.QuestionOrderNum].Value" />
-                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
+                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
                                     <input class="form-check-input" type="checkbox" name="@option.Options.OptionName" value="@option.Options.OptionName"
-                                           @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum))" />
+                                           @onchange="@((eventArgs) => SaveCheckboxValue((bool)eventArgs.Value, question.QuestionOrderNum, option.OptionOrderNum, question.QuestionTypeOrderNum))" />
                                     <label for="@option.Options.OptionName"> @option.Options.OptionName</label><br>
                                 }
-                                <ValidationMessage For="@(() => submissionInput.Answers[question.QuestionOrderNum].Value)" />
+                                System.Console.WriteLine("Hversu oft fer ég hingað????");
+                                <ValidationMessage For="@(() => submissionInput.Checkbox[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
                             {
                                 <DatePicker DateSelected="SaveDate"></DatePicker>
-                                SaveDateDown(question.QuestionOrderNum);
+                                SaveDateDown(question.QuestionTypeOrderNum);
                             }
 
                             else
@@ -177,15 +178,37 @@ else
         submissionInput.FormId = Int16.Parse(id);
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
-        submissionInput.Answers = new RequiredString[questionsList.Count];
-        submissionInput.AnswersOrderNum = new int[questionsList.Count];
+        submissionInput.ShortText = new RequiredShortText[2];
+        submissionInput.LongText = new RequiredLongText[2];
+        submissionInput.Radio = new RequiredRadio[1];
+        submissionInput.Checkbox = new RequiredCheckbox[2];
+        submissionInput.Date = new RequiredDate[1];
         submissionInput.MultipleAnswers = new List<string>();
 
-        for (int i = 0; i < submissionInput.Answers.Length; i++)
+        for(int i = 0; i < submissionInput.ShortText.Length; i++)
         {
-            submissionInput.Answers[i] = new RequiredString();
-            submissionInput.AnswersOrderNum[i] = 0;
+            submissionInput.ShortText[i] = new RequiredShortText();
         }
+        for(int i = 0; i < submissionInput.LongText.Length; i++)
+        {
+            submissionInput.LongText[i] = new RequiredLongText();
+        }
+        for(int i = 0; i < submissionInput.Radio.Length; i++)
+        {
+            submissionInput.Radio[i] = new RequiredRadio();
+        }
+        for(int i = 0; i < submissionInput.Checkbox.Length; i++)
+        {
+            submissionInput.Checkbox[i] = new RequiredCheckbox();
+        }
+        for(int i = 0; i < submissionInput.Date.Length; i++)
+        {
+            submissionInput.Date[i] = new RequiredDate();
+        }
+    }
+    private void Invalid()
+    {
+        Console.WriteLine("Invalid!");
     }
     private void SaveDate(DateTime date)
     {
@@ -194,18 +217,20 @@ else
 
     private void SaveDateDown(int questionOrderNum)
     {
-        submissionInput.Answers[questionOrderNum].Value = submissionInput.SelectedDate.ToShortDateString();
+        submissionInput.Date[questionOrderNum].Value = submissionInput.SelectedDate.ToShortDateString();
     }
 
-    private void SaveRadioValue(string chosenOption, int questionOrderNum, int optionOrderNum)
+    private void SaveCheckboxValue(bool chosenOption, int questionOrderNum, int optionOrderNum, int questionTypeOrderNum)
     {
-        submissionInput.Answers[questionOrderNum].Value = chosenOption;
-        submissionInput.AnswersOrderNum[questionOrderNum] = optionOrderNum;
-    }
-
-    private void SaveCheckboxValue(bool chosenOption, int questionOrderNum, int optionOrderNum)
-    {
-        if (chosenOption)
+        if(!chosenOption)
+        {
+            foreach (var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
+                     && option.OptionOrderNum == optionOrderNum))
+            {
+                submissionInput.MultipleAnswers.Remove(option.Options.OptionName);
+            }
+        }
+        else
         {
             foreach (var option in optionsList.Where(option => option.QuestionOrderNum == questionOrderNum
                      && option.OptionOrderNum == optionOrderNum))
@@ -213,13 +238,18 @@ else
                 submissionInput.MultipleAnswers.Add(option.Options.OptionName);
             }
         }
-        submissionInput.AnswersOrderNum[questionOrderNum] = optionOrderNum;
         string combine = "";
         foreach (var s in submissionInput.MultipleAnswers)
         {
             combine += s + ", ";
         }
-        submissionInput.Answers[questionOrderNum].Value = combine;
+        submissionInput.Checkbox[questionTypeOrderNum].Value = combine;
+        Console.WriteLine("Combine: " + combine);
+    }
+
+    private void ClearMultipleAnswers()
+    {
+        submissionInput.MultipleAnswers.Clear();
     }
 
     void updateAnon(bool anon)
@@ -229,6 +259,7 @@ else
 
     private async void SubmitForm()
     {
+        Console.WriteLine("HALLO");
         try
         {
             //Create a submission in the database
@@ -244,8 +275,27 @@ else
             {
                 submission.QuestionsQuestionId = question.QuestionId;
                 submission.QuestionOrderNum = question.QuestionOrderNum;
-                submission.Answer = submissionInput.Answers[question.QuestionOrderNum].Value;
-                submission.AnswerOrderNum = submissionInput.AnswersOrderNum[question.QuestionOrderNum];
+                // Short text
+                if(question.Questions.QuestionTypes.QuestionTypeId == 1)
+                {
+                    submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
+                }
+                else if(question.Questions.QuestionTypes.QuestionTypeId == 3)
+                {
+                    submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
+                }
+                else if(question.Questions.QuestionTypes.QuestionTypeId == 4)
+                {
+                    submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
+                }
+                else if(question.Questions.QuestionTypes.QuestionTypeId == 5)
+                {
+                    submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
+                }
+                else if(question.Questions.QuestionTypes.QuestionTypeId == 6)
+                {
+                    submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
+                }
 
                 //Save answer to the question in the database
                 await subservice.Add(submission);
