@@ -220,7 +220,7 @@ else
 
     private void SaveCheckboxValue(int questionTypeOrderNum, int checkboxName)
     {
-        jsRuntime.InvokeAsync<object>("GetCheckedBoxes", checkboxName).ToString();
+        submissionInput.Checkbox[questionTypeOrderNum].Value = jsRuntime.InvokeAsync<object>("GetCheckedBoxes", checkboxName).ToString();
         Console.WriteLine("Check value: " + submissionInput.Checkbox[questionTypeOrderNum].Value);
 
         /*if(!chosenOption)
