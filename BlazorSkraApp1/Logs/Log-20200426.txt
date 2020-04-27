@@ -1,0 +1,215 @@
+2020-04-26 11:08:21 +00:00[INF]User profile is available. Using '"/Users/thornystefansdottir/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2020-04-26 11:08:25 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("199"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("71"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("75"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("63"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:08:27 +00:00[WRN]User "cf36f786-3223-4a31-95b6-8a4168e64805" is already in role "Admin".
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:08:27 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:08:27 +00:00[WRN]User "67559950-bc9f-4351-b280-78dcf0601126" is already in role "User".
+2020-04-26 11:08:28 +00:00[INF]Now listening on: "https://localhost:5001"
+2020-04-26 11:08:28 +00:00[INF]Now listening on: "http://localhost:5000"
+2020-04-26 11:08:28 +00:00[INF]Application started. Press Ctrl+C to shut down.
+2020-04-26 11:08:28 +00:00[INF]Hosting environment: "Development"
+2020-04-26 11:08:28 +00:00[INF]Content root path: "/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1"
+2020-04-26 11:10:41 +00:00[INF]Application is shutting down...
+2020-04-26 11:10:55 +00:00[INF]User profile is available. Using '"/Users/thornystefansdottir/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2020-04-26 11:10:57 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:10:58 +00:00[INF]Executed DbCommand ("182"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:10:58 +00:00[INF]Executed DbCommand ("62"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:10:58 +00:00[INF]Executed DbCommand ("65"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:10:59 +00:00[INF]Executed DbCommand ("62"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:10:59 +00:00[INF]Executed DbCommand ("62"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:10:59 +00:00[WRN]User "cf36f786-3223-4a31-95b6-8a4168e64805" is already in role "Admin".
+2020-04-26 11:10:59 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:10:59 +00:00[INF]Executed DbCommand ("59"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:10:59 +00:00[INF]Executed DbCommand ("66"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:10:59 +00:00[WRN]User "67559950-bc9f-4351-b280-78dcf0601126" is already in role "User".
+2020-04-26 11:10:59 +00:00[INF]Now listening on: "https://localhost:5001"
+2020-04-26 11:10:59 +00:00[INF]Now listening on: "http://localhost:5000"
+2020-04-26 11:10:59 +00:00[INF]Application started. Press Ctrl+C to shut down.
+2020-04-26 11:10:59 +00:00[INF]Hosting environment: "Development"
+2020-04-26 11:10:59 +00:00[INF]Content root path: "/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1"
+2020-04-26 11:15:00 +00:00[INF]User profile is available. Using '"/Users/thornystefansdottir/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2020-04-26 11:15:02 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:15:03 +00:00[INF]Executed DbCommand ("167"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:15:03 +00:00[INF]Executed DbCommand ("73"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:15:03 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:15:03 +00:00[INF]Executed DbCommand ("59"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:15:03 +00:00[INF]Executed DbCommand ("64"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:15:03 +00:00[WRN]User "cf36f786-3223-4a31-95b6-8a4168e64805" is already in role "Admin".
+2020-04-26 11:15:04 +00:00[INF]Executed DbCommand ("70"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:15:04 +00:00[INF]Executed DbCommand ("73"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:15:04 +00:00[INF]Executed DbCommand ("76"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:15:04 +00:00[WRN]User "67559950-bc9f-4351-b280-78dcf0601126" is already in role "User".
+2020-04-26 11:15:04 +00:00[INF]Now listening on: "https://localhost:5001"
+2020-04-26 11:15:04 +00:00[INF]Now listening on: "http://localhost:5000"
+2020-04-26 11:15:04 +00:00[INF]Application started. Press Ctrl+C to shut down.
+2020-04-26 11:15:04 +00:00[INF]Hosting environment: "Development"
+2020-04-26 11:15:04 +00:00[INF]Content root path: "/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1"
+2020-04-26 11:15:06 +00:00[INF]Application is shutting down...
+2020-04-26 11:17:45 +00:00[INF]User profile is available. Using '"/Users/thornystefansdottir/.aspnet/DataProtection-Keys"' as key repository; keys will not be encrypted at rest.
+2020-04-26 11:17:48 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:17:49 +00:00[INF]Executed DbCommand ("208"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=["@__normalizedName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedName_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("81"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("63"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("60"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:17:50 +00:00[WRN]User "cf36f786-3223-4a31-95b6-8a4168e64805" is already in role "Admin".
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("58"ms) [Parameters=["@__normalizedEmail_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedEmail] = @__normalizedEmail_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("61"ms) [Parameters=["@__normalizedRoleName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(2) [a].[Id], [a].[ConcurrencyStamp], [a].[Name], [a].[NormalizedName]\nFROM [AspNetRoles] AS [a]\nWHERE [a].[NormalizedName] = @__normalizedRoleName_0"
+2020-04-26 11:17:50 +00:00[INF]Executed DbCommand ("65"ms) [Parameters=["@__p_0='?' (Size = 450), @__p_1='?' (Size = 450)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[UserId], [a].[RoleId]\nFROM [AspNetUserRoles] AS [a]\nWHERE ([a].[UserId] = @__p_0) AND ([a].[RoleId] = @__p_1)"
+2020-04-26 11:17:50 +00:00[WRN]User "67559950-bc9f-4351-b280-78dcf0601126" is already in role "User".
+2020-04-26 11:17:50 +00:00[INF]Now listening on: "https://localhost:5001"
+2020-04-26 11:17:50 +00:00[INF]Now listening on: "http://localhost:5000"
+2020-04-26 11:17:50 +00:00[INF]Application started. Press Ctrl+C to shut down.
+2020-04-26 11:17:50 +00:00[INF]Hosting environment: "Development"
+2020-04-26 11:17:50 +00:00[INF]Content root path: "/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1"
+2020-04-26 11:19:32 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/Notification/21  
+2020-04-26 11:19:32 +00:00[INF]Executing endpoint '"/_Host"'
+2020-04-26 11:19:32 +00:00[INF]Route matched with "{page = \"/_Host\", area = \"\"}". Executing page "/_Host"
+2020-04-26 11:19:32 +00:00[INF]Executing an implicit handler method - ModelState is "Valid"
+2020-04-26 11:19:32 +00:00[INF]Executed an implicit handler method, returned result "Microsoft.AspNetCore.Mvc.RazorPages.PageResult".
+2020-04-26 11:19:32 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:32 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:33 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:19:33 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@__normalizedUserName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedUserName] = @__normalizedUserName_0"
+2020-04-26 11:19:33 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[FormId], [q].[QuestionOrderNum], [q].[QuestionId], [q0].[QuestionId], [q0].[QuestionName], [q0].[QuestionTypesQuestionTypeId], [q1].[QuestionTypeId], [q1].[QuestionTypeName]\nFROM [QuestionsFormAssignments] AS [q]\nINNER JOIN [Questions] AS [q0] ON [q].[QuestionId] = [q0].[QuestionId]\nINNER JOIN [QuestionTypes] AS [q1] ON [q0].[QuestionTypesQuestionTypeId] = [q1].[QuestionTypeId]\nWHERE [q].[FormId] = @__formId_0"
+2020-04-26 11:19:33 +00:00[INF]Executed DbCommand ("88"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [o].[FormId], [o].[QuestionOrderNum], [o].[OptionOrderNum], [o].[OptionId], [o0].[OptionId], [o0].[OptionName]\nFROM [OptionsQuestionAssignmnents] AS [o]\nINNER JOIN [Options] AS [o0] ON [o].[OptionId] = [o0].[OptionId]\nWHERE [o].[FormId] = @__formId_0"
+2020-04-26 11:19:33 +00:00[INF]Executed page "/_Host" in 914.6372ms
+2020-04-26 11:19:33 +00:00[INF]Executed endpoint '"/_Host"'
+2020-04-26 11:19:33 +00:00[INF]Request finished in 1219.559ms 200 text/html; charset=utf-8
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/site.css  
+2020-04-26 11:19:33 +00:00[INF]Sending file. Request path: '"/css/site.css"'. Physical path: '"/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1/wwwroot/css/site.css"'
+2020-04-26 11:19:33 +00:00[INF]Request finished in 28.4143ms 200 text/css
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/bootstrap/bootstrap.min.css  
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/open-iconic/font/css/open-iconic-bootstrap.min.css  
+2020-04-26 11:19:33 +00:00[INF]The file "/css/open-iconic/font/css/open-iconic-bootstrap.min.css" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request finished in 4.1468ms 304 text/css
+2020-04-26 11:19:33 +00:00[INF]Sending file. Request path: '"/css/bootstrap/bootstrap.min.css"'. Physical path: '"/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1/wwwroot/css/bootstrap/bootstrap.min.css"'
+2020-04-26 11:19:33 +00:00[INF]Request finished in 77.6842ms 200 text/css
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/lib/bootstrap/dist/js/bootstrap.min.js  
+2020-04-26 11:19:33 +00:00[INF]The file "/lib/bootstrap/dist/js/bootstrap.min.js" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request finished in 1.8121ms 304 application/javascript
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/lib/jquery/jquery.min.js  
+2020-04-26 11:19:33 +00:00[INF]The file "/lib/jquery/jquery.min.js" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/_framework/blazor.server.js  
+2020-04-26 11:19:33 +00:00[INF]Request finished in 1.2594ms 304 application/javascript
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/js/SaveAsFile.js  
+2020-04-26 11:19:33 +00:00[INF]The file "/_framework/blazor.server.js" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request finished in 1.8376ms 304 application/javascript
+2020-04-26 11:19:33 +00:00[INF]The file "/js/SaveAsFile.js" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request finished in 2.347ms 304 application/javascript
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 POST https://localhost:5001/_blazor/disconnect multipart/form-data; boundary=----WebKitFormBoundaryoU8AO8DBhBcEP6Gy 359
+2020-04-26 11:19:33 +00:00[INF]Executing endpoint '"Blazor disconnect"'
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/open-iconic/font/fonts/open-iconic.woff  
+2020-04-26 11:19:33 +00:00[INF]The file "/css/open-iconic/font/fonts/open-iconic.woff" was not modified
+2020-04-26 11:19:33 +00:00[INF]Request finished in 1.8878ms 304 application/font-woff
+2020-04-26 11:19:33 +00:00[INF]Request starting HTTP/1.1 POST https://localhost:5001/_blazor/negotiate?negotiateVersion=1 text/plain;charset=UTF-8 0
+2020-04-26 11:19:34 +00:00[INF]Executing endpoint '"/_blazor/negotiate"'
+2020-04-26 11:19:34 +00:00[INF]Executed endpoint '"Blazor disconnect"'
+2020-04-26 11:19:34 +00:00[INF]Request finished in 105.9913ms 200 
+2020-04-26 11:19:34 +00:00[INF]Executed endpoint '"/_blazor/negotiate"'
+2020-04-26 11:19:34 +00:00[INF]Request finished in 58.3842ms 200 application/json
+2020-04-26 11:19:34 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/_blazor?id=yf3aKdsLTmM2yp_pVn078Q  
+2020-04-26 11:19:34 +00:00[INF]Executing endpoint '"/_blazor"'
+2020-04-26 11:19:34 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:34 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:34 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:19:34 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@__normalizedUserName_0='?' (Size = 256)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT TOP(1) [a].[Id], [a].[AccessFailedCount], [a].[ConcurrencyStamp], [a].[Email], [a].[EmailConfirmed], [a].[LockoutEnabled], [a].[LockoutEnd], [a].[NormalizedEmail], [a].[NormalizedUserName], [a].[PasswordHash], [a].[PhoneNumber], [a].[PhoneNumberConfirmed], [a].[SecurityStamp], [a].[TwoFactorEnabled], [a].[UserName]\nFROM [AspNetUsers] AS [a]\nWHERE [a].[NormalizedUserName] = @__normalizedUserName_0"
+2020-04-26 11:19:34 +00:00[INF]Executed DbCommand ("59"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[FormId], [q].[QuestionOrderNum], [q].[QuestionId], [q0].[QuestionId], [q0].[QuestionName], [q0].[QuestionTypesQuestionTypeId], [q1].[QuestionTypeId], [q1].[QuestionTypeName]\nFROM [QuestionsFormAssignments] AS [q]\nINNER JOIN [Questions] AS [q0] ON [q].[QuestionId] = [q0].[QuestionId]\nINNER JOIN [QuestionTypes] AS [q1] ON [q0].[QuestionTypesQuestionTypeId] = [q1].[QuestionTypeId]\nWHERE [q].[FormId] = @__formId_0"
+2020-04-26 11:19:34 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [o].[FormId], [o].[QuestionOrderNum], [o].[OptionOrderNum], [o].[OptionId], [o0].[OptionId], [o0].[OptionName]\nFROM [OptionsQuestionAssignmnents] AS [o]\nINNER JOIN [Options] AS [o0] ON [o].[OptionId] = [o0].[OptionId]\nWHERE [o].[FormId] = @__formId_0"
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [c].[CategoryId], [c].[CategoryName]\nFROM [Categories] AS [c]"
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:57 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:57 +00:00[INF]Authorization was successful.
+2020-04-26 11:19:57 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [c].[CategoryId], [c].[CategoryName]\nFROM [Categories] AS [c]"
+2020-04-26 11:19:57 +00:00[INF]Executed DbCommand ("63"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[QuestionTypeId], [q].[QuestionTypeName]\nFROM [QuestionTypes] AS [q]"
+2020-04-26 11:20:22 +00:00[INF]Executed DbCommand ("60"ms) [Parameters=["@p0='?' (Size = 4000), @p1='?' (Size = 50)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [FormsInfo] ([DestinationEmail], [FormName])\nVALUES (@p0, @p1);\nSELECT [FormId]\nFROM [FormsInfo]\nWHERE @@ROWCOUNT = 1 AND [FormId] = scope_identity();"
+2020-04-26 11:20:22 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [CategoriesAssignments] ([CategoryId], [FormId])\nVALUES (@p0, @p1);"
+2020-04-26 11:20:23 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=["@p0='?' (Size = 50), @p1='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [Questions] ([QuestionName], [QuestionTypesQuestionTypeId])\nVALUES (@p0, @p1);\nSELECT [QuestionId]\nFROM [Questions]\nWHERE @@ROWCOUNT = 1 AND [QuestionId] = scope_identity();"
+2020-04-26 11:20:23 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [QuestionsFormAssignments] ([FormId], [QuestionOrderNum], [QuestionId])\nVALUES (@p0, @p1, @p2);"
+2020-04-26 11:20:23 +00:00[INF]Executed DbCommand ("62"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[FormId], [q].[QuestionOrderNum], [q].[QuestionId], [q0].[QuestionId], [q0].[QuestionName], [q0].[QuestionTypesQuestionTypeId], [q1].[QuestionTypeId], [q1].[QuestionTypeName]\nFROM [QuestionsFormAssignments] AS [q]\nINNER JOIN [Questions] AS [q0] ON [q].[QuestionId] = [q0].[QuestionId]\nINNER JOIN [QuestionTypes] AS [q1] ON [q0].[QuestionTypesQuestionTypeId] = [q1].[QuestionTypeId]\nWHERE [q].[FormId] = @__formId_0"
+2020-04-26 11:20:23 +00:00[INF]Executed DbCommand ("70"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [o].[FormId], [o].[QuestionOrderNum], [o].[OptionOrderNum], [o].[OptionId], [o0].[OptionId], [o0].[OptionName]\nFROM [OptionsQuestionAssignmnents] AS [o]\nINNER JOIN [Options] AS [o0] ON [o].[OptionId] = [o0].[OptionId]\nWHERE [o].[FormId] = @__formId_0"
+2020-04-26 11:20:34 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=["@p0='?' (Size = 50), @p1='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [Questions] ([QuestionName], [QuestionTypesQuestionTypeId])\nVALUES (@p0, @p1);\nSELECT [QuestionId]\nFROM [Questions]\nWHERE @@ROWCOUNT = 1 AND [QuestionId] = scope_identity();"
+2020-04-26 11:20:35 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [QuestionsFormAssignments] ([FormId], [QuestionOrderNum], [QuestionId])\nVALUES (@p0, @p1, @p2);"
+2020-04-26 11:20:35 +00:00[INF]Executed DbCommand ("60"ms) [Parameters=["@p0='?' (Size = 50)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [Options] ([OptionName])\nVALUES (@p0);\nSELECT [OptionId]\nFROM [Options]\nWHERE @@ROWCOUNT = 1 AND [OptionId] = scope_identity();"
+2020-04-26 11:20:35 +00:00[INF]Executed DbCommand ("59"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [OptionsQuestionAssignmnents] ([FormId], [QuestionOrderNum], [OptionOrderNum], [OptionId])\nVALUES (@p0, @p1, @p2, @p3);"
+2020-04-26 11:20:35 +00:00[INF]Executed DbCommand ("60"ms) [Parameters=["@p0='?' (Size = 50)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [Options] ([OptionName])\nVALUES (@p0);\nSELECT [OptionId]\nFROM [Options]\nWHERE @@ROWCOUNT = 1 AND [OptionId] = scope_identity();"
+2020-04-26 11:20:35 +00:00[INF]Executed DbCommand ("59"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32), @p3='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [OptionsQuestionAssignmnents] ([FormId], [QuestionOrderNum], [OptionOrderNum], [OptionId])\nVALUES (@p0, @p1, @p2, @p3);"
+2020-04-26 11:20:36 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[FormId], [q].[QuestionOrderNum], [q].[QuestionId], [q0].[QuestionId], [q0].[QuestionName], [q0].[QuestionTypesQuestionTypeId], [q1].[QuestionTypeId], [q1].[QuestionTypeName]\nFROM [QuestionsFormAssignments] AS [q]\nINNER JOIN [Questions] AS [q0] ON [q].[QuestionId] = [q0].[QuestionId]\nINNER JOIN [QuestionTypes] AS [q1] ON [q0].[QuestionTypesQuestionTypeId] = [q1].[QuestionTypeId]\nWHERE [q].[FormId] = @__formId_0"
+2020-04-26 11:20:36 +00:00[INF]Executed DbCommand ("62"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [o].[FormId], [o].[QuestionOrderNum], [o].[OptionOrderNum], [o].[OptionId], [o0].[OptionId], [o0].[OptionName]\nFROM [OptionsQuestionAssignmnents] AS [o]\nINNER JOIN [Options] AS [o0] ON [o].[OptionId] = [o0].[OptionId]\nWHERE [o].[FormId] = @__formId_0"
+2020-04-26 11:22:55 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/CreateNotification  
+2020-04-26 11:22:55 +00:00[INF]Executing endpoint '"/_Host"'
+2020-04-26 11:22:55 +00:00[INF]Route matched with "{page = \"/_Host\", area = \"\"}". Executing page "/_Host"
+2020-04-26 11:22:55 +00:00[INF]Executing an implicit handler method - ModelState is "Valid"
+2020-04-26 11:22:55 +00:00[INF]Executed an implicit handler method, returned result "Microsoft.AspNetCore.Mvc.RazorPages.PageResult".
+2020-04-26 11:22:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:22:55 +00:00[INF]Authorization was successful.
+2020-04-26 11:22:55 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:22:55 +00:00[INF]Executed DbCommand ("79"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [c].[CategoryId], [c].[CategoryName]\nFROM [Categories] AS [c]"
+2020-04-26 11:22:55 +00:00[INF]Executed DbCommand ("66"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[QuestionTypeId], [q].[QuestionTypeName]\nFROM [QuestionTypes] AS [q]"
+2020-04-26 11:22:55 +00:00[INF]Executed page "/_Host" in 166.0198ms
+2020-04-26 11:22:55 +00:00[INF]Executed endpoint '"/_Host"'
+2020-04-26 11:22:55 +00:00[INF]Request finished in 179.6934ms 200 text/html; charset=utf-8
+2020-04-26 11:22:55 +00:00[INF]Request starting HTTP/1.1 POST https://localhost:5001/_blazor/disconnect multipart/form-data; boundary=----WebKitFormBoundaryRaAcdlbCeSpRup9m 359
+2020-04-26 11:22:55 +00:00[INF]Executing endpoint '"Blazor disconnect"'
+2020-04-26 11:22:55 +00:00[INF]Executed endpoint '"Blazor disconnect"'
+2020-04-26 11:22:55 +00:00[INF]Request finished in 30.2361ms 200 
+2020-04-26 11:22:55 +00:00[INF]Executed endpoint '"/_blazor"'
+2020-04-26 11:22:55 +00:00[INF]Request finished in 201648.3631ms 101 
+2020-04-26 11:22:55 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/bootstrap/bootstrap.min.css  
+2020-04-26 11:22:55 +00:00[INF]Sending file. Request path: '"/css/bootstrap/bootstrap.min.css"'. Physical path: '"/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1/wwwroot/css/bootstrap/bootstrap.min.css"'
+2020-04-26 11:22:55 +00:00[INF]Request finished in 70.6737ms 200 text/css
+2020-04-26 11:22:55 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/site.css  
+2020-04-26 11:22:55 +00:00[INF]Sending file. Request path: '"/css/site.css"'. Physical path: '"/Users/thornystefansdottir/Dropbox/Skóli/Háskólinn í Reykjavík/Vorönn 2020/Lokaverkefni/Verkefni/BlazorSkraWebApp/BlazorSkraApp1/wwwroot/css/site.css"'
+2020-04-26 11:22:55 +00:00[INF]Request finished in 3.6155ms 200 text/css
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/lib/bootstrap/dist/js/bootstrap.min.js  
+2020-04-26 11:22:56 +00:00[INF]The file "/lib/bootstrap/dist/js/bootstrap.min.js" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 1.4014ms 304 application/javascript
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/lib/jquery/jquery.min.js  
+2020-04-26 11:22:56 +00:00[INF]The file "/lib/jquery/jquery.min.js" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 1.0086ms 304 application/javascript
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/_framework/blazor.server.js  
+2020-04-26 11:22:56 +00:00[INF]The file "/_framework/blazor.server.js" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 1.1757ms 304 application/javascript
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/js/SaveAsFile.js  
+2020-04-26 11:22:56 +00:00[INF]The file "/js/SaveAsFile.js" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 1.9779ms 304 application/javascript
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/open-iconic/font/css/open-iconic-bootstrap.min.css  
+2020-04-26 11:22:56 +00:00[INF]The file "/css/open-iconic/font/css/open-iconic-bootstrap.min.css" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 1.09ms 304 text/css
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/css/open-iconic/font/fonts/open-iconic.woff  
+2020-04-26 11:22:56 +00:00[INF]The file "/css/open-iconic/font/fonts/open-iconic.woff" was not modified
+2020-04-26 11:22:56 +00:00[INF]Request finished in 0.8115ms 304 application/font-woff
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 POST https://localhost:5001/_blazor/negotiate?negotiateVersion=1 text/plain;charset=UTF-8 0
+2020-04-26 11:22:56 +00:00[INF]Executing endpoint '"/_blazor/negotiate"'
+2020-04-26 11:22:56 +00:00[INF]Executed endpoint '"/_blazor/negotiate"'
+2020-04-26 11:22:56 +00:00[INF]Request finished in 2.8076ms 200 application/json
+2020-04-26 11:22:56 +00:00[INF]Request starting HTTP/1.1 GET https://localhost:5001/_blazor?id=AEwMcom5KZuIhoVlV9w_dQ  
+2020-04-26 11:22:56 +00:00[INF]Executing endpoint '"/_blazor"'
+2020-04-26 11:22:56 +00:00[INF]Authorization was successful.
+2020-04-26 11:22:56 +00:00[INF]Authorization was successful.
+2020-04-26 11:22:56 +00:00[INF]Entity Framework Core "3.1.1" initialized '"ApplicationDbContext"' using provider '"Microsoft.EntityFrameworkCore.SqlServer"' with options: "None"
+2020-04-26 11:22:56 +00:00[INF]Executed DbCommand ("67"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [c].[CategoryId], [c].[CategoryName]\nFROM [Categories] AS [c]"
+2020-04-26 11:22:56 +00:00[INF]Executed DbCommand ("69"ms) [Parameters=[""], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[QuestionTypeId], [q].[QuestionTypeName]\nFROM [QuestionTypes] AS [q]"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("66"ms) [Parameters=["@p0='?' (Size = 4000), @p1='?' (Size = 50)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [FormsInfo] ([DestinationEmail], [FormName])\nVALUES (@p0, @p1);\nSELECT [FormId]\nFROM [FormsInfo]\nWHERE @@ROWCOUNT = 1 AND [FormId] = scope_identity();"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [CategoriesAssignments] ([CategoryId], [FormId])\nVALUES (@p0, @p1);"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@p0='?' (Size = 50), @p1='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [Questions] ([QuestionName], [QuestionTypesQuestionTypeId])\nVALUES (@p0, @p1);\nSELECT [QuestionId]\nFROM [Questions]\nWHERE @@ROWCOUNT = 1 AND [QuestionId] = scope_identity();"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("68"ms) [Parameters=["@p0='?' (DbType = Int32), @p1='?' (DbType = Int32), @p2='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SET NOCOUNT ON;\nINSERT INTO [QuestionsFormAssignments] ([FormId], [QuestionOrderNum], [QuestionId])\nVALUES (@p0, @p1, @p2);"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("66"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [q].[FormId], [q].[QuestionOrderNum], [q].[QuestionId], [q0].[QuestionId], [q0].[QuestionName], [q0].[QuestionTypesQuestionTypeId], [q1].[QuestionTypeId], [q1].[QuestionTypeName]\nFROM [QuestionsFormAssignments] AS [q]\nINNER JOIN [Questions] AS [q0] ON [q].[QuestionId] = [q0].[QuestionId]\nINNER JOIN [QuestionTypes] AS [q1] ON [q0].[QuestionTypesQuestionTypeId] = [q1].[QuestionTypeId]\nWHERE [q].[FormId] = @__formId_0"
+2020-04-26 11:23:11 +00:00[INF]Executed DbCommand ("66"ms) [Parameters=["@__formId_0='?' (DbType = Int32)"], CommandType='"Text"', CommandTimeout='30']"\n""SELECT [o].[FormId], [o].[QuestionOrderNum], [o].[OptionOrderNum], [o].[OptionId], [o0].[OptionId], [o0].[OptionName]\nFROM [OptionsQuestionAssignmnents] AS [o]\nINNER JOIN [Options] AS [o0] ON [o].[OptionId] = [o0].[OptionId]\nWHERE [o].[FormId] = @__formId_0"
+2020-04-26 11:23:54 +00:00[INF]Application is shutting down...
+2020-04-26 11:23:54 +00:00[INF]Executed endpoint '"/_blazor"'
+2020-04-26 11:23:54 +00:00[INF]Request finished in 58631.064ms 101 

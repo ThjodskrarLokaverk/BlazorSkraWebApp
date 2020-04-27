@@ -310,6 +310,15 @@ html, body {
     margin-left: 20px;
 }
 
+.date-picker {
+    width: 180px;
+    margin-top: -25px;
+}
+
+.check-box {
+    margin-left: 0px;
+}
+
 /* dropdown menu */
 
 /* .dropdown-toggle{
@@ -336,8 +345,6 @@ html, body {
 .first-dropdown-wrapper{
     background-color: var(--two);
     color: var(--two);
-
-
 }
 
 .first-dropdown-wrapper .dropdown-menu {

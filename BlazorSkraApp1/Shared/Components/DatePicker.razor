@@ -4,7 +4,27 @@
             <tr>
                 <td>
                     <select class="form-control" @bind="@Day">
-                        @for (int i = 1; i <= 31; i++)
+                        @if(Month == 2)
+                        {
+                            if(((Year % 4 == 0) && (Year % 100 != 0)) || (Year % 400 == 0))
+                            {
+                                number = 29;
+                            }
+                            else
+                            {
+                                number = 28;
+                            }
+                        }
+                        else if(Month == 4 || Month == 6 || Month == 9 || Month == 11)
+                        {
+                            number = 30;
+                        }
+                        else
+                        {
+                            number = 31;
+                        }
+                        <option value="0">Dagur</option>
+                        @for (int i = 1; i <= number; i++)
                         {
                             <option value="@i">@i</option>
                         }
@@ -12,6 +32,7 @@
                 </td>
                 <td>
                     <select class="form-control" @bind="@Month">
+                        <option value="0">Mánuður</option>
                         @for (int i = 1; i <= 12; i++)
                         {
                             <option value="@i">@Months[i - 1]</option>
@@ -20,15 +41,22 @@
                 </td>
                 <td>
                     <select class="form-control" @bind="@Year">
-                        @for (int i = DateTime.Now.Year-100; i <=DateTime.Now.Year+5 ; i++)
+                        <option value="0">Ár</option>
+                        @for (int i = DateTime.Now.Year-100; i <=DateTime.Now.Year+5; i++)
                         {
                             <option value="@i"> @i</option>
                         }
                     </select>
                 </td>
                 <td>
-                        @if(@confirmed == false){<button type="button" class="btn btn-success" @onclick="OnSelectClick">Velja Dag</button>}
-                        else {<button type="button" class="btn btn-success">Dagur valinn</button>}
+                    @if(@confirmed == false)
+                    {
+                        <button type="button" class="btn btn-success" @onclick="OnSelectClick">Velja Dag</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-success">Dagur valinn</button>
+                    }
                 </td>
             </tr>
         </table>
@@ -41,6 +69,7 @@
     public int Year { get; set; }
 
     bool confirmed = false;
+    private int number = 0;
 
     public string[] Months { get; set; } =
     {
@@ -63,12 +92,16 @@
 
     protected override void OnInitialized()
     {
-        Day = DateTime.Now.Day;
-        Month = DateTime.Now.Month;
-        Year = DateTime.Now.Year;
+        Day = 0;
+        Month = 0;
+        Year = 0;
     }
     public Task OnSelectClick()
     {
+        if(Day == 0 || Month == 0 || Year == 0)
+        {
+            return DateSelected.InvokeAsync(System.DateTime.MinValue);
+        }
         confirmed = true;
         DateTime dt = new DateTime(Year, Month, Day);
         return DateSelected.InvokeAsync(dt);
