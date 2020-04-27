@@ -25,6 +25,48 @@ html, body {
 
 }
 
+/* Notification-List */
+.card-list{
+    background-color: var(--three);
+    border-color: var(--two);
+    color: white;
+    height: 10rem;
+    margin-bottom: 20px; 
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.body-list{
+    background-color: var(--two);
+    border: solid 2px;
+    border-color: var(--three);
+    height: 0rem;
+    
+}
+.title-list{
+    text-align: center;
+    line-height: 0 ;
+}
+
+.card-img-top{
+    margin-top: 5px;
+    margin-left: 5%;
+    height: 60%;
+    margin-bottom:10px;
+    /* align-items: 75% right; */
+    
+}
+
+.card-column{
+    width: 25%;
+    height:5%;
+}
+
+.addType{
+    color: white;
+    border-radius: 10px; 
+    margin-bottom: 15px;
+}
 
 /* Edit Notification */
 
@@ -136,6 +178,7 @@ html, body {
     color: white;
     border-radius: 10px;
 }
+
 
 .fa-plus-square{
     margin-right: 10px;
@@ -472,11 +515,69 @@ html, body {
     width: 170px;
 }
 
-.table-icon {
+.sub-list-pen {
     float: right;
     color: #5e636b;
-    width: 30px !important;
+    margin-bottom: -20px;
+    padding:5px;
+    margin:none;
+    display:block;
+    border: 2px solid;
+    background-color: var(--two);
+    border-color: var(--three);
+    border-radius: 25px; 
+    position:relative;
+ 
 }
+
+.sub-list-trash {
+    float: right;
+    color:black;
+    padding:5px;
+    margin:none;
+    display:block;
+    border: 2px solid;
+    background-color: red;
+    border-color: var(--three);
+    border-radius: 25px; 
+    position:relative;
+ 
+}
+
+.table-trash{
+    float: right;
+    margin-left: -10px;
+    margin-top: 25px;
+    margin-bottom: none;
+    color: #5e636b;
+}
+
+.table-icon{
+    float: right;
+    margin-left: -55px;
+    margin-top: -10px;
+    margin-bottom: none;
+    color: #5e636b;
+}
+
+/* .indexPen{
+    margin-bottom: -20px;
+    padding: 5px;
+    display:block;
+    border: 2px solid;
+    background-color: var(--two);
+    border-color: var(--three);
+    border-radius: 25px; 
+    position: relative; 
+}
+.edit-icon {
+    float: right;
+    margin-right: -26px;
+    margin-top: -10px;
+    margin-bottom: none;
+    color: #5e636b;
+
+} */
 
 .table-icon:hover {
     color: #527d2e;
