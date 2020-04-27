@@ -14,6 +14,7 @@ namespace BlazorSkraApp1.Models.InputModels
         public string QuestionName { get; set; }
         [Required(ErrorMessage = "Velja þarf spurningategund")]
         public string QuestionTypeId { get; set; }
+        [ValidateComplexType]
         public List<Options> Options { get; set; }
     }
 }

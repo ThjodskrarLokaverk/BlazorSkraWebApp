@@ -2,15 +2,22 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Models.ViewModels
 @using BlazorSkraApp1.Shared.Components
 @using BlazorSkraApp1.Components
 @inject ICategoriesService categoriesService
 @inject IQuestionTypesService questionTypesService
 <!-- Create form -->
-@if (!formSuccess)
+@if (!formCreated)
 {
     <EditForm Model="@formInputModel" OnValidSubmit="CreateForm">
-        <h3>Nýtt eyðublað</h3>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Heiti eyðublaðs</label>
+            <div class="col-sm-10">
+                <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
+                <ValidationMessage For="@(() => formInputModel.FormName)" />
+            </div>
+        </div>
         <div class="form-group row">
             <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
             <div class="col-sm-10">
@@ -28,17 +35,8 @@
                             }
                         }
                     /**/
-                    /**/
-                    /**/
                 </InputSelect>
                 <ValidationMessage For="@(() => formInputModel.CategoryId)" />
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Heiti tilkynningar</label>
-            <div class="col-sm-10">
-                <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
-                <ValidationMessage For="@(() => formInputModel.FormName)" />
             </div>
         </div>
         <div class="form-group row">
@@ -54,75 +52,77 @@
 }
 
 <!-- Create questions for form -->
-@if (formSuccess)
+@if (formCreated)
 {
     <!-- Display the created Form here -->
-    <FormViewComponent questionsList="@createdQuestionsList" optionsList="@createdOptionsList" selectedFormName="@selectedFormName" selectedCategory="@selectedCategory" selectedDestinationEmail="@selectedDestinationEmail"></FormViewComponent>
+    <FormViewComponent questionsList="@createdQuestionsList" optionsList="@createdOptionsList" selectedFormName="@createdForm.FormName" selectedCategory="@selectedCategory" selectedDestinationEmail="@createdForm.DestinationEmail"></FormViewComponent>
 
-    <EditForm Model="@questionInputModel" OnValidSubmit="CreateQuestion">
-        <div class="question-wrapper">
-            <div class="card">
-                <div class="card-body" id="question-box">
-                    <div class="form-group row form-inline">
-                        <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
-                        <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
-                            <option value="">Veldu tegund</option>
-                            @if (questionTypesList == null)
+    <EditForm EditContext="@editContext" OnSubmit="CreateQuestion">
+        <ObjectGraphDataAnnotationsValidator />
+        <br />
+        <div class="card">
+            <div class="card-body" id="question-box">
+                <div class="form-group row form-inline">
+                    <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
+                    <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
+                        <option value="">Veldu tegund</option>
+                        @if (questionTypesList == null)
+                            {
+                            <option>loading...</option>
+                            }
+                            else
+                            {
+                                foreach (var type in questionTypesList)
                                 {
-                                <option>loading...</option>
+                                <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
                                 }
-                                else
-                                {
-                                    foreach (var type in questionTypesList)
-                                    {
-                                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
-                                    }
-                                }
-                        </InputSelect>
-                        <button type="submit" id="save-icon" class="btn btn-link">
-                            <i class="fas fa-save"></i>
-                        </button>
-                    </div>
+                            }
+                    </InputSelect>
+                    <button type="submit" id="save-icon" class="btn btn-link">
+                        <i class="fas fa-save"></i>
+                    </button>
                 </div>
-                @if (questionInputModel.QuestionTypeId == "4" || questionInputModel.QuestionTypeId == "5")
-                {
-                    foreach (var option in questionInputModel.Options)
+            </div>
+            @if (questionInputModel.QuestionTypeId == "4" || questionInputModel.QuestionTypeId == "5")
+            {
+                <div class="option-wrapper">
+                    @foreach (var option in questionInputModel.Options)
                     {
-                        <div class="option-wrapper">
-                            <div class="form-group row">
-                                <label for="optionName" class="col-form-label">Valkostur 1</label>
-                                <div class="col-sm-4">
-                                    <InputText id="optionName" class="form-control" placeholder="Valkostur 1" @bind-Value="@option.OptionName" />
-                                </div>
+                        <div class="form-group row">
+                            <input type="radio" disabled>
+                            <div class="col-sm-4">
+                                <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                <button @onclick="(() => RemoveOption(option))" type="button" class="btn btn-secondary">Fjarlægja</button>
                             </div>
                         </div>
                     }
-                }
-            </div>
+                </div>
+                <button @onclick="(() => AddOption())" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
+            }
+            <ValidationSummary></ValidationSummary>
         </div>
         <br>
         <button type="submit" class="btn approve-btn">Bæta spurningu við eyðublað</button>
         <br><br>
-        <DataAnnotationsValidator />
     </EditForm>
 }
-
 
 @code {
     //Creation
     FormInputModel formInputModel = new FormInputModel();
-    QuestionInputModel questionInputModel = new QuestionInputModel();
+    public QuestionInputModel questionInputModel;
+    private EditContext editContext;
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
 
     //Display
-    List<QuestionsFormAssignments> createdQuestionsList;
-    List<OptionsQuestionAssignmnents> createdOptionsList;
-    public string selectedFormName;
+    public List<QuestionsViewModel> createdQuestionsList;
+    public List<OptionsViewModel> createdOptionsList;
+    public FormsInfo createdForm = new FormsInfo();
+    private int questionOrderNum;
     public string selectedCategory;
-    public string selectedDestinationEmail;
-    bool formSuccess = false;
-    bool questionSuccess = false;
+    bool formCreated = false;
+
 
     //save to database
     FormsInfo currentForm = new FormsInfo();
@@ -131,24 +131,81 @@
 
     protected override async Task OnInitializedAsync()
     {
-        //Fylla lista af categories og spurningartýpum sem eru í boði
+        //Dropdown lists
         categoriesList = await categoriesService.Get();
         questionTypesList = await questionTypesService.Get();
+
+        //InputModels
+        questionInputModel = new QuestionInputModel();
+        questionInputModel.Options = new List<Options> { new Options(), new Options() };
+        editContext = new EditContext(questionInputModel);
+
+        //Display
+        createdQuestionsList = new List<QuestionsViewModel>();
+        createdOptionsList = new List<OptionsViewModel>();
+        questionOrderNum = 0;
     }
 
     private async void CreateForm()
     {
         var category = await categoriesService.Get(Int16.Parse(formInputModel.CategoryId));
         selectedCategory = category.CategoryName;
-        selectedFormName = formInputModel.FormName;
-        selectedDestinationEmail = formInputModel.DestinationEmail;
+        createdForm.FormName = formInputModel.FormName;
+        createdForm.DestinationEmail = formInputModel.DestinationEmail;
 
-        formSuccess = true;
+        formCreated = true;
     }
 
     private void CreateQuestion()
     {
-        questionSuccess = true;
+        //If question shouldn´t have any options
+        if (questionInputModel.QuestionTypeId != "4" && questionInputModel.QuestionTypeId != "5")
+        {
+            //Clear options
+            questionInputModel.Options = new List<Options>();
+        }
+
+        var isValid = editContext.Validate();
+
+        if (isValid)
+        {
+            //Add data to lists
+            QuestionsViewModel question = new QuestionsViewModel();
+            question.QuestionName = questionInputModel.QuestionName;
+            question.QuestionOrderNum = questionOrderNum;
+            question.QuestionTypeId = Int16.Parse(questionInputModel.QuestionTypeId);
+            //Implement a counter for each questionType?
+            question.QuestionTypeOrderNum = questionOrderNum;
+            createdQuestionsList.Add(question);
+            questionOrderNum++;
+
+            int optionOrderNum = 0;
+            foreach (var createdOption in questionInputModel.Options)
+            {
+                var option = new OptionsViewModel();
+                option.OptionName = createdOption.OptionName;
+                option.OptionOrderNum = optionOrderNum;
+                option.QuestionOrderNum = question.QuestionOrderNum;
+                createdOptionsList.Add(option);
+                optionOrderNum++;
+            }
+
+            //Clear inputModel
+            questionInputModel = new QuestionInputModel();
+            questionInputModel.Options = new List<Options> { new Options(), new Options() };
+        }
+    }
+
+    private void AddOption()
+    {
+        questionInputModel.Options.Add(new Options());
+        StateHasChanged();
+    }
+
+    private void RemoveOption(Options option)
+    {
+        questionInputModel.Options.Remove(option);
+        StateHasChanged();
     }
 
     //private async void AddFirst()
