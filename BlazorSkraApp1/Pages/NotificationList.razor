@@ -72,14 +72,7 @@ else
     </ConfirmationModalComponent>
 }
 
-@code{
-    [Parameter]
-    public string id { get; set; }
-    private int categoryId;
-    List<CategoriesAssignments> categoriesAssignmentsList;
-    Categories category = new Categories();
-    CategoriesAssignments selectedCategoryAssignment;
-
+@code {
     protected override async Task OnInitializedAsync()
     {
         //init selectedCategoryAssignment
@@ -94,24 +87,5 @@ else
         //Get a list of notifications assigned to the relevant category
         categoriesAssignmentsList = await catAssignService.Get(categoryId);
 
-    }
-    private void SelectCategoryAssignment(CategoriesAssignments categoryassignment)
-    {
-        selectedCategoryAssignment = categoryassignment;
-    }
-
-    protected async void DeleteNotificationHandler()
-    {
-        //Remove the notification/form from the list of notifications in this category
-        await catAssignService.Delete(selectedCategoryAssignment);
-
-        //Delete the notification/form from the database
-        await formservice.Delete(selectedCategoryAssignment.FormId);
-
-        //remove the notification/form from the list on this page
-        categoriesAssignmentsList.Remove(selectedCategoryAssignment);
-
-        //refresh UI
-        StateHasChanged();
     }
 }
