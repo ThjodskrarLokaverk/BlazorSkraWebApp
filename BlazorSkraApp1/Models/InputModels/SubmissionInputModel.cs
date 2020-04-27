@@ -19,7 +19,6 @@ namespace BlazorSkraApp1.Models.InputModels
         public RequiredDate[] Date { get; set; }
         //public int[] AnswersOrderNum { get; set; }
         public List<string> MultipleAnswers { get; set; }
-        public DateTime SelectedDate { get; set; }
     }
 
     public class RequiredShortText
@@ -46,7 +45,7 @@ namespace BlazorSkraApp1.Models.InputModels
     }
     public class RequiredDate
     {
-        [Required(ErrorMessage = "ATH date")]
+        [Required(ErrorMessage = "Velja verður gilda dagsetningu")]
         public string Value { get; set; }
     }
 }

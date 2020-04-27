@@ -44,17 +44,19 @@
         function CloseModal(modalId) {
             $('#' + modalId).modal('hide');
         }
-        function GetCheckedBoxes(checkboxName) {
-            var checkboxes = document.getElementByName(checkboxName);
+        function GetCheckedBoxes(name) {
+            var checkboxes = document.querySelectorAll('input[name="' + name + '"]:checked');
             var checkboxesChecked = [];
             for(var i = 0; i < checkboxes.length; i++) {
-                if(checkboxes[i].checked) {
-                    checkboxesChecked.push(checkboxes[i]);
-                }
+                checkboxesChecked.push(checkboxes[i].value);
             }
-            var a = checkboxesChecked.join();
-            System.Console.WriteLine("lksadfjdls: " + a);
-            return a;
+            var values = checkboxesChecked.join();
+            return values;
+        }
+        function GetSelectedDate(name) {
+            var val = document.getElementById(name).value;
+            val = val.split('-').reverse().join('/');
+            return val;
         }
     </script>
 
