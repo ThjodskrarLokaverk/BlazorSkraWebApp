@@ -9,7 +9,7 @@
     
     --four: #ff5e6c;
     
-    --five: #c89666;
+    --five: rgb(96,103,110);
    
 }
 
@@ -21,12 +21,11 @@ html, body {
 
 .fa-lg{
     background-color: var(--two);
+    color:var(--five)
+
 }
 
-.logo{
-    width: 75px;
-    height: 75px;
-}
+
 /* Edit Notification */
 
 #NewFormName {
@@ -51,13 +50,12 @@ html, body {
 
 .custom-toggler.navbar-toggler {
     margin-left: 23px;
-    
-    
 }
 
 .fa-bars{
     background-color: var(--two);
     margin:none;
+    padding:none;
 }
 
 .custom-toggler .navbar-toggler-icon {
@@ -74,9 +72,14 @@ html, body {
 }
 
 .oi-person {
-    color: #5e636b;
-    font-size: 40px;
+    color: var(--five);
+    font-size: 25px;
     top: 7px;
+}
+
+.logo{
+    width: 75px;
+    height: 75px;
 }
 
 .oi-person:hover {
@@ -129,9 +132,15 @@ html, body {
     text-decoration: underline;
 }
 
-.linkboxes .col-md-4 .add-category-link {
-    color: #527d2e;
+.addCategory {
+    color: white;
+    border-radius: 10px;
 }
+
+.fa-plus-square{
+    margin-right: 10px;
+}
+
 
 .linkboxes .col-md-4 {
     margin-bottom: 20px;
@@ -142,11 +151,23 @@ html, body {
     float: left;
 }
 
+.indexPen{
+    margin-bottom: -20px;
+    padding: 5px;
+    display:block;
+    border: 2px solid;
+    background-color: var(--two);
+    border-color: var(--three);
+    border-radius: 25px; 
+    position: relative; 
+}
 .edit-icon {
     float: right;
-    margin-right: -17px;
+    margin-right: -26px;
     margin-top: -10px;
+    margin-bottom: none;
     color: #5e636b;
+
 }
 
 .edit-icon:hover {
@@ -291,16 +312,20 @@ html, body {
 
 /* dropdown menu */
 
-.dropdown-toggle{
+/* .dropdown-toggle{
     background-color: var(--two);
-    border: solid 2px black;
-}
+    border: solid 2px b/lack;
+    margin-left:7px; */
+/* } */
 .dropdown-toggle::after {
     display: none;
 }
 
 #firstdropdown{
     background-color: var(--two);
+    margin:none;
+    padding:none;
+
 }
 
 .dropdown{
@@ -323,14 +348,15 @@ html, body {
 }
 
 .first-dropdown-wrapper .dropdown-menu a:hover{
-    background-color:var(--two);
+    background-color:#171a15;
 }
+
 
 
 .first-dropdown-wrapper .dropdown-item{
     color: white;
     border-bottom: solid #ccd4dc 0.3px;
-    background-color: #343a40;
+    background-color: var(--five);
     padding-top: 0.8rem;
     padding-bottom: 0.8rem
 }
@@ -345,7 +371,7 @@ html, body {
     color: white;
     border-bottom: solid #ccd4dc 0.3px;
     border-top: solid #ccd4dc 0.3px;
-    background-color: #343a40;
+    background-color: var(--five);
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
     margin:none;
@@ -354,8 +380,7 @@ html, body {
 #username{
     color: white;
     border-bottom: solid #ccd4dc 0.3px;
-    border-top: solid #ccd4dc 0.3px;
-    background-color: #343a40;
+    background-color: var(--five);
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
     margin:none;
@@ -403,6 +428,7 @@ html, body {
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
+
 
 /* noficationTable */
 
