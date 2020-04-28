@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BlazorSkraApp1.Data;
 
 namespace BlazorSkraApp1.Models.ViewModels
 {
@@ -11,5 +12,6 @@ namespace BlazorSkraApp1.Models.ViewModels
         public int QuestionOrderNum { get; set; }
         public int QuestionTypeId { get; set; }
         public int QuestionTypeOrderNum { get; set; }
+        public List<OptionsViewModel> Options { get; set; }
     }
 }
