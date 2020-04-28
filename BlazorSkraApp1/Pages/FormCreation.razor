@@ -1,0 +1,290 @@
+@page "/FC"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Models.ViewModels
+@using BlazorSkraApp1.Shared.Components
+@using BlazorSkraApp1.Components
+@inject ICategoriesService categoriesService
+@inject IQuestionTypesService questionTypesService
+@inject IFormsInfoService formsInfoService
+
+@inject ICategoriesAssignmentsService formsCategoryAssignmentsService
+
+@inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
+@inject IQuestionsFormAssignmentService questionsFormAssignmentsService
+@inject IQuestionsService questionsService
+@inject IOptionsService optionsService
+<!-- Create form -->
+@if (!formCreated)
+{
+    <EditForm Model="@formInputModel" OnValidSubmit="CreateForm">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Heiti eyðublaðs</label>
+            <div class="col-sm-10">
+                <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
+                <ValidationMessage For="@(() => formInputModel.FormName)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+            <div class="col-sm-10">
+                <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
+                    <option value="">Veldu flokk</option>
+                    @if (categoriesList == null)
+                        {
+                        <option>loading...</option>
+                        }
+                        else
+                        {
+                            foreach (var category in categoriesList)
+                            {
+                            <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
+                            }
+                        }
+                    /**/
+                    /**/
+                    /**/
+                    /**/
+                    /**/
+                </InputSelect>
+                <ValidationMessage For="@(() => formInputModel.CategoryId)" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
+            <div class="col-sm-10">
+                <InputText id="email" class="form-control" @bind-Value="@formInputModel.DestinationEmail" />
+                <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
+            </div>
+        </div>
+        <button type="submit" class="btn approve-btn">Búa til eyðublað</button>
+        <DataAnnotationsValidator />
+    </EditForm>
+}
+
+<!-- Create questions for form -->
+@if (formCreated)
+{
+    <!-- Display the created Form here -->
+    <FormViewComponent questionsList="@createdQuestionsList" Form="@createdForm"></FormViewComponent>
+
+    <EditForm EditContext="@editContext" OnSubmit="CreateQuestion">
+        <ObjectGraphDataAnnotationsValidator />
+        <br />
+        <div class="card">
+            <div class="card-body" id="question-box">
+                <div class="form-group row form-inline">
+                    <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
+                    <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
+                        <option value="">Veldu tegund</option>
+                        @if (questionTypesList == null)
+                            {
+                            <option>loading...</option>
+                            }
+                            else
+                            {
+                                foreach (var type in questionTypesList)
+                                {
+                                <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                                }
+                            }
+                    </InputSelect>
+                    <button type="submit" id="save-icon" class="btn btn-link">
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+            </div>
+            @if (questionInputModel.QuestionTypeId == "4" || questionInputModel.QuestionTypeId == "5")
+            {
+                <div class="option-wrapper">
+                    @foreach (var option in questionInputModel.Options)
+                    {
+                        <div class="form-group row">
+                            <input type="radio" disabled>
+                            <div class="col-sm-4">
+                                <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                <button @onclick="(() => RemoveOption(option))" type="button" class="btn btn-secondary">Fjarlægja</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <button @onclick="(() => AddOption())" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
+            }
+            <ValidationSummary></ValidationSummary>
+        </div>
+        <br>
+        <button type="submit" class="btn approve-btn">Bæta spurningu við eyðublað</button>
+    </EditForm>
+    <button @onclick="SaveForm" type="button" class="btn btn-outline-success">Birta eyðublað</button>
+}
+
+@code {
+    //For forms
+    private FormInputModel formInputModel = new FormInputModel();
+    private QuestionInputModel questionInputModel;
+    private EditContext editContext;
+    List<Categories> categoriesList;
+    List<QuestionTypes> questionTypesList;
+
+    //For form display/creation
+    protected List<QuestionsViewModel> createdQuestionsList;
+    protected FormsViewModel createdForm;
+    protected string selectedCategory;
+    private int questionOrderNum;
+    bool formCreated = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //InputModels
+        questionInputModel = new QuestionInputModel();
+        questionInputModel.Options = new List<Options> { new Options(), new Options() };
+        editContext = new EditContext(questionInputModel);
+        //Dropdown lists
+        categoriesList = await categoriesService.Get();
+        questionTypesList = await questionTypesService.Get();
+
+        //Display
+        createdQuestionsList = new List<QuestionsViewModel>();
+        createdForm = new FormsViewModel();
+        questionOrderNum = 0;
+    }
+
+    private async void CreateForm()
+    {
+        createdForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
+        var category = await categoriesService.Get(createdForm.CategoryId);
+        createdForm.CategoryName = category.CategoryName;
+        createdForm.FormName = formInputModel.FormName;
+        createdForm.DestinationEmail = formInputModel.DestinationEmail;
+
+        formCreated = true;
+    }
+
+    private void CreateQuestion()
+    {
+        //If question shouldn´t have any options
+        if (questionInputModel.QuestionTypeId != "4" && questionInputModel.QuestionTypeId != "5")
+        {
+            //Clear options
+            questionInputModel.Options = new List<Options>();
+        }
+
+        if (editContext.Validate())
+        {
+            //Add options to createdOptionsList
+            List<OptionsViewModel> createdOptionsList = new List<OptionsViewModel>();
+            int optionOrderNum = 0;
+            foreach (var createdOption in questionInputModel.Options)
+            {
+                var option = new OptionsViewModel();
+                option.OptionName = createdOption.OptionName;
+                option.OptionOrderNum = optionOrderNum;
+                option.QuestionOrderNum = questionOrderNum;
+                createdOptionsList.Add(option);
+                optionOrderNum++;
+            }
+
+            //Add question to createdQuestionsList
+            QuestionsViewModel question = new QuestionsViewModel();
+            question.QuestionName = questionInputModel.QuestionName;
+            question.QuestionOrderNum = questionOrderNum; //Mögulega hægt að gera createdQuestionsList.Count() í staðinn seinna
+            question.QuestionTypeId = Int16.Parse(questionInputModel.QuestionTypeId);
+            question.QuestionTypeOrderNum = createdQuestionsList.Count(o => o.QuestionTypeId == question.QuestionTypeId);
+            question.Options = createdOptionsList;
+            createdQuestionsList.Add(question);
+
+            //Clear inputModel
+            questionOrderNum++;
+            questionInputModel = new QuestionInputModel();
+            questionInputModel.Options = new List<Options> { new Options(), new Options() };
+            editContext = new EditContext(questionInputModel);
+        }
+    }
+
+    private void AddOption()
+    {
+        questionInputModel.Options.Add(new Options());
+        StateHasChanged();
+    }
+
+    private void RemoveOption(Options option)
+    {
+        questionInputModel.Options.Remove(option);
+        StateHasChanged();
+    }
+
+    private async void SaveForm()
+    {
+        if (createdQuestionsList.Count() < 1)
+        {
+            //Skila skilaboðum til notanda um að það þurfi að búa til 1+ spurningu áður en Form er birt
+            //Eða að takki virki ekki fyrr en búið er að búa til spurningu?
+            return;
+        }
+
+        createdForm.Questions = createdQuestionsList;
+        //var formId = await kalla í service sem ave-ar form-ið;
+
+        //Add formInfo to Db
+        FormsInfo formInfo = new FormsInfo();
+        formInfo.FormName = createdForm.FormName;
+        formInfo.DestinationEmail = createdForm.DestinationEmail;
+        formInfo = await formsInfoService.Add(formInfo);
+
+        //Add FormsCategoryAssignments (CategoriesAssignments) to Db
+        CategoriesAssignments formsCategoryAssignment = new CategoriesAssignments();
+        formsCategoryAssignment.FormId = formInfo.FormId;
+        formsCategoryAssignment.CategoryId = createdForm.CategoryId;
+        formsCategoryAssignment = await formsCategoryAssignmentsService.Add(formsCategoryAssignment);
+
+        //Add questions to Db
+        List<Questions> questionsList = new List<Questions>();
+        foreach(var createdQuestion in createdForm.Questions)
+        {
+            Questions question = new Questions();
+            question.QuestionTypes = new QuestionTypes();
+            question.QuestionTypes = await questionTypesService.Get(createdQuestion.QuestionTypeId);
+            question.QuestionName = createdQuestion.QuestionName;
+            question = await questionsService.Add(question);
+
+            QuestionsFormAssignments questionFormAssignment = new QuestionsFormAssignments();
+            questionFormAssignment.FormId = formInfo.FormId;
+            questionFormAssignment.QuestionId = question.QuestionId;
+            questionFormAssignment.QuestionOrderNum = createdQuestion.QuestionOrderNum;
+            questionFormAssignment.QuestionTypeOrderNum = createdQuestion.QuestionTypeOrderNum;
+            questionFormAssignment = await questionsFormAssignmentsService.Add(questionFormAssignment);
+
+            //Add the questions options to the Db
+            foreach(var createdOption in createdQuestion.Options)
+            {
+                Options option = new Options();
+                option.OptionName = createdOption.OptionName;
+                option = await optionsService.Add(option);
+
+                OptionsQuestionAssignmnents optionQuestionAssignment = new OptionsQuestionAssignmnents();
+                optionQuestionAssignment.FormId = formInfo.FormId;
+                optionQuestionAssignment.QuestionOrderNum = createdQuestion.QuestionOrderNum;
+                optionQuestionAssignment.OptionId = option.OptionId;
+                optionQuestionAssignment.OptionOrderNum = createdOption.OptionOrderNum;
+                optionQuestionAssignment = await optionsQuestionAssignmentsService.Add(optionQuestionAssignment);
+            }
+
+
+
+        }
+
+
+        //Birta confirmation
+        //Rerouta á síðuna þar sem nýbirt eyðublað er
+    }
+
+
+
+    public DateTime SelectedDate { get; set; }
+
+    public void OnDateSelected(DateTime dt)
+    {
+        SelectedDate = dt;
+    }
+}
