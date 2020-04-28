@@ -23,6 +23,7 @@
                         {
                             number = 31;
                         }
+                        <option value="0">Dagur</option>
                         @for (int i = 1; i <= number; i++)
                         {
                             <option value="@i">@i</option>
@@ -31,6 +32,7 @@
                 </td>
                 <td>
                     <select class="form-control" @bind="@Month">
+                        <option value="0">Mánuður</option>
                         @for (int i = 1; i <= 12; i++)
                         {
                             <option value="@i">@Months[i - 1]</option>
@@ -39,7 +41,8 @@
                 </td>
                 <td>
                     <select class="form-control" @bind="@Year">
-                        @for (int i = DateTime.Now.Year-100; i <=DateTime.Now.Year+5 ; i++)
+                        <option value="0">Ár</option>
+                        @for (int i = DateTime.Now.Year-100; i <=DateTime.Now.Year+5; i++)
                         {
                             <option value="@i"> @i</option>
                         }
@@ -64,9 +67,9 @@
     public int Day { get; set; }
     public int Month { get; set; }
     public int Year { get; set; }
-    private int number = 0;
 
     bool confirmed = false;
+    private int number = 0;
 
     public string[] Months { get; set; } =
     {
@@ -89,12 +92,16 @@
 
     protected override void OnInitialized()
     {
-        Day = DateTime.Now.Day;
-        Month = DateTime.Now.Month;
-        Year = DateTime.Now.Year;
+        Day = 0;
+        Month = 0;
+        Year = 0;
     }
     public Task OnSelectClick()
     {
+        if(Day == 0 || Month == 0 || Year == 0)
+        {
+            return DateSelected.InvokeAsync(System.DateTime.MinValue);
+        }
         confirmed = true;
         DateTime dt = new DateTime(Year, Month, Day);
         return DateSelected.InvokeAsync(dt);

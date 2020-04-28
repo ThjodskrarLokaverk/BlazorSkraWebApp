@@ -14,27 +14,28 @@
     }
     else
     {
+        <div class="container">
+            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn btn-success addCategory">
+            <i class="far fa-plus-square"></i>
+            Bæta við flokk
+            </button>
+        </div>
         @foreach (var category in categoriesList)
         {
             <div class="linkboxes">
                 <div class="col-md-4 col-xs-6">
+                    <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link edit-icon">
+                        <i class="fas fa-pen indexPen" title="Modifier"></i>
+                    </button>
+                    <a href="/NotificationList/@category.CategoryId">
                     <div class="boxes btn">
                         <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>
-                        <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link edit-icon">
-                            <i class="fas fa-pen" title="Modifier"></i>
-                        </button>
                     </div>
+                    </a>
                 </div>
             </div>
+            
         }
-
-        <div class="linkboxes">
-            <div class="col-md-4 col-xs-6">
-                <button data-toggle="modal" data-target="#addCategoryModal" class="add-category-link boxes btn text-uppercase">
-                    <span class="oi oi-plus"></span> Bæta við flokk
-                </button>
-            </div>
-        </div>
     }
 
     <!-- Edit Category popup modal -->

@@ -44,6 +44,20 @@
         function CloseModal(modalId) {
             $('#' + modalId).modal('hide');
         }
+        function GetCheckedBoxes(name) {
+            var checkboxes = document.querySelectorAll('input[name="' + name + '"]:checked');
+            var checkboxesChecked = [];
+            for(var i = 0; i < checkboxes.length; i++) {
+                checkboxesChecked.push(checkboxes[i].value);
+            }
+            var values = checkboxesChecked.join();
+            return values;
+        }
+        function GetSelectedDate(name) {
+            var val = document.getElementById(name).value;
+            val = val.split('-').reverse().join('/');
+            return val;
+        }
     </script>
 
     <script src="~/js/SaveAsFile.js"></script>
