@@ -68,6 +68,30 @@ html, body {
     margin-bottom: 15px;
 }
 
+.mediationIMG{
+    width: 50%;
+    height: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 3rem;
+}
+
+.empty-state{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 47%;
+    text-align: justify;
+    border: 2px solid;
+    padding: 10px;
+    border-color: var(--two);
+    /* background-color: var(--three);  */
+    color:black;
+
+
+}
+
 /* Edit Notification */
 
 #NewFormName {
@@ -353,15 +377,6 @@ html, body {
     margin-left: 20px;
 }
 
-.date-picker {
-    width: 180px;
-    margin-top: -25px;
-}
-
-.check-box {
-    margin-left: 0px;
-}
-
 /* dropdown menu */
 
 /* .dropdown-toggle{
@@ -388,6 +403,8 @@ html, body {
 .first-dropdown-wrapper{
     background-color: var(--two);
     color: var(--two);
+
+
 }
 
 .first-dropdown-wrapper .dropdown-menu {
