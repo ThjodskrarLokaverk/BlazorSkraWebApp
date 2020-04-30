@@ -19,7 +19,6 @@ namespace BlazorSkraApp1.Tests
             var notification = new BlazorSkraApp1.Pages.NotificationList();
             //var result = notification.IncrementCount(2);
             Assert.Equal(5, notification.IncrementCount(2, 3));
-
         }
     }
 }
