@@ -50,7 +50,26 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             {
                 new OptionsQuestionAssignmnents(){ OptionOrderNum = 1, FormId = 1, QuestionOrderNum = 1, OptionId = 1},
                 new OptionsQuestionAssignmnents(){ OptionOrderNum = 2, FormId = 1, QuestionOrderNum = 1, OptionId = 2},
-                new OptionsQuestionAssignmnents(){ OptionOrderNum = 3, FormId = 1, QuestionOrderNum = 1, OptionId = 3}
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 3, FormId = 1, QuestionOrderNum = 1, OptionId = 3},
+                new OptionsQuestionAssignmnents()
+                { 
+                    OptionOrderNum = 3, 
+                    FormId = 3, 
+                    QuestionOrderNum = 1, 
+                    OptionId = 4, 
+                    Options = new Options(){OptionId = 4, OptionName = "Jaja"},
+                    QuestionsFormAssignments = new QuestionsFormAssignments(){FormId = 3, QuestionOrderNum = 1, QuestionId = 1, QuestionTypeOrderNum = 0}
+                },
+                new OptionsQuestionAssignmnents()
+                { 
+                    OptionOrderNum = 3, 
+                    FormId = 4, 
+                    QuestionOrderNum = 1, 
+                    OptionId = 4, 
+                    Options = new Options(){OptionId = 4, OptionName = "Jaja"},
+                    QuestionsFormAssignments = new QuestionsFormAssignments(){FormId = 4, QuestionOrderNum = 1, QuestionId = 1, QuestionTypeOrderNum = 0}
+                }
+
             };
         }
         public static List<Options> GetSeedingOptions()
