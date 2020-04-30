@@ -76,6 +76,7 @@
             <div class="card-body" id="question-box">
                 <div class="form-group row form-inline">
                     <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@questionInputModel.QuestionName" />
+                    <ValidationMessage For="@(() => questionInputModel.QuestionName)" />
                     <InputSelect @bind-Value="@questionInputModel.QuestionTypeId" id="question-type" class="form-control">
                         <option value="">Veldu tegund</option>
                         @if (questionTypesList == null)
@@ -90,6 +91,7 @@
                                 }
                             }
                     </InputSelect>
+                    <ValidationMessage For="@(() => questionInputModel.QuestionTypeId)" />
                     <button type="submit" id="save-icon" class="btn btn-link">
                         <i class="fas fa-save"></i>
                     </button>
@@ -103,7 +105,8 @@
                         <div class="form-group row">
                             <input type="radio" disabled>
                             <div class="col-sm-4">
-                                <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                <InputText id="@(option.OptionId)" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                <ValidationMessage For="@(() => option.OptionName)" />
                                 <button @onclick="(() => RemoveOption(option))" type="button" class="btn btn-secondary">Fjarlægja</button>
                             </div>
                         </div>
@@ -111,7 +114,6 @@
                 </div>
                 <button @onclick="(() => AddOption())" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
             }
-            <ValidationSummary></ValidationSummary>
         </div>
         <br>
         <button type="submit" class="btn approve-btn">Bæta spurningu við eyðublað</button>
@@ -132,13 +134,18 @@
     protected FormsViewModel createdForm;
     protected string selectedCategory;
     private int questionOrderNum;
+    private int createdOptionOrderNum;
     bool formCreated = false;
 
     protected override async Task OnInitializedAsync()
     {
         //InputModels
         questionInputModel = new QuestionInputModel();
-        questionInputModel.Options = new List<Options> { new Options(), new Options() };
+        var option1 = new Options();
+        option1.OptionId = 0;
+        var option2 = new Options();
+        option2.OptionId = 1;
+        questionInputModel.Options = new List<Options> { option1 , option2 };
         editContext = new EditContext(questionInputModel);
         //Dropdown lists
         categoriesList = await categoriesService.Get();
@@ -148,6 +155,7 @@
         createdQuestionsList = new List<QuestionsViewModel>();
         createdForm = new FormsViewModel();
         questionOrderNum = 0;
+        createdOptionOrderNum = 2;
     }
 
     private async void CreateForm()
@@ -204,14 +212,27 @@
 
     private void AddOption()
     {
-        questionInputModel.Options.Add(new Options());
+
+        var newOption = new Options();
+        newOption.OptionId = createdOptionOrderNum;
+        createdOptionOrderNum++;
+        questionInputModel.Options.Add(newOption);
+        //editContext.Validate();
+        //editContext.IsModified();
+        //editContext.NotifyValidationStateChanged();
         StateHasChanged();
     }
 
     private void RemoveOption(Options option)
     {
+        var oldMessages = editContext.GetValidationMessages();
         questionInputModel.Options.Remove(option);
-        StateHasChanged();
+        //var equal = editContext.Model.Equals(questionInputModel);
+        editContext = new EditContext(questionInputModel);
+        editContext.Validate();
+        editContext.NotifyValidationStateChanged();
+        var messages = editContext.GetValidationMessages();
+        //StateHasChanged();
     }
 
     private async void SaveForm()
