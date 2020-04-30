@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Xunit;
 using BlazorSkraApp1.Data;
 using BlazorSkraApp1.Services;
-using BlazorSkraApp1.Tests;
+using BlazorSkraApp1.Tests.Helpers;
 
 namespace BlazorSkraApp1.Tests
 {
