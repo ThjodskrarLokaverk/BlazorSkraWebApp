@@ -96,14 +96,6 @@ namespace BlazorSkraApp1.Data
         public DbSet<QuestionsFormAssignments> QuestionsFormAssignments { get; set; }
         public DbSet<OptionsQuestionAssignmnents> OptionsQuestionAssignmnents { get; set; }
 
-        public static List<Categories> GetSeedingCategories()
-        {
-            return new List<Categories>()
-            {
-                new Categories(){ CategoryName = "TEST: Category 1"}
-            };
-        }
-
         public override int SaveChanges()
         {
             return base.SaveChanges();
