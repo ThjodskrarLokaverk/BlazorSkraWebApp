@@ -35,8 +35,8 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualCategories = Assert.IsAssignableFrom<List<Categories>>(result);
             Assert.Equal(
-                seedCategories.OrderBy(m => m.CategoryId).Select(m => m.CategoryName),
-                actualCategories.OrderBy(m => m.CategoryId).Select(m => m.CategoryName));
+                seedCategories.OrderBy(c => c.CategoryId).Select(m => m.CategoryName),
+                actualCategories.OrderBy(c => c.CategoryId).Select(m => m.CategoryName));
         }
 
         [Fact]
@@ -59,7 +59,7 @@ namespace BlazorSkraApp1.IntegrationTests
         {
             // Arrange
             var recId = 1;
-            var expectedCategory = new Categories(){ CategoryId = 1, CategoryName = "TEST: Category 1"};
+            var expectedCategory = new Categories(){ CategoryId = recId, CategoryName = "Category 1"};
             await db.AddRangeAsync(expectedCategory);
             await db.SaveChangesAsync();
 
@@ -76,7 +76,7 @@ namespace BlazorSkraApp1.IntegrationTests
         {
             // Arrange
             var recId = 2;
-            var expectedCategory = new Categories(){ CategoryId = 2, CategoryName = "TEST: Category 2"};
+            var expectedCategory = new Categories(){ CategoryId = recId, CategoryName = "Category 2"};
             await db.AddRangeAsync(expectedCategory);
             await db.SaveChangesAsync();
 
@@ -89,7 +89,7 @@ namespace BlazorSkraApp1.IntegrationTests
             Assert.Equal(expectedCategory, actualCategory);
         }
         [Fact]
-        public async Task DeletedCategory_CategoryIsDeleted()
+        public async Task DeleteCategoryAsync_CategoryIsDeleted()
         {
             // Arrange
             await db.AddRangeAsync(seedCategories);

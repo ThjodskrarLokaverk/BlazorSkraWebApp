@@ -21,9 +21,9 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
         {
             return new List<Questions>()
             {
-                new Questions(){ QuestionId = 1, QuestionName = "Question 1"},
-                new Questions(){ QuestionId = 2, QuestionName = "Question 2"},
-                new Questions(){ QuestionId = 3, QuestionName = "Question 3"}
+                new Questions(){ QuestionId = 1, QuestionName = "Question 1", QuestionTypes = new QuestionTypes(){ QuestionTypeId = 4, QuestionTypeName = "Type 4"}},
+                new Questions(){ QuestionId = 2, QuestionName = "Question 2", QuestionTypes = new QuestionTypes(){ QuestionTypeId = 5, QuestionTypeName = "Type 5"}},
+                new Questions(){ QuestionId = 3, QuestionName = "Question 3", QuestionTypes = new QuestionTypes(){ QuestionTypeId = 6, QuestionTypeName = "Type 6"}}
             };
         }
         public static List<FormsInfo> GetSeedingFormsInfo()
@@ -84,18 +84,30 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
         {
             return new List<SubmissionsInfo>()
             {
-                new SubmissionsInfo(){ SubmissionId = 1, UserId = "test1@test.com"},
-                new SubmissionsInfo(){ SubmissionId = 2, UserId = "test2@test.com"},
-                new SubmissionsInfo(){ SubmissionId = 3, UserId = "test3@test.com"}
+                new SubmissionsInfo(){ SubmissionId = 4, UserId = "test1@test.com"},
+                new SubmissionsInfo(){ SubmissionId = 5, UserId = "test2@test.com"},
+                new SubmissionsInfo(){ SubmissionId = 6, UserId = "test3@test.com"}
             };
         }
         public static List<Submissions> GetSeedingSubmissions()
         {
             return new List<Submissions>()
             {
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 2, FormId = 1, Answer = "No", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 3, FormId = 1, Answer = "Maybe", QuestionsQuestionId = 1}
+                new Submissions()
+                {
+                    SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 5, Answer = "Yes", QuestionsQuestionId = 1,
+                    Submission = new SubmissionsInfo{SubmissionId = 1, UserId = "test1@test.com"},
+                    Form = new FormsInfo{FormId = 5, FormName = "Form 5", DestinationEmail = "dest@test.com"}
+                },
+                new Submissions()
+                {
+                    SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 5, Answer = "No", QuestionsQuestionId = 2,
+                    Submission = new SubmissionsInfo{SubmissionId = 1, UserId = "test1@test.com"},
+                    Form = new FormsInfo{FormId = 5, FormName = "Form 5", DestinationEmail = "dest@test.com"}
+                }
+                //new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 5, Answer = "Yes", QuestionsQuestionId = 1},
+                //new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 2, FormId = 5, Answer = "No", QuestionsQuestionId = 1},
+                //new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 3, FormId = 5, Answer = "Maybe", QuestionsQuestionId = 1}
             };
         }
     }
