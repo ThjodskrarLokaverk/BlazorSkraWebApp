@@ -19,8 +19,6 @@ namespace BlazorSkraApp1.Data
         public int FormId { get; set; }
         [Required]
         public int QuestionsQuestionId { get; set; }
-        public DateTime SubmissionDate { get; set; }  // To be able to identify submissions by date, and delete old submissions
-        [Required]
         //[Required]
         public virtual SubmissionsInfo Submission { get; set; }
         //[Required]
