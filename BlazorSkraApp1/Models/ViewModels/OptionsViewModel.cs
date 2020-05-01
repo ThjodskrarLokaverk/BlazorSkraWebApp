@@ -11,6 +11,5 @@ namespace BlazorSkraApp1.Models.ViewModels
     {
         public string OptionName { get; set; }
         public int OptionOrderNum { get; set; }
-        public int QuestionOrderNum { get; set; }
     }
 }
