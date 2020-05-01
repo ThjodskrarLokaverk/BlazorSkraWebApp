@@ -10,3 +10,4 @@ artifacts/
 *.binlog
 .ionide/
 *.txt
+.DS_Store

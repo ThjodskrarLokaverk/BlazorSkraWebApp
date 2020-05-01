@@ -10,6 +10,7 @@ using MimeKit;
 using Microsoft.JSInterop;
 using BlazorSkraApp1.Reports;
 using BlazorSkraApp1.Models.InputModels;
+using Serilog;
 
 namespace BlazorSkraApp1.Services
 {
@@ -38,7 +39,6 @@ namespace BlazorSkraApp1.Services
         public void sendMail()
         {   
             try{
-            //message.Body = myList;
             var message = new MimeMessage();
             var builder = new BodyBuilder ();
             //Sender of email here
@@ -62,7 +62,7 @@ namespace BlazorSkraApp1.Services
             }
             catch(Exception)
             {
-                // hello world
+                Log.Error($"Ekki tókst að senda tilkynningu með tölvupósti {formsInfo.FormName} Dagsetning: {DateTime.Now.ToShortDateString()}");
             }
         }
 
@@ -112,9 +112,10 @@ namespace BlazorSkraApp1.Services
                 emailBody += "Sendandi tilkynningar óskaði eftir nafnleynd" + newLine + newLine;
             }
             
+            //Answers added to email body
             foreach(var question in questionsList)
             {
-                emailBody += question.QuestionOrderNum + ". " +question.Questions.QuestionName + newLine;
+                emailBody += question.QuestionOrderNum+1 + ". " +question.Questions.QuestionName + newLine;
                 
                 foreach(var answer in subList.Where(answer => answer.QuestionsQuestionId == question.Questions.QuestionId))
                 {
