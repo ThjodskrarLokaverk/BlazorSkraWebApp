@@ -240,6 +240,7 @@ else
             //Save the Id of the form and the submission with all answers
             submission.FormId = submissionInput.FormId;
             submission.SubmissionId = submissionsInfo.SubmissionId;
+            submission.SubmissionDate = DateTime.UtcNow;  //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
 
             //Save the answer to each question and save to database
             foreach (var question in questionsList)

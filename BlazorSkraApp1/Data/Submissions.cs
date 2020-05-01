@@ -17,16 +17,19 @@ namespace BlazorSkraApp1.Data
         public int SubmissionId { get; set; }
         [Required]
         public int FormId { get; set; }
-        
         [Required]
         public int QuestionsQuestionId { get; set; }
-
+        public DateTime SubmissionDate { get; set; }  // To be able to identify submissions by date, and delete old submissions
+        [Required]
         //[Required]
         public virtual SubmissionsInfo Submission { get; set; }
         //[Required]
         public virtual FormsInfo Form { get; set; }
         [Required]
         public Questions Questions { get; set; }
+
+        
+
 
 
 
