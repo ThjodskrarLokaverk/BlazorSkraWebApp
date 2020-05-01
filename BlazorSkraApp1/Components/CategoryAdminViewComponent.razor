@@ -22,6 +22,7 @@
         </div>
         @foreach (var category in categoriesList)
         {
+            categoryCounter +=1;
             <div class="linkboxes">
                 <div class="col-md-4 col-xs-6">
                     <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link edit-icon">
@@ -36,14 +37,16 @@
             </div>
             
         }
-
-        @* <div class="linkboxes">
-            <div class="col-md-4 col-xs-6">
-                <button data-toggle="modal" data-target="#addCategoryModal" class="add-category-link boxes btn text-uppercase">
-                    <span class="oi oi-plus"></span> Bæta við flokk
-                </button>
-            </div>
-        </div> *@
+    }
+    @if (categoryCounter == 0)
+    {
+        // displayed when there is no category on the site
+        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+        <AuthorizeView Roles="Admin">
+            <Authorized>
+                <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Búðu til flokk með því að smella á "bæta við flokk" upp í vinstra horninu. </h5>
+            </Authorized>
+        </AuthorizeView>
     }
 
     <!-- Edit Category popup modal -->
@@ -55,7 +58,10 @@
 
 @code {
     List<Categories> categoriesList;
+    
     Categories selectedCategory = new Categories();
+
+    int categoryCounter = 0;
 
     protected override async Task OnInitializedAsync()
     {

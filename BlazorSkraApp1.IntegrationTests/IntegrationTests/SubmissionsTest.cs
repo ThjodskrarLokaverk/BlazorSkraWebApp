@@ -21,19 +21,13 @@ namespace BlazorSkraApp1.IntegrationTests
             seedSubmissions = SeedData.GetSeedingSubmissions();
             service = new SubmissionsService(db);
         }
-        /*[Fact]
+        [Fact]
         public async Task GetSubmissionsAsync_SubmissionsAreReturned()
         {
             // Arrange
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
             await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
-            await db.AddRangeAsync(SeedData.GetSeedingCategories());
-            await db.AddRangeAsync(SeedData.GetSeedingCategoriesAssignments());
-            await db.AddRangeAsync(SeedData.GetSeedingOptions());
-            await db.AddRangeAsync(SeedData.GetSeedingQuestions());
-            await db.AddRangeAsync(SeedData.GetSeedingQuestionsFormAssignment());
-            await db.AddRangeAsync(SeedData.GetSeedingQuestionTypes());
             await db.SaveChangesAsync(); 
 
             // Act
@@ -42,19 +36,18 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualSubmissions = Assert.IsAssignableFrom<List<Submissions>>(result);
             Assert.Equal(
-                seedSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.QuestionsQuestionId),
-                actualSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.QuestionsQuestionId));
+                seedSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId),
+                actualSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId));
         }
-        
+        /*
         [Fact]
         public async Task GetSubmissionAsync_SubmissionIsReturned()
         {
             // Arrange
             var subId = 1;
             var expectedSubmission = new List<Submissions>() {
-
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 0, AnswerOrderNum = 1, FormId = 5, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 2, FormId = 5, Answer = "No", QuestionsQuestionId = 2}
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "No", QuestionsQuestionId = 2}
             };
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
@@ -69,7 +62,8 @@ namespace BlazorSkraApp1.IntegrationTests
             Assert.Equal(
                 seedSubmissions.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId),
                 actualSubmission.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId));
-        }*/
+        }
+        */
         [Fact]
         public async Task AddSubmissionAsync_SubmissionIsAdded()
         {
@@ -77,7 +71,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var qon = 1;
             var aon = 1;
             var formid = 1;
-            var subId = 1;
+            var subId = 2;
 
             var expectedSubmission = new Submissions(){ SubmissionId = subId, QuestionOrderNum = qon, AnswerOrderNum = aon, FormId = formid, Answer = "Maybe", QuestionsQuestionId = 1};
 

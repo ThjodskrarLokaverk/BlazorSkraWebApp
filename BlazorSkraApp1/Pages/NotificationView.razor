@@ -62,7 +62,7 @@ else
                                 {
                                     string checkboxName = question.QuestionOrderNum.ToString();
                                     <input class="check-box" type="checkbox" name="@checkboxName" value="@option.Options.OptionName"
-                                        @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
+                                           @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
                                     <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
                                 }
                                 <ValidationMessage For="@(() => submissionInput.Checkbox[question.QuestionTypeOrderNum].Value)" />
@@ -72,7 +72,7 @@ else
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
                                 <input class="form-control date-picker" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
-                                type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
+                                       type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
                             else
@@ -190,23 +190,23 @@ else
         submissionInput.Date = new RequiredDate[dateCount];
         submissionInput.MultipleAnswers = new List<string>();
 
-        for(int i = 0; i < submissionInput.ShortText.Length; i++)
+        for (int i = 0; i < submissionInput.ShortText.Length; i++)
         {
             submissionInput.ShortText[i] = new RequiredShortText();
         }
-        for(int i = 0; i < submissionInput.LongText.Length; i++)
+        for (int i = 0; i < submissionInput.LongText.Length; i++)
         {
             submissionInput.LongText[i] = new RequiredLongText();
         }
-        for(int i = 0; i < submissionInput.Radio.Length; i++)
+        for (int i = 0; i < submissionInput.Radio.Length; i++)
         {
             submissionInput.Radio[i] = new RequiredRadio();
         }
-        for(int i = 0; i < submissionInput.Checkbox.Length; i++)
+        for (int i = 0; i < submissionInput.Checkbox.Length; i++)
         {
             submissionInput.Checkbox[i] = new RequiredCheckbox();
         }
-        for(int i = 0; i < submissionInput.Date.Length; i++)
+        for (int i = 0; i < submissionInput.Date.Length; i++)
         {
             submissionInput.Date[i] = new RequiredDate();
         }
@@ -240,6 +240,7 @@ else
             //Save the Id of the form and the submission with all answers
             submission.FormId = submissionInput.FormId;
             submission.SubmissionId = submissionsInfo.SubmissionId;
+            submission.SubmissionDate = DateTime.UtcNow;  //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
 
             //Save the answer to each question and save to database
             foreach (var question in questionsList)
@@ -247,23 +248,23 @@ else
                 submission.QuestionsQuestionId = question.QuestionId;
                 submission.QuestionOrderNum = question.QuestionOrderNum;
                 // Short text
-                if(question.Questions.QuestionTypes.QuestionTypeId == 1)
+                if (question.Questions.QuestionTypes.QuestionTypeId == 1)
                 {
                     submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
                 }
-                else if(question.Questions.QuestionTypes.QuestionTypeId == 3)
+                else if (question.Questions.QuestionTypes.QuestionTypeId == 3)
                 {
                     submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
                 }
-                else if(question.Questions.QuestionTypes.QuestionTypeId == 4)
+                else if (question.Questions.QuestionTypes.QuestionTypeId == 4)
                 {
                     submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
                 }
-                else if(question.Questions.QuestionTypes.QuestionTypeId == 5)
+                else if (question.Questions.QuestionTypes.QuestionTypeId == 5)
                 {
                     submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
                 }
-                else if(question.Questions.QuestionTypes.QuestionTypeId == 6)
+                else if (question.Questions.QuestionTypes.QuestionTypeId == 6)
                 {
                     submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
                 }
@@ -291,14 +292,15 @@ else
 
     private void sendMail(string userEmail)
     {
-        try{
+        try
+        {
             var FormId = Int16.Parse(id);
             mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
             StateHasChanged();
-        }    
-        catch(Exception)
+        }
+        catch (Exception)
         {
             _subFail = true;
         }
-    }   
+    }
 }

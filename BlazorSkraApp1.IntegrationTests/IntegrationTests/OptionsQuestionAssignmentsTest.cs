@@ -22,7 +22,7 @@ namespace BlazorSkraApp1.IntegrationTests
             seedAssignments = SeedData.GetSeedingOptionsQuestionAssignments();
             service = new OptionsQuestionAssignmnentsService(db);
         }
-        /*
+        
         [Fact]
         public async Task GetOptionAssignmentsAsync_OptionAssignmentsAreReturned()
         {
@@ -41,7 +41,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedAssignments.OrderBy(o => o.QuestionOrderNum),
                 actualAssignments.OrderBy(o => o.QuestionOrderNum));
         }
-        
+        /*
         [Fact]
         public async Task GetOptionAssignmentAsync_OptionAssignmentIsReturned()
         {
