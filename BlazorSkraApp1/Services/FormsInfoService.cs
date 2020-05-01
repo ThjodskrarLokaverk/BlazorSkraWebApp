@@ -14,7 +14,6 @@ namespace BlazorSkraApp1.Services
         Task<FormsInfo> Delete(int formId);
         Task<FormsInfo> Update(int formId);
         Task<FormsInfo> Get(int formId);
-        Task<FormsInfo> GetEmail(string DestinationEmail);
         Task<List<FormsInfo>> Get();
     }
     public class FormsInfoService : IFormsInfoService
@@ -57,10 +56,6 @@ namespace BlazorSkraApp1.Services
             return await _context.FormsInfo.FindAsync(formId);
         }
 
-        public async Task<FormsInfo> GetEmail(string DestinationEmail)
-        {
-            return await _context.FormsInfo.FindAsync(DestinationEmail);
-        }
         public async Task<List<FormsInfo>> Get()
         {
             return await _context.FormsInfo.ToListAsync();
