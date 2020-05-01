@@ -94,9 +94,9 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             return new List<Submissions>()
             {
                 new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "No", QuestionsQuestionId = 2},
-                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "No", QuestionsQuestionId = 2}
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2},
+                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 2, Answer = "Yes", QuestionsQuestionId = 1},
+                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 2, Answer = "Answer 2", QuestionsQuestionId = 2}
             };
         }
     }

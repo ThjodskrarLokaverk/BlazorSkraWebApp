@@ -39,15 +39,15 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId),
                 actualSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId));
         }
-        /*
+        
         [Fact]
         public async Task GetSubmissionAsync_SubmissionIsReturned()
         {
             // Arrange
             var subId = 1;
             var expectedSubmission = new List<Submissions>() {
-                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "No", QuestionsQuestionId = 2}
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 2, Answer = "Yes", QuestionsQuestionId = 1},
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 2, Answer = "Answer 2", QuestionsQuestionId = 2}
             };
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
@@ -60,10 +60,10 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualSubmission = Assert.IsAssignableFrom<List<Submissions>>(result);
             Assert.Equal(
-                seedSubmissions.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId),
+                expectedSubmission.OrderBy(s => s.SubmissionId).Where(s => s.SubmissionId == subId).Select(s => s.SubmissionId),
                 actualSubmission.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId));
         }
-        */
+        
         [Fact]
         public async Task AddSubmissionAsync_SubmissionIsAdded()
         {
@@ -81,6 +81,35 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualSubmission = await db.Submissions.FindAsync(subId, qon, aon, formid);
             Assert.Equal(expectedSubmission, actualSubmission);
+        }
+        [Fact]
+        public async Task DeleteSubmissionAsync_SubmissionIsDeleted()
+        {
+            // Arrange
+            await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
+            await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
+            await db.AddRangeAsync(seedSubmissions);
+            await db.SaveChangesAsync();
+            var recId = 1;
+            List<Submissions> deletedSubmission = new List<Submissions>() {
+                new Submissions(){ SubmissionId = recId, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
+                new Submissions(){ SubmissionId = recId, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2}
+            };
+            var expectedSubmission = seedSubmissions.Where(s => s.SubmissionId != recId).ToList();
+
+            // Act
+            Console.WriteLine("del: " + deletedSubmission[0].QuestionOrderNum);
+            Console.WriteLine("del: " + deletedSubmission[1].QuestionOrderNum);
+            foreach(var d in deletedSubmission)
+            {
+                await service.Delete(d);
+            }
+        
+            // Assert
+            var actualSubmissions = await db.Submissions.ToListAsync();
+            Assert.Equal(
+                expectedSubmission.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId),
+                actualSubmissions.OrderBy(s => s.SubmissionId).Select(c => c.SubmissionId));
         }
     }
 }
