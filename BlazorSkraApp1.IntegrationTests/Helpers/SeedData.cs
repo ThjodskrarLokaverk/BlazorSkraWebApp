@@ -31,7 +31,7 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             return new List<CategoriesAssignments>()
             {
                 new CategoriesAssignments(){ CategoryId = 1, FormId = 1},
-                new CategoriesAssignments(){ CategoryId = 2, FormId = 1},
+                new CategoriesAssignments(){ CategoryId = 2, FormId = 2},
                 new CategoriesAssignments(){ CategoryId = 3, FormId = 3}
             };
         }
@@ -50,7 +50,10 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             {
                 new Questions(){ QuestionId = 1, QuestionName = "Question 1"},
                 new Questions(){ QuestionId = 2, QuestionName = "Question 2"},
-                new Questions(){ QuestionId = 3, QuestionName = "Question 3"}
+                new Questions(){ QuestionId = 3, QuestionName = "Question 3"},
+                new Questions(){ QuestionId = 4, QuestionName = "Question 4"},
+                new Questions(){ QuestionId = 5, QuestionName = "Question 5"},
+                new Questions(){ QuestionId = 6, QuestionName = "Question 6"}
             };
         }
         public static List<Options> GetSeedingOptions()
@@ -77,7 +80,10 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             {
                 new QuestionsFormAssignments(){ FormId = 1, QuestionOrderNum = 1, QuestionId = 1, QuestionTypeOrderNum = 0},
                 new QuestionsFormAssignments(){ FormId = 1, QuestionOrderNum = 2, QuestionId = 2, QuestionTypeOrderNum = 0},
-                new QuestionsFormAssignments(){ FormId = 1, QuestionOrderNum = 3, QuestionId = 3, QuestionTypeOrderNum = 1}
+                new QuestionsFormAssignments(){ FormId = 1, QuestionOrderNum = 3, QuestionId = 3, QuestionTypeOrderNum = 1},
+                new QuestionsFormAssignments(){ FormId = 2, QuestionOrderNum = 1, QuestionId = 4, QuestionTypeOrderNum = 0},
+                new QuestionsFormAssignments(){ FormId = 2, QuestionOrderNum = 2, QuestionId = 5, QuestionTypeOrderNum = 1},
+                new QuestionsFormAssignments(){ FormId = 2, QuestionOrderNum = 3, QuestionId = 6, QuestionTypeOrderNum = 0}
             };
         }
         public static List<SubmissionsInfo> GetSeedingSubmissionsInfo()
@@ -85,8 +91,7 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             return new List<SubmissionsInfo>()
             {
                 new SubmissionsInfo(){ SubmissionId = 1, UserId = "test01@test.com"},
-                new SubmissionsInfo(){ SubmissionId = 2, UserId = "test02@test.com"},
-                new SubmissionsInfo(){ SubmissionId = 3, UserId = "test03@test.com"}
+                new SubmissionsInfo(){ SubmissionId = 2, UserId = "test02@test.com"}
             };
         }
         public static List<Submissions> GetSeedingSubmissions()
@@ -94,9 +99,11 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
             return new List<Submissions>()
             {
                 new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2},
-                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 2, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 2, AnswerOrderNum = 2, FormId = 2, Answer = "Answer 2", QuestionsQuestionId = 2}
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2},
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 3, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 3", QuestionsQuestionId = 3},
+                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 1, AnswerOrderNum = 0, FormId = 2, Answer = "Answer 1", QuestionsQuestionId = 4},
+                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 2, AnswerOrderNum = 0, FormId = 2, Answer = "Answer 2", QuestionsQuestionId = 5},
+                new Submissions(){ SubmissionId = 2, QuestionOrderNum = 3, AnswerOrderNum = 0, FormId = 2, Answer = "Answer 3", QuestionsQuestionId = 6}
             };
         }
     }

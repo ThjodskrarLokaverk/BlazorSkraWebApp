@@ -41,7 +41,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedAssignments.OrderBy(o => o.QuestionOrderNum),
                 actualAssignments.OrderBy(o => o.QuestionOrderNum));
         }
-        /*
+        
         [Fact]
         public async Task GetOptionAssignmentAsync_OptionAssignmentIsReturned()
         {
@@ -49,16 +49,9 @@ namespace BlazorSkraApp1.IntegrationTests
             var recId = 3;
             List<OptionsQuestionAssignmnents> expectedAssignment = new List<OptionsQuestionAssignmnents>()
             {
-                new OptionsQuestionAssignmnents()
-                { 
-                    OptionOrderNum = 3, 
-                    FormId = recId, 
-                    QuestionOrderNum = 1, 
-                    OptionId = 4, 
-                    Options = new Options(){OptionId = 4, OptionName = "Jaja"},
-                    QuestionsFormAssignments = new QuestionsFormAssignments(){FormId = 3, QuestionOrderNum = 1, QuestionId = 1, QuestionTypeOrderNum = 0}
-                }
-
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 1, FormId = 1, QuestionOrderNum = 1, OptionId = 1},
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 2, FormId = 1, QuestionOrderNum = 1, OptionId = 2},
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 3, FormId = 1, QuestionOrderNum = 1, OptionId = 3}
             };
             await db.AddRangeAsync(seedAssignments);
             await db.AddRangeAsync(SeedData.GetSeedingOptions());
@@ -71,12 +64,49 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualAssignments = Assert.IsAssignableFrom<List<OptionsQuestionAssignmnents>>(result);
             Assert.Equal(
-                expectedAssignment.OrderBy(o => o.QuestionOrderNum).Select(o => o.Options.OptionName),
-                actualAssignments.OrderBy(o => o.QuestionOrderNum).Select(o => o.Options.OptionName));
+                expectedAssignment.OrderBy(o => o.QuestionOrderNum).Where(o => o.FormId == recId).Select(o => o.Options.OptionId),
+                actualAssignments.OrderBy(o => o.QuestionOrderNum).Select(o => o.Options.OptionId));
         }
-        */
-    }
+        [Fact]
+        public async Task AddOptionAssignmentAsync_OptionAssignmentIsAdded()
+        {
+            // Arrange
+            var oon = 1;
+            var formid = 2;
+            var qon = 1;
 
+            var expectedAssignment = new OptionsQuestionAssignmnents(){ OptionOrderNum = oon, FormId = formid, QuestionOrderNum = qon, OptionId = 4};
+
+            // Act
+            await service.Add(expectedAssignment);
+
+            // Assert
+            //var actualAssignment = await db.OptionsQuestionAssignmnents.FindAsync(oon, formid, qon);
+            var actualAssignment = await db.OptionsQuestionAssignmnents.FirstOrDefaultAsync(o => o.OptionOrderNum == oon && o.FormId == formid && o.QuestionOrderNum == qon);
+            Assert.Equal(expectedAssignment, actualAssignment);
+        }
+        [Fact]
+        public async Task DeleteOptionsQuestionAssignmnentAsync_OptionsQuestionAssignmnentIsDeleted()
+        {
+            // Arrange
+            await db.AddRangeAsync(seedAssignments);
+            await db.SaveChangesAsync();
+            var oon = 3;
+            var formid = 1;
+            var qon = 1;
+            var deletedOptionsQuestionAssignmnent = new OptionsQuestionAssignmnents(){ OptionOrderNum = oon, FormId = formid, QuestionOrderNum = qon, OptionId = 3};
+            var expectedOptionsQuestionAssignmnent = seedAssignments.Where(o => o.OptionOrderNum != oon && o.FormId == formid && o.QuestionOrderNum == qon).ToList();
+
+            // Act
+            await service.Delete(deletedOptionsQuestionAssignmnent);
+        
+            // Assert
+            var actualOptionsQuestionAssignmnent = await db.OptionsQuestionAssignmnents.ToListAsync();
+            Assert.Equal(
+                expectedOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum),
+            actualOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum));
+        }
+    }
 }
 
 /*
