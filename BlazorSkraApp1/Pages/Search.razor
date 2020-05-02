@@ -1,0 +1,71 @@
+@page "/Search/{searchString}"
+@page "/Search"
+@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject ICategoriesService catService
+@inject IFormsInfoService formService
+
+
+@if (notificationList == null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    }
+else{   
+    <div class="md-form mt-0 index-search">
+        <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
+        <button class="btn search-button" @onclick="@SearchLists"><i class="fas fa-search"></i> </button>
+    </div>
+
+    <div class="search-wrapper container">
+        <h5 class="table-heading"> Flokkar </h5>
+        <ul class="list-group search-list">
+        
+        @foreach (var category in categoriesList)
+        {
+            <a href="/NotificationList/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
+        }
+        </ul>
+        <h5 class="table-heading"> Tilkynningar</h5>
+        <ul class="list-group search-list">
+        
+        @foreach (var notification in notificationList)
+        {
+            <a href="/Notification/@notification.FormId"><li class="list-group-item">@notification.FormName</li></a>
+        }
+        </ul>
+    </div>
+  } 
+
+
+@code{
+[Parameter]
+//searchstring is sent by route from index page.
+public string searchString{ get; set; }
+
+//Holds notification that contains the searchString
+public List<FormsInfo> notificationList;
+
+//Holds categories that contains the searchString
+public List<Categories> categoriesList;
+
+
+protected override async Task OnInitializedAsync()
+{
+  notificationList = await formService.GetSearch(searchString);
+  categoriesList = await catService.GetSearch(searchString);
+}
+
+  async Task SearchLists()
+    {
+        //Get list of categories and notifications that match(name) the search string
+        notificationList = await formService.GetSearch(searchString);
+        categoriesList = await catService.GetSearch(searchString);
+        StateHasChanged();
+    }
+
+}

@@ -15,7 +15,7 @@
     else
     {
         <div class="container">
-            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn btn-success addCategory">
+            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn btn-success add-category">
             <i class="far fa-plus-square"></i>
             Bæta við flokk
             </button>
@@ -41,12 +41,13 @@
     @if (categoryCounter == 0)
     {
         // displayed when there is no category on the site
-        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
-        <AuthorizeView Roles="Admin">
+          <AuthorizeView Roles="Admin">
             <Authorized>
                 <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Búðu til flokk með því að smella á "bæta við flokk" upp í vinstra horninu. </h5>
             </Authorized>
         </AuthorizeView>
+        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+      
     }
 
     <!-- Edit Category popup modal -->
@@ -58,7 +59,7 @@
 
 @code {
     List<Categories> categoriesList;
-    
+
     Categories selectedCategory = new Categories();
 
     int categoryCounter = 0;
