@@ -24,4 +24,8 @@
     <PackageReference Include="iTextSharp.LGPLv2.Core" Version="1.6.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Images\Instructions\" />
+  </ItemGroup>
+
 </Project>
