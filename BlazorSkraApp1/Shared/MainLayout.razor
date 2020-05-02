@@ -1,46 +1,69 @@
 @inherits LayoutComponentBase
-
-<div class="main">
-    <nav class="navbar">
-        <div class="container">
-        <AuthorizeView Roles="Admin">
-            <div class="dropdown" > 
-                <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fas fa-bars fa-lg"></span>
-                </button>
-                <div class="first-dropdown-wrapper" >
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
-                    <a class="dropdown-item" href="/CreateNotification">Búa til nýja tegund tilkynningar</a>
-                    <a class="dropdown-item" href="/Submissions/All">Sjá innsendar tilkynningar</a>
-                    <a class="dropdown-item" href="/contact">Senda póst </a>
-                </div>
-                </div>
-                </div> 
-        </AuthorizeView>
-        <AuthorizeView>
-                 
-                <a href="/"><img class="logo" src="https://i.ibb.co/72YQ76D/imageedit-6-8256998525.png" alt="logo-transparent" border="0"></a>
-                <div class="dropdown">
-                    <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="oi oi-person"></span>
+  <section>
+    <div class="skewed"></div> 
+        <div class="main">
+        <nav class="navbar">
+            <div class="container">
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                <div class="dropdown" > 
+                    <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fas fa-bars fa-lg"></span>
                     </button>
-                    <div class="second-dropdown-wrapper">
-                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                           <span class=dropdown-item id="username">@context.User.Identity.Name</span>
-                            <a class="dropdown-item" href="/Submissions/Me">Innsendar tilkynningar</a>
-                            <form class="logOut" method="post" action="Identity/Account/LogOut">
-                                <button type="submit" class="dropdown-item">Skrá út</button>
-                            </form>
+                    <div class="first-dropdown-wrapper" >
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
+                        <a class="dropdown-item" href="/CreateNotification">Búa til nýja tegund tilkynningar</a>
+                        <a class="dropdown-item" href="/Submissions/All">Sjá innsendar tilkynningar</a>
+                        <a class="dropdown-item" href="/contact">Senda póst </a>
+                    </div>
+                    </div>
+                    </div> 
+                </Authorized>
+                <NotAuthorized> 
+                    <div class="dropdown" > 
+                    <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="fas fa-bars fa-lg"></span>
+                    </button>
+                    <div class="first-dropdown-wrapper" >
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="/">Forsíða</a>
+                        <a style="padding-right:20px" class="dropdown-item" href="/">Notendahandbók</a> 
+                        <a class="dropdown-item" href="/contact">Hafðu samband</a>
+                        <a class="dropdown-item" href="www.skra.is"> Skra.is</a>
+                    </div>
+                    </div> 
+                    </div>
+                </NotAuthorized>
+            </AuthorizeView>
+            <AuthorizeView>
+                    
+                    <a class="header" href="/"><h2> Skráargáttin </h2> </a>
+                    <div class="dropdown">
+                        <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="oi oi-person"></span>
+                        </button>
+                        <div class="second-dropdown-wrapper">
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                            <span class=dropdown-item id="username">@context.User.Identity.Name</span>
+                                <a class="dropdown-item" href="/Submissions/Me">Innsendar tilkynningar</a>
+                                <form class="logOut" method="post" action="Identity/Account/LogOut">
+                                    <button type="submit" class="dropdown-item">Skrá út</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-        </AuthorizeView>
+            </AuthorizeView>
+            </div>
+        </nav>
+    
+        
+        <div class="content px-4 container">
+            <div class="body">
+                @Body
+            </div>
         </div>
-    </nav>
-
-    <div class="content px-4 container">
-        @Body
     </div>
-</div>
+
+</section>
 

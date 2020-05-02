@@ -20,7 +20,7 @@ else
     <div class="container">
         <AuthorizeView Roles="Admin">
         <div class="container">
-        <button onclick="window.location.href='/CF'" class="btn btn-success addType">
+        <button onclick="window.location.href='/CF'" class="btn btn-success add-type">
             <i class="far fa-plus-square"></i>
             Bæta við tilkynningu
         </button>
@@ -52,17 +52,19 @@ else
              
             @if (!categoriesAssignmentsList.Any())
             // only displayed when there is no assignment in the category
-        {
-            <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
-            <AuthorizeView Roles="Admin">
-                <Authorized>
-                    <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Bættu við tilkynningu með því að smella á "bæta við tilkynningu" upp í vinstra horninu. </h5>
-                </Authorized>
-                <NotAuthorized> 
-                    <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta í þennan flokk. </h5>
-                </NotAuthorized>
-            </AuthorizeView>
-        }
+            {
+                 <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Bættu við tilkynningu með því að smella á "bæta við tilkynningu" upp í vinstra horninu. </h5>
+                    </Authorized>
+                    <NotAuthorized> 
+                        <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta í þennan flokk. </h5>
+                    </NotAuthorized>
+                </AuthorizeView>
+
+                <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+               
+            }
             
     </div>
    
