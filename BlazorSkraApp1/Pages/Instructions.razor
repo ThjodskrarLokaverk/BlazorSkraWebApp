@@ -1,0 +1,31 @@
+﻿@page "/Instructions"
+<h3>Instructions</h3>
+
+
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+        <h5> Notendahandbók fyrir stjórnendur (admins) </h5>
+        <h7>Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h7>
+        <p>
+            Ýmsar leiðir eru notaðar til þess að keyra viðhaldskeyrslur á gagnagrunna. Þetta kerfi notar Microsoft SQL gagnagrunn.
+            Þar sem kerfið keyrir á fríum aðgangi að Azure gagnaveitunni, þá eru ekki margar leiðir færar við að keyra viðhaldsþjónustur,
+            en þó er fært að keyra Powershell scriptu á gagnagrunninn, og láta hana keyra daglega með t.d. windows task scheduler.
+            Það er ekki alveg sama hvernig windows task scheduler er settur upp fyrir þetta, og mýmörg dæmi um afvegaleiðandi leiðbeiningar á netinu.
+            Eftirfarandi skjámyndir eru teknar af keyrslum sem við höfum sannreynt að virka á gagnagrunn kerfisins.
+        </p>
+
+        <img src="Images/Instructions/win-task-scheduler-general.png" alt="Windows Scheduler General">
+        <p>Ath: Mikilvægt er að stilla eftirtaldar breytur: Að user account hafi "local admin" réttindi á tölvunni sem keyrir keyrsluna. - Að stilla á "Run whether the user is logged on or not, til þess að keyrslan keyri ekki bara þegar ákveðinn notandi er innskráður á tölvu, "Run with highest privilidges" ætti ekki að þurfa, en skaðar ekki. Og að lokum, "Configure for": Veljið þar stýrikerfið sem á að keyra aðgerðina. Í þessu tilfelli er Windows 10 valið.   </p>
+        <img src="Images/Instructions/win-task-scheduler-action.png" alt="Windows Scheduler Actions">
+        <p>Ath: Á netinu eru sýndar ýmsar útgáfur af því hvernig tilgreina skal að forritið PowerShell skuli keyra ákveðið handrit (script). Svona fengum við það til að keyra, og mælum því með þessum stillingum.</p>
+
+        <p>Hér að neðan er dæmi um scriptu sem eyðir færslu úr grunninum að 7 dögum liðnum. Þessa scriptu má keyra með windows task scheduler, líkt og nefnt er hér að ofan.</p>
+        <img src="Images/Instructions/script-example1.png" alt="Powershell Script, part 1">
+        <img src="Images/Instructions/script-example2.png" alt="Powershell Script, part 2">
+
+    </Authorized>
+</AuthorizeView>
+@code {
+
+}
