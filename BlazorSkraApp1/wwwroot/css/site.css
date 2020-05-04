@@ -36,6 +36,10 @@ html, body {
     margin-left: 10px;
 }
 
+.row{
+    margin-top:30px;
+}
+
 .body-list{
     background-color: var(--two);
     border: solid 2px;
@@ -66,7 +70,15 @@ html, body {
     color: white;
     border-radius: 10px; 
     background-color:var(--five);
-    
+    margin-top: 30px;  
+}
+
+.notification-list-heading{
+    margin-top: 30px;
+    font-family: arial black;
+    color: var(--three);
+    text-align: center;
+    margin-bottom: 40px;
 }
 
 .mediationIMG{
@@ -780,7 +792,7 @@ ul{
     justify-content: center;
     text-align: center;
     justify-items: center;
-    margin-left: 37%;
+    margin-left: 34%;
     margin-bottom: 30px;
     background-color:var(--five);
     border: 1px solid var(--five)
