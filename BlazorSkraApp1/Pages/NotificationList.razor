@@ -30,15 +30,18 @@ else
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
             {       
-                    <div class="col-md-4">
-                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
-                                    <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
-                                </a>
-                        </button>
-                        <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
-                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
-                        </button>
+                    
+                        <div class="col-md-4">
+                            <AuthorizeView Roles="Admin">
+                                <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                        <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                            <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
+                                        </a>
+                                </button>
+                                <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                                    <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                                </button>
+                            </AuthorizeView> 
                         <div class="card card-list">
                             <img src="Images/form.svg" class="card-img-top" alt="notification form">
                             <div class="card-body body-list">
