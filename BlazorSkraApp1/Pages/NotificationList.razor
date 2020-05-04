@@ -20,13 +20,21 @@ else
     <div class="container">
         <AuthorizeView Roles="Admin">
         <div class="container">
+            <div class="md-form mt-0 index-search">
+                <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
+                <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
+            </div>
         <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
             <i class="far fa-plus-square"></i>
-            Bæta við tilkynningu
+                Bæta við tilkynningu
         </button>
-
         </div>
         </AuthorizeView>
+
+        @if (categoriesAssignmentsList.Any())
+        {
+            <h3 class="notification-list-heading"> Tilkynningar í flokknum @category.CategoryName</h3>
+        }
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
             {       
@@ -87,6 +95,7 @@ else
     List<CategoriesAssignments> categoriesAssignmentsList;
     Categories category = new Categories();
     CategoriesAssignments selectedCategoryAssignment;
+    string searchString="";
 
     protected override async Task OnInitializedAsync()
     {
