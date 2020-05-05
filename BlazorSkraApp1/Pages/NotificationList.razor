@@ -18,52 +18,54 @@
 else
 {
     <div class="container">
-        <h2>@category.CategoryName</h2>
-        <table class="table table-hover table-striped">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Nafn tilkynningar</th>
-                    <AuthorizeView Roles="Admin">
-                        <th>Stofnandi</th>
-                        <th style="width: 1%">Stofndags</th>
-
-                        <th style="width: 5%"></th>
-                        <th style="width: 5%"></th>
-                    </AuthorizeView>
-                </tr>
-            </thead>
-            <tbody class="tableBody">
-                @foreach (var categoryAssignment in categoriesAssignmentsList)
-                {
-                    <tr>
-                        <td onclick="location.href='/Notification/@categoryAssignment.FormsInfo.FormId'"> @categoryAssignment.FormsInfo.FormName</td>
-                        <AuthorizeView Roles="Admin">
-                            <td>Nafn stofnanda</td>
-                            <td>24.12.2019</td>
-                            <td>
-                                <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                    <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
-                                        <i class="fas fa-pen" title="Modifier"></i>
-                                    </a>
-                                </button>
-                            </td>
-                            <td>
-                                <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-icon" data-toggle="modal" data-target="#confirmationModal">
-                                    <i class="fas fa-trash" title="Modifier"></i>
-                                </button>
-                            </td>
-                        </AuthorizeView>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-    <AuthorizeView Roles="Admin">
+        <AuthorizeView Roles="Admin">
         <div class="container">
-            <span id="plus-icon" class="oi oi-plus"></span>
-            <a id="add-question-link" href="/CreateNotification">Bæta við tilkynningu</a>
+        <button onclick="window.location.href='/CF'" class="btn btn-success addType">
+            <i class="far fa-plus-square"></i>
+            Bæta við tilkynningu
+        </button>
         </div>
-    </AuthorizeView>
+        </AuthorizeView>
+            <div class="row">
+            @foreach (var categoryAssignment in categoriesAssignmentsList)
+            {       
+                    <div class="col-md-4">
+                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                    <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
+                                </a>
+                        </button>
+                        <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                        </button>
+                        <div class="card card-list">
+                            <img src="Images/form.svg" class="card-img-top" alt="notification form">
+                            <div class="card-body body-list">
+                                <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                                <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
+                        </div>
+                    
+                    </div>
+                </div>
+            }
+            </div> 
+             
+            @if (!categoriesAssignmentsList.Any())
+            // only displayed when there is no assignment in the category
+        {
+            <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Bættu við tilkynningu með því að smella á "bæta við tilkynningu" upp í vinstra horninu. </h5>
+                </Authorized>
+                <NotAuthorized> 
+                    <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta í þennan flokk. </h5>
+                </NotAuthorized>
+            </AuthorizeView>
+        }
+            
+    </div>
+   
 
     <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
         <CustomHeader>Eyða tilkynningu</CustomHeader>

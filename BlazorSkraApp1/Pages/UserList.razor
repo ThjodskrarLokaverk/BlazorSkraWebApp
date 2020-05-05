@@ -127,15 +127,6 @@
                                         @onclick="SaveUser">
                                     Save
                                 </button>
-                                <!-- Only show delete button if not a new record -->
-                                @if (objUser.Id != "")
-                                {
-                                    <!-- Button to delete the forecast -->
-                                    <button class="btn btn-danger"
-                                            @onclick="DeleteUser">
-                                        Delete
-                                    </button>
-                                }
                                 <br />
                                 <span style="color:red">@strError</span>
                             </div>
@@ -200,6 +191,7 @@
         {
             await service.Delete(selectedUser);
             userList.Remove(selectedUser);
+            StateHasChanged();
         }
         catch(Exception)
         {

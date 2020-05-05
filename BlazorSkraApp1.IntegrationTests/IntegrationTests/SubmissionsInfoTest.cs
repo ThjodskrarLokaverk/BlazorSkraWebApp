@@ -74,7 +74,7 @@ namespace BlazorSkraApp1.IntegrationTests
             // Arrange
             await db.AddRangeAsync(seedSubmissionsInfo);
             await db.SaveChangesAsync();
-            var recId = 5;
+            var recId = 1;
             var expectedSubmissionsInfo = seedSubmissionsInfo.Where(s => s.SubmissionId != recId).ToList();
 
             // Act
