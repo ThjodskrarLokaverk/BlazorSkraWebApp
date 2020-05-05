@@ -34,7 +34,12 @@ namespace BlazorSkraApp1.Services
 
         public async Task<Submissions> Delete(Submissions submission)
         {
-            var deletedSubmission = await _context.Submissions.FindAsync(submission.SubmissionId);
+            var deletedSubmission = await _context.Submissions
+            .FirstOrDefaultAsync(s => s.SubmissionId == submission.SubmissionId
+            && s.AnswerOrderNum == submission.AnswerOrderNum
+            && s.FormId == submission.FormId
+            && s.QuestionOrderNum == submission.QuestionOrderNum);
+
             _context.Submissions.Remove(deletedSubmission);
             await _context.SaveChangesAsync();
             return deletedSubmission;

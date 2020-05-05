@@ -88,9 +88,6 @@ else
     </ConfirmationModalComponent>
 }
 
-<<<<<<< HEAD
-@code {
-=======
 @code{
     [Parameter]
     public string id { get; set; }
@@ -100,13 +97,11 @@ else
     CategoriesAssignments selectedCategoryAssignment;
     string searchString="";
 
->>>>>>> 7ef1fddd99cfa6b766350f7860a5806f1626113b
     protected override async Task OnInitializedAsync()
     {
         //init selectedCategoryAssignment
         selectedCategoryAssignment = new CategoriesAssignments();
         selectedCategoryAssignment.FormsInfo = new FormsInfo();
-
         categoryId = Int16.Parse(id);
 
         //Get info about the category
