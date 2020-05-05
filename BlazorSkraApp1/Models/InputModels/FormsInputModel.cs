@@ -16,7 +16,7 @@ namespace BlazorSkraApp1.Models.InputModels
         public string DestinationEmail { get; set; }
         [Required(ErrorMessage = "Velja þarf flokk")]
         public string CategoryId { get; set; }
-        //[Required] //Athuga hvort þetta virki þegar rest virkar
+        [Required(ErrorMessage = "Eyðublaðið þarf að hafa spurningar. Bættu við spurningu")]
         [ValidateComplexType]
         public List<QuestionsInputModel> Questions { get; set; }
     }
