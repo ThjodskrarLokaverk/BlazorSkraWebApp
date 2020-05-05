@@ -35,8 +35,8 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualCategories = Assert.IsAssignableFrom<List<Categories>>(result);
             Assert.Equal(
-                seedCategories.OrderBy(c => c.CategoryId).Select(m => m.CategoryName),
-                actualCategories.OrderBy(c => c.CategoryId).Select(m => m.CategoryName));
+                seedCategories.OrderBy(c => c.CategoryId).Select(c => c.CategoryName),
+                actualCategories.OrderBy(c => c.CategoryId).Select(c => c.CategoryName));
         }
 
         [Fact]

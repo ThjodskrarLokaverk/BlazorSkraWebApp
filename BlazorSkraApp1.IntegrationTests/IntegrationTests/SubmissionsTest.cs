@@ -12,7 +12,7 @@ namespace BlazorSkraApp1.IntegrationTests
 {
     public class SubmissionsTest
     {
-        private List<List<Submissions>> seedSubmissions;
+        private List<Submissions> seedSubmissions;
         private ApplicationDbContext db;
         private SubmissionsService service;
         public SubmissionsTest()
@@ -28,16 +28,22 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
             await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
-            await db.SaveChangesAsync();
+            await db.AddRangeAsync(SeedData.GetSeedingCategories());
+            await db.AddRangeAsync(SeedData.GetSeedingCategoriesAssignments());
+            await db.AddRangeAsync(SeedData.GetSeedingOptions());
+            await db.AddRangeAsync(SeedData.GetSeedingQuestions());
+            await db.AddRangeAsync(SeedData.GetSeedingQuestionsFormAssignment());
+            await db.AddRangeAsync(SeedData.GetSeedingQuestionTypes());
+            await db.SaveChangesAsync(); 
 
             // Act
             var result = await service.Get();
 
             // Assert
-            var actualSubmission = Assert.IsAssignableFrom<List<Submissions>>(result);
+            var actualSubmissions = Assert.IsAssignableFrom<List<Submissions>>(result);
             Assert.Equal(
-                seedSubmissions.OrderBy(s => s.Submissions.SubmissionId).Select(s => s.Submissions.SubmissionId),
-                actualSubmission.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId));
+                seedSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.QuestionsQuestionId),
+                actualSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.QuestionsQuestionId));
         }
         
         [Fact]
