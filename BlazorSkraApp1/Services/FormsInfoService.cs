@@ -14,6 +14,11 @@ namespace BlazorSkraApp1.Services
         Task<FormsInfo> Delete(int formId);
         Task<FormsInfo> Update(int formId);
         Task<FormsInfo> Get(int formId);
+<<<<<<< HEAD
+=======
+        Task<List<FormsInfo>> GetSearch(string SearchString);
+        Task<FormsInfo> GetEmail(string DestinationEmail);
+>>>>>>> 7ef1fddd99cfa6b766350f7860a5806f1626113b
         Task<List<FormsInfo>> Get();
     }
     public class FormsInfoService : IFormsInfoService
@@ -56,6 +61,19 @@ namespace BlazorSkraApp1.Services
             return await _context.FormsInfo.FindAsync(formId);
         }
 
+<<<<<<< HEAD
+=======
+        public async Task<List<FormsInfo>> GetSearch(String SearchString)
+        {
+            var searchList = _context.FormsInfo.Where(x => x.FormName.Contains(SearchString)).ToListAsync();
+            return await searchList;
+        }
+
+        public async Task<FormsInfo> GetEmail(string DestinationEmail)
+        {
+            return await _context.FormsInfo.FindAsync(DestinationEmail);
+        }
+>>>>>>> 7ef1fddd99cfa6b766350f7860a5806f1626113b
         public async Task<List<FormsInfo>> Get()
         {
             return await _context.FormsInfo.ToListAsync();

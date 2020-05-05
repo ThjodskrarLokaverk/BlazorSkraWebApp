@@ -12,6 +12,7 @@ namespace BlazorSkraApp1.Services
     {
         Task<List<Categories>> Get();
         Task<Categories> Get(int id);
+        Task<List<Categories>> GetSearch(string searchString);
         Task<Categories> Add(Categories category);
         Task<Categories> Update(Categories category);
         Task<Categories> Delete(int id);
@@ -37,7 +38,11 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.Categories.FindAsync(CategoryId); 
         }
-
+        public async Task<List<Categories>> GetSearch(String searchString)
+        {
+            var searchList = _context.Categories.Where(x => x.CategoryName.Contains(searchString)).ToListAsync(); 
+            return await searchList;
+        }
         // Creates the specified category in the database
         public async Task<Categories> Add(Categories category)
         {

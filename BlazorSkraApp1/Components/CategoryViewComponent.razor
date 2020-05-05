@@ -13,14 +13,17 @@
 }
 else
 {
+    <h3 class="notification-list-heading"> Flokkar</h3>
     @foreach (var category in categoriesList)
     {   
         categorieCounter +=1;
         <div class="linkboxes">
             <div class="col-md-4 col-xs-6">
+                <a href="/NotificationList/@category.CategoryId">
                 <div class="boxes btn">
                     <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>                    
                 </div>
+                </a>
             </div>
         </div>
     }
@@ -28,8 +31,8 @@ else
 
  @if (categorieCounter == 0)
     {
-        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
         <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Hafðu samband við stjórnendur. </h5>
+        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
     }
 
 @code {
