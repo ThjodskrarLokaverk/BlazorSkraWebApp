@@ -12,6 +12,7 @@ namespace BlazorSkraApp1.Data
         public int QuestionOrderNum { get; set; }
         [Required]
         public int AnswerOrderNum { get; set; }
+        [Required]
         public string Answer { get; set; }
         [Required]
         public int SubmissionId { get; set; }
@@ -23,13 +24,5 @@ namespace BlazorSkraApp1.Data
         public virtual SubmissionsInfo Submission { get; set; }
         //[Required]
         public virtual FormsInfo Form { get; set; }
-        [Required]
-        public Questions Questions { get; set; }
-
-        
-
-
-
-
     }
 }

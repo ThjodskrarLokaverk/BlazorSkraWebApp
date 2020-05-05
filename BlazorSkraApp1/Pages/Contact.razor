@@ -1,54 +1,116 @@
 ﻿@page "/Contact"
 @using MailKit.Net.Smtp;
 @using MimeKit;
+@using System
+@using BlazorSkraApp1.Services
 @inject NavigationManager NavigationManager
 @using BlazorSkraApp1.Data
+@using Microsoft.AspNetCore.Identity;
+@inject IAdminService adminService
 
-<div class="header">
-    <h4 class="modal-title">Skrifa póst</h4>
-</div>
-            
-<EditForm Model="@mailForm" OnValidSubmit="@SendMail">
-    <div class="form-group">
-        <label for="To">Send To</label>
-        <InputText id="To" class="form-control" @bind-Value="@mailForm.To" />
-        <label for="To">Subject</label>
-        <InputText id="subject" class="form-control" @bind-Value="@mailForm.Subject" />
-        <label for="To">Body</label>
-        <InputTextArea id="body" class="form-control" @bind-Value="@mailForm.Body" />
+
+<div class="container @faded">
+    <div class="header">
+        <h4 class="modal-title">Hafðu samband</h4>
     </div>
-    <button type="submit" class="btn btn-primary">Senda póst</button>
-    <DataAnnotationsValidator />
-</EditForm>
+                
+    <EditForm Model="@mailForm" OnValidSubmit="@SendMail">
+        <div class="form-group">
+            <label for="To">Skilaboð:</label>
+            <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
+        </div>
+        <button type="submit" class="btn btn-primary">Senda póst</button>
+        <DataAnnotationsValidator />
+    </EditForm>
+</div>
+
+@if (confirmation)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Staðfesting</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Skilaboðunum hefur verið komið áleiðis</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (_subFail)
+{
+    <div class="modal" tabindex="-1" style="display:block" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" id="modal-content-exception">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
+                </div>
+                <div class="modal-body">
+                    <p>Eitthvað fór úrskeiðis, vinsamlegast reyndur aftur.</p>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
 
 @code {
-
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    IdentityUser currentUser;
+    bool confirmation = false;
+    bool _subFail = false;
     MailForm mailForm = new MailForm();
 
+    string faded = "";
+    protected override async Task OnInitializedAsync()
+    {
+        //Get current user
+        var userName = (await authenticationStateTask).User.Identity.Name;
+        currentUser = await adminService.Get(userName);
+    }
     protected void SendMail()
     {
-        var message = new MimeMessage();
-        //Sender of email here
-        message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
-        //receiver of email
-        message.To.Add(new MailboxAddress(mailForm.To));
-        message.Subject = mailForm.Subject;
-        //aðaltextinn byggður upp
-        message.Body = new TextPart("html")
+        try
         {
-            Text = "Message: " + mailForm.Body
-        };
+            var message = new MimeMessage();
+            //Sender of email here
+            message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
+            //receiver of email
+            message.To.Add(new MailboxAddress("bbaldvinsson@gmail.com"));
+            message.Subject = "Athugasemd/Fyrirspurn " + System.DateTime.Now.ToShortDateString() + " Frá: " + currentUser.Email;
+            //aðaltextinn byggður upp
+            message.Body = new TextPart("html")
+            {
+                Text = "Message: " + mailForm.Body
+            };
 
-        using (var client = new SmtpClient())
+            using (var client = new SmtpClient())
+            {
+                client.Connect("smtp.gmail.com", 587);
+                //notendanafn og lykilorð á pósthólfinu sem er sent úr
+                client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
+                client.Send(message);
+                client.Disconnect(false);
+                //Notandinn sendur á heimasíðuna eftir að hafa sent póst
+                //Hægt að senda hann t.d á confirmation page seinna meir
+                faded = "faded";
+                confirmation = true;
+                StateHasChanged();
+            }
+        }
+        catch (Exception)
         {
-            client.Connect("smtp.gmail.com", 587);
-            //notendanafn og lykilorð á pósthólfinu sem er sent úr
-            client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
-            client.Send(message);
-            client.Disconnect(false);
-            //Notandinn sendur á heimasíðuna eftir að hafa sent póst
-            //Hægt að senda hann t.d á confirmation page seinna meir
-            NavigationManager.NavigateTo("/");
+            _subFail = true;
+            StateHasChanged();
         }
 
     }

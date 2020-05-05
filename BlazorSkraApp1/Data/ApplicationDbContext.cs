@@ -95,8 +95,6 @@ namespace BlazorSkraApp1.Data
         public DbSet<CategoriesAssignments> CategoriesAssignments { get; set; }
         public DbSet<QuestionsFormAssignments> QuestionsFormAssignments { get; set; }
         public DbSet<OptionsQuestionAssignmnents> OptionsQuestionAssignmnents { get; set; }
-        
-        
 
         public override int SaveChanges()
         {

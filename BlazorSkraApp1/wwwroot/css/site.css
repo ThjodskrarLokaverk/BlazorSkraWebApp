@@ -229,10 +229,11 @@ html, body {
     padding: 5px;
     display:block;
     border: 2px solid;
-    background-color: var(--two);
+    background-color: white;
     border-color: var(--three);
     border-radius: 25px; 
     position: relative; 
+
 }
 
 .edit-icon {
@@ -240,8 +241,7 @@ html, body {
     margin-right: -26px;
     margin-top: -10px;
     margin-bottom: none;
-    color: white;
-
+    color:var(--three);
 }
 
 .edit-icon:hover {
@@ -706,6 +706,19 @@ app {
     border: solid var(--five) ;
 }
 
+.modal-button{
+    color: var(--three);
+    background-color: pink;
+
+}
+
+.modal-title{
+    margin-bottom:20px;
+}
+
+.modal-title:hover{
+    color:none;
+}
 .modal-header h4{
     color: var(--five);
       
@@ -755,6 +768,10 @@ app {
     position: relative;
     margin: 0;
 }
+
+/* Contact/Hafðu samband */
+
+
 /* Search bar á index  og search síðu */
 .search-list{
     width:50%;
@@ -782,12 +799,12 @@ ul{
 
 .index-search{
     display: flex;
-    width: 30%;
+    width: 50%;
     height:50%;
     justify-content: center;
     text-align: center;
     justify-items: center;
-    margin-left: 34%;
+    margin-left: 25%;
     margin-bottom: 30px;
     background-color:var(--five);
     border: 1px solid var(--five)

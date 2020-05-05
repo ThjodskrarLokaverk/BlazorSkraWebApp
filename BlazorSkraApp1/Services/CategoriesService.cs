@@ -63,8 +63,11 @@ namespace BlazorSkraApp1.Services
         public async Task<Categories> Delete(int CategoryId)
         {
             var category = await _context.Categories.FindAsync(CategoryId);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            if(category != null)
+            {
+                _context.Categories.Remove(category);
+                await _context.SaveChangesAsync();
+            }
             return category;
         }
     }
