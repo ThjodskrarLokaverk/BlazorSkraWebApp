@@ -24,6 +24,7 @@ else
                 <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
                 <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
             </div>
+
         <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
             <i class="far fa-plus-square"></i>
                 Bæta við tilkynningu
@@ -33,32 +34,32 @@ else
 
         @if (categoriesAssignmentsList.Any())
         {
-            <h3 class="notification-list-heading"> Tilkynningar í flokknum @category.CategoryName</h3>
+            <h3 class="notification-list-heading"> Flokkur: @category.CategoryName</h3>
         }
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
             {       
-                    
-                        <div class="col-md-4">
-                            <AuthorizeView Roles="Admin">
-                                <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                        <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
-                                            <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
-                                        </a>
-                                </button>
-                                <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
-                                    <i class="fas fa-trash sub-list-trash" title="Trash"></i>
-                                </button>
-                            </AuthorizeView> 
-                        <div class="card card-list">
-                            <img src="Images/form.svg" class="card-img-top" alt="notification form">
-                            <div class="card-body body-list">
-                                <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
-                                <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
-                        </div>
-                    
+                
+                <div class="col-md-4">
+                    <AuthorizeView Roles="Admin">
+                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                    <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
+                                </a>
+                        </button>
+                        <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                        </button>
+                    </AuthorizeView> 
+                <div class="card card-list">
+                    <img src="Images/form.svg" class="card-img-top" alt="notification form">
+                    <div class="card-body body-list">
+                        <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                        <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                     </div>
+                
                 </div>
+            </div>
             }
             </div> 
              
