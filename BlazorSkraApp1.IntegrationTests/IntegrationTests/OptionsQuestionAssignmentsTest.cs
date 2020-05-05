@@ -81,11 +81,10 @@ namespace BlazorSkraApp1.IntegrationTests
             await service.Add(expectedAssignment);
 
             // Assert
-            //var actualAssignment = await db.OptionsQuestionAssignmnents.FindAsync(oon, formid, qon);
             var actualAssignment = await db.OptionsQuestionAssignmnents.FirstOrDefaultAsync(o => o.OptionOrderNum == oon && o.FormId == formid && o.QuestionOrderNum == qon);
             Assert.Equal(expectedAssignment, actualAssignment);
         }
-        [Fact]
+        /*[Fact]
         public async Task DeleteOptionsQuestionAssignmnentAsync_OptionsQuestionAssignmnentIsDeleted()
         {
             // Arrange
@@ -105,13 +104,6 @@ namespace BlazorSkraApp1.IntegrationTests
             Assert.Equal(
                 expectedOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum),
             actualOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum));
-        }
+        }*/
     }
 }
-
-/*
-        Task<List<OptionsQuestionAssignmnents>> Get();
-        Task<List<OptionsQuestionAssignmnents>> Get(int formId);
-        Task<OptionsQuestionAssignmnents> Add(OptionsQuestionAssignmnents option);
-        Task<OptionsQuestionAssignmnents> Delete(OptionsQuestionAssignmnents option);
-*/
