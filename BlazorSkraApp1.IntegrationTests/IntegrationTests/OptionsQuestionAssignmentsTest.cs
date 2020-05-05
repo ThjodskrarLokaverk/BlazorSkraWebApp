@@ -22,35 +22,7 @@ namespace BlazorSkraApp1.IntegrationTests
             seedAssignments = SeedData.GetSeedingOptionsQuestionAssignments();
             service = new OptionsQuestionAssignmnentsService(db);
         }
-<<<<<<< HEAD
-
-        [Fact]
-        public async Task AddOptionAssignment_OptionAssignmentIsAdded()
-        {
-            //Arrange
-            var oon = 1;
-            var fid = 1;
-            var qon = 1;
-            var oid = 1;
-            var expectedAssignment = new OptionsQuestionAssignmnents()
-                { 
-                    OptionOrderNum = oon, 
-                    FormId = fid, 
-                    QuestionOrderNum = qon, 
-                    OptionId = oid, 
-                };
-
-            //Act
-            await service.Add(expectedAssignment);
-
-            //Assert
-            var actualAssignment = await db.OptionsQuestionAssignmnents.FindAsync(fid, oid, qon);
-            Assert.Equal(expectedAssignment, actualAssignment);
-        }
-        /*
-=======
         
->>>>>>> origin/TestingTest
         [Fact]
         public async Task GetOptionAssignmentsAsync_OptionAssignmentsAreReturned()
         {
