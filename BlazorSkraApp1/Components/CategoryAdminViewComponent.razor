@@ -3,6 +3,7 @@
 @using BlazorSkraApp1.Services
 @inject ICategoriesService service
 
+
 <AuthorizeView Roles="Admin" Context="authContext">
     @if (categoriesList == null)
     {
@@ -20,7 +21,6 @@
             Bæta við flokk
             </button>
         </div>
-        <h3 class="notification-list-heading"> Flokkar</h3>
         @foreach (var category in categoriesList)
         {
             categoryCounter +=1;

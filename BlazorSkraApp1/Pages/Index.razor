@@ -5,7 +5,7 @@
 <!-- Search form -->
 
 <div class="md-form mt-0 index-search">
-  <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
+  <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
    <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
 </div>
 <AuthorizeView Roles="Admin">
@@ -31,6 +31,15 @@
         if (authenticationState?.User?.Identity is null || !authenticationState.User.Identity.IsAuthenticated)
         {
             NavigationManager.NavigateTo("/Identity/Account/Login", true);
+        }
+    }
+
+    private void NavigateToSearch( KeyboardEventArgs eventArgs)
+    {
+        if (eventArgs.Key == "Enter" )
+        {
+            var Search = "Search/" + searchString;
+            NavigationManager.NavigateTo(Search);
         }
     }
 }
