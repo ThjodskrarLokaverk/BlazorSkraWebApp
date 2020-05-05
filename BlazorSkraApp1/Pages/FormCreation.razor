@@ -5,6 +5,7 @@
 @using BlazorSkraApp1.Models.ViewModels
 @using BlazorSkraApp1.Shared.Components
 @using BlazorSkraApp1.Components
+@inject NavigationManager NavigationManager
 @inject ICategoriesService categoriesService
 @inject IQuestionTypesService questionTypesService
 @inject IFormsInfoService formsInfoService
@@ -109,7 +110,10 @@ else
                                     <div class="col-sm-4">
                                         <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
                                         <ValidationMessage For="@(() => option.OptionName)" />
-                                        <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-secondary">Fjarlægja</button>
+                                        @if (question.Options.Count() > 2)
+                                        {
+                                            <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-secondary">Fjarlægja</button>
+                                        }
                                     </div>
                                 </div>
                             }
@@ -132,6 +136,15 @@ else
 {
     <FormViewComponent Form="@createdForm"></FormViewComponent>
     <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
+    <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
+    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða</button>
+
+    <!-- Delete created form popup -->
+    <ConfirmationModalComponent OnClick="DeleteFormHandler">
+        <CustomHeader>Eyða eyðublaði</CustomHeader>
+        <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+        <CustomButtonText>Eyða</CustomButtonText>
+    </ConfirmationModalComponent>
 }
 
 @if (formPublished)
@@ -166,10 +179,6 @@ else
         //Dropdown lists
         categoriesList = await categoriesService.Get();
         questionTypesList = await questionTypesService.Get();
-
-        //Display
-        createdForm = new FormsViewModel();
-        createdForm.Questions = new List<QuestionsViewModel>();
     }
 
     private void AddQuestion()
@@ -207,16 +216,19 @@ else
         StateHasChanged();
     }
 
+    private void EditForm()
+    {
+        formCreated = false;
+    }
+
+    protected void DeleteFormHandler()
+    {
+        NavigationManager.NavigateTo("/", true);
+    }
+
     //Create form for display
     private async void CreateForm()
     {
-        if (formInputModel.Questions.Count() < 1)
-        {
-            //Skila skilaboðum til notanda um að það þurfi að búa til 1+ spurningu áður en Form er birt
-            //Eða að takki virki ekki fyrr en búið er að búa til spurningu?
-            return;
-        }
-
         //Remove unnecessary options
         foreach (var question in formInputModel.Questions)
         {
@@ -224,14 +236,13 @@ else
             {
                 question.Options = new List<OptionsInputModel>();
             }
-            //if (question.QuestionTypeId == "4" && question.QuestionTypeId == "5")
-            //{
-            //    //Athuga hvort radio og checkbox spurningar séu allar með 2+ options
-            //}
         }
 
         if (editContext.Validate())
         {
+            createdForm = new FormsViewModel();
+            createdForm.Questions = new List<QuestionsViewModel>();
+
             //Vista formInfo
             createdForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
             var category = await categoriesService.Get(createdForm.CategoryId);

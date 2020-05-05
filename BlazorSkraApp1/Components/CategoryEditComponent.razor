@@ -45,27 +45,27 @@
 </AuthorizeView>
 
 @code {
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
     [Parameter]
     public EventCallback<Categories> OnEdit { get; set; }
     [Parameter]
     public EventCallback<Categories> OnDelete { get; set; }
     [Parameter]
     public Categories selectedCategory { get; set; }
-
-    [CascadingParameter]
-    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    Categories categoryModel;
     String currentUser;
+
     protected override async Task OnInitializedAsync()
     {
-        
-        var user = (await authenticationStateTask).User.Identity.Name;
-        currentUser = user;
+        currentUser = (await authenticationStateTask).User.Identity.Name;
     }
-    Categories categoryModel = new Categories();
+
 
     //This function runs when the parent component sets or resets the parameters
     protected override void OnParametersSet()
     {
+        categoryModel = new Categories();
         categoryModel.CategoryName = selectedCategory.CategoryName;
     }
 
@@ -85,7 +85,7 @@
 
             await CloseModal("editCategoryModal");
             Log.Information($"Flokknum {oldName} var breytt í {selectedCategory.CategoryName} af {currentUser} ");
-            
+
         }
         catch (System.InvalidOperationException)
         {

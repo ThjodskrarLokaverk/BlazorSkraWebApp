@@ -45,13 +45,13 @@
 
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
-    
+
     Categories newCategory;
     String currentUser;
 
     protected override async Task OnInitializedAsync()
     {
-        
+
         var user = (await authenticationStateTask).User.Identity.Name;
         currentUser = user;
     }
@@ -59,7 +59,6 @@
     protected override void OnParametersSet()
     {
         newCategory = new Categories();
-        
     }
 
     protected async void AddCategory()
@@ -78,7 +77,7 @@
 
             //todo - bæta við nafni flokksins sem var stofnaður
             Log.Information($"Nýr flokkur stofnaður: {DateTime.Now} - Nafn flokks: bæta við nafni - Stofnað af: {currentUser}");
-            
+
         }
         catch (System.InvalidOperationException)
         {
