@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@inject NavigationManager NavigationManager
 @inject ICategoriesService catService
 @inject IFormsInfoService formService
 
@@ -17,7 +18,7 @@
     }
 else{   
     <div class="md-form mt-0 index-search">
-        <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
+        <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
         <button class="btn search-button" @onclick="@SearchLists"><i class="fas fa-search"></i> </button>
     </div>
 
@@ -60,12 +61,22 @@ protected override async Task OnInitializedAsync()
   categoriesList = await catService.GetSearch(searchString);
 }
 
-  async Task SearchLists()
-    {
-        //Get list of categories and notifications that match(name) the search string
-        notificationList = await formService.GetSearch(searchString);
-        categoriesList = await catService.GetSearch(searchString);
-        StateHasChanged();
+async Task SearchLists()
+{
+    //Get list of categories and notifications that match(name) the search string
+    notificationList = await formService.GetSearch(searchString);
+    categoriesList = await catService.GetSearch(searchString);
+    StateHasChanged();
+}
+
+private async void NavigateToSearch( KeyboardEventArgs eventArgs)
+{
+    if (eventArgs.Key == "Enter" )
+    {   
+        await SearchLists();
+    
     }
+}
+
 
 }

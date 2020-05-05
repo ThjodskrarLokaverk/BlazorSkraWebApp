@@ -3,6 +3,7 @@
 @using BlazorSkraApp1.Services
 @inject ICategoriesService service
 
+
 <AuthorizeView Roles="Admin" Context="authContext">
     @if (categoriesList == null)
     {

@@ -2,6 +2,7 @@
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@inject NavigationManager NavigationManager
 @inject ICategoriesAssignmentsService catAssignService
 @inject IFormsInfoService formservice
 @inject IJSRuntime jsRuntime
@@ -17,14 +18,13 @@
 }
 else
 {
+    <div class="md-form mt-0 index-search">
+        <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
+        <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
+    </div>
     <div class="container">
         <AuthorizeView Roles="Admin">
         <div class="container">
-            <div class="md-form mt-0 index-search">
-                <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
-                <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
-            </div>
-
         <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
             <i class="far fa-plus-square"></i>
                 Bæta við tilkynningu
@@ -118,6 +118,8 @@ else
         selectedCategoryAssignment = categoryassignment;
     }
 
+
+
     protected async void DeleteNotificationHandler()
     {
         //Remove the notification/form from the list of notifications in this category
@@ -131,5 +133,14 @@ else
 
         //refresh UI
         StateHasChanged();
+    }
+
+    private void NavigateToSearch( KeyboardEventArgs eventArgs)
+    {
+        if (eventArgs.Key == "Enter" )
+        {
+            var Search = "Search/" + searchString;
+            NavigationManager.NavigateTo(Search);
+        }
     }
 }
