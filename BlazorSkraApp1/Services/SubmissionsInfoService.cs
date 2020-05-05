@@ -12,7 +12,6 @@ namespace BlazorSkraApp1.Services
     {
         Task<SubmissionsInfo> Add(SubmissionsInfo submissionsInfo);
         Task<SubmissionsInfo> Delete(int submissionId);
-        Task<SubmissionsInfo> Update(int submissionId);
         Task<SubmissionsInfo> Get(int submissionId);
         Task<List<SubmissionsInfo>> Get();
     }
@@ -38,15 +37,6 @@ namespace BlazorSkraApp1.Services
         {
             var submission = await _context.SubmissionsInfo.FindAsync(submissionId);
             _context.SubmissionsInfo.Remove(submission);
-            await _context.SaveChangesAsync();
-            return submission;
-        }
-
-        // Updates the specified submission
-        public async Task<SubmissionsInfo> Update(int submissionId)
-        {
-            var submission = await _context.SubmissionsInfo.FindAsync(submissionId);
-            _context.Entry(submission).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return submission;
         }

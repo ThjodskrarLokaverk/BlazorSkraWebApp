@@ -13,7 +13,5 @@ namespace BlazorSkraApp1.Data
         [Required]
         [StringLength(20)]
         public string QuestionTypeName { get; set; }
-
-        public List<Questions> QuestionList { get; set; }
     }
 }

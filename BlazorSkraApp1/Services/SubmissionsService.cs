@@ -11,7 +11,8 @@ namespace BlazorSkraApp1.Services
     public interface ISubmissionsService
     {
         Task<Submissions> Add(Submissions submissions);
-        Task<Submissions> Get(int submissionId);
+        Task<Submissions> Delete(Submissions submissions);
+        Task<List<Submissions>> Get(int submissionId);
         Task<List<Submissions>> Get();
     }
     public class SubmissionsService : ISubmissionsService
@@ -31,14 +32,30 @@ namespace BlazorSkraApp1.Services
             return submissions;
         }
 
-        public async Task<Submissions> Get(int submissionId)
+        public async Task<Submissions> Delete(Submissions submission)
         {
-            return await _context.Submissions.FindAsync(submissionId);
+            var deletedSubmission = await _context.Submissions
+            .FirstOrDefaultAsync(s => s.SubmissionId == submission.SubmissionId
+            && s.AnswerOrderNum == submission.AnswerOrderNum
+            && s.FormId == submission.FormId
+            && s.QuestionOrderNum == submission.QuestionOrderNum);
+
+            _context.Submissions.Remove(deletedSubmission);
+            await _context.SaveChangesAsync();
+            return deletedSubmission;
+        }
+
+        public async Task<List<Submissions>> Get(int submissionId)
+        {
+            return await _context.Submissions
+                .Where(s => s.SubmissionId == submissionId)
+                .Include(f => f.Form)
+                .ToListAsync();
         }
         public async Task<List<Submissions>> Get()
         {
             return await _context.Submissions
-                .Include(i => i.Submission)
+                .Include(s => s.Submission)
                 .Include(f => f.Form)
                 .ToListAsync();
         }

@@ -9,10 +9,11 @@ namespace BlazorSkraApp1.Services
 {
     public interface IQuestionsService
     {
+        Task<List<Questions>> Get();
+        Task<Questions> GetQuestion(int questionId);
         Task<Questions> Add(Questions question);
         Task<Questions> Update(Questions question);
         Task<Questions> Delete(Questions question);
-        Task<Questions> GetQuestion(int questionId);
 
     }
     public class QuestionsService : IQuestionsService
@@ -22,6 +23,11 @@ namespace BlazorSkraApp1.Services
         public QuestionsService(ApplicationDbContext context)
         {
             _context = context;
+        }
+        // Returns a list of all questions
+        public async Task<List<Questions>> Get()
+        {
+            return await _context.Questions.ToListAsync();
         }
         public async Task<Questions> GetQuestion(int questionId)
         {
