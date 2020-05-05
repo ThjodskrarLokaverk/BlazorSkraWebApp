@@ -5,7 +5,6 @@
 @inject ICategoriesService service
 @inject IJSRuntime jsRuntime
 
-
 <AuthorizeView Roles="Admin" Context="authContext">
     <!-- Edit Category popup modal -->
     <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="modalTitle" aria-hidden="true">
@@ -60,7 +59,6 @@
     {
         currentUser = (await authenticationStateTask).User.Identity.Name;
     }
-
 
     //This function runs when the parent component sets or resets the parameters
     protected override void OnParametersSet()

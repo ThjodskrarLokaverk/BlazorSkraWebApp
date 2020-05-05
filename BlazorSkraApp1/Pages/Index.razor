@@ -3,19 +3,13 @@
 @inject NavigationManager NavigationManager
 
 <!-- Search form -->
-
 <div class="md-form mt-0 index-search">
   <input class="form-control" type="text" placeholder="Search" aria-label="Search" @bind='searchString'>
    <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
 </div>
-<AuthorizeView Roles="Admin">
-    <Authorized>
-        <CategoryAdminViewComponent></CategoryAdminViewComponent>
-    </Authorized>
-    <NotAuthorized>
-        <CategoryViewComponent></CategoryViewComponent>
-    </NotAuthorized>
-</AuthorizeView>
+
+<CategoryViewComponent></CategoryViewComponent>
+
 <div class="index-padding"></div>
 
 @code {

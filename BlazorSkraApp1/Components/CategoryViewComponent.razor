@@ -11,36 +11,101 @@
         </div>
     </div>
 }
+else if (categoriesList.Count() == 0)
+{
+    // displayed when there is no category on the site
+    <AuthorizeView Roles="Admin">
+        <Authorized>
+            <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Búðu til flokk með því að smella á "bæta við flokk" upp í vinstra horninu. </h5>
+            <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+        </Authorized>
+        <NotAuthorized>
+            <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Hafðu samband við stjórnendur. </h5>
+            <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+        </NotAuthorized>
+    </AuthorizeView>
+
+}
 else
 {
+    <AuthorizeView Roles="Admin">
+        <div class="container">
+            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn btn-success add-category">
+                <i class="far fa-plus-square"></i>
+                Bæta við flokk
+            </button>
+        </div>
+    </AuthorizeView>
+
     <h3 class="notification-list-heading"> Flokkar</h3>
     @foreach (var category in categoriesList)
-    {   
-        categorieCounter +=1;
+    {
         <div class="linkboxes">
             <div class="col-md-4 col-xs-6">
-                <a href="/NotificationList/@category.CategoryId">
-                <div class="boxes btn">
-                    <a href="/NotificationList/@category.CategoryId" class="text-uppercase">@category.CategoryName</a>                    
-                </div>
+                <AuthorizeView Roles="Admin">
+                    <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link edit-icon">
+                        <i class="fas fa-pen indexPen" title="Modifier"></i>
+                    </button>
+                </AuthorizeView>
+
+                <a class="button" href="/NotificationList/@category.CategoryId">
+                    <div class="boxes btn">
+                        <p class="text-uppercase">@category.CategoryName</p>
+                    </div>
                 </a>
             </div>
         </div>
     }
 }
 
- @if (categorieCounter == 0)
-    {
-        <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Hafðu samband við stjórnendur. </h5>
-        <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
-    }
+<!-- Edit Category popup modal -->
+<CategoryEditComponent OnEdit="EditCategoryHandler" OnDelete="DeleteCategoryHandler" selectedCategory="@selectedCategory"></CategoryEditComponent>
+
+<!-- Add Category popup modal -->
+<CategoryAddComponent OnAdd="AddCategoryHandler"></CategoryAddComponent>
+
 
 @code {
     List<Categories> categoriesList;
-    int categorieCounter = 0;
+
+    Categories selectedCategory = new Categories();
+
     protected override async Task OnInitializedAsync()
     {
         //Fetch the list of categories from the database
         categoriesList = await service.Get();
+    }
+
+    private void SelectCategory(Categories category)
+    {
+        selectedCategory = category;
+    }
+
+    protected void AddCategoryHandler(Categories newCategory)
+    {
+        categoriesList.Add(newCategory);
+    }
+
+    protected void EditCategoryHandler(Categories editedCategory)
+    {
+        //ATH: Mögulega er try catch óþarfi hér
+        try
+        {
+            var category = categoriesList.FirstOrDefault(c => c.CategoryId == editedCategory.CategoryId);
+
+            if (category != null)
+            {
+                category.CategoryName = editedCategory.CategoryName;
+            }
+        }
+        catch (Exception)
+        {
+
+        }
+    }
+
+    protected void DeleteCategoryHandler()
+    {
+        categoriesList.Remove(selectedCategory);
     }
 }
