@@ -35,7 +35,7 @@ else
             <div class="card">
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Heiti eyðublaðs</label>
+                        <label class="col-sm-2 col-form-label">Nafn eyðublaðs</label>
                         <div class="col-sm-10">
                             <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
                             <ValidationMessage For="@(() => formInputModel.FormName)" />
@@ -47,16 +47,16 @@ else
                             <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
                                 <option value="">Veldu flokk</option>
                                 @if (categoriesList == null)
-                                        {
-                                    <option>loading...</option>
-                                        }
-                                        else
-                                        {
-                                            foreach (var category in categoriesList)
-                                            {
+                                {
+                                    <option>Augnablik...</option>
+                                }
+                                else
+                                {
+                                    foreach (var category in categoriesList)
+                                    {
                                         <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
-                                            }
-                                        }
+                                    }
+                                }
                             </InputSelect>
                             <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                         </div>
@@ -136,13 +136,13 @@ else
 {
     <FormViewComponent Form="@createdForm"></FormViewComponent>
     <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
-    <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
+    <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublað</button>
     <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða</button>
 
     <!-- Delete created form popup -->
     <ConfirmationModalComponent OnClick="DeleteFormHandler">
         <CustomHeader>Eyða eyðublaði</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
     </ConfirmationModalComponent>
 }
