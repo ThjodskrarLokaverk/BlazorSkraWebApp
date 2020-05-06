@@ -26,8 +26,7 @@ else
         <AuthorizeView Roles="Admin">
         <div class="container">
         <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
-            <i class="far fa-plus-square"></i>
-                Bæta við tilkynningu
+            <i class="far fa-plus-square"></i>Bæta við eyðublaði
         </button>
         </div>
         </AuthorizeView>
@@ -68,23 +67,21 @@ else
             {
                  <AuthorizeView Roles="Admin">
                     <Authorized>
-                        <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Bættu við tilkynningu með því að smella á "bæta við tilkynningu" upp í vinstra horninu. </h5>
+                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Bættu við eyðublaði með því að smella á <strong>"Bæta við eyðublaði"</strong> upp í vinstra horninu. </h5>
                     </Authorized>
-                    <NotAuthorized> 
-                        <h5 class="empty-state"> Það er engin tilkynning í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta í þennan flokk. </h5>
+                    <NotAuthorized>
+                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta eyðublað í þennan flokk. </h5>
                     </NotAuthorized>
                 </AuthorizeView>
 
                 <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
-               
             }
             
     </div>
-   
 
     <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
-        <CustomHeader>Eyða tilkynningu</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir eyða tilkynningunni @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
+        <CustomHeader>Eyða eyðublaði</CustomHeader>
+        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
     </ConfirmationModalComponent>
 }
