@@ -6,8 +6,6 @@ namespace BlazorSkraApp1.Models.InputModels
 {
     public class UserInputModel
     {
-        [Required(ErrorMessage = "Nafn notanda vantar")]
-        public string UserName { get; set; }
         [Required(ErrorMessage = "Tölvupóstfang notanda vantar")]
         [EmailAddress(ErrorMessage = "Tölvupóstfang er ekki til")]
         public string Email { get; set; }
