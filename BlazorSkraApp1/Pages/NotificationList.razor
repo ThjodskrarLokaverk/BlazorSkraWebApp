@@ -18,72 +18,67 @@
 }
 else
 {
-    <div class="md-form mt-0 index-search">
-        <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
-        <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
-    </div>
-    <div class="container">
-        <AuthorizeView Roles="Admin">
-        <div class="container">
-        <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
-            <i class="far fa-plus-square"></i>Bæta við eyðublaði
-        </button>
+        <div class="md-form mt-0 index-search">
+            <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
+            <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
         </div>
-        </AuthorizeView>
-
         @if (categoriesAssignmentsList.Any())
         {
-            <h3 class="notification-list-heading"> Flokkur: @category.CategoryName</h3>
+            <h3 class="notification-list-heading">@category.CategoryName</h3>
         }
-            <div class="row">
-            @foreach (var categoryAssignment in categoriesAssignmentsList)
-            {       
-                
-                <div class="col-md-4">
-                    <AuthorizeView Roles="Admin">
-                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
-                                    <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
-                                </a>
-                        </button>
-                        <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
-                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
-                        </button>
-                    </AuthorizeView> 
-                <div class="card card-list">
-                    <img src="Images/form.svg" class="card-img-top" alt="notification form">
-                    <div class="card-body body-list">
-                        <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
-                        <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
-                    </div>
-                
-                </div>
+        <AuthorizeView Roles="Admin">
+            <div class="container">
+                <button onclick="window.location.href='/FC'" class="btn add-type">
+                    <i class="far fa-plus-square"></i>Bæta við eyðublaði
+                </button>
             </div>
-            }
-            </div> 
-             
-            @if (!categoriesAssignmentsList.Any())
-            // only displayed when there is no assignment in the category
-            {
-                 <AuthorizeView Roles="Admin">
-                    <Authorized>
-                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Bættu við eyðublaði með því að smella á <strong>"Bæta við eyðublaði"</strong> upp í vinstra horninu. </h5>
-                    </Authorized>
-                    <NotAuthorized>
-                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta eyðublað í þennan flokk. </h5>
-                    </NotAuthorized>
-                </AuthorizeView>
+        </AuthorizeView>
 
-                <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
-            }
-            
-    </div>
+                <div class="row">
+                    @foreach (var categoryAssignment in categoriesAssignmentsList)
+                    {       
+                        <div class="col-md-4">
+                                <AuthorizeView Roles="Admin">
+                                    <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                            <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                                <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
+                                            </a>
+                                    </button>
+                                    <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                                        <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                                    </button>
+                                </AuthorizeView> 
+                            <div class="card card-list">
+                                <img src="Images/form.svg" class="card-img-top" alt="notification form">
+                                <div class="card-body body-list">
+                                    <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                                    <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div> 
+                
+                @if (!categoriesAssignmentsList.Any())
+                // only displayed when there is no assignment in the category
+                {
+                    <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Bættu við eyðublaði með því að smella á <strong>"Bæta við eyðublaði"</strong> upp í vinstra horninu. </h5>
+                        </Authorized>
+                        <NotAuthorized>
+                            <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta eyðublað í þennan flokk. </h5>
+                        </NotAuthorized>
+                    </AuthorizeView>
 
-    <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
-        <CustomHeader>Eyða eyðublaði</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
-        <CustomButtonText>Eyða</CustomButtonText>
-    </ConfirmationModalComponent>
+                    <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+                }
+
+        <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
+            <CustomHeader>Eyða eyðublaði</CustomHeader>
+            <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
+            <CustomButtonText>Eyða</CustomButtonText>
+        </ConfirmationModalComponent>
 }
 
 @code{
@@ -132,7 +127,7 @@ else
         StateHasChanged();
     }
 
-    private void NavigateToSearch( KeyboardEventArgs eventArgs)
+    private void NavigateToSearch(KeyboardEventArgs eventArgs)
     {
         if (eventArgs.Key == "Enter" )
         {

@@ -18,26 +18,40 @@
     }
     else
     {
+        <div class="md-form mt-0 index-search">
+            <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value="@searchString" @bind-value:event="oninput" @onkeyup="@SearchOnKeyUp">
+            <a class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search"></i> </a>
+        </div>
         <div class="container">
-            <input class="searchUsers" type="text" placeholder="Leita.." @bind-value="@searchString" />
-            <button class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search"></i> </button>
+            <button @onclick="AddNewUser" class="btn add-category">
+                <i class="far fa-plus-square"></i>Bæta við notanda
+            </button>
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="text-uppercase">Nafn
-                            <button class="btn up-down" @onclick="(() => SortUsersAscending())"><i class="fas fa-sort-alpha-up"></i> </button>
+                        <th class="text-uppercase">Tölvupóstfang
+                            <button class="btn up-down" @onclick="(() => SortUserEmails())"><i class="fas fa-sort-alpha-up"></i> </button>
                         </th>
-                        <th class="text-uppercase">Netfang</th>
+                        <th class="text-uppercase">Hlutverk</th>
                         <th class="text-uppercase">Breyta hlutverki</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tableBody">
                     @foreach (var user in userList)
                     {
                         <tr>
-                            <td>@user.UserName</td>
                             <td>@user.Email</td>
+                            <td>
+                                @if(adminUsersList.Contains(user))
+                                {
+                                    @Options[1];
+                                }
+                                else
+                                {
+                                    @Options[0];
+                                }
+                            </td>
                             <td>
                                 @if(adminUsersList.Contains(user))
                                 {
@@ -53,7 +67,7 @@
                                 }
                             </td>
                             <td>
-                                <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn btn-danger">
+                                <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
                                     Eyða notanda
                                 </button>
                             </td>
@@ -68,7 +82,7 @@
         @* Delete Category popup modal *@
         <ConfirmationModalComponent OnClick="DeleteUser">
             <CustomHeader>Eyða notanda</CustomHeader>
-            <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.UserName)?</CustomBody>
+            <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
             <CustomButtonText>Eyða</CustomButtonText>
         </ConfirmationModalComponent>
     }
@@ -83,17 +97,18 @@
                         <div class="modal-header">
                             <h3 class="modal-title">Búa til nýjan notanda</h3>
                             <button type="button" class="close" @onclick="ClosePopup">
-                                <span aria-hidden="true">X</span>
+                                <span aria-hidden="true">&times</span>
                             </button>
                         </div>
                         <div class="modal-body">
-                            <InputText class="form-control" type="text" placeholder="Notendanafn" @bind-Value="userInput.UserName" />
-                            <ValidationMessage For="@(() => userInput.UserName)" /><br>
-                            <InputText class="form-control" type="text" placeholder="Tölvupóstfang" @bind-Value="userInput.Email" />
+                            <label for="user-email">Tölvupóstfang</label>
+                            <InputText class="form-control" id="user-email" type="text" placeholder="Tölvupóstfang" @bind-Value="userInput.Email" />
                             <ValidationMessage For="@(() => userInput.Email)" /><br>
-                            <InputText class="form-control" type="password" placeholder="Lykilorð" @bind-Value="userInput.Password" />
+                            <label for="user-password">Lykilorð</label>
+                            <InputText class="form-control" id="user-password" type="password" placeholder="Lykilorð" @bind-Value="userInput.Password" />
                             <ValidationMessage For="@(() => userInput.Password)" /><br>
-                            <InputSelect class="form-control" @bind-Value="userInput.UserRole">
+                            <label for="user-role">Hlutverk</label>
+                            <InputSelect class="form-control" id="user-role" @bind-Value="userInput.UserRole">
                                 @foreach (var option in Options)
                                 {
                                     <option value="@option">@option</option>
@@ -103,27 +118,23 @@
                             <br /><br />
                             <button type="submit" class="btn btn-primary">Vista</button>
                             <br />
-                            <span style="color:red">@strError</span>
                         </div>
                     </div>
                 </div>
             </div>
         </EditForm>
     }
-    <button class="btn btn-success" @onclick="AddNewUser">Bæta við notanda</button>
 </AuthorizeView>
 
 @code {
     UserInputModel userInput;
     // Options to display in the roles dropdown when editing a user
-    List<string> Options = new List<string>() { "User", "Admin" };
+    List<string> Options = new List<string>() { "Almennur notandi", "Stjórnandi" };
 
-    // Tracks the selected role for the currently selected user
-    string CurrentUserRole { get; set; } = "User";
-    string ADMINISTRATION_ROLE = "Admin";
     System.Security.Claims.ClaimsPrincipal CurrentUser;
-     // To hold any possible errors
+    // To hold any possible errors
     string strError = "";
+    bool isSortedEmails = false;
 
     // To enable showing the Popup
     bool showPopup = false;
@@ -182,6 +193,11 @@
         adminUsersList.Remove(user);
     }
 
+    private void SearchOnKeyUp(KeyboardEventArgs eventArgs)
+    {
+        SearchUsers();
+    }
+
     async Task SearchUsers()
     {
         //Get list of users that match the search string
@@ -189,27 +205,26 @@
         StateHasChanged();
     }
 
-    void SortUsersAscending()
+    void SortUserEmails()
     {
-        userList = userList.OrderBy(x => x.UserName).ToList();
+        if(!isSortedEmails)
+        {
+            userList = userList.OrderBy(x => x.Email).ToList();
+            isSortedEmails = true;
+        }
+        else
+        {
+            userList = userList.OrderByDescending(x => x.Email).ToList();
+            isSortedEmails = false;
+        }
         StateHasChanged();
     }
 
-    void SortUsersDescending()
-    {
-        userList = userList.OrderByDescending(x => x.UserName).ToList();
-        StateHasChanged();
-    }
     void AddNewUser()
     {
         // Make new user
-        //objUser = new IdentityUser();
-        //objUser.PasswordHash = "*****";
         userInput = new UserInputModel();
         userInput.Password = "";
-
-        // Set Id to blank so we know it is a new record
-        //objUser.Id = "";
 
         // Open the Popup
         showPopup = true;
@@ -222,11 +237,17 @@
             // Insert new user
             var NewUser = new IdentityUser
             {
-                UserName = userInput.UserName,
                 Email = userInput.Email
             };
 
             var CreateResult = await _UserManager.CreateAsync(NewUser, userInput.Password);
+            // Handle Roles
+            if (userInput.UserRole == "Stjórnandi")
+            {
+                // Put admin in Administrator role
+                await service.AddAdminRole(NewUser);
+                adminUsersList.Add(NewUser);
+            }
 
             if (!CreateResult.Succeeded)
             {
@@ -242,22 +263,12 @@
                 // Keep the popup opened
                 return;
             }
-            else
-            {
-                // Handle Roles
-                if (CurrentUserRole == ADMINISTRATION_ROLE)
-                {
-                    // Put admin in Administrator role
-                    await _UserManager
-                        .AddToRoleAsync(NewUser, ADMINISTRATION_ROLE);
-                }
-            }
             // Close the Popup
             showPopup = false;
 
             // Refresh Users
-            userList = await service.Get();
-            //GetUsers();
+            userList.Add(NewUser);
+            StateHasChanged();
         }
         catch (Exception ex)
         {
