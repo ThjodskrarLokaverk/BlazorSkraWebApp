@@ -11,7 +11,7 @@
 
 <div class="container @faded">
     <div class="header">
-        <h4 class="modal-title">Hafðu samband</h4>
+        <h4 class="modal-title">Hafa samband</h4>
     </div>
                 
     <EditForm Model="@mailForm" OnValidSubmit="@SendMail">
@@ -19,7 +19,7 @@
             <label for="To">Skilaboð:</label>
             <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
         </div>
-        <button type="submit" class="btn btn-primary">Senda póst</button>
+        <button type="submit" class="btn btn-primary">Senda skilaboð</button>
         <DataAnnotationsValidator />
     </EditForm>
 </div>
@@ -33,7 +33,7 @@
                     <h5 class="modal-title"> Staðfesting</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Skilaboðunum hefur verið komið áleiðis</p>
+                    <p>Skilaboðum hefur verið komið áleiðis</p>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>

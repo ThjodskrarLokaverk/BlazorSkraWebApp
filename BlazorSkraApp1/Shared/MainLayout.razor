@@ -11,14 +11,14 @@
                             <span class="fas fa-bars fa-lg"></span>
                     </button>
                     <div class="first-dropdown-wrapper" >
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
-                        <a class="dropdown-item" href="/CreateNotification">Búa til nýja tegund tilkynningar</a>
-                        <a class="dropdown-item" href="/Submissions/All">Sjá innsendar tilkynningar</a>
-                        <a class="dropdown-item" href="/contact">Senda póst </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
+                            <a class="dropdown-item" href="/CreateNotification">Búa til nýtt eyðublað</a>
+                            <a class="dropdown-item" href="/Submissions/All">Sjá innsend eyðublöð</a>
+                            <a class="dropdown-item" href="/contact">Hafa samband </a>
+                        </div>
                     </div>
-                    </div>
-                    </div> 
+                </div> 
                 </Authorized>
                 <NotAuthorized> 
                     <div class="dropdown" > 
@@ -28,10 +28,10 @@
                     </button>
                     <div class="first-dropdown-wrapper" >
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="/">Forsíða</a>
+                        <a class="dropdown-item" href="/">Upphafssíða</a>
                         <a style="padding-right:20px" class="dropdown-item" href="/instructions">Notendahandbók</a> 
-                        <a class="dropdown-item" href="/contact">Hafðu samband</a>
-                        <a class="dropdown-item" href="https://www.skra.is"> Skra.is</a>
+                        <a class="dropdown-item" href="/contact">Hafa samband</a>
+                        <a class="dropdown-item" href="https://www.skra.is">Skra.is</a>
                     </div>
                     </div> 
                     </div>
@@ -39,7 +39,7 @@
             </AuthorizeView>
             <AuthorizeView>
                     
-                    <a class="header" href="/"><h2> Skráargáttin </h2> </a>
+                    <a class="header" href="/"><h2>Skráargáttin</h2> </a>
                     <div class="dropdown">
                         <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="oi oi-person"></span>
@@ -47,7 +47,7 @@
                         <div class="second-dropdown-wrapper">
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                             <span class=dropdown-item id="username">@context.User.Identity.Name</span>
-                                <a class="dropdown-item" href="/Submissions/Me">Innsendar tilkynningar</a>
+                                <a class="dropdown-item" href="/Submissions/Me">Innsend eyðublöð</a>
                                 <form class="logOut" method="post" action="Identity/Account/LogOut">
                                     <button type="submit" class="dropdown-item">Skrá út</button>
                                 </form>
