@@ -5,8 +5,32 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <h5> Notendahandbók fyrir stjórnendur (admins) </h5>
-        <h7>Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h7>
+        <h3>Notendahandbók fyrir stjórnendur (admins)</h3>
+        <h4>Efni sent á ytri kerfi</h4>
+        Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
+        Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa tölvupóstfang á hverju verkefni (board),
+        og tölvupóstur sem sendur er inn á verkefni stofnast sem atriði (task).
+
+        <h5>Sendingar á Jira </h5>
+        <p>
+            Til að stilla móttöku tölvupósts í Jira hugbúnaði:
+            1. Farið á Jira stillinga síðu (administration site).
+            2. Opnið "settings" og veljið system.
+            3. Veljið "Incomming mail / Add mail handler".
+            4. Stillið hvað það ætti að gera, s.s. að stofna nýtt atriði (task) á Jira borðinu.
+            <img src="Images/Instructions/email_Jira.png" alt="Jira software, email handler">
+
+        </p>
+        <h5>Sendingar á Trello</h5>
+        <p>
+            Það er auðvelt að finna leiðbeiningar um þetta á internetinu, en í stuttu máli:
+            Til að stilla móttöku tölvupósts í Trello hugbúnaði:
+            1. Farið inn á viðkomandi Trello board.
+            2. Stillið hvar tölvupósturinn á að birtast, þ.e. í hvaða lista á borðinu (væntanlega í lista yfir óleyst verkefni) 
+        </p>
+        <img src="Images/Instructions/email_TrelloBoard.png" alt="Trello software, email handler">
+
+        <h5>Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h5>
         <p>
             Ýmsar leiðir eru notaðar til þess að keyra viðhaldskeyrslur á gagnagrunna. Þetta kerfi notar Microsoft SQL gagnagrunn.
             Þar sem kerfið keyrir á fríum aðgangi að Azure gagnaveitunni, þá eru ekki margar leiðir færar við að keyra viðhaldsþjónustur,
