@@ -8,8 +8,8 @@ namespace BlazorSkraApp1.Models.InputModels
 {
     public class FormsInputModel
     {
-        [Required(ErrorMessage = "Velja þarf heiti tilkynningar")]
-        [StringLength(50, ErrorMessage = "Heiti tilkynningar má ekki innihalda fleiri en 50 stafi")]
+        [Required(ErrorMessage = "Velja þarf heiti eyðublaðs")]
+        [StringLength(20, ErrorMessage = "Heiti eyðublaðs má ekki innihalda fleiri en 20 stafi")]
         public string FormName { get; set; }
         [Required(ErrorMessage = "Velja þarf netfang sem tekur við útfylltum eyðublöðum")]
         [EmailAddress(ErrorMessage = "Þetta tölvupóstfang er ekki til")]
