@@ -31,10 +31,11 @@ namespace BlazorSkraApp1.Services
 
         public async Task<List<OptionsQuestionAssignmnents>> Get(int formId)
         {
-            return await _context.OptionsQuestionAssignmnents
+            var optionsQuestionAssignmentList = await _context.OptionsQuestionAssignmnents
                 .Where(f => f.FormId == formId)
                 .Include(o => o.Options)
                 .ToListAsync();
+            return optionsQuestionAssignmentList;
         }
 
         public async Task<OptionsQuestionAssignmnents> Add(OptionsQuestionAssignmnents option)

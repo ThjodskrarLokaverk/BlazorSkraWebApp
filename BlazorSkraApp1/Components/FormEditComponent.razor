@@ -1,0 +1,237 @@
+﻿@using Microsoft.AspNetCore.Components
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Models.ViewModels
+@using BlazorSkraApp1.Services
+@inject IJSRuntime jsRuntime
+@inject ICategoriesService categoriesService
+@inject IQuestionTypesService questionTypesService
+@inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
+@inject IQuestionsFormAssignmentService questionsFormAssignmentsService
+@inject IQuestionsService questionsService
+@inject IOptionsService optionsService
+@inject IFormsService formsService
+
+@if (editContext == null)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <EditForm EditContext="editContext" OnSubmit="CreateForm">
+        <ObjectGraphDataAnnotationsValidator />
+        <!-- FormInfo input fields -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Heiti eyðublaðs</label>
+                    <div class="col-sm-10">
+                        <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
+                        <ValidationMessage For="@(() => formInputModel.FormName)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
+                    <div class="col-sm-10">
+                        <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
+                            <option value="">Veldu flokk</option>
+                            @if (categoriesList == null)
+                                {
+                                <option>loading...</option>
+                                }
+                                else
+                                {
+                                    foreach (var category in categoriesList)
+                                    {
+                                    <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
+                                    }
+                                }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => formInputModel.CategoryId)" />
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
+                    <div class="col-sm-10">
+                        <InputText id="email" class="form-control" @bind-Value="@formInputModel.DestinationEmail" />
+                        <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Questions input fields -->
+        @foreach (var question in formInputModel.Questions)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <button @onclick="(() => RemoveQuestion(question))" type="button" class="btn btn-secondary">Fjarlægja spurningu</button>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
+                        <ValidationMessage For="@(() => question.QuestionName)" />
+                    </div>
+                    <div class="form-group row">
+                        <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
+                            <option value="">Veldu tegund</option>
+                            @if (questionTypesList == null)
+                                    {
+                                <option>loading...</option>
+                                    }
+                                    else
+                                    {
+                                        foreach (var type in questionTypesList)
+                                        {
+                                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
+                                        }
+                                    }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => question.QuestionTypeId)" />
+                    </div>
+                    <hr>
+                    <!-- Options input fields -->
+                    @if (question.QuestionTypeId == "4" || question.QuestionTypeId == "5")
+                    {
+                        @foreach (var option in question.Options)
+                        {
+                            <div class="form-group row">
+                                <input type="radio" disabled>
+                                <div class="col-sm-4">
+                                    <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                    <ValidationMessage For="@(() => option.OptionName)" />
+                                    @if (question.Options.Count() > 2)
+                                    {
+                                        <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-secondary">Fjarlægja</button>
+                                    }
+                                </div>
+                            </div>
+                        }
+                        <div class="form-group row">
+                            <button @onclick="(() => AddOption(question))" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        <button @onclick="(() => AddQuestion())" type="button" class="btn btn-secondary">Bæta við spurningu</button>
+        <button type="submit" class="btn approve-btn">@CustomButtonText</button>
+    </EditForm>
+}
+
+
+@code {
+    [Parameter]
+    public int? formIdParameter { get; set; }
+    [Parameter]
+    public EventCallback<FormsInputModel> OnEdit { get; set; }
+    [Parameter]
+    public RenderFragment CustomButtonText { get; set; }
+    private FormsInputModel formInputModel;
+    private EditContext editContext;
+    List<Categories> categoriesList;
+    List<QuestionTypes> questionTypesList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        formInputModel = new FormsInputModel();
+        formInputModel.Questions = new List<QuestionsInputModel>();
+        categoriesList = await categoriesService.Get();
+        questionTypesList = await questionTypesService.Get();
+
+        if (formIdParameter != null)
+        {
+            int formId = formIdParameter ?? default(int);
+            var form = await formsService.Get(formId);
+            //Populate input model with form data
+            formInputModel.FormName = form.FormName;
+            formInputModel.DestinationEmail = form.DestinationEmail;
+            formInputModel.CategoryId = form.CategoryId.ToString();
+
+            foreach (var formQuestion in form.Questions)
+            {
+                QuestionsInputModel question = new QuestionsInputModel();
+                question.QuestionName = formQuestion.QuestionName;
+                question.QuestionTypeId = formQuestion.QuestionTypeId.ToString();
+                question.Options = new List<OptionsInputModel>();
+                foreach (var formOption in formQuestion.Options)
+                {
+                    OptionsInputModel option = new OptionsInputModel();
+                    option.OptionName = formOption.OptionName;
+                    question.Options.Add(option);
+                }
+                formInputModel.Questions.Add(question);
+            }
+        }
+
+        editContext = new EditContext(formInputModel);
+    }
+
+    private void AddQuestion()
+    {
+        var question = new QuestionsInputModel();
+        question.Options = new List<OptionsInputModel>();
+        question.Options.Add(new OptionsInputModel());
+        question.Options.Add(new OptionsInputModel());
+        formInputModel.Questions.Add(question);
+        StateHasChanged();
+    }
+
+    private void RemoveQuestion(QuestionsInputModel question)
+    {
+
+        formInputModel.Questions.Remove(question);
+        editContext = new EditContext(formInputModel);
+        StateHasChanged();
+    }
+
+    private void AddOption(QuestionsInputModel question)
+    {
+
+        var newOption = new OptionsInputModel();
+        question.Options.Add(newOption);
+        StateHasChanged();
+    }
+
+    private void RemoveOption(QuestionsInputModel question, OptionsInputModel option)
+    {
+
+        question.Options.Remove(option);
+        //var equal = editContext.Model.Equals(questionInputModel);
+        editContext = new EditContext(formInputModel);
+        StateHasChanged();
+    }
+
+    protected async void CreateForm()
+    {
+        //Remove unnecessary options
+        foreach (var question in formInputModel.Questions)
+        {
+            if (question.QuestionTypeId != "4" && question.QuestionTypeId != "5")
+            {
+                question.Options = new List<OptionsInputModel>();
+            }
+        }
+
+        if (editContext.Validate())
+        {
+            //Send formInputModel to Parent component
+            await OnEdit.InvokeAsync(formInputModel);
+        }
+        else
+        {
+            //Add formerly removed options
+            foreach (var question in formInputModel.Questions)
+            {
+                if (question.QuestionTypeId != "4" && question.QuestionTypeId != "5")
+                {
+                    question.Options.Add(new OptionsInputModel());
+                    question.Options.Add(new OptionsInputModel());
+                }
+            }
+        }
+    }
+}

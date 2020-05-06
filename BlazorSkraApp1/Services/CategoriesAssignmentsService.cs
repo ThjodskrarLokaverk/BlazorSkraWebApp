@@ -13,6 +13,7 @@ namespace BlazorSkraApp1.Services
         Task<List<CategoriesAssignments>> Get(int CategoryId);
         Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
         Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
+        Task<CategoriesAssignments> Update(CategoriesAssignments categoryAssignment);
     }
 
     public class CategoriesAssignmentsService : ICategoriesAssignmentsService
@@ -60,6 +61,16 @@ namespace BlazorSkraApp1.Services
             _context.CategoriesAssignments.Remove(category);
             await _context.SaveChangesAsync();
             return category;
+        }
+
+        public async Task<CategoriesAssignments> Update(CategoriesAssignments editedCategoryAssignment)
+        {
+            var categoryAssignment = await _context.CategoriesAssignments.FindAsync(editedCategoryAssignment.FormId);
+            categoryAssignment.CategoryId = editedCategoryAssignment.CategoryId;
+            categoryAssignment.FormId = editedCategoryAssignment.FormId;
+            _context.Entry(categoryAssignment).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return categoryAssignment;
         }
     }
 }

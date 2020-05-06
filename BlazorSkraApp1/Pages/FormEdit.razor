@@ -1,0 +1,176 @@
+﻿@page "/FormEdit/{id}"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Models.ViewModels
+@using BlazorSkraApp1.Shared.Components
+@using BlazorSkraApp1.Components
+@inject NavigationManager NavigationManager
+@inject ICategoriesService categoriesService
+@inject IQuestionTypesService questionTypesService
+@inject IFormsInfoService formsInfoService
+@inject ICategoriesAssignmentsService formsCategoryAssignmentsService
+@inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
+@inject IQuestionsFormAssignmentService questionsFormAssignmentsService
+@inject IQuestionsService questionsService
+@inject IOptionsService optionsService
+
+    <AuthorizeView Roles="Admin" Context="AuthContext">
+        @if (!formEdited)
+        {
+            <FormEditComponent formIdParameter="formId" OnEdit="EditFormHandler">
+                <CustomButtonText>Uppfæra eyðublað</CustomButtonText>
+            </FormEditComponent>
+        }
+
+        @if (formEdited && !formPublished)
+        {
+            <!-- Display the created Form -->
+            <FormViewComponent Form="@editedForm"></FormViewComponent>
+            <button @onclick="UpdateForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
+            <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
+
+            <!-- Delete created form popup -->
+            <ConfirmationModalComponent OnClick="DeleteFormHandler">
+                <CustomHeader>Eyða eyðublaði</CustomHeader>
+                <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+                <CustomButtonText>Eyða</CustomButtonText>
+            </ConfirmationModalComponent>
+        }
+
+        @if (formPublished)
+        {
+            <div class="d-flex justify-content-center">
+                <h2>Eyðublað hefur verið birt</h2>
+            </div>
+            <br />
+            <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
+        }
+    </AuthorizeView>
+
+
+
+@code {
+    [Parameter]
+    public string id { get; set; }
+    protected int? formId;
+    protected FormsViewModel editedForm;
+    bool formEdited = false;
+    bool formPublished = false;
+
+    protected override void OnInitialized()
+    {
+        formId = Int16.Parse(id);
+    }
+
+    private void EditForm()
+    {
+        formEdited = false;
+    }
+
+    protected void DeleteFormHandler()
+    {
+        NavigationManager.NavigateTo("/", true);
+    }
+
+    private async void EditFormHandler(FormsInputModel formInputModel)
+    {
+        editedForm = new FormsViewModel();
+        editedForm.Questions = new List<QuestionsViewModel>();
+
+        //Vista formInfo
+        editedForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
+        var category = await categoriesService.Get(editedForm.CategoryId);
+        editedForm.CategoryName = category.CategoryName;
+        editedForm.FormName = formInputModel.FormName;
+        editedForm.DestinationEmail = formInputModel.DestinationEmail;
+
+        //Vista questions
+        foreach (var question in formInputModel.Questions)
+        {
+            var editedQuestion = new QuestionsViewModel();
+            editedQuestion.Options = new List<OptionsViewModel>();
+            editedQuestion.QuestionName = question.QuestionName;
+            editedQuestion.QuestionTypeId = Int16.Parse(question.QuestionTypeId);
+            editedQuestion.QuestionOrderNum = editedForm.Questions.Count();
+            editedQuestion.QuestionTypeOrderNum = editedForm.Questions.Count(o => o.QuestionTypeId == editedQuestion.QuestionTypeId);
+            //Vista options fyrir hverja question
+            foreach (var option in question.Options)
+            {
+                var editedOption = new OptionsViewModel();
+                editedOption.OptionName = option.OptionName;
+                editedOption.OptionOrderNum = editedQuestion.Options.Count();
+                editedQuestion.Options.Add(editedOption);
+            }
+            editedForm.Questions.Add(editedQuestion);
+        }
+
+        formEdited = true;
+    }
+
+    //Save form to Db
+    private async void UpdateForm()
+    {
+        //Update formInfo
+        FormsInfo formInfo = new FormsInfo();
+        formInfo.FormName = editedForm.FormName;
+        formInfo.DestinationEmail = editedForm.DestinationEmail;
+        formInfo.FormId = formId.GetValueOrDefault();
+        formInfo = await formsInfoService.Update(formInfo);
+
+        //update FormsCategoryAssignments
+        CategoriesAssignments formsCategoryAssignment = new CategoriesAssignments();
+        formsCategoryAssignment.FormId = formInfo.FormId;
+        formsCategoryAssignment.CategoryId = editedForm.CategoryId;
+        formsCategoryAssignment = await formsCategoryAssignmentsService.Update(formsCategoryAssignment);
+
+        //Remove OptionsQuestionAssignment
+        //await optionsQuestionAssignmentsService.Add(optionQuestionAssignment);
+
+        //Remove options
+        //await optionsService.Remove(option);
+
+        //Remove QuestionsFormAssignment
+        //await questionsFormAssignmentsService.Add(questionFormAssignment);
+
+        //remove questions
+        //await questionsService.Add(question);
+
+        //Add questions to Db
+        List<Questions> questionsList = new List<Questions>();
+        foreach (var editedQuestion in editedForm.Questions)
+        {
+            Questions question = new Questions();
+            question.QuestionTypes = new QuestionTypes();
+            question.QuestionTypes = await questionTypesService.Get(editedQuestion.QuestionTypeId);
+            question.QuestionName = editedQuestion.QuestionName;
+            question = await questionsService.Add(question);
+
+            QuestionsFormAssignments questionFormAssignment = new QuestionsFormAssignments();
+            questionFormAssignment.FormId = formInfo.FormId;
+            questionFormAssignment.QuestionId = question.QuestionId;
+            questionFormAssignment.QuestionOrderNum = editedQuestion.QuestionOrderNum;
+            questionFormAssignment.QuestionTypeOrderNum = editedQuestion.QuestionTypeOrderNum;
+            questionFormAssignment = await questionsFormAssignmentsService.Add(questionFormAssignment);
+
+            //Add options to questions
+            foreach (var editedOption in editedQuestion.Options)
+            {
+                Options option = new Options();
+                option.OptionName = editedOption.OptionName;
+                option = await optionsService.Add(option);
+
+                OptionsQuestionAssignmnents optionQuestionAssignment = new OptionsQuestionAssignmnents();
+                optionQuestionAssignment.FormId = formInfo.FormId;
+                optionQuestionAssignment.QuestionOrderNum = editedQuestion.QuestionOrderNum;
+                optionQuestionAssignment.OptionId = option.OptionId;
+                optionQuestionAssignment.OptionOrderNum = editedOption.OptionOrderNum;
+                optionQuestionAssignment = await optionsQuestionAssignmentsService.Add(optionQuestionAssignment);
+            }
+        }
+
+        formPublished = true;
+        StateHasChanged();
+    }
+}
