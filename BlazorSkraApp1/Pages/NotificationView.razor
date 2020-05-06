@@ -234,7 +234,7 @@ else
         try
         {
             //Create a submission in the database
-            submissionsInfo.UserId = currentUser.Id;
+            submissionsInfo.UserId = currentUser.UserName;
             submissionsInfo.SubmissionDate = DateTime.UtcNow;  //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
             submissionsInfo = await subinfoservice.Add(submissionsInfo);
 

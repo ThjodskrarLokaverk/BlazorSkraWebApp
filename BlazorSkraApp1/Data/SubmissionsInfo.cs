@@ -15,8 +15,5 @@ namespace BlazorSkraApp1.Data
         [Required]
 
         public string UserId { get; set; }
-
-       
-
     }
 }

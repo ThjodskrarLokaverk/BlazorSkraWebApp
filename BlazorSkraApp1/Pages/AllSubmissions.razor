@@ -1,0 +1,74 @@
+@page "/AllSubmissions"
+@using BlazorSkraApp1.Data
+@using BlazorSkraApp1.Services
+@inject IAdminService adminservice
+@inject ISubmissionsService submissionservice
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject IJSRuntime jsRuntime
+@inject IMailService mailservice;
+
+<AuthorizeView Roles="Admin">
+    <Authorized>
+
+@if (submissionList == null)
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <h2>Innsendar tilkynningar</h2>
+        <table class="table table-hover table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nafn tilkynningar</th>
+                    <th>Notandi</th>
+                    <th style="width: 1%">Innsent</th>
+                </tr>
+            </thead>
+            <tbody>
+    @foreach(var submission in submissionList)
+    {
+        if((GetAll(submission)) == true)
+        {
+            <tr>
+                <td>@submission.Form.FormName</td>
+                <td>@submission.Submission.UserId</td>
+                <td>@submission.Submission.SubmissionDate</td>
+            </tr>
+        }
+    }
+            </tbody>
+        </table>
+    </div>
+}
+    </Authorized>
+</AuthorizeView>
+@code{
+    List<Submissions> alreadyPosted = new List<Submissions>();
+    List<Submissions> submissionList;
+    protected override async Task OnInitializedAsync()
+    {
+        submissionList = await submissionservice.Get();
+    }
+    public bool GetAll(Submissions s)
+    {
+        
+        Submissions sub = alreadyPosted.Find(id => id.SubmissionId == s.SubmissionId);
+
+        foreach(var submission in alreadyPosted)
+        {
+            if(s.SubmissionId == submission.SubmissionId)
+            {
+                return false;
+            }
+        }
+
+        alreadyPosted.Add(s);
+        return true;
+    }
+}
