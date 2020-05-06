@@ -1,4 +1,5 @@
 @page "/FC"
+@page "/FC/{categoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -45,7 +46,15 @@ else
                         <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
                         <div class="col-sm-10">
                             <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
-                                <option value="">Veldu flokk</option>
+                            if( formInputModel.CategoryId == null)
+                            {
+                                <option value=""> Veldu Flokk </option>
+                                
+                            }
+                            else
+                            {
+                                <option value="@System.Convert.ToString(categoryId)">@currentCategory.CategoryName</option>
+                            }
                                 @if (categoriesList == null)
                                         {
                                     <option>loading...</option>
@@ -54,7 +63,10 @@ else
                                         {
                                             foreach (var category in categoriesList)
                                             {
-                                        <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
+                                                if (category.CategoryId != @currentCategory.CategoryId)
+                                                {
+                                                    <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
+                                                }
                                             }
                                         }
                             </InputSelect>
@@ -162,6 +174,12 @@ else
     private EditContext editContext;
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
+    
+    [Parameter]
+    //searchstring is sent by route from index page.
+    public string categoryId{ get; set; }
+
+    Categories currentCategory = new Categories();
 
     //For form display/creation
     protected FormsViewModel createdForm;
@@ -173,12 +191,16 @@ else
     {
         //Initialize InputModels
         formInputModel = new FormsInputModel();
+        formInputModel.CategoryId = categoryId;
         formInputModel.Questions = new List<QuestionsInputModel>();
         editContext = new EditContext(formInputModel);
 
         //Dropdown lists
         categoriesList = await categoriesService.Get();
         questionTypesList = await questionTypesService.Get();
+
+        //to bind category if sent by route
+        currentCategory = await categoriesService.Get(System.Convert.ToInt32(categoryId));
     }
 
     private void AddQuestion()

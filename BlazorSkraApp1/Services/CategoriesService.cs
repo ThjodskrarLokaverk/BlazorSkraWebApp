@@ -43,6 +43,7 @@ namespace BlazorSkraApp1.Services
             var searchList = _context.Categories.Where(x => x.CategoryName.Contains(searchString)).ToListAsync(); 
             return await searchList;
         }
+
         // Creates the specified category in the database
         public async Task<Categories> Add(Categories category)
         {
