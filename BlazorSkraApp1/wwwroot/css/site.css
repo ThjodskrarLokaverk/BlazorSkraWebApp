@@ -77,7 +77,12 @@ html, body {
     margin-bottom: 20px;
 }
 
-.mediationIMG{
+.LogoImg {
+    width: 280px;
+    height: auto;
+}
+
+.mediationIMG {
     width: 40%;
     height: 40%;
     display: block;
@@ -114,9 +119,7 @@ html, body {
 /* Navigation bar */
 .navbar {
     background: rgba(0,0,0,0);
-    /*background-color: var(--one);*/
-    border-bottom: 1px solid white;
-    height: 80px;
+    height: 140px;
 }
 
 .header{
@@ -151,8 +154,8 @@ html, body {
 
 .oi-person {
     color: black;
-    font-size: 25px;
-    top: 7px;
+    font-size: 30px;
+    top: 0px;
 }
 
 
@@ -367,9 +370,10 @@ html, body {
     padding:none;
 }
 
-.dropdown{
+.dropdown {
     margin-left: 1%;
     background-color: transparent;
+    height: 30px;
 }
 
 .first-dropdown-wrapper{
