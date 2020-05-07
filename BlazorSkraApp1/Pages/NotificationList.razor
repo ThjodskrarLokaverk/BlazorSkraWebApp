@@ -1,4 +1,4 @@
-﻿@page "/NotificationList/{id}"
+@page "/NotificationList/{id}"
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
@@ -12,7 +12,7 @@
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Augnablik...</span>
         </div>
     </div>
 }
@@ -25,8 +25,9 @@ else
     <div class="container">
         <AuthorizeView Roles="Admin">
         <div class="container">
-        <button onclick="window.location.href='/FC'" class="btn btn-success add-type">
-            <i class="far fa-plus-square"></i>Bæta við eyðublaði
+        <button onclick="window.location.href='/FC/@category.CategoryId'" class="btn btn-success add-type">
+            <i class="far fa-plus-square"></i>
+                Bæta við eyðublaði
         </button>
         </div>
         </AuthorizeView>
@@ -42,7 +43,7 @@ else
                 <div class="col-md-4">
                     <AuthorizeView Roles="Admin">
                         <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                <a id="a-tag" href="FormEdit/@categoryAssignment.FormsInfo.FormId">
                                     <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
                                 </a>
                         </button>
@@ -53,7 +54,7 @@ else
                 <div class="card card-list">
                     <img src="Images/form.svg" class="card-img-top" alt="notification form">
                     <div class="card-body body-list">
-                        <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                        <h5 class="card-title title-list truncate">@categoryAssignment.FormsInfo.FormName</h5>
                         <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                     </div>
                 
@@ -67,17 +68,19 @@ else
             {
                  <AuthorizeView Roles="Admin">
                     <Authorized>
-                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Bættu við eyðublaði með því að smella á <strong>"Bæta við eyðublaði"</strong> upp í vinstra horninu. </h5>
+                        <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Bættu við eyðublaði með því að smella á <strong>"Bæta við eyðublaði</strong> uppi í vinstra horninu. </h5>
                     </Authorized>
-                    <NotAuthorized>
+                    <NotAuthorized> 
                         <h5 class="empty-state"> Það er ekkert eyðublað í þessum flokki. Vinsamlegast hafðu samband við stjórnanda ef þú telur vanta eyðublað í þennan flokk. </h5>
                     </NotAuthorized>
                 </AuthorizeView>
 
                 <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
+               
             }
             
     </div>
+   
 
     <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
         <CustomHeader>Eyða eyðublaði</CustomHeader>

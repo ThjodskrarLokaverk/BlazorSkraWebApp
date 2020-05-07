@@ -2,15 +2,10 @@
 
 :root{
     --one: #c5d8d1;
-
     --two: #005e7c;
-
     --three: #102542;
-    
-    --four: #d33f49;
-    
+    --four: #d33f49;    
     --five: #6D9F71;
-   
 }
 
 html, body {
@@ -23,6 +18,11 @@ html, body {
     background-color: var(--two);
     color:black;
 
+}
+
+/* card-title in notificication */
+.question-title {
+    text-decoration: underline;
 }
 
 /* Notification-List */
@@ -47,9 +47,16 @@ html, body {
     height: 0rem;
     
 }
-.title-list{
+
+/* TRUNCATE */
+.truncate {
     text-align: center;
-    line-height: 0 ;
+  
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    padding-bottom: 10px;
 }
 
 .card-img-top{
@@ -78,7 +85,7 @@ html, body {
     font-family: arial black;
     color: var(--three);
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .mediationIMG{
@@ -113,21 +120,6 @@ html, body {
     margin-top:50px;
 
 
-}
-
-/* Edit Notification */
-
-#NewFormName {
-    width: 50%;
-}
-
-.edit-notification {
-    float: left;
-    margin-top:20px;
-}
-
-#a-tag {
-    color: #5e636b;
 }
 
 /* Navigation bar */
@@ -266,15 +258,6 @@ html, body {
     width: 90%;
 }
 
-.question-wrapper {
-    border: solid 1px;
-    border-radius: 0.1cm;
-    border-color: #ccd4dc;
-    margin-left: 0;
-    background-color: white;
-    margin-right: -1px;
-}
-
 .option-wrapper {
     padding: 30px;
 }
@@ -373,7 +356,7 @@ html, body {
 .sub-container{
     background-color:white;
     margin:none;
-    border: 1px solid #5e636b;
+    border: 2px solid black;
 }
 
 .submit-form{
@@ -458,16 +441,19 @@ html, body {
 }
 
 .second-dropdown-wrapper a:hover {
-    background-color:var(--five);
+    background-color: var(--five);
 }
 
+.second-dropdown-wrapper span:hover {
+    background-color: black;
+}
 
 .second-dropdown-wrapper button:hover {
     background-color:var(--five);
 }
 
 #username:hover {
-    background-color:var(--five);
+    background-color: black;
 }
 
 .first-dropdown-wrapper .dropdown-menu :first-child{
@@ -498,18 +484,20 @@ html, body {
 
 .table-striped {
     border: solid 2px;
-    border-color: #5e636b;
+    border-color: var(--three);
  }
 
  .tableBody{
-     background-color: white;
+     background-color: var(--one);
  }
 
 .table-striped > tbody > tr > td {
-    border-top: solid 0.5px;
-    border-bottom: solid 0.5px;
-    border-color: var(--five);
+    border-color: var(--three);
     vertical-align: middle;
+}
+
+.table-striped > tbody > tr:hover {
+    background-color: #afc5bd;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
@@ -517,11 +505,11 @@ html, body {
 }
 
 #user-thead {
-    background-color: #5e636b;
+    background-color: var(--two);
 }
 
 #user-thead > tr > th {
-    border-color: #5e636b;
+    border-color: var(--three);
     color: white;
 }
 
@@ -593,10 +581,7 @@ html, body {
 
 .search-button{
     color: black;
-}
-
-.searchUsers{
-    margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .up-down{
@@ -610,18 +595,13 @@ html, body {
     color: white;
 }
 
-.approve-btn:hover {
-    background-color: var(--five);
-    color: white;
-}
-
 .cancel-btn {
-    background-color: #5e636b;
+    background-color: var(--two);
     color: white;
 }
 
-.cancel-btn:hover {
-    background-color: #494d53;
+.delete-btn {
+    background-color: var(--four);
     color: white;
 }
 
@@ -703,13 +683,12 @@ app {
   }
 
 .modal-content{
-    border: solid var(--five) ;
+    border: solid 1.5px var(--three);
 }
 
 .modal-button{
     color: var(--three);
     background-color: pink;
-
 }
 
 .modal-title{
@@ -793,9 +772,6 @@ ul{
       padding-bottom:30px;
 }
 
-.fa-search{
-    background-color: var(--five);
-}
 
 .index-search{
     display: flex;
@@ -807,10 +783,12 @@ ul{
     margin-left: 25%;
     margin-bottom: 30px;
     background-color:var(--five);
-    border: 1px solid var(--five)
+    border-radius: 4px;
+    border: 1px solid var(--five);
 }
 
 .user{
     padding-right: 20px;
     margin-right:20px;
 }
+
