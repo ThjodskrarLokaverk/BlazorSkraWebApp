@@ -20,7 +20,7 @@
     @if (!formCreated)
     {
         <!-- Create form -->
-        <FormEditComponent OnEdit="CreateFormHandler">
+        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId">
             <CustomButtonText>Búa til eyðublað</CustomButtonText>
         </FormEditComponent>
     }
@@ -59,21 +59,6 @@
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
-
-    //protected override async Task OnInitializedAsync()
-    //{
-        //to bind category if sent by route
-        //try{
-        //    currentCategory = await categoriesService.Get(System.Convert.ToInt32(selectedCategoryId));
-        //    formInputModel.CategoryId = selectedCategoryId; 
-        //}
-        //catch(Exception)
-        //{
-        //    currentCategory = null;
-        //    //catch if parameter sent by route is not convertable to int
-        //}
-    
-    //}
 
     private void EditForm()
     {
