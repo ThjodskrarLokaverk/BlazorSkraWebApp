@@ -23,6 +23,10 @@ else
         <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
     </div>
     <div class="container">
+        @if (categoriesAssignmentsList.Any())
+        {
+            <h3 class="notification-list-heading"> @category.CategoryName</h3>
+        }
         <AuthorizeView Roles="Admin">
         <div class="container">
         <button onclick="window.location.href='/FC/@category.CategoryId'" class="btn btn-success add-type">
@@ -31,11 +35,6 @@ else
         </button>
         </div>
         </AuthorizeView>
-
-        @if (categoriesAssignmentsList.Any())
-        {
-            <h3 class="notification-list-heading"> Flokkur: @category.CategoryName</h3>
-        }
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
             {       
