@@ -777,3 +777,28 @@ ul{
     padding-right: 20px;
     margin-right:20px;
 }
+
+
+
+/*
+.truncate {
+    width: 250px;
+    white - space: nowrap;
+    overflow: hidden;
+    text - overflow: ellipsis;
+}
+    */
+
+
+
+.head-mix {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 20px;
+    /*font-size: 1.3rem;
+    margin: 0;
+    background: white;*/
+    resize: horizontal;
+}

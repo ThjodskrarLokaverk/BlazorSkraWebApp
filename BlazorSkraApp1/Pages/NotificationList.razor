@@ -34,30 +34,32 @@ else
             </div>
         </AuthorizeView>
 
-                <div class="row">
-                    @foreach (var categoryAssignment in categoriesAssignmentsList)
-                    {       
-                        <div class="col-md-4">
-                                <AuthorizeView Roles="Admin">
-                                    <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                            <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
-                                                <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
-                                            </a>
-                                    </button>
-                                    <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
-                                        <i class="fas fa-trash sub-list-trash" title="Trash"></i>
-                                    </button>
-                                </AuthorizeView> 
-                            <div class="card card-list">
-                                <img src="Images/form.svg" class="card-img-top" alt="notification form">
-                                <div class="card-body body-list">
-                                    <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
-                                    <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
-                                </div>
-                            </div>
+        <div class="row">
+            @foreach (var categoryAssignment in categoriesAssignmentsList)
+            {
+             
+
+                <div class="col-md-4">
+                    <AuthorizeView Roles="Admin">
+                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                            <a id="a-tag" href="EditNotification/@categoryAssignment.FormsInfo.FormId">
+                                <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
+                            </a>
+                        </button>
+                        <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                        </button>
+                    </AuthorizeView>
+                    <div class="card card-list">
+                        <img src="Images/form.svg" class="card-img-top" alt="notification form">
+                        <div class="card-body body-list">
+                            <h5 class="card-title title-list head-mix">@categoryAssignment.FormsInfo.FormName</h5>
+                            <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                         </div>
-                    }
-                </div> 
+                    </div>
+                </div>
+            }
+        </div> 
                 
                 @if (!categoriesAssignmentsList.Any())
                 // only displayed when there is no assignment in the category
@@ -73,6 +75,7 @@ else
 
                     <img src="Images/meditation-bw.png" class="mediationIMG" alt="Empty state">
                 }
+               
 
         <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
             <CustomHeader>Eyða eyðublaði</CustomHeader>
@@ -82,6 +85,8 @@ else
 }
 
 @code{
+   
+
     [Parameter]
     public string id { get; set; }
     private int categoryId;
