@@ -429,16 +429,19 @@ html, body {
 }
 
 .second-dropdown-wrapper a:hover {
-    background-color:var(--five);
+    background-color: var(--five);
 }
 
+.second-dropdown-wrapper span:hover {
+    background-color: black;
+}
 
 .second-dropdown-wrapper button:hover {
     background-color:var(--five);
 }
 
 #username:hover {
-    background-color:var(--five);
+    background-color: black;
 }
 
 .first-dropdown-wrapper .dropdown-menu :first-child{
@@ -668,13 +671,12 @@ app {
   }
 
 .modal-content{
-    border: solid var(--five) ;
+    border: solid 1.5px var(--three);
 }
 
 .modal-button{
     color: var(--three);
     background-color: pink;
-
 }
 
 .modal-title{
