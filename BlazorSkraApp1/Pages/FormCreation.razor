@@ -46,29 +46,46 @@ else
                         <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
                         <div class="col-sm-10">
                             <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
-                            if( formInputModel.CategoryId == null)
-                            {
+                            
+                            @if(string.IsNullOrEmpty(categoryId) || currentCategory == null )
+                            // if there is no og illegal parameter sent by route
+                            {                              
                                 <option value=""> Veldu Flokk </option>
                                 
+                                @if (categoriesList == null)
+                                {
+                                    <option>loading...</option>
+                                }
+                                else{
+                                    foreach (var category in categoriesList)
+                                        {                                      
+                                            <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
+                                        }
+                                    }
+                                       
                             }
                             else
-                            {
+                            // if legal categoryId is sent by route it's automatically picked as first pick
+                            {                                 
                                 <option value="@System.Convert.ToString(categoryId)">@currentCategory.CategoryName</option>
-                            }
                                 @if (categoriesList == null)
-                                        {
+                                {
                                     <option>loading...</option>
-                                        }
-                                        else
-                                        {
-                                            foreach (var category in categoriesList)
+                                }
+                                else
+                                {
+                                    @if (@currentCategory != null)
+                                    {
+                                        foreach (var category in categoriesList)
+                                        {                                           
+                                            if (category.CategoryId != @currentCategory.CategoryId)
                                             {
-                                                if (category.CategoryId != @currentCategory.CategoryId)
-                                                {
-                                                    <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
-                                                }
-                                            }
+                                                <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
+                                            }     
                                         }
+                                    }
+                                }
+                            }
                             </InputSelect>
                             <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                         </div>
@@ -191,7 +208,7 @@ else
     {
         //Initialize InputModels
         formInputModel = new FormsInputModel();
-        formInputModel.CategoryId = categoryId;
+
         formInputModel.Questions = new List<QuestionsInputModel>();
         editContext = new EditContext(formInputModel);
 
@@ -200,8 +217,18 @@ else
         questionTypesList = await questionTypesService.Get();
 
         //to bind category if sent by route
-        currentCategory = await categoriesService.Get(System.Convert.ToInt32(categoryId));
+        try{
+            currentCategory = await categoriesService.Get(System.Convert.ToInt32(categoryId));
+            formInputModel.CategoryId = categoryId; 
+        }
+        catch(Exception)
+        {
+            currentCategory = null;
+            //catch if parameter sent by route is not convertable to int
+        }
+    
     }
+
 
     private void AddQuestion()
     {
