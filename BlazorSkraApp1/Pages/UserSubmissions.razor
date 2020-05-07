@@ -1,4 +1,4 @@
-@page "/Submissions/{username}"
+@page "/Submissions"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject IAdminService adminservice
@@ -49,8 +49,6 @@ else
 }
 
 @code{
-    [Parameter]
-    public string username {get; set;}
     List<Submissions> alreadyPosted = new List<Submissions>();
     List<Submissions> submissionList;
     protected override async Task OnInitializedAsync()
@@ -84,5 +82,6 @@ else
     public void GeneratePDFFile(int FormId, int submissionId, string userEmail)
     {
         mailservice.PDFBuilder(FormId, submissionId, userEmail, false, jsRuntime);
+        alreadyPosted = new List<Submissions>();
     }
 }
