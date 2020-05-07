@@ -21,10 +21,8 @@ html, body {
 }
 
 /* card-title in notificication */
-
-.card-title{
+.question-title {
     text-decoration: underline;
-
 }
 
 /* Notification-List */
@@ -47,10 +45,6 @@ html, body {
     border: solid 2px;
     border-color: var(--three);
     height: 0rem;
-    
-}
-
-.title-list{
     
 }
 

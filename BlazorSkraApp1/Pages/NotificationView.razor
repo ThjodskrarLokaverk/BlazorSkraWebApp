@@ -35,7 +35,7 @@ else
                 <div class="container">
                     <div class="card">
                         <div class="card-body form-check">
-                            <h5 class="card-title">@(question.QuestionOrderNum+1). @question.Questions.QuestionName</h5>
+                            <h5 class="question-title">@(question.QuestionOrderNum+1). @question.Questions.QuestionName</h5>
                             @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
