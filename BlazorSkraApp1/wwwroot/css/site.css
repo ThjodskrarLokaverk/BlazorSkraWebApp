@@ -25,6 +25,13 @@ html, body {
 
 }
 
+/* card-title in notificication */
+
+.card-title{
+    text-decoration: underline;
+
+}
+
 /* Notification-List */
 .card-list{
     background-color: var(--three);
@@ -373,7 +380,7 @@ html, body {
 .sub-container{
     background-color:white;
     margin:none;
-    border: 1px solid #5e636b;
+    border: 2px solid black;
 }
 
 .submit-form{
