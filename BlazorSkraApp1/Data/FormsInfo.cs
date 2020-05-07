@@ -13,7 +13,10 @@ namespace BlazorSkraApp1.Data
         [Required(ErrorMessage = "Velja þarf nafn eyðublaðs")]
         [StringLength(200, ErrorMessage = "Nafn eyðublaðs má ekki innihalda fleiri en 200 stafi")]
         public string FormName { get; set; }
+        [Required]
         [EmailAddress]
         public string DestinationEmail { get; set; }
+        [Required]
+        public bool IsAnonymous { get; set; }
     }
 }

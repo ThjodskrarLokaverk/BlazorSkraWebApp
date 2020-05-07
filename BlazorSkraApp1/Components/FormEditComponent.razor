@@ -16,7 +16,7 @@
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Augnablik...</span>
         </div>
     </div>
 }
@@ -28,69 +28,82 @@ else
         <div class="card">
             <div class="card-body">
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Heiti eyðublaðs</label>
+                    <label class="col-sm-2 col-form-label">Nafn eyðublaðs</label>
                     <div class="col-sm-10">
-                        <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
+                        <InputText id="name" class="form-control" placeholder="Skrifaðu hér..." @bind-Value="@formInputModel.FormName" />
                         <ValidationMessage For="@(() => formInputModel.FormName)" />
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
                     <div class="col-sm-10">
-                        <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
+                        <InputSelect id="categories" class="form-control" @bind-Value="@formInputModel.CategoryId" >
                             <option value="">Veldu flokk</option>
                             @if (categoriesList == null)
+                            {
+                                <option>Augnablik...</option>
+                            }
+                            else
+                            {
+                                foreach (var category in categoriesList)
                                 {
-                                <option>loading...</option>
-                                }
-                                else
-                                {
-                                    foreach (var category in categoriesList)
-                                    {
                                     <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
-                                    }
                                 }
+                            }
                         </InputSelect>
                         <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
+                    <label class="col-sm-2 col-form-label">Viðtökunetfang</label>
                     <div class="col-sm-10">
-                        <InputText id="email" class="form-control" @bind-Value="@formInputModel.DestinationEmail" />
+                        <InputText id="email" class="form-control" placeholder="Skrifaðu hér..." @bind-Value="@formInputModel.DestinationEmail" />
                         <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
                     </div>
+                </div>
+                <div class="form-group row form-check">
+                    <label id="anon-label" for="create-anonymous" >Leyfa svaranda að svara nafnlaust</label>
+                    <InputCheckbox id="create-anonymous" class="form-control" @bind-Value="@formInputModel.IsAnonymous" />
+                    <ValidationMessage For="@(() => formInputModel.IsAnonymous)" />
                 </div>
             </div>
         </div>
         <!-- Questions input fields -->
         @foreach (var question in formInputModel.Questions)
         {
-            <div class="card">
+            <div class="card question-create-card">
                 <div class="card-header">
-                    <button @onclick="(() => RemoveQuestion(question))" type="button" class="btn btn-secondary">Fjarlægja spurningu</button>
+                    <button @onclick="(() => RemoveQuestion(question))" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
-                        <ValidationMessage For="@(() => question.QuestionName)" />
+                        <label class="col-sm-2 col-form-label">Titill spurningar</label>
+                        <div class="col-sm-10">
+                            <InputText placeholder="Skrifaðu hér..." type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
+                            <ValidationMessage For="@(() => question.QuestionName)" />
+                        </div>
                     </div>
                     <div class="form-group row">
-                        <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
-                            <option value="">Veldu tegund</option>
-                            @if (questionTypesList == null)
+                        <label for="question-type" class="col-sm-2 col-form-label">Spurningategund</label>
+                        <div class="col-sm-10">
+                            <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
+                                <option value="">Veldu tegund</option>
+                                @if (questionTypesList == null)
+                                {
+                                    <option>Augnablik...</option>
+                                }
+                                else
+                                {
+                                    foreach (var type in questionTypesList)
                                     {
-                                <option>loading...</option>
+                                        <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
                                     }
-                                    else
-                                    {
-                                        foreach (var type in questionTypesList)
-                                        {
-                                    <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
-                                        }
-                                    }
-                        </InputSelect>
-                        <ValidationMessage For="@(() => question.QuestionTypeId)" />
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => question.QuestionTypeId)" />
+                        </div>
                     </div>
                     <hr>
                     <!-- Options input fields -->
@@ -99,29 +112,38 @@ else
                         @foreach (var option in question.Options)
                         {
                             <div class="form-group row">
-                                <input type="radio" disabled>
+                                <label class="col-sm-2 col-form-label">Valkostur</label>
+                                <input id="radio-create" type="radio" disabled>
                                 <div class="col-sm-4">
-                                    <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
+                                    <InputText id="optionName" class="form-control" placeholder="Skrifaðu hér..." @bind-Value="@option.OptionName" />
                                     <ValidationMessage For="@(() => option.OptionName)" />
-                                    @if (question.Options.Count() > 2)
-                                    {
-                                        <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-secondary">Fjarlægja</button>
-                                    }
                                 </div>
+                                @if (question.Options.Count() > 2)
+                                {
+                                    <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-link">
+                                        <i class="fas fa-trash trash-create" title="Trash"></i>
+                                    </button>
+                                }
                             </div>
                         }
                         <div class="form-group row">
-                            <button @onclick="(() => AddOption(question))" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
+                            <button @onclick="(() => AddOption(question))" data-toggle="modal" type="button" class="btn approve-btn add-option">
+                                <i class="far fa-plus-square"></i>Bæta við valkost
+                            </button>
                         </div>
                     }
                 </div>
             </div>
         }
-        <button @onclick="(() => AddQuestion())" type="button" class="btn btn-secondary">Bæta við spurningu</button>
-        <button type="submit" class="btn approve-btn">@CustomButtonText</button>
+        <div class="creation-buttons">
+            <button @onclick="(() => AddQuestion())" type="button" class="btn approve-btn add-question">
+                <i class="far fa-plus-square"></i>Bæta við spurningu
+            </button>
+            
+        </div>
+        <button type="submit" class="btn btn-light new-form">@CustomButtonText</button>
     </EditForm>
 }
-
 
 @code {
     [Parameter]
@@ -182,7 +204,6 @@ else
 
     private void RemoveQuestion(QuestionsInputModel question)
     {
-
         formInputModel.Questions.Remove(question);
         editContext = new EditContext(formInputModel);
         StateHasChanged();
@@ -190,7 +211,6 @@ else
 
     private void AddOption(QuestionsInputModel question)
     {
-
         var newOption = new OptionsInputModel();
         question.Options.Add(newOption);
         StateHasChanged();
