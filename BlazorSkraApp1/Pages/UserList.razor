@@ -1,165 +1,147 @@
 @page "/UserList"
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Services
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
+@using BlazorSkraApp1.Models.InputModels
 @inject IAdminService service
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<IdentityUser> _UserManager
 
-    <AuthorizeView Roles="Admin">
-        <Authorized>
-            @if (userList == null)
-            {
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
-                </div>
-            }
-            else
-            {
-                <div class="container">
-                    <input class="searchUsers" type="text" placeholder="Leita.." @bind-value="@searchString" />
-                    <button class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search"></i> </button>
-                    <table class="table table-striped table-md">
-                        <thead id="user-thead">
-                            <tr>
-                                <th class="text-uppercase">
-                                    Nafn
-                                    <button class="btn up-down" @onclick="(() => SortUsersAscending())"><i class="fas fa-sort-alpha-up"></i> </button>
-                                </th>
-                                <th class="text-uppercase">Netfang</th>
-                                <th class="text-uppercase">Breyta hlutverki</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var user in userList)
-                            {
-                                <tr>
-                                    <td>@user.UserName</td>
-                                    <td>@user.Email</td>
-                                    <td>
-                                        @if (adminUsersList.Contains(user))
-                                        {
-                                            <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#removeAdminModal" class="btn cancel-btn">
-                                                Óvirkja stjórnanda
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#makeAdminModal" class="btn approve-btn">
-                                                Virkja stjórnanda
-                                            </button>
-                                        }
-                                    </td>
-                                    <td>
-                                        <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn btn-danger">
-                                            Eyða notanda
-                                        </button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Add and remove user from admin role popup modal -->
-                <UserAdminRoleToggleComponent selectedUser="selectedUser" OnMakeAdmin="MakeAdminHandler" OnRemoveAdmin="RemoveAdminHandler"></UserAdminRoleToggleComponent>
-
-                <!-- Delete Category popup modal -->
-                <ConfirmationModalComponent OnClick="DeleteUser">
-                    <CustomHeader>Eyða notanda</CustomHeader>
-                    <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.UserName)?</CustomBody>
-                    <CustomButtonText>Eyða</CustomButtonText>
-                </ConfirmationModalComponent>
-            }
-            @if (ShowPopup)
-            {
-                <!-- This is the popup to create or edit a user -->
-                <div class="modal" tabindex="-1" style="display:block" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h3 class="modal-title">Edit User</h3>
-                                <!-- Button to close the popup -->
-                                <button type="button" class="close"
-                                        @onclick="ClosePopup">
-                                    <span aria-hidden="true">X</span>
-                                </button>
-                            </div>
-                            <!-- Edit form for the current forecast -->
-                            <div class="modal-body">
-                                <!-- Only show Id if not a new user -->
-                                @if (objUser.Id != "")
+<AuthorizeView Roles="Admin" Context="authContext">
+    @if (userList == null)
+    {
+        <div class="d-flex justify-content-center">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Augnablik...</span>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="md-form mt-0 index-search">
+            <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value="@searchString" @bind-value:event="oninput" @onkeyup="@SearchOnKeyUp">
+            <a class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search"></i> </a>
+        </div>
+        <div class="container">
+            <button @onclick="AddNewUser" class="btn add-category">
+                <i class="far fa-plus-square"></i>Bæta við notanda
+            </button>
+            <table class="table table-striped table-md">
+                <thead id="user-thead">
+                    <tr>
+                        <th class="text-uppercase">Tölvupóstfang
+                            <button class="btn up-down" @onclick="(() => SortUserEmails())"><i class="fas fa-sort-alpha-up"></i> </button>
+                        </th>
+                        <th class="text-uppercase">Hlutverk</th>
+                        <th class="text-uppercase">Breyta hlutverki</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="tableBody">
+                    @foreach (var user in userList)
+                    {
+                        <tr>
+                            <td>@user.Email</td>
+                            <td>
+                                @if(adminUsersList.Contains(user))
                                 {
-                                    <p>@objUser.Id</p>
-                                }
-                                <!-- Only allow edit if a new user -->
-                                @if (objUser.Id != "")
-                                {
-                                    <p>@objUser.UserName</p>
+                                    @Options[1];
                                 }
                                 else
                                 {
-                                    <input class="form-control" type="text"
-                                           placeholder="UserName"
-                                           @bind="objUser.UserName" />
+                                    @Options[0];
                                 }
-                                <input class="form-control" type="text"
-                                       placeholder="Email"
-                                       @bind="objUser.Email" />
-                                <input class="form-control" type="password"
-                                       placeholder="Password"
-                                       @bind="objUser.PasswordHash" />
-                                <select class="form-control"
-                                        @bind="@CurrentUserRole">
-                                    @foreach (var option in Options)
-                                    {
-                                        <option value="@option">
-                                            @option
-                                        </option>
-                                    }
-                                </select>
-                                <br /><br />
-                                <!-- Button to save the user -->
-                                <button class="btn btn-primary"
-                                        @onclick="SaveUser">
-                                    Save
+                            </td>
+                            <td>
+                                @if(adminUsersList.Contains(user))
+                                {
+                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#removeAdminModal" class="btn cancel-btn">
+                                        Óvirkja stjórnanda
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#makeAdminModal" class="btn approve-btn">
+                                        Virkja stjórnanda
+                                    </button>
+                                }
+                            </td>
+                            <td>
+                                <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
+                                    Eyða notanda
                                 </button>
-                                <br />
-                                <span style="color:red">@strError</span>
-                            </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @* Add and remove user from admin role popup modal *@
+        <UserAdminRoleToggleComponent selectedUser="selectedUser" OnMakeAdmin="MakeAdminHandler" OnRemoveAdmin="RemoveAdminHandler"></UserAdminRoleToggleComponent>
+
+        @* Delete Category popup modal *@
+        <ConfirmationModalComponent OnClick="DeleteUser">
+            <CustomHeader>Eyða notanda</CustomHeader>
+            <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
+            <CustomButtonText>Eyða</CustomButtonText>
+        </ConfirmationModalComponent>
+    }
+    @if (showPopup)
+    {
+        <!-- This is the popup to create a user -->
+        <EditForm Model="@userInput" OnValidSubmit="@SaveUser">
+            <DataAnnotationsValidator />
+            <div class="modal" tabindex="-1" style="display:block" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Búa til nýjan notanda</h3>
+                            <button type="button" class="close" @onclick="ClosePopup">
+                                <span aria-hidden="true">&times</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <label for="user-email">Tölvupóstfang</label>
+                            <InputText class="form-control" id="user-email" type="text" placeholder="Tölvupóstfang" @bind-Value="userInput.Email" />
+                            <ValidationMessage For="@(() => userInput.Email)" /><br>
+                            <label for="user-password">Lykilorð</label>
+                            <InputText class="form-control" id="user-password" type="password" placeholder="Lykilorð" @bind-Value="userInput.Password" />
+                            <ValidationMessage For="@(() => userInput.Password)" /><br>
+                            <label for="user-role">Hlutverk</label>
+                            <InputSelect class="form-control" id="user-role" @bind-Value="userInput.UserRole">
+                                @foreach (var option in Options)
+                                {
+                                    <option value="@option">@option</option>
+                                }
+                            </InputSelect>
+                            <ValidationMessage For="@(() => userInput.UserRole)" />
+                            <br /><br />
+                            <button type="submit" class="btn btn-primary">Vista</button>
+                            <br />
                         </div>
                     </div>
                 </div>
-            }
-            <button class="btn btn-success" @onclick="AddNewUser">Add User</button>
-        </Authorized>
-        <NotAuthorized>
-            <p>You're not authorized to view this page.</p>
-        </NotAuthorized>
-    </AuthorizeView>
+            </div>
+        </EditForm>
+    }
+</AuthorizeView>
 
 @code {
+    UserInputModel userInput;
     // Options to display in the roles dropdown when editing a user
-    List<string> Options = new List<string>() { "Users", "Administrators" };
+    List<string> Options = new List<string>() { "Almennur notandi", "Stjórnandi" };
 
-    // Tracks the selected role for the currently selected user
-    string CurrentUserRole { get; set; } = "Users";
-    string ADMINISTRATION_ROLE = "Administrators";
-    System.Security.Claims.ClaimsPrincipal CurrentUser;
-     // To hold any possible errors
     string strError = "";
+    bool isSortedEmails = false;
 
     // To enable showing the Popup
-    bool ShowPopup = false;
+    bool showPopup = false;
     // Collection to display the users
 
     void ClosePopup()
     {
         // Close the Popup
-        ShowPopup = false;
+        showPopup = false;
     }
     List<IdentityUser> userList;
     // Collection containing admin users
@@ -209,6 +191,11 @@
         adminUsersList.Remove(user);
     }
 
+    private void SearchOnKeyUp(KeyboardEventArgs eventArgs)
+    {
+        SearchUsers();
+    }
+
     async Task SearchUsers()
     {
         //Get list of users that match the search string
@@ -216,168 +203,75 @@
         StateHasChanged();
     }
 
-    void SortUsersAscending()
+    void SortUserEmails()
     {
-        userList = userList.OrderBy(x => x.UserName).ToList();
+        if(!isSortedEmails)
+        {
+            userList = userList.OrderBy(x => x.Email).ToList();
+            isSortedEmails = true;
+        }
+        else
+        {
+            userList = userList.OrderByDescending(x => x.Email).ToList();
+            isSortedEmails = false;
+        }
         StateHasChanged();
     }
 
-    void SortUsersDescending()
-    {
-        userList = userList.OrderByDescending(x => x.UserName).ToList();
-        StateHasChanged();
-    }
     void AddNewUser()
     {
         // Make new user
-        objUser = new IdentityUser();
-        objUser.PasswordHash = "*****";
-
-        // Set Id to blank so we know it is a new record
-        objUser.Id = "";
+        userInput = new UserInputModel();
+        userInput.Password = "";
 
         // Open the Popup
-        ShowPopup = true;
+        showPopup = true;
     }
 
     async Task SaveUser()
     {
         try
         {
-            // Is this an existing user?
-            if (objUser.Id != "")
+            // Insert new user
+            var NewUser = new IdentityUser
             {
-                // Get the user
-                var user = await _UserManager.FindByIdAsync(objUser.Id);
-                
-                // Update Email
-                user.Email = objUser.Email;
+                UserName = userInput.Email,
+                Email = userInput.Email
+            };
 
-                // Update the user
-                await _UserManager.UpdateAsync(user);
-
-                // Only update password if the current value
-                // is not the default value
-                if (objUser.PasswordHash != "*****")
-                {
-                    var resetToken =
-                        await _UserManager.GeneratePasswordResetTokenAsync(user);
-
-                    var passworduser =
-                        await _UserManager.ResetPasswordAsync(
-                            user,
-                            resetToken,
-                            objUser.PasswordHash);
-
-                    if (!passworduser.Succeeded)
-                    {
-                        if (passworduser.Errors.FirstOrDefault() != null)
-                        {
-                            strError =
-                                passworduser
-                                .Errors
-                                .FirstOrDefault()
-                                .Description;
-                        }
-                        else
-                        {
-                            strError = "Pasword error";
-                        }
-
-                        // Keep the popup opened
-                        return;
-                    }
-                }
-
-                // Handle Roles
-
-                // Is user in administrator role?
-                var UserResult =
-                    await _UserManager
-                    .IsInRoleAsync(user, ADMINISTRATION_ROLE);
-
-                // Is Administrator role selected
-                // but user is not an Administrator?
-                if (
-                    (CurrentUserRole == ADMINISTRATION_ROLE)
-                    &
-                    (!UserResult))
-                {
-                    // Put admin in Administrator role
-                    await _UserManager
-                        .AddToRoleAsync(user, ADMINISTRATION_ROLE);
-                }
-                else
-                {
-                    // Is Administrator role not selected
-                    // but user is an Administrator?
-                    if ((CurrentUserRole != ADMINISTRATION_ROLE)
-                        &
-                        (UserResult))
-                    {
-                        // Remove user from Administrator role
-                        await _UserManager
-                            .RemoveFromRoleAsync(user, ADMINISTRATION_ROLE);
-                    }
-                }
+            var CreateResult = await _UserManager.CreateAsync(NewUser, userInput.Password);
+            // Handle Roles
+            if (userInput.UserRole == "Stjórnandi")
+            {
+                // Put admin in Administrator role
+                await service.AddAdminRole(NewUser);
+                adminUsersList.Add(NewUser);
             }
-            else
+
+            if (!CreateResult.Succeeded)
             {
-                // Insert new user
-
-                var NewUser =
-                    new IdentityUser
-                    {
-                        UserName = objUser.UserName,
-                        Email = objUser.Email
-                    };
-
-                var CreateResult =
-                    await _UserManager
-                    .CreateAsync(NewUser, objUser.PasswordHash);
-
-                if (!CreateResult.Succeeded)
+                if (CreateResult.Errors.FirstOrDefault() != null)
                 {
-                    if (CreateResult
-                        .Errors
-                        .FirstOrDefault() != null)
-                    {
-                        strError =
-                            CreateResult
-                            .Errors
-                            .FirstOrDefault()
-                            .Description;
-                    }
-                    else
-                    {
-                        strError = "Create error";
-                    }
-
-                    // Keep the popup opened
-                    return;
+                    strError = CreateResult.Errors.FirstOrDefault().Description;
                 }
                 else
                 {
-                    // Handle Roles
-                    if (CurrentUserRole == ADMINISTRATION_ROLE)
-                    {
-                        // Put admin in Administrator role
-                        await _UserManager
-                            .AddToRoleAsync(NewUser, ADMINISTRATION_ROLE);
-                    }
+                    strError = "Create error";
                 }
+
+                // Keep the popup opened
+                return;
             }
             // Close the Popup
-            ShowPopup = false;
+            showPopup = false;
 
             // Refresh Users
-            //GetUsers();
+            userList.Add(NewUser);
+            StateHasChanged();
         }
         catch (Exception ex)
         {
             strError = ex.GetBaseException().Message;
         }
     }
-    
-
 }
