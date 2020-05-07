@@ -1,45 +1,44 @@
 @inherits LayoutComponentBase
-  <section>
-    <div class="skewed"></div> 
-        <div class="main">
+<section>
+    <div class="skewed"></div>
+    <div class="main">
         <nav class="navbar">
             <div class="container">
-            <AuthorizeView Roles="Admin">
-                <Authorized>
-                <div class="dropdown" > 
-                    <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fas fa-bars fa-lg"></span>
-                    </button>
-                    <div class="first-dropdown-wrapper" >
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
-                            <a class="dropdown-item" href="/FC">Búa til nýtt eyðublað</a>
-                            <a class="dropdown-item" href="/AllSubmissions">Sjá innsend eyðublöð</a>
-                            <a class="dropdown-item" href="/instructions">Notkunarleiðbeiningar</a>
-                            <a class="dropdown-item" href="/contact">Hafa samband </a>
-                        </div>
-                    </div>
-                </div> 
-                </Authorized>
-                <NotAuthorized> 
-                    <div class="dropdown" > 
-                        <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="fas fa-bars fa-lg"></span>
-
-                        </button>
-                        <div class="first-dropdown-wrapper" >
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" href="/">Upphafssíða</a>
-                                <a class="dropdown-item" href="/contact">Hafa samband</a>
-                                <a class="dropdown-item" target="_blank" href="https://www.skra.is">Skra.is</a>
+                <AuthorizeView Roles="Admin">
+                    <Authorized>
+                        <div class="dropdown">
+                            <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fas fa-bars fa-lg"></span>
+                            </button>
+                            <div class="first-dropdown-wrapper">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/userlist">Starfsmannalisti</a>
+                                    <a class="dropdown-item" href="/CreateNotification">Búa til nýtt eyðublað</a>
+                                    <a class="dropdown-item" href="/AllSubmissions">Sjá innsend eyðublöð</a>
+                                    <a class="dropdown-item" href="/instructions">Notkunarleiðbeiningar</a>
+                                    <a class="dropdown-item" href="/contact">Hafa samband </a>
+                                </div>
                             </div>
-                        </div> 
-                    </div>
-                </NotAuthorized>
-            </AuthorizeView>
-            <AuthorizeView>
-                    
-                    <a class="heading" href="/"><h2 class="heading">Skráargáttin</h2> </a>
+                        </div>
+                    </Authorized>
+                    <NotAuthorized>
+                        <div class="dropdown">
+                            <button class="btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="fas fa-bars fa-lg"></span>
+
+                            </button>
+                            <div class="first-dropdown-wrapper">
+                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a class="dropdown-item" href="/">Upphafssíða</a>
+                                    <a class="dropdown-item" href="/contact">Hafa samband</a>
+                                    <a class="dropdown-item" href="https://www.skra.is">Skra.is</a>
+                                </div>
+                            </div>
+                        </div>
+                    </NotAuthorized>
+                </AuthorizeView>
+                <AuthorizeView>
+                    <a class="header" href="/"> <img src="Images/SkraLogo.png" class="LogoImg" alt="Skráargáttin" height="auto" width="300">  </a>
                     <div class="dropdown">
                         <button class="btn" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="oi oi-person"></span>
@@ -54,11 +53,11 @@
                             </div>
                         </div>
                     </div>
-            </AuthorizeView>
+                </AuthorizeView>
             </div>
         </nav>
-    
-        
+
+
         <div class="content px-4 container">
             <div class="body">
                 @Body
