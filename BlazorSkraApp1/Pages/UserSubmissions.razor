@@ -1,4 +1,4 @@
-@page "/Submissions/{username}"
+@page "/Submissions"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject IAdminService adminservice
@@ -20,16 +20,16 @@ else
     <AuthorizeView>
         <div class="container">
             <h2>Innsend eyðublöð</h2>
-            <table class="table table-hover table-striped">
-                <thead class="thead-dark">
+            <table class="table table-striped table-md">
+                <thead id="user-thead">
                     <tr>
-                        <th>Nafn eyðublaðs</th>
-                        <th>Notandi</th>
-                        <th style="width: 1%">Innsent</th>
-                        <th>PDF</th>
+                        <th class="text-uppercase">Nafn eyðublaðs</th>
+                        <th class="text-uppercase">Notandi</th>
+                        <th class="text-uppercase">Innsent</th>
+                        <th class="text-uppercase">PDF</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="tableBody">
                 @foreach(var submission in submissionList)
                 {
                     if((GetForUser(submission, @context.User.Identity.Name)) == true)
@@ -37,8 +37,8 @@ else
                         <tr>
                             <td>@submission.Form.FormName</td>
                             <td>@submission.Submission.UserId</td>
-                            <td>@submission.Submission.SubmissionDate</td>
-                            <td><button @onclick="@((eventArgs) => GeneratePDFFile(submission.Form.FormId, submission.SubmissionId, submission.Submission.UserId))">Sækja</button></td>
+                            <td>@submission.Submission.SubmissionDate.ToShortDateString()</td>
+                            <td><button class="btn approve-btn" @onclick="@((eventArgs) => GeneratePDFFile(submission.Form.FormId, submission.SubmissionId, submission.Submission.UserId))">Sækja</button></td>
                         </tr>
                     }
                 }
@@ -49,8 +49,6 @@ else
 }
 
 @code{
-    [Parameter]
-    public string username {get; set;}
     List<Submissions> alreadyPosted = new List<Submissions>();
     List<Submissions> submissionList;
     protected override async Task OnInitializedAsync()
@@ -84,5 +82,6 @@ else
     public void GeneratePDFFile(int FormId, int submissionId, string userEmail)
     {
         mailservice.PDFBuilder(FormId, submissionId, userEmail, false, jsRuntime);
+        alreadyPosted = new List<Submissions>();
     }
 }

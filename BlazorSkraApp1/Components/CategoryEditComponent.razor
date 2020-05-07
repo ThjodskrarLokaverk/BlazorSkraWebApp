@@ -3,6 +3,8 @@
 @using BlazorSkraApp1.Services
 @using Serilog
 @inject ICategoriesService service
+@inject ICategoriesAssignmentsService caservice
+@inject IFormsInfoService fiservice
 @inject IJSRuntime jsRuntime
 
 <AuthorizeView Roles="Admin" Context="authContext">
@@ -38,7 +40,7 @@
     <!-- Delete Category popup -->
     <ConfirmationModalComponent OnClick="DeleteCategoryHandler">
         <CustomHeader>Eyða flokk</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir eyða flokknum @(selectedCategory.CategoryName)?</CustomBody>
+        <CustomBody>Ertu viss um að þú viljir eyða flokknum @(selectedCategory.CategoryName) og öllum tilkynningum sem tilheyra honum?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
     </ConfirmationModalComponent>
 </AuthorizeView>
@@ -101,7 +103,17 @@
     {
         try
         {
+            //List that holds id's of all forms that are about to be deleted
+            var categoriesAssignmentsList = await caservice.Get(selectedCategory.CategoryId);
+
+            //Delete the forms
+            foreach(var form in categoriesAssignmentsList)
+            {
+                await fiservice.Delete(form.FormId);
+            }
+
             await service.Delete(selectedCategory.CategoryId);
+
             //Update data in parent component
             await OnDelete.InvokeAsync(selectedCategory);
             Log.Information($"Flokknum '{selectedCategory.CategoryName}' var eytt af {currentUser} ");

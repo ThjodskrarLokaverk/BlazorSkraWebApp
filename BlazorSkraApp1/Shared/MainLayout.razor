@@ -30,7 +30,6 @@
                             <div class="first-dropdown-wrapper">
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a class="dropdown-item" href="/">Upphafssíða</a>
-                                    <a style="padding-right:20px" class="dropdown-item" href="/instructions">Notendahandbók</a>
                                     <a class="dropdown-item" href="/contact">Hafa samband</a>
                                     <a class="dropdown-item" href="https://www.skra.is">Skra.is</a>
                                 </div>
@@ -46,8 +45,8 @@
                         </button>
                         <div class="second-dropdown-wrapper">
                             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                                <span class=dropdown-item id="username">@context.User.Identity.Name</span>
-                                <a class="dropdown-item" href="/Submissions/@context.User.Identity.Name">Innsend eyðublöð</a>
+                            <span class=dropdown-item id="username">@context.User.Identity.Name</span>
+                                <a class="dropdown-item" href="/Submissions">Innsend eyðublöð</a>
                                 <form class="logOut" method="post" action="Identity/Account/LogOut">
                                     <button type="submit" class="dropdown-item">Skrá út</button>
                                 </form>

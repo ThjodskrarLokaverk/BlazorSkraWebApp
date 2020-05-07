@@ -3,7 +3,6 @@
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
 @using System
-@using BlazorSkraApp1.Shared.Components
 @using BlazorSkraApp1.Components
 @using Microsoft.AspNetCore.Identity;
 @inject IQuestionsFormAssignmentService questionservice
@@ -15,6 +14,7 @@
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice
 @inject IAdminService adminService
+@inject IFormsInfoService formService
 
 @if (questionsList == null)
 {
@@ -29,12 +29,13 @@ else
     <div class="container @faded sub-container">
         <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
+            <h3 class="notification-list-heading" style="color:black"> @form.FormName</h3>
             @foreach (var question in questionsList)
             {
                 <div class="container">
                     <div class="card">
                         <div class="card-body form-check">
-                            <h5 class="card-title">@question.Questions.QuestionName</h5>
+                            <h5 class="question-title">@(question.QuestionOrderNum+1). @question.Questions.QuestionName</h5>
                             @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
                             {
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
@@ -83,15 +84,18 @@ else
                     </div>
                 </div>
             }
-            <div class="container">
-                <div class="card sub-margin">
-                    <div class="card-body form-check">
-                        <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                        <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                <div class="container">
+                    <div class="card sub-margin">
+                        @if(hasAnonymousOption)
+                        {
+                            <div class="card-body form-check">
+                                <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                            </div>
+                        }
                     </div>
+                    <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
                 </div>
-                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
-            </div>
         </EditForm>
     </div>
     <br>
@@ -111,7 +115,7 @@ else
                     <p>Eyðublaðinu hefur verið komið til skila.</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
@@ -130,7 +134,7 @@ else
                     <p>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
@@ -148,6 +152,7 @@ else
 
     //References whether a submission is anonymous or not
     public bool anonymous { get; set; }
+    private bool hasAnonymousOption;
 
     //Listar til þess að birta tilkynningu
     List<QuestionsFormAssignments> questionsList;
@@ -166,6 +171,8 @@ else
     string faded = "";
 
     bool _subFail = false;
+
+    FormsInfo form = new FormsInfo();
 
     protected override async Task OnInitializedAsync()
     {
@@ -209,6 +216,14 @@ else
         for (int i = 0; i < submissionInput.Date.Length; i++)
         {
             submissionInput.Date[i] = new RequiredDate();
+        }
+        try{
+           form = await formService.Get(System.Convert.ToInt32(id));
+           hasAnonymousOption = form.IsAnonymous;
+        }
+        catch(Exception)
+        {
+            //pass
         }
     }
 

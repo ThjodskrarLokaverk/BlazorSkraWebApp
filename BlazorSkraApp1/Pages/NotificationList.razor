@@ -23,6 +23,10 @@ else
         <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
     </div>
     <div class="container">
+        @if (categoriesAssignmentsList.Any())
+        {
+            <h3 class="notification-list-heading"> @category.CategoryName</h3>
+        }
         <AuthorizeView Roles="Admin">
         <div class="container">
         <button onclick="window.location.href='/FC/@category.CategoryId'" class="btn btn-success add-type">
@@ -31,11 +35,6 @@ else
         </button>
         </div>
         </AuthorizeView>
-
-        @if (categoriesAssignmentsList.Any())
-        {
-            <h3 class="notification-list-heading"> Flokkur: @category.CategoryName</h3>
-        }
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
             {       
@@ -54,7 +53,7 @@ else
                 <div class="card card-list">
                     <img src="Images/form.svg" class="card-img-top" alt="notification form">
                     <div class="card-body body-list">
-                        <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                        <h5 class="card-title title-list truncate">@categoryAssignment.FormsInfo.FormName</h5>
                         <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                     </div>
                 
@@ -117,8 +116,6 @@ else
     {
         selectedCategoryAssignment = categoryassignment;
     }
-
-
 
     protected async void DeleteNotificationHandler()
     {
