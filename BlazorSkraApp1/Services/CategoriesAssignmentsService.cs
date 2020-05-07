@@ -65,7 +65,9 @@ namespace BlazorSkraApp1.Services
 
         public async Task<CategoriesAssignments> Update(CategoriesAssignments editedCategoryAssignment)
         {
-            var categoryAssignment = await _context.CategoriesAssignments.FindAsync(editedCategoryAssignment.FormId);
+            var categoryAssignment = await _context.CategoriesAssignments
+                .Where(ca => ca.FormId == editedCategoryAssignment.FormId)
+                .FirstOrDefaultAsync();
             categoryAssignment.CategoryId = editedCategoryAssignment.CategoryId;
             categoryAssignment.FormId = editedCategoryAssignment.FormId;
             _context.Entry(categoryAssignment).State = EntityState.Modified;

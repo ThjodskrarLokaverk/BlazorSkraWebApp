@@ -125,17 +125,11 @@
         formsCategoryAssignment.CategoryId = editedForm.CategoryId;
         formsCategoryAssignment = await formsCategoryAssignmentsService.Update(formsCategoryAssignment);
 
-        //Remove OptionsQuestionAssignment
-        //await optionsQuestionAssignmentsService.Add(optionQuestionAssignment);
+        //Delete old OptionsQuestionAssignment and Options
+        await optionsQuestionAssignmentsService.DeleteAll(formInfo.FormId);
 
-        //Remove options
-        //await optionsService.Remove(option);
-
-        //Remove QuestionsFormAssignment
-        //await questionsFormAssignmentsService.Add(questionFormAssignment);
-
-        //remove questions
-        //await questionsService.Add(question);
+        //Delete old QuestionsFormAssignment and Questions
+        await questionsFormAssignmentsService.DeleteAll(formInfo.FormId);
 
         //Add questions to Db
         List<Questions> questionsList = new List<Questions>();
