@@ -3,7 +3,6 @@
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
 @using System
-@using BlazorSkraApp1.Shared.Components
 @using BlazorSkraApp1.Components
 @using Microsoft.AspNetCore.Identity;
 @inject IQuestionsFormAssignmentService questionservice
@@ -111,7 +110,7 @@ else
                     <p>Eyðublaðinu hefur verið komið til skila.</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
@@ -130,7 +129,7 @@ else
                     <p>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>

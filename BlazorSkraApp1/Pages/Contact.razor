@@ -19,7 +19,7 @@
             <label for="To">Skilaboð:</label>
             <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
         </div>
-        <button type="submit" class="btn btn-primary">Senda skilaboð</button>
+        <button type="submit" class="btn approve-btn">Senda skilaboð</button>
         <DataAnnotationsValidator />
     </EditForm>
 </div>
@@ -30,13 +30,13 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> Staðfesting</h5>
+                    <h5 class="modal-title">Staðfesting</h5>
                 </div>
                 <div class="modal-body">
                     <p>Skilaboðum hefur verið komið áleiðis</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
@@ -55,7 +55,7 @@
                     <p>Eitthvað fór úrskeiðis, vinsamlegast reyndur aftur.</p>
                 </div>
                 <div class="modal-footer">
-                    <a type="button" class="btn btn-primary" href="/">Aftur á upphafssíðu</a>
+                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
                 </div>
             </div>
         </div>
