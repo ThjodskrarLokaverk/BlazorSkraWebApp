@@ -81,6 +81,7 @@
         createdForm.CategoryName = category.CategoryName;
         createdForm.FormName = formInputModel.FormName;
         createdForm.DestinationEmail = formInputModel.DestinationEmail;
+        createdForm.IsAnonymous = formInputModel.IsAnonymous;
 
         //Vista questions
         foreach (var question in formInputModel.Questions)
@@ -114,6 +115,7 @@
         FormsInfo formInfo = new FormsInfo();
         formInfo.FormName = createdForm.FormName;
         formInfo.DestinationEmail = createdForm.DestinationEmail;
+        formInfo.IsAnonymous = createdForm.IsAnonymous;
         formInfo = await formsInfoService.Add(formInfo);
 
         //Add FormsCategoryAssignments (CategoriesAssignments) to Db

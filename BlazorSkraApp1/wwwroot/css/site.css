@@ -227,7 +227,42 @@ html, body {
     border-color: var(--three);
     border-radius: 25px; 
     position: relative; 
+}
 
+#radio-create {
+    margin-top: 8px;
+    margin-left: -15px;
+}
+
+.question-create-card {
+    margin-top: 5px;
+}
+
+.trash-create {
+    color: var(--four);
+    border-radius: 10px;
+}
+
+.trash-create:hover {
+    color: var(--three);
+}
+
+.add-option {
+    margin-left: 10px;
+}
+
+.creation-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-question {
+
+}
+
+.new-form {
+    float: right;
 }
 
 .edit-icon {
@@ -266,41 +301,6 @@ html, body {
 
 #question-box {
     height: 110px;
-}
-
-#question-name {
-    width: 60%;
-    margin: 15px;
-}
-
-#question-type {
-    width: 25%;
-    margin: 15px;
-}
-
-#question-name-validation {
-    width: 60%;
-    margin-left: 15px;
-    margin-right: 15px;
-    margin-top: -15px;
-}
-
-#question-type-validation {
-    width: 25%;
-    margin-left: 15px;
-    margin-top: -15px;
-}
-
-#save-icon {
-    float: right;
-    font-size: 25px;
-    margin: 10px;
-    color: #5e636b;
-    border: solid;
-}
-
-#save-icon:hover {
-    color: var(--five);
 }
 
 #plus-icon {
@@ -748,6 +748,19 @@ app {
     padding-bottom: 100px;
     position: relative;
     margin: 0;
+}
+
+#create-anonymous {
+    margin: 0;
+    margin-right: -400px;
+    position: relative;
+    float: right;
+    top: -40px;
+}
+
+#anon-label {
+    display: block;
+    margin-left: 430px;
 }
 
 /* Contact/Hafðu samband */

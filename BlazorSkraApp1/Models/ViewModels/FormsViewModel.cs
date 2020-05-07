@@ -12,6 +12,7 @@ namespace BlazorSkraApp1.Models.ViewModels
         public string DestinationEmail { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public bool IsAnonymous { get; set; }
 
         public List<QuestionsViewModel> Questions { get; set; }
     }

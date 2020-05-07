@@ -29,7 +29,7 @@ else
     <div class="container @faded sub-container">
         <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
-            <h3 class="notification-list-heading" style="color:black"> @notificationName.FormName</h3>
+            <h3 class="notification-list-heading" style="color:black"> @form.FormName</h3>
             @foreach (var question in questionsList)
             {
                 <div class="container">
@@ -84,15 +84,18 @@ else
                     </div>
                 </div>
             }
-            <div class="container">
-                <div class="card sub-margin">
-                    <div class="card-body form-check">
-                        <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                        <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                <div class="container">
+                    <div class="card sub-margin">
+                        @if(hasAnonymousOption)
+                        {
+                            <div class="card-body form-check">
+                                <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                            </div>
+                        }
                     </div>
+                    <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
                 </div>
-                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
-            </div>
         </EditForm>
     </div>
     <br>
@@ -149,6 +152,7 @@ else
 
     //References whether a submission is anonymous or not
     public bool anonymous { get; set; }
+    private bool hasAnonymousOption;
 
     //Listar til þess að birta tilkynningu
     List<QuestionsFormAssignments> questionsList;
@@ -168,7 +172,7 @@ else
 
     bool _subFail = false;
 
-    FormsInfo notificationName = new FormsInfo();
+    FormsInfo form = new FormsInfo();
 
     protected override async Task OnInitializedAsync()
     {
@@ -214,7 +218,8 @@ else
             submissionInput.Date[i] = new RequiredDate();
         }
         try{
-           notificationName= await formService.Get(System.Convert.ToInt32(id)); 
+           form = await formService.Get(System.Convert.ToInt32(id));
+           hasAnonymousOption = form.IsAnonymous;
         }
         catch(Exception)
         {
