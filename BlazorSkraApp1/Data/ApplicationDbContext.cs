@@ -15,16 +15,7 @@ namespace BlazorSkraApp1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
-            //Create the Composite key for the Forms table
-            modelBuilder.Entity<Forms>()
-                    .HasOne<FormsInfo>(fi => fi.Form)
-                    .WithMany()
-                    .HasForeignKey(fi => fi.FormId);
-
-            modelBuilder.Entity<Forms>()
-                .HasKey(f => new { f.QuestionOrderNum, f.OptionOrderNum, f.FormId});
+            base.OnModelCreating(modelBuilder);     
 
             //Create the Composite key for the Submissions table
             modelBuilder.Entity<Submissions>()
@@ -88,7 +79,6 @@ namespace BlazorSkraApp1.Data
         public DbSet<QuestionTypes> QuestionTypes { get; set; }
         public DbSet<Questions> Questions { get; set; }
         public DbSet<FormsInfo> FormsInfo { get; set; }
-        public DbSet<Forms> Forms { get; set; }
         public DbSet<SubmissionsInfo> SubmissionsInfo { get; set; }
         public DbSet<Submissions> Submissions { get; set; }
         public DbSet<Categories> Categories { get; set; }
