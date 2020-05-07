@@ -11,11 +11,6 @@ namespace BlazorSkraApp1.Services
     public interface IFormsService
     {
         Task<FormsViewModel> Get(int FormId);
-        //Task<List<Forms>> Get();
-        //Task<Questions> GetQuestionsList(int FormId);
-        //Task<CategoriesAssignments> Add(CategoriesAssignments CategoriesAssignment);
-        //Task<CategoriesAssignments> Update(CategoriesAssignments CategoriesAssignment);
-        //Task<CategoriesAssignments> Delete(int id);
     }
 
     public class FormsService : IFormsService
@@ -26,15 +21,6 @@ namespace BlazorSkraApp1.Services
         {
             _context = context;
         }
-
-        //public async Task<List<Forms>> Get()
-        //{
-        //    return await _context.Forms
-        //        .Include(f => f.FormId)
-        //        .Include(q => q.Questions)
-        //        .Include(o => o.Options)
-        //        .ToListAsync();
-        //}
 
         public async Task<FormsViewModel> Get(int FormId)
         {
@@ -83,7 +69,6 @@ namespace BlazorSkraApp1.Services
             }
 
             return form;
-
         }
     }
 }

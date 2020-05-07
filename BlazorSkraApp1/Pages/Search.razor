@@ -12,7 +12,7 @@
     {
         <div class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
+                <span class="sr-only">Augnablik...</span>
             </div>
         </div>
     }
@@ -23,7 +23,7 @@ else{
     </div>
 
     <div class="search-wrapper container">
-        <h5 class="table-heading"> Flokkar </h5>
+        <h5 class="table-heading">Flokkar </h5>
         <ul class="list-group search-list">
         
         @foreach (var category in categoriesList)
@@ -31,7 +31,7 @@ else{
             <a href="/NotificationList/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
         }
         </ul>
-        <h5 class="table-heading"> Tilkynningar</h5>
+        <h5 class="table-heading">Eyðublöð</h5>
         <ul class="list-group search-list">
         
         @foreach (var notification in notificationList)

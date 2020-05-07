@@ -1,4 +1,5 @@
 @page "/FC"
+@page "/FC/{selectedCategoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -51,9 +52,28 @@
 </AuthorizeView>
 
 @code {
+    [Parameter]
+    public string selectedCategoryId{ get; set; }
+
+    Categories currentCategory = new Categories();
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
+
+    //protected override async Task OnInitializedAsync()
+    //{
+        //to bind category if sent by route
+        //try{
+        //    currentCategory = await categoriesService.Get(System.Convert.ToInt32(selectedCategoryId));
+        //    formInputModel.CategoryId = selectedCategoryId; 
+        //}
+        //catch(Exception)
+        //{
+        //    currentCategory = null;
+        //    //catch if parameter sent by route is not convertable to int
+        //}
+    
+    //}
 
     private void EditForm()
     {
