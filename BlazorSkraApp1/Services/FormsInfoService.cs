@@ -12,7 +12,7 @@ namespace BlazorSkraApp1.Services
     {
         Task<FormsInfo> Add(FormsInfo formInfo);
         Task<FormsInfo> Delete(int formId);
-        Task<FormsInfo> Update(int formId);
+        Task<FormsInfo> Update(FormsInfo forminfo);
         Task<FormsInfo> Get(int formId);
         Task<List<FormsInfo>> GetSearch(string SearchString);
         Task<FormsInfo> GetEmail(string DestinationEmail);
@@ -45,9 +45,11 @@ namespace BlazorSkraApp1.Services
         }
 
         // Updates the specified form
-        public async Task<FormsInfo> Update(int formId)
+        public async Task<FormsInfo> Update(FormsInfo editedForm)
         {
-            var form = await _context.FormsInfo.FindAsync(formId);
+            var form = await _context.FormsInfo.FindAsync(editedForm.FormId);
+            form.FormName = editedForm.FormName;
+            form.DestinationEmail = editedForm.DestinationEmail;
             _context.Entry(form).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return form;

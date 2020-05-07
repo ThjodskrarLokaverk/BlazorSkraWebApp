@@ -191,9 +191,9 @@
         adminUsersList.Remove(user);
     }
 
-    private void SearchOnKeyUp(KeyboardEventArgs eventArgs)
+    private async void  SearchOnKeyUp(KeyboardEventArgs eventArgs)
     {
-        SearchUsers();
+        await SearchUsers();
     }
 
     async Task SearchUsers()
