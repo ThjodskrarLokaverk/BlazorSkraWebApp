@@ -21,7 +21,7 @@
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Augnablik...</span>
         </div>
     </div>
 }
@@ -79,7 +79,7 @@ else
                             }
                             else
                             {
-                                <h5>Something went wrong...</h5>
+                                <h5>Eitthvað fór úrskeiðis...</h5>
                             }
                         </div>
                     </div>
@@ -89,10 +89,10 @@ else
                 <div class="card sub-margin">
                     <div class="card-body form-check">
                         <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                        <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda tilkynninguna nafnlaust</label><br>
+                        <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
                     </div>
                 </div>
-                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn tilkynningu</button>
+                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
             </div>
         </EditForm>
     </div>
@@ -110,7 +110,7 @@ else
                     <h5 class="modal-title"> Staðfesting</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Tilkynningin er skráð og verður komið til skila.</p>
+                    <p>Eyðublaðinu hefur verið komið til skila.</p>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
@@ -129,7 +129,7 @@ else
                     <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Tilkynningin komst ekki til skila, vinsamlegast reyndur aftur.</p>
+                    <p>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</p>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-primary modal-button" href="/">Aftur á upphafssíðu</a>
@@ -245,7 +245,7 @@ else
         try
         {
             //Create a submission in the database
-            submissionsInfo.UserId = currentUser.Id;
+            submissionsInfo.UserId = currentUser.UserName;
             submissionsInfo.SubmissionDate = DateTime.UtcNow;  //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
             submissionsInfo = await subinfoservice.Add(submissionsInfo);
 

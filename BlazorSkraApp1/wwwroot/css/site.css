@@ -2,15 +2,10 @@
 
 :root{
     --one: #c5d8d1;
-
     --two: #005e7c;
-
     --three: #102542;
-    
-    --four: #d33f49;
-    
+    --four: #d33f49;    
     --five: #6D9F71;
-   
 }
 
 html, body {
@@ -85,7 +80,7 @@ html, body {
     font-family: arial black;
     color: var(--three);
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .mediationIMG{
@@ -120,21 +115,6 @@ html, body {
     margin-top:50px;
 
 
-}
-
-/* Edit Notification */
-
-#NewFormName {
-    width: 50%;
-}
-
-.edit-notification {
-    float: left;
-    margin-top:20px;
-}
-
-#a-tag {
-    color: #5e636b;
 }
 
 /* Navigation bar */
@@ -271,15 +251,6 @@ html, body {
 
 .textbox {
     width: 90%;
-}
-
-.question-wrapper {
-    border: solid 1px;
-    border-radius: 0.1cm;
-    border-color: #ccd4dc;
-    margin-left: 0;
-    background-color: white;
-    margin-right: -1px;
 }
 
 .option-wrapper {
@@ -505,18 +476,20 @@ html, body {
 
 .table-striped {
     border: solid 2px;
-    border-color: #5e636b;
+    border-color: var(--three);
  }
 
  .tableBody{
-     background-color: white;
+     background-color: var(--one);
  }
 
 .table-striped > tbody > tr > td {
-    border-top: solid 0.5px;
-    border-bottom: solid 0.5px;
-    border-color: var(--five);
+    border-color: var(--three);
     vertical-align: middle;
+}
+
+.table-striped > tbody > tr:hover {
+    background-color: #afc5bd;
 }
 
 .table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
@@ -524,11 +497,11 @@ html, body {
 }
 
 #user-thead {
-    background-color: #5e636b;
+    background-color: var(--two);
 }
 
 #user-thead > tr > th {
-    border-color: #5e636b;
+    border-color: var(--three);
     color: white;
 }
 
@@ -600,10 +573,7 @@ html, body {
 
 .search-button{
     color: black;
-}
-
-.searchUsers{
-    margin-bottom: 1rem;
+    cursor: pointer;
 }
 
 .up-down{
@@ -617,18 +587,13 @@ html, body {
     color: white;
 }
 
-.approve-btn:hover {
-    background-color: var(--five);
-    color: white;
-}
-
 .cancel-btn {
-    background-color: #5e636b;
+    background-color: var(--two);
     color: white;
 }
 
-.cancel-btn:hover {
-    background-color: #494d53;
+.delete-btn {
+    background-color: var(--four);
     color: white;
 }
 
@@ -800,9 +765,6 @@ ul{
       padding-bottom:30px;
 }
 
-.fa-search{
-    background-color: var(--five);
-}
 
 .index-search{
     display: flex;
@@ -814,7 +776,8 @@ ul{
     margin-left: 25%;
     margin-bottom: 30px;
     background-color:var(--five);
-    border: 1px solid var(--five)
+    border-radius: 4px;
+    border: 1px solid var(--five);
 }
 
 .user{
