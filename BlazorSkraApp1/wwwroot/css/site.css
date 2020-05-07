@@ -1,16 +1,17 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css'); 
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-:root{
-    --one: #c5d8d1;
+:root {
+    --one: #e6f9ff; /*#c5d8d1*/
     --two: #005e7c;
     --three: #102542;
-    --four: #d33f49;    
+    --four: #d33f49;
     --five: #6D9F71;
 }
 
 html, body {
     font-family: 'Source Sans Pro', Arial, sans-serif;
     background-color: var(--two);
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
     height: 100%;
 }
 
@@ -124,7 +125,8 @@ html, body {
 
 /* Navigation bar */
 .navbar {
-    background-color: var(--one);
+    background: rgba(0,0,0,0);
+    /*background-color: var(--one);*/
     border-bottom: 1px solid white;
     height: 80px;
 }
