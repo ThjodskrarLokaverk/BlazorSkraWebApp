@@ -1,5 +1,5 @@
 @page "/FC"
-@page "/FC/{categoryId}"
+@page "/FC/{selectedCategoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -10,259 +10,70 @@
 @inject ICategoriesService categoriesService
 @inject IQuestionTypesService questionTypesService
 @inject IFormsInfoService formsInfoService
-
 @inject ICategoriesAssignmentsService formsCategoryAssignmentsService
-
 @inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
 @inject IQuestionsFormAssignmentService questionsFormAssignmentsService
 @inject IQuestionsService questionsService
 @inject IOptionsService optionsService
-<!-- Create form -->
-@if (formInputModel == null && formInputModel.Questions == null)
-{
-    <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    </div>
-}
-else
-{
+
+<AuthorizeView Roles="Admin" Context="AuthContext">
     @if (!formCreated)
     {
-        <EditForm EditContext="editContext" OnSubmit="CreateForm">
-            <ObjectGraphDataAnnotationsValidator />
-            <!-- FormInfo input fields -->
-            <div class="card">
-                <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Nafn eyðublaðs</label>
-                        <div class="col-sm-10">
-                            <InputText id="name" class="form-control" @bind-Value="@formInputModel.FormName" />
-                            <ValidationMessage For="@(() => formInputModel.FormName)" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
-                        <div class="col-sm-10">
-                            <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
-                            
-                            @if(string.IsNullOrEmpty(categoryId) || currentCategory == null )
-                            // if there is no og illegal parameter sent by route
-                            {                              
-                                <option value=""> Veldu Flokk </option>
-                                
-                                @if (categoriesList == null)
-                                {
-                                     <option>Augnablik...</option>
-                                }
-                                else{
-                                    foreach (var category in categoriesList)
-                                        {                                      
-                                            <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
-                                        }
-                                    }
-                                       
-                            }
-                            else
-                            // if legal categoryId is sent by route it's automatically picked as first pick
-                            {                                 
-                                <option value="@System.Convert.ToString(categoryId)">@currentCategory.CategoryName</option>
-                                @if (categoriesList == null)
-                                {
-                                    <option>Augnablik...</option>
-                                }
-                                else
-                                {
-                                    @if (@currentCategory != null)
-                                    {
-                                        foreach (var category in categoriesList)
-                                        {                                           
-                                            if (category.CategoryId != @currentCategory.CategoryId)
-                                            {
-                                                <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>   
-                                            }     
-                                        }
-                                    }
-                                }
-                            }
-                            </InputSelect>
-                            <ValidationMessage For="@(() => formInputModel.CategoryId)" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Tölvupóstfang</label>
-                        <div class="col-sm-10">
-                            <InputText id="email" class="form-control" @bind-Value="@formInputModel.DestinationEmail" />
-                            <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Questions input fields -->
-            @foreach (var question in formInputModel.Questions)
-            {
-                <div class="card">
-                    <div class="card-header">
-                        <button @onclick="(() => RemoveQuestion(question))" type="button" class="btn btn-secondary">Fjarlægja spurningu</button>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group row">
-                            <InputText placeholder="Titill spurningar" type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
-                            <ValidationMessage For="@(() => question.QuestionName)" />
-                        </div>
-                        <div class="form-group row">
-                            <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
-                                <option value="">Veldu tegund</option>
-                                @if (questionTypesList == null)
-                                            {
-                                    <option>Augnablik...</option>
-                                            }
-                                            else
-                                            {
-                                                foreach (var type in questionTypesList)
-                                                {
-                                        <option value="@System.Convert.ToString(type.QuestionTypeId)">@type.QuestionTypeName</option>
-                                                }
-                                            }
-                            </InputSelect>
-                            <ValidationMessage For="@(() => question.QuestionTypeId)" />
-                        </div>
-                        <hr>
-                        <!-- Options input fields -->
-                        @if (question.QuestionTypeId == "4" || question.QuestionTypeId == "5")
-                        {
-                            @foreach (var option in question.Options)
-                            {
-                                <div class="form-group row">
-                                    <input type="radio" disabled>
-                                    <div class="col-sm-4">
-                                        <InputText id="optionName" class="form-control" placeholder="Valkostur" @bind-Value="@option.OptionName" />
-                                        <ValidationMessage For="@(() => option.OptionName)" />
-                                        @if (question.Options.Count() > 2)
-                                        {
-                                            <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-secondary">Fjarlægja</button>
-                                        }
-                                    </div>
-                                </div>
-                            }
-                            <div class="form-group row">
-                                <button @onclick="(() => AddOption(question))" type="button" class="btn btn-secondary">Bæta við valmöguleika</button>
-                            </div>
-                        }
-                    </div>
-                </div>
-            }
-            <button @onclick="(() => AddQuestion())" type="button" class="btn btn-secondary">Bæta við spurningu</button>
-            <button type="submit" class="btn approve-btn">Búa til eyðublað</button>
-        </EditForm>
+        <!-- Create form -->
+        <FormEditComponent OnEdit="CreateFormHandler">
+            <CustomButtonText>Búa til eyðublað</CustomButtonText>
+        </FormEditComponent>
     }
-}
 
+    @if (formCreated && !formPublished)
+    {
+        <!-- Display the created Form -->
+        <FormViewComponent Form="@createdForm"></FormViewComponent>
+        <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
+        <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
-<!-- Display the created Form -->
-@if (formCreated && !formPublished)
-{
-    <FormViewComponent Form="@createdForm"></FormViewComponent>
-    <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
-    <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublað</button>
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða</button>
+        <!-- Delete created form popup -->
+        <ConfirmationModalComponent OnClick="DeleteFormHandler">
+            <CustomHeader>Eyða eyðublaði</CustomHeader>
+            <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+            <CustomButtonText>Eyða</CustomButtonText>
+        </ConfirmationModalComponent>
+    }
 
-    <!-- Delete created form popup -->
-    <ConfirmationModalComponent OnClick="DeleteFormHandler">
-        <CustomHeader>Eyða eyðublaði</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu?</CustomBody>
-        <CustomButtonText>Eyða</CustomButtonText>
-    </ConfirmationModalComponent>
-}
-
-@if (formPublished)
-{
-    <div class="d-flex justify-content-center">
-        <h2>Eyðublað hefur verið birt</h2>
-    </div>
-    <br />
-    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
-}
+    @if (formPublished)
+    {
+        <div class="d-flex justify-content-center">
+            <h2>Eyðublað hefur verið birt</h2>
+        </div>
+        <br />
+        <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
+    }
+</AuthorizeView>
 
 @code {
-    //For forms
-    private FormsInputModel formInputModel;
-    private EditContext editContext;
-    List<Categories> categoriesList;
-    List<QuestionTypes> questionTypesList;
-    
     [Parameter]
-    //searchstring is sent by route from index page.
-    public string categoryId{ get; set; }
+    public string selectedCategoryId{ get; set; }
 
     Categories currentCategory = new Categories();
-
-    //For form display/creation
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
 
-    protected override async Task OnInitializedAsync()
-    {
-        //Initialize InputModels
-        formInputModel = new FormsInputModel();
-
-        formInputModel.Questions = new List<QuestionsInputModel>();
-        editContext = new EditContext(formInputModel);
-
-        //Dropdown lists
-        categoriesList = await categoriesService.Get();
-        questionTypesList = await questionTypesService.Get();
-
+    //protected override async Task OnInitializedAsync()
+    //{
         //to bind category if sent by route
-        try{
-            currentCategory = await categoriesService.Get(System.Convert.ToInt32(categoryId));
-            formInputModel.CategoryId = categoryId; 
-        }
-        catch(Exception)
-        {
-            currentCategory = null;
-            //catch if parameter sent by route is not convertable to int
-        }
+        //try{
+        //    currentCategory = await categoriesService.Get(System.Convert.ToInt32(selectedCategoryId));
+        //    formInputModel.CategoryId = selectedCategoryId; 
+        //}
+        //catch(Exception)
+        //{
+        //    currentCategory = null;
+        //    //catch if parameter sent by route is not convertable to int
+        //}
     
-    }
-
-
-    private void AddQuestion()
-    {
-        var question = new QuestionsInputModel();
-        question.Options = new List<OptionsInputModel>();
-        question.Options.Add(new OptionsInputModel());
-        question.Options.Add(new OptionsInputModel());
-        formInputModel.Questions.Add(question);
-        StateHasChanged();
-    }
-
-    private void RemoveQuestion(QuestionsInputModel question)
-    {
-
-        formInputModel.Questions.Remove(question);
-        editContext = new EditContext(formInputModel);
-        StateHasChanged();
-    }
-
-    private void AddOption(QuestionsInputModel question)
-    {
-
-        var newOption = new OptionsInputModel();
-        question.Options.Add(newOption);
-        StateHasChanged();
-    }
-
-    private void RemoveOption(QuestionsInputModel question, OptionsInputModel option)
-    {
-
-        question.Options.Remove(option);
-        //var equal = editContext.Model.Equals(questionInputModel);
-        editContext = new EditContext(formInputModel);
-        StateHasChanged();
-    }
+    //}
 
     private void EditForm()
     {
@@ -274,58 +85,45 @@ else
         NavigationManager.NavigateTo("/", true);
     }
 
-    //Create form for display
-    private async void CreateForm()
+    private async void CreateFormHandler(FormsInputModel formInputModel)
     {
-        //Remove unnecessary options
+        createdForm = new FormsViewModel();
+        createdForm.Questions = new List<QuestionsViewModel>();
+
+        //Vista formInfo
+        createdForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
+        var category = await categoriesService.Get(createdForm.CategoryId);
+        createdForm.CategoryName = category.CategoryName;
+        createdForm.FormName = formInputModel.FormName;
+        createdForm.DestinationEmail = formInputModel.DestinationEmail;
+
+        //Vista questions
         foreach (var question in formInputModel.Questions)
         {
-            if (question.QuestionTypeId != "4" && question.QuestionTypeId != "5")
+            var createdQuestion = new QuestionsViewModel();
+            createdQuestion.Options = new List<OptionsViewModel>();
+            createdQuestion.QuestionName = question.QuestionName;
+            createdQuestion.QuestionTypeId = Int16.Parse(question.QuestionTypeId);
+            createdQuestion.QuestionOrderNum = createdForm.Questions.Count();
+            createdQuestion.QuestionTypeOrderNum = createdForm.Questions.Count(o => o.QuestionTypeId == createdQuestion.QuestionTypeId);
+            //Vista options fyrir hverja question
+            foreach (var option in question.Options)
             {
-                question.Options = new List<OptionsInputModel>();
+                var createdOption = new OptionsViewModel();
+                createdOption.OptionName = option.OptionName;
+                createdOption.OptionOrderNum = createdQuestion.Options.Count();
+                createdQuestion.Options.Add(createdOption);
             }
+            createdForm.Questions.Add(createdQuestion);
         }
 
-        if (editContext.Validate())
-        {
-            createdForm = new FormsViewModel();
-            createdForm.Questions = new List<QuestionsViewModel>();
-
-            //Vista formInfo
-            createdForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
-            var category = await categoriesService.Get(createdForm.CategoryId);
-            createdForm.CategoryName = category.CategoryName;
-            createdForm.FormName = formInputModel.FormName;
-            createdForm.DestinationEmail = formInputModel.DestinationEmail;
-
-            //Vista questions
-            foreach (var question in formInputModel.Questions)
-            {
-                var createdQuestion = new QuestionsViewModel();
-                createdQuestion.Options = new List<OptionsViewModel>();
-                createdQuestion.QuestionName = question.QuestionName;
-                createdQuestion.QuestionTypeId = Int16.Parse(question.QuestionTypeId);
-                createdQuestion.QuestionOrderNum = createdForm.Questions.Count();
-                createdQuestion.QuestionTypeOrderNum = createdForm.Questions.Count(o => o.QuestionTypeId == createdQuestion.QuestionTypeId);
-                //Vista options fyrir hverja question
-                foreach (var option in question.Options)
-                {
-                    var createdOption = new OptionsViewModel();
-                    createdOption.OptionName = option.OptionName;
-                    createdOption.OptionOrderNum = createdQuestion.Options.Count();
-                    createdQuestion.Options.Add(createdOption);
-                }
-                createdForm.Questions.Add(createdQuestion);
-            }
-
-            formCreated = true;
-        }
+        formCreated = true;
     }
 
     //Save form to Db
     private async void SaveForm()
     {
-        //var formId = await kalla í service sem ave-ar form-ið;
+        //Gera þetta allt í einu falli í formservice?
 
         //Add formInfo to Db
         FormsInfo formInfo = new FormsInfo();
@@ -374,12 +172,5 @@ else
 
         formPublished = true;
         StateHasChanged();
-    }
-
-    public DateTime SelectedDate { get; set; }
-
-    public void OnDateSelected(DateTime dt)
-    {
-        SelectedDate = dt;
     }
 }

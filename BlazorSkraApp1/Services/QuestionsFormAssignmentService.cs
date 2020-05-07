@@ -12,7 +12,7 @@ namespace BlazorSkraApp1.Services
         Task <List<QuestionsFormAssignments>> Get(int formId);
         Task<QuestionsFormAssignments> Add(QuestionsFormAssignments question);
         Task<QuestionsFormAssignments> Delete(QuestionsFormAssignments question);
-
+        Task<List<QuestionsFormAssignments>> DeleteAll(int formId);
     }
     public class QuestionsFormAssignmentService : IQuestionsFormAssignmentService
     {
@@ -45,6 +45,22 @@ namespace BlazorSkraApp1.Services
             _context.QuestionsFormAssignments.Remove(deletedQuestion);
             await _context.SaveChangesAsync();
             return deletedQuestion;
+        }
+
+        //Removes all OptionsQuestionsAssignments and corresponding options in the specified form
+        public async Task<List<QuestionsFormAssignments>> DeleteAll(int formId)
+        {
+            var qfaList = await _context.QuestionsFormAssignments
+                .Where(qfa => qfa.FormId == formId)
+                .ToListAsync();
+            var questionsList = await _context.Questions
+                //.Where(q => qfaList.Any(qfa => qfa.QuestionId == q.QuestionId))
+                .ToListAsync();
+            questionsList.RemoveAll(q => qfaList.All(qfa => qfa.QuestionId != q.QuestionId));
+            _context.QuestionsFormAssignments.RemoveRange(qfaList);
+            _context.Questions.RemoveRange(questionsList);
+            await _context.SaveChangesAsync();
+            return qfaList;
         }
     }
 }

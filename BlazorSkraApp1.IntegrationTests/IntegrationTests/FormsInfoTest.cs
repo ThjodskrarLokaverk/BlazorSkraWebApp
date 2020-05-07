@@ -85,7 +85,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.SaveChangesAsync();
 
             // Act
-            await service.Update(recId);
+            await service.Update(addedFormInfo);
 
             // Assert
             var actualFormInfo = await db.FormsInfo.FindAsync(recId);
