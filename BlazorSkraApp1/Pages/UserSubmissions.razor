@@ -37,7 +37,7 @@ else
                         <tr>
                             <td>@submission.Form.FormName</td>
                             <td>@submission.Submission.UserId</td>
-                            <td>@submission.Submission.SubmissionDate</td>
+                            <td>@submission.Submission.SubmissionDate.ToShortDateString()</td>
                             <td><button class="btn approve-btn" @onclick="@((eventArgs) => GeneratePDFFile(submission.Form.FormId, submission.SubmissionId, submission.Submission.UserId))">Sækja</button></td>
                         </tr>
                     }

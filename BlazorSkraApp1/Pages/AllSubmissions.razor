@@ -38,7 +38,7 @@ else
             <tr>
                 <td>@submission.Form.FormName</td>
                 <td>@submission.Submission.UserId</td>
-                <td>@submission.Submission.SubmissionDate</td>
+                <td>@submission.Submission.SubmissionDate.ToShortDateString()</td>
             </tr>
         }
     }
