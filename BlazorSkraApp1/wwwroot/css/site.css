@@ -42,9 +42,20 @@ html, body {
     height: 0rem;
     
 }
+
 .title-list{
+    
+}
+
+/* TRUNCATE */
+.truncate {
     text-align: center;
-    line-height: 0 ;
+  
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0;
+    padding-bottom: 10px;
 }
 
 .card-img-top{
@@ -777,3 +788,4 @@ ul{
     padding-right: 20px;
     margin-right:20px;
 }
+
