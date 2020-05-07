@@ -40,16 +40,16 @@ else
                         <InputSelect @bind-Value="@formInputModel.CategoryId" id="categories" class="form-control">
                             <option value="">Veldu flokk</option>
                             @if (categoriesList == null)
-                                {
+                            {
                                 <option>loading...</option>
-                                }
-                                else
+                            }
+                            else
+                            {
+                                foreach (var category in categoriesList)
                                 {
-                                    foreach (var category in categoriesList)
-                                    {
-                                    <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
-                                    }
+                                <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
                                 }
+                            }
                         </InputSelect>
                         <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                     </div>
@@ -127,6 +127,8 @@ else
     [Parameter]
     public int? formIdParameter { get; set; }
     [Parameter]
+    public string selectedCategoryId { get; set; }
+    [Parameter]
     public EventCallback<FormsInputModel> OnEdit { get; set; }
     [Parameter]
     public RenderFragment CustomButtonText { get; set; }
@@ -134,6 +136,7 @@ else
     private EditContext editContext;
     List<Categories> categoriesList;
     List<QuestionTypes> questionTypesList;
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -165,6 +168,11 @@ else
                 }
                 formInputModel.Questions.Add(question);
             }
+        }
+        else if(selectedCategoryId != null)
+        {
+            formInputModel.CategoryId = selectedCategoryId;
+
         }
 
         editContext = new EditContext(formInputModel);
