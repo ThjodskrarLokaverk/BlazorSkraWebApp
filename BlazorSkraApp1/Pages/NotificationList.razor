@@ -29,7 +29,7 @@ else
         }
         <AuthorizeView Roles="Admin">
         <div class="container">
-        <button onclick="window.location.href='/FC/@category.CategoryId'" class="btn btn-success add-type">
+        <button onclick="window.location.href='/FormCreation/@category.CategoryId'" class="btn btn-success add-type">
             <i class="far fa-plus-square"></i>
                 Bæta við eyðublaði
         </button>
@@ -114,7 +114,11 @@ else
     }
     private void SelectCategoryAssignment(CategoriesAssignments categoryassignment)
     {
-        selectedCategoryAssignment = categoryassignment;
+        try {
+            selectedCategoryAssignment = categoryassignment;
+        }
+        catch(Exception)
+        {}
     }
 
     protected async void DeleteNotificationHandler()
@@ -132,7 +136,7 @@ else
         StateHasChanged();
     }
 
-    private void NavigateToSearch( KeyboardEventArgs eventArgs)
+    private void NavigateToSearch(KeyboardEventArgs eventArgs)
     {
         if (eventArgs.Key == "Enter" )
         {
