@@ -9,7 +9,7 @@
 }
 
 html, body {
-    font-family: 'Source Sans Pro', Arial, sans-serif;
+    font-family: 'Muli', sans-serif;
     background-color: var(--two);
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
     height: 100%;
@@ -21,12 +21,7 @@ html, body {
 
 }
 
-/* card-title in notificication */
-.question-title {
-    text-decoration: underline;
-}
-
-/* Notification-List */
+/* Form-List */
 .card-list{
     background-color: var(--three);
     border-color: var(--two);
@@ -41,6 +36,11 @@ html, body {
     margin-top:30px;
 }
 
+.date-type {
+    width: 18%;
+    margin-top: -1.5rem;
+}
+
 .body-list{
     background-color: var(--two);
     border: solid 2px;
@@ -49,15 +49,12 @@ html, body {
     
 }
 
-/* TRUNCATE */
-.truncate {
+.title-list {
     text-align: center;
-  
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 0;
-    padding-bottom: 10px;
+    margin-top: -0.5rem;
 }
 
 .card-img-top{
@@ -81,13 +78,12 @@ html, body {
     margin-top: 30px;  
 }
 
-.notification-list-heading{
+.form-list-heading{
     margin-top: 30px;
-    font-family: arial black;
+    font-family: 'Muli', sans-serif;
     color: black;
     text-align: center;
     margin-bottom: 20px;
-
 }
 
 .LogoImg {
@@ -229,7 +225,7 @@ html, body {
     float: left;
 }
 
-.indexPen{
+.category-pen{
     margin-bottom: -20px;
     padding: 5px;
     display:block;
@@ -238,6 +234,10 @@ html, body {
     border-color: var(--three);
     border-radius: 25px; 
     position: relative; 
+}
+
+.check-box {
+    margin-left: -1em;
 }
 
 #radio-create {
@@ -286,6 +286,7 @@ html, body {
 
 .edit-icon:hover {
     color: var(--five);
+    text-decoration: none;
 }
 
 .oi-plus {
@@ -295,7 +296,7 @@ html, body {
     top: -1px;
 }
 
-/* Notification creation page */
+/* Form creation page */
 
 #creation-form {
     width: 65%;
@@ -356,14 +357,10 @@ html, body {
     color: var(--five);
 }
 
-/* notification submit page */
+/* form submit page */
 .card{
     border: none;
     border-radius: none;
-}
-
-.sub-margin{
-    margin-bottom: 10px;
 }
 
 .sub-container{
@@ -373,9 +370,7 @@ html, body {
 }
 
 .submit-form{
-    padding: 10px;
-    margin-bottom: 30px;
-    margin-left: 20px;
+    width: 8rem;
 }
 
 /* dropdown menu */
@@ -411,8 +406,6 @@ html, body {
 .first-dropdown-wrapper .dropdown-menu a:hover{
     background-color:var(--five);
 }
-
-
 
 .first-dropdown-wrapper .dropdown-item{
     color: white;
@@ -533,31 +526,37 @@ html, body {
 
 .sub-list-pen {
     float: right;
-    color: white;
+    color: var(--three);
     margin-bottom: -20px;
     padding:5px;
     margin:none;
     display:block;
     border: 2px solid;
-    background-color: var(--two);
+    background-color: white;
     border-color: var(--three);
     border-radius: 25px; 
     position:relative;
- 
+}
+
+.sub-list-pen:hover {
+    color: var(--five);
 }
 
 .sub-list-trash {
     float: right;
-    color:black;
+    color: var(--three);
     padding:5px;
     margin:none;
     display:block;
     border: 2px solid;
-    background-color: var(--four);
+    background-color: white;
     border-color: var(--three);
     border-radius: 25px; 
     position:relative;
- 
+}
+
+.sub-list-trash:hover {
+    color: var(--four);
 }
 
 .table-trash{
@@ -599,8 +598,7 @@ html, body {
 }
 
 .up-down{
-    margin: none;
-    padding-top: none;
+    margin-top: -8px;
     color:white;
     height: 1.95rem;
 }

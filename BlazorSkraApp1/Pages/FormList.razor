@@ -1,4 +1,4 @@
-@page "/NotificationList/{id}"
+@page "/FormList/{id}"
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
@@ -20,12 +20,12 @@ else
 {
     <div class="md-form mt-0 index-search">
         <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
-        <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search"></i> </a>
+        <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search" title="Leita"></i> </a>
     </div>
     <div class="container">
         @if (categoriesAssignmentsList.Any())
         {
-            <h3 class="notification-list-heading"> @category.CategoryName</h3>
+            <h3 class="form-list-heading"> @category.CategoryName</h3>
         }
         <AuthorizeView Roles="Admin">
         <div class="container">
@@ -41,22 +41,21 @@ else
                 
                 <div class="col-md-4">
                     <AuthorizeView Roles="Admin">
-                        <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
-                                <a id="a-tag" href="FormEdit/@categoryAssignment.FormsInfo.FormId">
-                                    <i class="fas fa-pen sub-list-pen" title="Modifier"></i>
-                                </a>
-                        </button>
+                        <a href="FormEdit/@categoryAssignment.FormsInfo.FormId">
+                            <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
+                                <i class="fas fa-pen sub-list-pen" title="Breyta eyðublaði"></i>
+                            </button>
+                        </a>
                         <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
-                            <i class="fas fa-trash sub-list-trash" title="Trash"></i>
+                            <i class="fas fa-trash sub-list-trash" title="Eyða eyðublaði"></i>
                         </button>
                     </AuthorizeView> 
-                <div class="card card-list">
-                    <img src="Images/form.svg" class="card-img-top" alt="notification form">
+                <div class="card card-list" title="@categoryAssignment.FormsInfo.FormName">
+                    <img src="Images/form.svg" class="card-img-top" alt="form form">
                     <div class="card-body body-list">
-                        <h5 class="card-title title-list truncate">@categoryAssignment.FormsInfo.FormName</h5>
-                        <a href="/Notification/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
+                        <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
+                        <a href="/Form/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                     </div>
-                
                 </div>
             </div>
             }
@@ -81,7 +80,7 @@ else
     </div>
    
 
-    <ConfirmationModalComponent OnClick="DeleteNotificationHandler">
+    <ConfirmationModalComponent OnClick="DeleteFormHandler">
         <CustomHeader>Eyða eyðublaði</CustomHeader>
         <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
@@ -108,7 +107,7 @@ else
         //Get info about the category
         category = await catService.Get(categoryId);
 
-        //Get a list of notifications assigned to the relevant category
+        //Get a list of forms assigned to the relevant category
         categoriesAssignmentsList = await catAssignService.Get(categoryId);
 
     }
@@ -121,15 +120,15 @@ else
         {}
     }
 
-    protected async void DeleteNotificationHandler()
+    protected async void DeleteFormHandler()
     {
-        //Remove the notification/form from the list of notifications in this category
+        //Remove the form/form from the list of forms in this category
         await catAssignService.Delete(selectedCategoryAssignment);
 
-        //Delete the notification/form from the database
+        //Delete the form/form from the database
         await formservice.Delete(selectedCategoryAssignment.FormId);
 
-        //remove the notification/form from the list on this page
+        //remove the form/form from the list on this page
         categoriesAssignmentsList.Remove(selectedCategoryAssignment);
 
         //refresh UI

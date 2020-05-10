@@ -20,7 +20,7 @@
     {
         <div class="md-form mt-0 index-search">
             <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value="@searchString" @bind-value:event="oninput" @onkeyup="@SearchOnKeyUp">
-            <a class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search"></i> </a>
+            <a class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search" title="Leita"></i> </a>
         </div>
         <div class="container">
             <button @onclick="AddNewUser" class="btn add-category">
@@ -29,7 +29,7 @@
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="text-uppercase">Tölvupóstfang
+                        <th class="text-uppercase">Netfang
                             <button class="btn up-down" @onclick="(() => SortUserEmails())"><i class="fas fa-sort-alpha-up"></i> </button>
                         </th>
                         <th class="text-uppercase">Hlutverk</th>
@@ -101,11 +101,11 @@
                             </button>
                         </div>
                         <div class="modal-body">
-                            <label for="user-email">Tölvupóstfang</label>
-                            <InputText class="form-control" id="user-email" type="text" placeholder="Tölvupóstfang" @bind-Value="userInput.Email" />
+                            <label for="user-email">Netfang</label>
+                            <InputText class="form-control" id="user-email" type="text" placeholder="Skrifaðu hér.." @bind-Value="userInput.Email" />
                             <ValidationMessage For="@(() => userInput.Email)" /><br>
                             <label for="user-password">Lykilorð</label>
-                            <InputText class="form-control" id="user-password" type="password" placeholder="Lykilorð" @bind-Value="userInput.Password" />
+                            <InputText class="form-control" id="user-password" type="password" placeholder="Skrifaðu hér.." @bind-Value="userInput.Password" />
                             <ValidationMessage For="@(() => userInput.Password)" /><br>
                             <label for="user-role">Hlutverk</label>
                             <InputSelect class="form-control" id="user-role" @bind-Value="userInput.UserRole">
@@ -116,7 +116,7 @@
                             </InputSelect>
                             <ValidationMessage For="@(() => userInput.UserRole)" />
                             <br /><br />
-                            <button type="submit" class="btn btn-primary">Vista</button>
+                            <button type="submit" class="btn approve-btn">Vista</button>
                             <br />
                         </div>
                     </div>

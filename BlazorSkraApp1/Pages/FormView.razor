@@ -1,4 +1,4 @@
-﻿@page "/Notification/{id}"
+﻿@page "/Form/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -29,7 +29,7 @@ else
     <div class="container @faded sub-container">
         <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
-            <h3 class="notification-list-heading" style="color:black"> @form.FormName</h3>
+            <h3 class="form-list-heading" style="color:black"> @form.FormName</h3>
             @foreach (var question in questionsList)
             {
                 <div class="container">
@@ -62,7 +62,7 @@ else
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
                                     string checkboxName = question.QuestionOrderNum.ToString();
-                                    <input class="check-box" type="checkbox" name="@checkboxName" value="@option.Options.OptionName"
+                                    <input type="checkbox" name="@checkboxName" value="@option.Options.OptionName"
                                            @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
                                     <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
                                 }
@@ -72,7 +72,7 @@ else
                             {
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
-                                <input class="form-control date-picker" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                <input class="form-control date-picker date-type" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
@@ -84,18 +84,20 @@ else
                     </div>
                 </div>
             }
-                <div class="container">
-                    <div class="card sub-margin">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body form-check">
                         @if(hasAnonymousOption)
                         {
                             <div class="card-body form-check">
-                                <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                                <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                                <input class="check-box @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda svar nafnlaust</label><br>
                             </div>
                         }
+                        <button type="submit" class="@faded submit-form btn approve-btn">Senda inn</button>
                     </div>
-                    <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
                 </div>
+            </div>
         </EditForm>
     </div>
     <br>
@@ -112,7 +114,7 @@ else
                     <h5 class="modal-title"> Staðfesting</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Eyðublaðinu hefur verið komið til skila.</p>
+                    <p>Svar þitt hefur verið móttekið.</p>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
@@ -154,7 +156,7 @@ else
     public bool anonymous { get; set; }
     private bool hasAnonymousOption;
 
-    //Listar til þess að birta tilkynningu
+    //Listar til þess að birta eyðublað
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
 
@@ -250,7 +252,8 @@ else
         {
             //Create a submission in the database
             submissionsInfo.UserId = currentUser.UserName;
-            submissionsInfo.SubmissionDate = DateTime.UtcNow;  //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
+            DateTime dt = DateTime.UtcNow;
+            submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
             submissionsInfo = await subinfoservice.Add(submissionsInfo);
 
 
@@ -296,7 +299,7 @@ else
         }
         catch (System.InvalidOperationException)
         {
-            // Catch Exception that occur when user push twice on "senda tilkynningu" - it doesn't have any affect.
+            // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
             _subFail = false;
             //bæta við í logfile?
             StateHasChanged();
