@@ -16,40 +16,50 @@
 @inject IQuestionsService questionsService
 @inject IOptionsService optionsService
 
-<AuthorizeView Roles="Admin" Context="AuthContext">
-    @if (!formCreated)
-    {
-        <!-- Create form -->
-        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId">
-            <CustomButtonText>Búa til eyðublað</CustomButtonText>
-        </FormEditComponent>
-    }
+    <AuthorizeView Roles="Admin" Context="AuthContext">
+        @if (!formCreated)
+        {
+            <!-- Create form -->
+            <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId">
+                <CustomButtonText>Forskoða eyðublað</CustomButtonText>
+            </FormEditComponent>
+        }
 
-    @if (formCreated && !formPublished)
-    {
-        <!-- Display the created Form -->
-        <FormViewComponent Form="@createdForm"></FormViewComponent>
-        <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
-        <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
+        @if (formCreated && !formPublished)
+        {
+            <!-- Display the created Form -->
+            <FormViewComponent Form="@createdForm"></FormViewComponent>
+            @if (IsClicked)
+            {
+                <button type="button" class="btn approve-btn" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Í vinnslu...
+                </button>
+            }
+            else
+            {
+                <button @onclick="SaveForm" type="button" class="btn approve-btn">Birta eyðublað</button>
+            }
+            <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
+            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
-        <!-- Delete created form popup -->
-        <ConfirmationModalComponent OnClick="DeleteFormHandler">
-            <CustomHeader>Eyða eyðublaði</CustomHeader>
-            <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
-            <CustomButtonText>Eyða</CustomButtonText>
-        </ConfirmationModalComponent>
-    }
+            <!-- Delete created form popup -->
+            <ConfirmationModalComponent OnClick="DeleteFormHandler">
+                <CustomHeader>Eyða eyðublaði</CustomHeader>
+                <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+                <CustomButtonText>Eyða</CustomButtonText>
+            </ConfirmationModalComponent>
+        }
 
-    @if (formPublished)
-    {
-        <div class="d-flex justify-content-center">
-            <h2>Eyðublað hefur verið birt</h2>
-        </div>
-        <br />
-        <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
-    }
-</AuthorizeView>
+        @if (formPublished)
+        {
+            <div class="d-flex justify-content-center">
+                <h2>Eyðublað hefur verið birt</h2>
+            </div>
+            <br />
+            <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
+        }
+    </AuthorizeView>
 
 @code {
     [Parameter]
@@ -59,6 +69,7 @@
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
+    private bool IsClicked;
 
     private void EditForm()
     {
@@ -109,6 +120,10 @@
     //Save form to Db
     private async void SaveForm()
     {
+        //Disable save button
+        IsClicked = true;
+        StateHasChanged();
+
         //Gera þetta allt í einu falli í formservice?
 
         //Add formInfo to Db
@@ -158,6 +173,7 @@
         }
 
         formPublished = true;
+        IsClicked = false;
         StateHasChanged();
     }
 }
