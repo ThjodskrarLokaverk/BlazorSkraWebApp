@@ -65,9 +65,8 @@ namespace BlazorSkraApp1
         {
             if (env.IsDevelopment())
             {
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
-                app.UseExceptionHandler("/Error");
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
             }
             else
             {
