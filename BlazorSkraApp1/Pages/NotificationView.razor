@@ -5,6 +5,7 @@
 @using System
 @using BlazorSkraApp1.Components
 @using Microsoft.AspNetCore.Identity;
+@inject NavigationManager NavigationManager
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IOptionsService oservice
@@ -23,6 +24,14 @@
             <span class="sr-only">Augnablik...</span>
         </div>
     </div>
+}
+else if (confirmation)
+{
+    <div class="d-flex justify-content-center">
+        <h2>Eyðublaðinu hefur verið komið til skila</h2>
+    </div>
+    <br />
+    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Aftur á upphafssíðu</a>
 }
 else
 {
@@ -84,18 +93,18 @@ else
                     </div>
                 </div>
             }
-                <div class="container">
-                    <div class="card sub-margin">
-                        @if(hasAnonymousOption)
-                        {
-                            <div class="card-body form-check">
-                                <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                                <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
-                            </div>
-                        }
-                    </div>
-                    <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
+            <div class="container">
+                <div class="card sub-margin">
+                    @if (hasAnonymousOption)
+                    {
+                        <div class="card-body form-check">
+                            <input class="check-box @faded radio-check-Submit" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                            <label for="anonymous" class="radio-check-Submit"> Vinsamlegast hakaðu við ef þú vilt senda eyðublaðið nafnlaust</label><br>
+                        </div>
+                    }
                 </div>
+                <button type="submit" class="@faded submit-form btn approve-btn">Senda inn eyðublað</button>
+            </div>
         </EditForm>
     </div>
     <br>
@@ -103,42 +112,14 @@ else
     <br>
 }
 
-@if (confirmation)
-{
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> Staðfesting</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Eyðublaðinu hefur verið komið til skila.</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
 @if (_subFail)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" id="modal-content-exception">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ConfirmationModalComponent OnClick="SubmissionFailHandler">
+        <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
+        <CustomBody>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
+        <CustomButtonText>Fara á Forsíðu</CustomButtonText>
+        <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
+    </ConfirmationModalComponent>
 }
 
 @code{
@@ -217,11 +198,12 @@ else
         {
             submissionInput.Date[i] = new RequiredDate();
         }
-        try{
-           form = await formService.Get(System.Convert.ToInt32(id));
-           hasAnonymousOption = form.IsAnonymous;
+        try
+        {
+            form = await formService.Get(System.Convert.ToInt32(id));
+            hasAnonymousOption = form.IsAnonymous;
         }
-        catch(Exception)
+        catch (Exception)
         {
             //pass
         }
@@ -321,5 +303,11 @@ else
         {
             _subFail = true;
         }
+    }
+
+
+    private void SubmissionFailHandler()
+    {
+        NavigationManager.NavigateTo("/", true);
     }
 }

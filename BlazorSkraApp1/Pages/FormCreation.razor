@@ -20,7 +20,7 @@
     @if (!formCreated)
     {
         <!-- Create form -->
-        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId">
+        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId" formParameter="createdForm">
             <CustomButtonText>Forskoða eyðublað</CustomButtonText>
         </FormEditComponent>
     }
@@ -48,6 +48,7 @@
             <CustomHeader>Eyða eyðublaði</CustomHeader>
             <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
             <CustomButtonText>Eyða</CustomButtonText>
+            <CustomCloseButtonText>Hætta við</CustomCloseButtonText> 
         </ConfirmationModalComponent>
     }
 
@@ -64,8 +65,6 @@
 @code {
     [Parameter]
     public string selectedCategoryId{ get; set; }
-
-    Categories currentCategory = new Categories();
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
@@ -78,7 +77,16 @@
 
     protected void DeleteFormHandler()
     {
-        NavigationManager.NavigateTo("/", true);
+        if (selectedCategoryId != null)
+        {
+            //Navigate to the category user was in?
+            NavigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+
     }
 
     private async void CreateFormHandler(FormsInputModel formInputModel)

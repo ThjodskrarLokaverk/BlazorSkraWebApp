@@ -152,6 +152,8 @@ else
     [Parameter]
     public int? formIdParameter { get; set; }
     [Parameter]
+    public FormsViewModel formParameter { get; set; }
+    [Parameter]
     public string selectedCategoryId { get; set; }
     [Parameter]
     public EventCallback<FormsInputModel> OnEdit { get; set; }
@@ -179,25 +181,11 @@ else
         {
             int formId = formIdParameter ?? default(int);
             var form = await formsService.Get(formId);
-            //Populate input model with form data
-            formInputModel.FormName = form.FormName;
-            formInputModel.DestinationEmail = form.DestinationEmail;
-            formInputModel.CategoryId = form.CategoryId.ToString();
-
-            foreach (var formQuestion in form.Questions)
-            {
-                QuestionsInputModel question = new QuestionsInputModel();
-                question.QuestionName = formQuestion.QuestionName;
-                question.QuestionTypeId = formQuestion.QuestionTypeId.ToString();
-                question.Options = new List<OptionsInputModel>();
-                foreach (var formOption in formQuestion.Options)
-                {
-                    OptionsInputModel option = new OptionsInputModel();
-                    option.OptionName = formOption.OptionName;
-                    question.Options.Add(option);
-                }
-                formInputModel.Questions.Add(question);
-            }
+            PopulateInputModel(form);
+        }
+        else if(formParameter != null)
+        {
+            PopulateInputModel(formParameter);
         }
         else
         {
@@ -271,6 +259,29 @@ else
                     question.Options.Add(new OptionsInputModel());
                 }
             }
+        }
+    }
+
+    private void PopulateInputModel(FormsViewModel form)
+    {
+        //Populate input model with form data
+        formInputModel.FormName = form.FormName;
+        formInputModel.DestinationEmail = form.DestinationEmail;
+        formInputModel.CategoryId = form.CategoryId.ToString();
+
+        foreach (var formQuestion in form.Questions)
+        {
+            QuestionsInputModel question = new QuestionsInputModel();
+            question.QuestionName = formQuestion.QuestionName;
+            question.QuestionTypeId = formQuestion.QuestionTypeId.ToString();
+            question.Options = new List<OptionsInputModel>();
+            foreach (var formOption in formQuestion.Options)
+            {
+                OptionsInputModel option = new OptionsInputModel();
+                option.OptionName = formOption.OptionName;
+                question.Options.Add(option);
+            }
+            formInputModel.Questions.Add(question);
         }
     }
 }
