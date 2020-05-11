@@ -45,7 +45,7 @@ namespace BlazorSkraApp1.Services
             message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
             //receiver of email
             message.To.Add(new MailboxAddress(formsInfo.DestinationEmail));
-            message.Subject = "Nýtt svar - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
+            message.Subject = "Ný innsending - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
 
             builder.TextBody = emailBody;
 
@@ -62,7 +62,7 @@ namespace BlazorSkraApp1.Services
             }
             catch(Exception)
             {
-                Log.Error($"Ekki tókst að senda svar með tölvupósti");
+                Log.Error($"Eitthvað fór úrskeiðis");
             }
         }
 
