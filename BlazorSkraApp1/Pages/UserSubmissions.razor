@@ -29,7 +29,7 @@ else
                         <th class="text-uppercase">PDF</th>
                     </tr>
                 </thead>
-                <tbody class="tableBody">
+                <tbody class="table-body">
                 @foreach(var submission in submissionList)
                 {
                     if((GetForUser(submission, @context.User.Identity.Name)) == true)
