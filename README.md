@@ -32,7 +32,7 @@ To run
 * **Benedikt Rúnar Valtýsson ** - [Benedikt on Github](https://github.com/BenediktRunar)
 * **Bjarki Baldvinsson ** - [Bjarki on Github](https://github.com/Bjarkibadda)
 * **Hannes Kristjánsson ** - [Hannes on Github](https://github.com/hkristjansson)
-* **Fjölnir Unnarsson ** - [Fjölnir on Github](https://github.com/)
+* **Fjölnir Unnarsson ** - [Fjölnir on Github](https://github.com/fjolnirunnarsson)
 * **Þórný Stefánsdóttir ** - [Þórný on Github](https://github.com/thornystefans)
 
 
