@@ -4,7 +4,7 @@
 @using BlazorSkraApp1.Models.InputModels
 @using System
 @using BlazorSkraApp1.Components
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IOptionsService oservice
@@ -99,7 +99,7 @@ else
                         {
                             <div class="card-body form-check">
                                 <input class="check-box @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
-                                <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda svar nafnlaust</label><br>
+                                <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
                         <button type="submit" class="@faded submit-form btn approve-btn">Senda inn</button>
@@ -141,7 +141,7 @@ else
                     <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
                 </div>
                 <div class="modal-body">
-                    <p>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</p>
+                    <p>Svar komst ekki til skila, vinsamlegast reyndur aftur.</p>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
