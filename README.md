@@ -1,9 +1,5 @@
-# BlazorSkraWebApp
-Web application for thjodskra
-
-
 # Form Portal
-A web application that can submit forms to predefined email addresses.
+A web application that can submit forms to predefined email addresses. This application is the outcome of the Finall Assignment of 5 students @ Reykjavik University, where they studied Computer Science (B.Sc.)
 
 ## Getting Started
 This sofware was made using .Net Core 3.1 and Blazor Components. It was created using Mac and Windows operating systems, using Visual Studio Code and Visual Studio.
