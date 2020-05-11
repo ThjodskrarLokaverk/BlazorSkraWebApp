@@ -1,12 +1,12 @@
 ﻿@page "/Instructions"
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <h3>Vísir að notendahandbók fyrir stjórnendur (admins)</h3>
+        <h2>Vísir að notendahandbók fyrir stjórnendur (admins)</h2>
         <p>
-            Hér er ekki um ítarlega handbók að ræða þar sem farið er í allar aðgerðir kerfisins, 
+            Hér er ekki um ítarlega handbók að ræða þar sem farið er í allar aðgerðir kerfisins,
             heldur týndir til nokkrir hlutir sem tímafrekt gæti verið að finna út úr.
         </p>
-        <h4>1. Efni sent á ytri kerfi</h4>
+        <h3>1. Efni sent á ytri kerfi</h3>
         Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
         Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa netfang á hverju verkefni (board),
         og tölvupóstur sem sendur er inn á verkefni stofnast sem atriði (task).
@@ -41,7 +41,7 @@
         <img src="Images/Instructions/email_TrelloBoard.png" alt="Trello software, email handler">
         <br />
         <hr />
-        <h4>2. Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h4>
+        <h3>2. Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h3>
         <p>
             Ýmsar leiðir eru notaðar til þess að keyra viðhaldskeyrslur á gagnagrunna. Þetta kerfi notar Microsoft SQL gagnagrunn.
             Þar sem kerfið keyrir á fríum aðgangi að Azure gagnaveitunni, þá eru ekki margar leiðir færar við að keyra viðhaldsþjónustur,
@@ -59,6 +59,13 @@
         <p>Hér að neðan er dæmi um handrit (script) sem eyðir færslu úr grunninum að 7 dögum liðnum. Þetta handrit má keyra með "windows task scheduler" (sjá texta hér f. ofan um hvernig stilla má keyrslutíðni og slíkt).</p>
         <img src="Images/Instructions/script-example1.png" alt="Powershell Script, part 1">
         <img src="Images/Instructions/script-example2.png" alt="Powershell Script, part 2">
+        <br />
+        <hr />
+        <h3>3. Skilgreiningar ýmissa tölvupóstfanga</h3>
+        <p></p>
+        <img src="Images/Instructions/systems_email.png" alt="Trello software, email handler">
+        <br />
+
 
     </Authorized>
 </AuthorizeView>
