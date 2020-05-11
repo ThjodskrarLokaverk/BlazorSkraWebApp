@@ -13,7 +13,6 @@ namespace BlazorSkraApp1.Data
 
         public DateTime SubmissionDate { get; set; }  // To be able to identify submissions by date, and delete old submissions
         [Required]
-
         public string UserId { get; set; }
     }
 }

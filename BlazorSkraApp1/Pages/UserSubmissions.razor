@@ -11,7 +11,7 @@
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+            <span class="sr-only">Augnablik...</span>
         </div>
     </div>
 }
@@ -37,7 +37,7 @@ else
                         <tr>
                             <td>@submission.Form.FormName</td>
                             <td>@submission.Submission.UserId</td>
-                            <td>@submission.Submission.SubmissionDate.ToShortDateString()</td>
+                            <td>@submission.Submission.SubmissionDate.ToString("dd/MM/yy")</td>
                             <td><button class="btn approve-btn" @onclick="@((eventArgs) => GeneratePDFFile(submission.Form.FormId, submission.SubmissionId, submission.Submission.UserId))">Sækja</button></td>
                         </tr>
                     }

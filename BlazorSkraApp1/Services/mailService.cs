@@ -45,7 +45,7 @@ namespace BlazorSkraApp1.Services
             message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
             //receiver of email
             message.To.Add(new MailboxAddress(formsInfo.DestinationEmail));
-            message.Subject = "Ný tilkynning - Heiti: " + formsInfo.FormName + " - " +  "Dagsetning: " + DateTime.Now.ToShortDateString();
+            message.Subject = "Nýtt svar - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
 
             builder.TextBody = emailBody;
 
@@ -62,7 +62,7 @@ namespace BlazorSkraApp1.Services
             }
             catch(Exception)
             {
-                Log.Error($"Ekki tókst að senda tilkynningu með tölvupósti {formsInfo.FormName} Dagsetning: {DateTime.Now.ToShortDateString()}");
+                Log.Error($"Ekki tókst að senda svar með tölvupósti");
             }
         }
 
@@ -105,11 +105,11 @@ namespace BlazorSkraApp1.Services
 
             if (anonymous == false)
             {
-                emailBody += "Sendandi tilkynningar: " + userEmail + newLine + newLine;
+                emailBody += "Sendandi: " + userEmail + newLine + newLine;
             }
             else
             {
-                emailBody += "Sendandi tilkynningar óskaði eftir nafnleynd" + newLine + newLine;
+                emailBody += "Sendandi óskaði eftir nafnleynd" + newLine + newLine;
             }
             
             //Answers added to email body
