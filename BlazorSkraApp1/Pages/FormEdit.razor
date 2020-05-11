@@ -32,11 +32,12 @@
             <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
             <!-- Delete created form popup -->
-            <ConfirmationModalComponent OnClick="DeleteFormHandler">
-                <CustomHeader>Eyða eyðublaði</CustomHeader>
-                <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
-                <CustomButtonText>Eyða</CustomButtonText>
-            </ConfirmationModalComponent>
+    <ConfirmationModalComponent OnClick="DeleteFormHandler">
+        <CustomHeader>Eyða eyðublaði</CustomHeader>
+        <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+        <CustomButtonText>Eyða</CustomButtonText>
+        <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
+    </ConfirmationModalComponent>
         }
 
         @if (formPublished)
