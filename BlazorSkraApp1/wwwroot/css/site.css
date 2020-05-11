@@ -1,7 +1,7 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 :root {
-    --one: #e6f9ff; /*#c5d8d1*/
+    --one: #e6f9ff;
     --two: #005e7c;
     --three: #102542;
     --four: #d33f49;
@@ -9,7 +9,7 @@
 }
 
 html, body {
-    font-family: 'Source Sans Pro', Arial, sans-serif;
+    font-family: 'Muli', sans-serif;
     background-color: var(--two);
     background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.06' fill-rule='evenodd'%3E%3Ccircle cx='3' cy='3' r='3'/%3E%3Ccircle cx='13' cy='13' r='3'/%3E%3C/g%3E%3C/svg%3E");
     height: 100%;
@@ -18,95 +18,20 @@ html, body {
 .fa-lg{
     background-color: var(--two);
     color:black;
-
-}
-
-/* card-title in notificication */
-.question-title {
-    text-decoration: underline;
-}
-
-/* Notification-List */
-.card-list{
-    background-color: var(--three);
-    border-color: var(--two);
-    color: white;
-    height: 10rem;
-    margin-bottom: 20px; 
-    border-radius: 15px;
-    margin-left: 10px;
 }
 
 .row{
     margin-top:30px;
 }
 
-.body-list{
-    background-color: var(--two);
-    border: solid 2px;
-    border-color: var(--three);
-    height: 0rem;
-    
-}
-
-/* TRUNCATE */
-.truncate {
-    text-align: center;
-  
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    margin: 0;
-    padding-bottom: 10px;
-}
-
-.card-img-top{
-    margin-top: 5px;
-    margin-left: 5%;
-    height: 60%;
-    margin-bottom:10px;
-    /* align-items: 75% right; */
-    
-}
-
-.card-column{
-    width: 25%;
-    height:5%;
-}
-
-.add-type{
-    color: white;
-    border-radius: 10px; 
-    background-color:var(--five);
-    margin-top: 30px;  
-}
-
-.notification-list-heading{
-    margin-top: 30px;
-    font-family: arial black;
-    color: black;
-    text-align: center;
-    margin-bottom: 20px;
-
-}
-
-.LogoImg {
+.logo-img {
     width: 280px;
     height: auto;
 }
 
-.mediationIMG {
+.meditation-img {
     width: 40%;
     height: 40%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 3rem;
-}
-
-.mediationIndex{
-    width: 300px;
-    height: auto;
     display: block;
     margin-left: auto;
     margin-right: auto;
@@ -122,11 +47,149 @@ html, body {
     border: 2px solid;
     padding: 10px;
     border-color: var(--two);
-    /* background-color: var(--three);  */
     color:black;
     margin-top:50px;
+}
 
+/* EYÐA EFTIR BREAD CRUMBS */
+.form-list-heading{
+    margin-top: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+}
 
+/* Form-List */
+.card-list{
+    background-color: var(--three);
+    border-color: var(--two);
+    color: white;
+    height: 10rem;
+    margin-bottom: 20px; 
+    border-radius: 15px;
+    margin-left: 10px;
+}
+
+.body-list{
+    background-color: var(--two);
+    border: solid 2px;
+    border-color: var(--three);
+    height: 0rem;
+}
+
+.title-list {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: -0.5rem;
+}
+
+.card-img-top{
+    margin-top: 5px;
+    margin-left: 5%;
+    height: 60%;
+    margin-bottom:10px;
+}
+
+.add-type{
+    color: white;
+    border-radius: 10px; 
+    background-color:var(--five);
+    margin-top: 30px;  
+}
+
+.sub-list-pen {
+    float: right;
+    color: var(--three);
+    margin-bottom: -20px;
+    padding:5px;
+    margin:none;
+    display:block;
+    border: 2px solid;
+    background-color: white;
+    border-color: var(--three);
+    border-radius: 25px; 
+    position:relative;
+}
+
+.sub-list-pen:hover {
+    color: var(--five);
+}
+
+.sub-list-trash {
+    float: right;
+    color: var(--three);
+    padding:5px;
+    margin:none;
+    display:block;
+    border: 2px solid;
+    background-color: white;
+    border-color: var(--three);
+    border-radius: 25px; 
+    position:relative;
+}
+
+.sub-list-trash:hover {
+    color: var(--four);
+}
+
+.table-trash{
+    float: right;
+    margin-left: -10px;
+    margin-top: 25px;
+    margin-bottom: none;
+    color: var(--four);
+}
+
+.table-icon{
+    float: right;
+    margin-left: -55px;
+    margin-top: -10px;
+    margin-bottom: none;
+    color: black;
+}
+
+.table-icon:hover {
+    color: var(--five);
+}
+
+/* Form view */
+.date-type {
+    width: 18%;
+    margin-top: -1.5rem;
+}
+
+.check-box {
+    margin-left: -1em;
+}
+
+.textbox {
+    width: 90%;
+}
+
+#question-title {
+    display: inline;
+}
+
+#title-edit {
+    width: 91%;
+    margin: 0;
+    overflow: auto;
+}
+
+.card{
+    border: none;
+    border-radius: none;
+}
+
+.sub-container{
+    background-color:white;
+    margin:none;
+    border: 2px solid black;
+}
+
+.submit-form{
+    width: 8rem;
 }
 
 /* Navigation bar */
@@ -178,33 +241,23 @@ html, body {
     top: 0px;
 }
 
-
 .oi-person:hover {
     color: var(--five);
 }
 
-
-/* Body */
+/* Categories */
 .linkboxes .col-md-4 .boxes {
     background-color:var(--three);
     width: 100%;
     height: 100px;
     box-shadow: -1px 2px 3px #cecece;
-    text-align: center;
     font-weight: 500;
     font-size: 20px;
-
 }
 
 .linkboxes .col-md-4 .boxes p {
     color: white;
-    display: inline-block;
-    margin-top: 27.5px;
-    margin-left: 17px;
-}
-
-.linkboxes .col-md-4 .boxes:hover {
-    text-decoration: underline;
+    margin-top: 1.50em;
 }
 
 .add-category {
@@ -219,7 +272,6 @@ html, body {
     margin-right: 10px;
 }
 
-
 .linkboxes .col-md-4 {
     margin-bottom: 20px;
 }
@@ -229,7 +281,7 @@ html, body {
     float: left;
 }
 
-.indexPen{
+.category-pen{
     margin-bottom: -20px;
     padding: 5px;
     display:block;
@@ -240,6 +292,20 @@ html, body {
     position: relative; 
 }
 
+.edit-icon {
+    float: right;
+    margin-right: -26px;
+    margin-top: -10px;
+    margin-bottom: none;
+    color:var(--three);
+}
+
+.edit-icon:hover {
+    color: var(--five);
+    text-decoration: none;
+}
+
+/* Form create/edit */
 #radio-create {
     margin-top: 8px;
     margin-left: -15px;
@@ -247,6 +313,11 @@ html, body {
 
 .question-create-card {
     margin-top: 5px;
+}
+
+.info-card {
+    border: 1px solid;
+    border-radius: 4px;
 }
 
 .trash-create {
@@ -268,126 +339,13 @@ html, body {
     justify-content: center;
 }
 
-.add-question {
-
-}
-
 .new-form {
     float: right;
 }
 
-.edit-icon {
-    float: right;
-    margin-right: -26px;
-    margin-top: -10px;
-    margin-bottom: none;
-    color:var(--three);
-}
-
-.edit-icon:hover {
-    color: var(--five);
-}
-
-.oi-plus {
-    color: var(--five);
-    font-size: 25px;
-    vertical-align: middle;
-    top: -1px;
-}
-
-/* Notification creation page */
-
-#creation-form {
-    width: 65%;
-    margin: 0 auto;
-}
-
-.textbox {
-    width: 90%;
-}
-
-.option-wrapper {
-    padding: 30px;
-}
-
-#question-box {
-    height: 110px;
-}
-
-#plus-icon {
-    font-size: 15px;
-    color: var(--five);
-}
-
-#add-question-link {
-    color: var(--five);
-}
-
-#add-question-link:hover {
-    text-decoration: underline;
-}
-
-#question-title {
-    display: inline;
-}
-
-#title-edit {
-    width: 91%;
-    margin: 0;
-    overflow: auto;
-}
-
-#i-pen {
-    float: right;
-    cursor: pointer;
-    color:black;
-}
-
-#i-pen:hover {
-    color: var(--five);
-}
-
-#trash-icon {
-    cursor: pointer;
-    color: black;
-}
-
-#trash-icon:hover {
-    color: var(--five);
-}
-
-/* notification submit page */
-.card{
-    border: none;
-    border-radius: none;
-}
-
-.sub-margin{
-    margin-bottom: 10px;
-}
-
-.sub-container{
-    background-color:white;
-    margin:none;
-    border: 2px solid black;
-}
-
-.submit-form{
-    padding: 10px;
-    margin-bottom: 30px;
-    margin-left: 20px;
-}
-
-/* dropdown menu */
-
+/* Dropdown menu */
 .dropdown-toggle::after {
     display: none;
-}
-
-#firstdropdown{
-    background-color: transparent;
-    margin:none;
-    padding:none;
 }
 
 .dropdown {
@@ -412,22 +370,18 @@ html, body {
     background-color:var(--five);
 }
 
-
-
 .first-dropdown-wrapper .dropdown-item{
     color: white;
     border-bottom: solid #ccd4dc 0.3px;
     background-color: black;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
-
 }
 
 .second-dropdown-wrapper{
     padding: none;
     border: none;
 }
-
 
 .second-dropdown-wrapper .dropdown-item {
     color: white;
@@ -449,6 +403,10 @@ html, body {
     border-top-left-radius: 10px;
 }
 
+#username:hover {
+    background-color: black;
+}
+
 .dropdown-menu.dropdown-menu-right{
     background-color: transparent;
     border:none;
@@ -466,10 +424,6 @@ html, body {
     background-color:var(--five);
 }
 
-#username:hover {
-    background-color: black;
-}
-
 .first-dropdown-wrapper .dropdown-menu :first-child{
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
@@ -481,27 +435,19 @@ html, body {
     border-bottom-left-radius: 10px;
 }
 
-#firstdropdown{
-    background-color: white;
-    border: none;
-}
-
-
-.logOut{
+.logout{
     border-bottom:none;
     border-bottom-right-radius: 10px;
     border-bottom-left-radius: 10px;
 }
 
-
-/* noficationTable */
-
+/* Tables */
 .table-striped {
     border: solid 2px;
     border-color: var(--three);
  }
 
- .tableBody{
+ .table-body{
      background-color: var(--one);
  }
 
@@ -531,54 +477,70 @@ html, body {
     width: 170px;
 }
 
-.sub-list-pen {
-    float: right;
-    color: white;
-    margin-bottom: -20px;
-    padding:5px;
-    margin:none;
-    display:block;
-    border: 2px solid;
-    background-color: var(--two);
-    border-color: var(--three);
-    border-radius: 25px; 
-    position:relative;
- 
+/* Search bar á index  og search síðu */
+.search-list{
+    width:50%;
+    justify-content: center;
+    margin-left: 26%;
+  }
+
+/* heading on search page */
+.table-heading{
+    color:var(--three);
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 20px;
 }
 
-.sub-list-trash {
-    float: right;
-    color:black;
-    padding:5px;
-    margin:none;
-    display:block;
-    border: 2px solid;
-    background-color: var(--four);
-    border-color: var(--three);
-    border-radius: 25px; 
-    position:relative;
- 
+/* Search results */
+ul{
+      margin-bottom: 30px;
+      padding-bottom:30px;
 }
 
-.table-trash{
-    float: right;
-    margin-left: -10px;
-    margin-top: 25px;
-    margin-bottom: none;
-    color: var(--four);
+.index-search{
+    display: flex;
+    width: 50%;
+    height:50%;
+    justify-content: center;
+    text-align: center;
+    justify-items: center;
+    margin-left: 25%;
+    margin-bottom: 30px;
+    background-color:var(--five);
+    border-radius: 4px;
+    border: 1px solid var(--five);
 }
 
-.table-icon{
-    float: right;
-    margin-left: -55px;
-    margin-top: -10px;
-    margin-bottom: none;
-    color: black;
+.user{
+    padding-right: 20px;
+    margin-right:20px;
 }
 
+.skewed {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--one);
+    z-index: 0;
+    transform: skewY(-20deg);
+    transform-origin: top left;
+}
 
-.table-icon:hover {
-    color: var(--five);
+.body{
+    min-height: 88vh;
+    padding-bottom: 100px;
+    position: relative;
+    margin: 0;
+}
+
+#anon-label {
+    margin-top: 1em;
+    margin-left: 1em;
 }
 
 /* Other */
@@ -599,8 +561,7 @@ html, body {
 }
 
 .up-down{
-    margin: none;
-    padding-top: none;
+    margin-top: -8px;
     color:white;
     height: 1.95rem;
 }
@@ -738,84 +699,3 @@ app {
         margin-left: 0;
     }
 }
-
-
-/* skiptir skjánum */
-.skewed {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--one);
-    z-index: 0;
-    transform: skewY(-20deg);
-    transform-origin: top left;
-}
-
-.body{
-    min-height: 88vh;
-    padding-bottom: 100px;
-    position: relative;
-    margin: 0;
-}
-
-#create-anonymous {
-    margin: 0;
-    margin-right: -400px;
-    position: relative;
-    float: right;
-    top: -40px;
-}
-
-#anon-label {
-    display: block;
-    margin-left: 430px;
-}
-
-/* Contact/Hafðu samband */
-
-
-/* Search bar á index  og search síðu */
-.search-list{
-    width:50%;
-    justify-content: center;
-    margin-left: 26%;
-  }
-
-  /* heading on search page */
-  .table-heading{
-      color:var(--three);
-      text-align: center;
-      margin-bottom: 20px;
-      padding-top: 20px;
-}
-
-/* Search results */
-ul{
-      margin-bottom: 30px;
-      padding-bottom:30px;
-}
-
-
-.index-search{
-    display: flex;
-    width: 50%;
-    height:50%;
-    justify-content: center;
-    text-align: center;
-    justify-items: center;
-    margin-left: 25%;
-    margin-bottom: 30px;
-    background-color:var(--five);
-    border-radius: 4px;
-    border: 1px solid var(--five);
-}
-
-.user{
-    padding-right: 20px;
-    margin-right:20px;
-}
-

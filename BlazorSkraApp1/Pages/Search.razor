@@ -8,7 +8,7 @@
 @inject IFormsInfoService formService
 
 
-@if (notificationList == null)
+@if (formList == null)
     {
         <div class="d-flex justify-content-center">
             <div class="spinner-border" role="status">
@@ -19,7 +19,7 @@
 else{   
     <div class="md-form mt-0 index-search">
         <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
-        <button class="btn search-button" @onclick="@SearchLists"><i class="fas fa-search"></i> </button>
+        <button class="btn search-button" @onclick="@SearchLists"><i class="fas fa-search" title="Leita"></i> </button>
     </div>
 
     <div class="search-wrapper container">
@@ -28,15 +28,15 @@ else{
         
         @foreach (var category in categoriesList)
         {
-            <a href="/NotificationList/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
+            <a href="/FormList/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
         }
         </ul>
         <h5 class="table-heading">Eyðublöð</h5>
         <ul class="list-group search-list">
         
-        @foreach (var notification in notificationList)
+        @foreach (var form in formList)
         {
-            <a href="/Notification/@notification.FormId"><li class="list-group-item">@notification.FormName</li></a>
+            <a href="/Form/@form.FormId"><li class="list-group-item">@form.FormName</li></a>
         }
         </ul>
     </div>
@@ -48,8 +48,8 @@ else{
 //searchstring is sent by route from index page.
 public string searchString{ get; set; }
 
-//Holds notification that contains the searchString
-public List<FormsInfo> notificationList;
+//Holds form that contains the searchString
+public List<FormsInfo> formList;
 
 //Holds categories that contains the searchString
 public List<Categories> categoriesList;
@@ -57,14 +57,14 @@ public List<Categories> categoriesList;
 
 protected override async Task OnInitializedAsync()
 {
-  notificationList = await formService.GetSearch(searchString);
+  formList = await formService.GetSearch(searchString);
   categoriesList = await catService.GetSearch(searchString);
 }
 
 async Task SearchLists()
 {
-    //Get list of categories and notifications that match(name) the search string
-    notificationList = await formService.GetSearch(searchString);
+    //Get list of categories and forms that match(name) the search string
+    formList = await formService.GetSearch(searchString);
     categoriesList = await catService.GetSearch(searchString);
     StateHasChanged();
 }

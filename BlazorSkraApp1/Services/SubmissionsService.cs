@@ -57,6 +57,7 @@ namespace BlazorSkraApp1.Services
             return await _context.Submissions
                 .Include(s => s.Submission)
                 .Include(f => f.Form)
+                .OrderByDescending(x => x.Submission.SubmissionDate)
                 .ToListAsync();
         }
     }
