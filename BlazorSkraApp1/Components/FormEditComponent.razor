@@ -73,9 +73,12 @@ else
         {
             <div class="card question-create-card">
                 <div class="card-header">
-                    <button @onclick="(() => RemoveQuestion(question))" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    @if (formInputModel.Questions.Count() > 1)
+                    {
+                        <button @onclick="(() => RemoveQuestion(question))" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    }
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
@@ -167,6 +170,11 @@ else
         categoriesList = await categoriesService.Get();
         questionTypesList = await questionTypesService.Get();
 
+        if (selectedCategoryId != null)
+        {
+            formInputModel.CategoryId = selectedCategoryId;
+        }
+
         if (formIdParameter != null)
         {
             int formId = formIdParameter ?? default(int);
@@ -191,10 +199,13 @@ else
                 formInputModel.Questions.Add(question);
             }
         }
-        else if(selectedCategoryId != null)
+        else
         {
-            formInputModel.CategoryId = selectedCategoryId;
-
+            var question = new QuestionsInputModel();
+            question.Options = new List<OptionsInputModel>();
+            question.Options.Add(new OptionsInputModel());
+            question.Options.Add(new OptionsInputModel());
+            formInputModel.Questions.Add(question);
         }
 
         editContext = new EditContext(formInputModel);
