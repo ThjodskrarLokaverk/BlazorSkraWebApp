@@ -24,6 +24,14 @@
         </div>
     </div>
 }
+
+else if(form == null) //no instance of form
+{
+    <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
+    <meta http-equiv = "refresh" content = "5; url = /" />
+    <img src="Images/meditation-bw.png" class="mediationIMG" alt="noinstance">
+}
+
 else
 {
     <div class="container @faded sub-container">
@@ -181,8 +189,14 @@ else
         //Get current user
         var userName = (await authenticationStateTask).User.Identity.Name;
         currentUser = await adminService.Get(userName);
-
-        submissionInput.FormId = Int16.Parse(id);
+        try
+        {
+            submissionInput.FormId = Int16.Parse(id);
+        }
+        catch(Exception)
+        {
+            form = null;
+        }
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
 
@@ -219,13 +233,14 @@ else
         {
             submissionInput.Date[i] = new RequiredDate();
         }
-        try{
+        try
+        {
            form = await formService.Get(System.Convert.ToInt32(id));
            hasAnonymousOption = form.IsAnonymous;
         }
         catch(Exception)
         {
-            //pass
+            form = null;
         }
     }
 
