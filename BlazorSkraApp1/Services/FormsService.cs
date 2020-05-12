@@ -48,8 +48,9 @@ namespace BlazorSkraApp1.Services
             form.CategoryName = formCategoryAssignment.Categories.CategoryName;
             form.DestinationEmail = formCategoryAssignment.FormsInfo.DestinationEmail;
             form.FormName = formCategoryAssignment.FormsInfo.FormName;
-            
-            foreach(var fetchedQuestion in questions)
+            form.IsAnonymous = formCategoryAssignment.FormsInfo.IsAnonymous;
+
+            foreach (var fetchedQuestion in questions)
             {
                 var question = new QuestionsViewModel();
                 question.QuestionName = fetchedQuestion.Questions.QuestionName;
