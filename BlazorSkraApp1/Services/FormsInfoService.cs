@@ -50,6 +50,7 @@ namespace BlazorSkraApp1.Services
             var form = await _context.FormsInfo.FindAsync(editedForm.FormId);
             form.FormName = editedForm.FormName;
             form.DestinationEmail = editedForm.DestinationEmail;
+            form.IsAnonymous = editedForm.IsAnonymous;
             _context.Entry(form).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return form;

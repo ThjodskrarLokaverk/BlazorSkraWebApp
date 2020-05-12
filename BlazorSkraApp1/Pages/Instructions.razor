@@ -1,4 +1,5 @@
 ﻿@page "/Instructions"
+@using BlazorSkraApp1.Components
 <AuthorizeView Roles="Admin">
     <Authorized>
         <h2>Vísir að notendahandbók fyrir stjórnendur (admins)</h2>
@@ -6,6 +7,13 @@
             Hér er ekki um ítarlega handbók að ræða þar sem farið er í allar aðgerðir kerfisins,
             heldur týndir til nokkrir hlutir sem tímafrekt gæti verið að finna út úr.
         </p>
+        <br />
+        <hr />
+        <h5>Hlekkir á helstu atriði þessarar síðu</h5>
+        <li><AnchorLinkComponent href="#send_to_jira">Sendingar á Jira</AnchorLinkComponent></li>
+        <li><AnchorLinkComponent href="#send_to_trello">Sendingar á Trello</AnchorLinkComponent></li>
+        <li><AnchorLinkComponent href="#send_to_sysadmin">Tilkynning send á Kerfisstjóra</AnchorLinkComponent></li>
+
         <h3>1. Efni sent á ytri kerfi</h3>
         Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
         Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa netfang á hverju verkefni (board),
@@ -13,7 +21,7 @@
         <br />
         <hr />
 
-        <h5>1.1 Sendingar á Jira </h5>
+        <h5 id="send_to_jira">1.1 Sendingar á Jira</h5>
         <p>
             Til að stilla móttöku tölvupósts í Jira hugbúnaði:
             <br />
@@ -28,7 +36,7 @@
         </p>
         <br />
         <hr />
-        <h5>1.2 Sendingar á Trello</h5>
+        <h5 id="send_to_trello">1.2 Sendingar á Trello</h5>
         <p>
             Það er auðvelt að finna leiðbeiningar um þetta á internetinu, en í stuttu máli:
             <br />
@@ -61,12 +69,12 @@
         <img src="Images/Instructions/script-example2.png" alt="Powershell Script, part 2">
         <br />
         <hr />
-        <h3>3. Skilgreiningar ýmissa tölvupóstfanga</h3>
-        <p></p>
+
+        <h3 id="send_to_sysadmin">3. Skilgreiningar á tölvupóstföngum kerfisins</h3>
+        <p>Hér er sýnt hvernig tvö tölvupóstföng eru stillt, þ.e. annars vegar tölvupóstfangið sem kerfið notar til að senda póst og hinsvegar tölvupóstfang kerfisstjóra. 
+        Tölvupóstfang kerfisstjóra er það netfang sem kerfið sendir póst á, á síðunni <a href="/contact">Hafa samband</a></p>
         <img src="Images/Instructions/systems_email.png" alt="Trello software, email handler">
         <br />
-
-
     </Authorized>
 </AuthorizeView>
 @code {
