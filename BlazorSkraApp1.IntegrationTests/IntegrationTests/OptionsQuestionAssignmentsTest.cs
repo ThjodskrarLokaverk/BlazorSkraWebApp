@@ -84,17 +84,17 @@ namespace BlazorSkraApp1.IntegrationTests
             var actualAssignment = await db.OptionsQuestionAssignmnents.FirstOrDefaultAsync(o => o.OptionOrderNum == oon && o.FormId == formid && o.QuestionOrderNum == qon);
             Assert.Equal(expectedAssignment, actualAssignment);
         }
-        /*[Fact]
+        [Fact]
         public async Task DeleteOptionsQuestionAssignmnentAsync_OptionsQuestionAssignmnentIsDeleted()
         {
             // Arrange
             await db.AddRangeAsync(seedAssignments);
             await db.SaveChangesAsync();
-            var oon = 3;
-            var formid = 1;
-            var qon = 1;
-            var deletedOptionsQuestionAssignmnent = new OptionsQuestionAssignmnents(){ OptionOrderNum = oon, FormId = formid, QuestionOrderNum = qon, OptionId = 3};
-            var expectedOptionsQuestionAssignmnent = seedAssignments.Where(o => o.OptionOrderNum != oon && o.FormId == formid && o.QuestionOrderNum == qon).ToList();
+            int optionId = 1;
+
+            var deletedOptionsQuestionAssignmnent = new OptionsQuestionAssignmnents(){ OptionOrderNum = 1, FormId = 1, QuestionOrderNum = 1, OptionId = optionId};
+
+            var expectedOptionsQuestionAssignmnent = seedAssignments.Where(a => a.OptionId != optionId);
 
             // Act
             await service.Delete(deletedOptionsQuestionAssignmnent);
@@ -102,8 +102,36 @@ namespace BlazorSkraApp1.IntegrationTests
             // Assert
             var actualOptionsQuestionAssignmnent = await db.OptionsQuestionAssignmnents.ToListAsync();
             Assert.Equal(
-                expectedOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum),
-            actualOptionsQuestionAssignmnent.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionOrderNum));
-        }*/
+                expectedOptionsQuestionAssignmnent.OrderBy(o => o.OptionId).Select(o => o.OptionId),
+                actualOptionsQuestionAssignmnent.OrderBy(o => o.OptionId).Select(o => o.OptionId));
+        }
+
+        [Fact]
+        public async Task DeleteAllOptionsQuestionAssignmnentsAsync_OptionsQuestionAssignmnentsAreDeleted()
+        {
+            // Arrange
+            await db.AddRangeAsync(seedAssignments);
+            await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
+            await db.SaveChangesAsync();
+            int formId = 1;
+
+            List<OptionsQuestionAssignmnents> deletedOptionsQuestionAssignmnents = new List<OptionsQuestionAssignmnents>()
+            {
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 1, FormId = formId, QuestionOrderNum = 1, OptionId = 1},
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 2, FormId = formId, QuestionOrderNum = 1, OptionId = 2},
+                new OptionsQuestionAssignmnents(){ OptionOrderNum = 3, FormId = formId, QuestionOrderNum = 1, OptionId = 3}
+            };
+
+            var expectedOptionsQuestionAssignmnents = seedAssignments.Where(a => a.FormId != formId);
+
+            // Act
+            await service.DeleteAll(formId);
+        
+            // Assert
+            var actualOptionsQuestionAssignmnents = await db.OptionsQuestionAssignmnents.ToListAsync();
+            Assert.Equal(
+                expectedOptionsQuestionAssignmnents.OrderBy(o => o.FormId).Select(o => o.FormId),
+                actualOptionsQuestionAssignmnents.OrderBy(o => o.FormId).Select(o => o.FormId));
+        }
     }
 }

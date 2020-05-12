@@ -43,10 +43,8 @@ namespace BlazorSkraApp1.IntegrationTests
         [Fact]
         public async Task GetFormInfoAsync_FormInfoIsReturned()
         {
-            var recId = 1;
-            var expectedFormInfo = new FormsInfo(){ FormId = 1, FormName = "FormInfo 1", DestinationEmail = "test1@test.com"};
-
             // Arrange
+            var recId = 1;
             await db.AddRangeAsync(seedFormsInfo);
             await db.SaveChangesAsync(); 
 
@@ -55,7 +53,23 @@ namespace BlazorSkraApp1.IntegrationTests
 
             // Assert
             var actualFormInfo = await db.FormsInfo.FindAsync(recId);
-            Assert.Equal(actualFormInfo, result);
+            Assert.Equal(result, actualFormInfo);
+        }
+
+        [Fact]
+        public async Task GetDestinationEmailAsync_DestinationEmailIsReturned()
+        {
+            // Arrange
+            var recEmail = "test2@test.com";
+            await db.AddRangeAsync(seedFormsInfo);
+            await db.SaveChangesAsync(); 
+
+            // Act
+            var result = await service.GetEmail(recEmail);
+
+            // Assert
+            var actualFormInfo = await db.FormsInfo.FirstOrDefaultAsync(f => f.DestinationEmail == recEmail);
+            Assert.Equal(result, actualFormInfo);
         }
 
         [Fact]
