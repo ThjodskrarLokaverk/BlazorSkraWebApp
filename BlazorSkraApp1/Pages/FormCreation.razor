@@ -45,8 +45,8 @@
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">
-            <CustomHeader>Eyða eyðublaði</CustomHeader>
-            <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+            <CustomHeader>Eyða eyðublaði?</CustomHeader>
+            <CustomBody>Það verður ekki hægt að endurheimta það</CustomBody>
             <CustomButtonText>Eyða</CustomButtonText>
             <CustomCloseButtonText>Hætta við</CustomCloseButtonText> 
         </ConfirmationModalComponent>
@@ -77,16 +77,7 @@
 
     protected void DeleteFormHandler()
     {
-        if (selectedCategoryId != null)
-        {
-            //Navigate to the category user was in?
-            NavigationManager.NavigateTo("/", true);
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/", true);
-        }
-
+        NavigationManager.NavigateTo("/", true);
     }
 
     private async void CreateFormHandler(FormsInputModel formInputModel)
@@ -131,8 +122,6 @@
         //Disable save button
         IsClicked = true;
         StateHasChanged();
-
-        //Gera þetta allt í einu falli í formservice?
 
         //Add formInfo to Db
         FormsInfo formInfo = new FormsInfo();
