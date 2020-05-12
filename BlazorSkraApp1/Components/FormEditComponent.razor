@@ -55,40 +55,41 @@ else
                         <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                     </div>
                 </div>
+                
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Viðtökunetfang</label>
+                    <label class="col-sm-2 col-form-label">Viðtökunetfang
+                        <a href="/Instructions" target="_blank" class="email-info">
+                            <i class="fas fa-info-circle" title="Leiðbeiningar fyrir sendingar með Trello og Jira"></i>
+                        </a>
+                    </label>
                     <div class="col-sm-10">
                         <InputText id="email" class="form-control" placeholder="Skrifaðu hér..." @bind-Value="@formInputModel.DestinationEmail" />
                         <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
                     </div>
                 </div>
-                <div>
-                    <input type="checkbox" @onchange="@((eventArgs) => SaveAnonymousValue((bool)eventArgs.Value))" />
-                    <label id="anon-label" >Leyfa svaranda að svara nafnlaust</label>
-                </div>
+                <label id="anon-label" >Leyfa svaranda að svara nafnlaust</label>
+                <input id="anon-check" type="checkbox" @onchange="@((eventArgs) => SaveAnonymousValue((bool)eventArgs.Value))" />
             </div>
         </div>
-
         <!-- Questions input fields -->
         @foreach (var question in formInputModel.Questions)
         {
+            <div class="vl"></div>
             <div class="card question-create-card">
                 <div class="card-header">
-                    <button @onclick="(() => RemoveQuestion(question))" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button @onclick="(() => RemoveQuestion(question))" type="button" id="remove-question" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="card-body">
-                    <div class="form-group row">
-                        <label class="col-sm-2 col-form-label">Titill spurningar</label>
-                        <div class="col-sm-10">
-                            <InputText placeholder="Skrifaðu hér..." type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label>Titill spurningar</label>
+                            <InputText placeholder="Skrifaðu hér.." type="text" id="question-name" class="form-control" @bind-Value="@question.QuestionName" />
                             <ValidationMessage For="@(() => question.QuestionName)" />
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="question-type" class="col-sm-2 col-form-label">Spurningategund</label>
-                        <div class="col-sm-10">
+                        <div class="form-group col">
+                            <label for="question-type">Spurningategund</label>
                             <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
                                 <option value="">Veldu tegund</option>
                                 @if (questionTypesList == null)
@@ -106,28 +107,28 @@ else
                             <ValidationMessage For="@(() => question.QuestionTypeId)" />
                         </div>
                     </div>
-                    <hr>
+                    
                     <!-- Options input fields -->
                     @if (question.QuestionTypeId == "4" || question.QuestionTypeId == "5")
                     {
                         @foreach (var option in question.Options)
                         {
-                            <div class="form-group row">
+                            <div class="form-group row create-option">
                                 <label class="col-sm-2 col-form-label">Valkostur</label>
                                 <input id="radio-create" type="radio" disabled>
                                 <div class="col-sm-4">
-                                    <InputText id="optionName" class="form-control" placeholder="Skrifaðu hér..." @bind-Value="@option.OptionName" />
+                                    <InputText id="option-name" class="form-control" placeholder="Skrifaðu hér.." @bind-Value="@option.OptionName" />
                                     <ValidationMessage For="@(() => option.OptionName)" />
                                 </div>
                                 @if (question.Options.Count() > 2)
                                 {
-                                    <button @onclick="(() => RemoveOption(question, option))" type="button" class="btn btn-link">
-                                        <i class="fas fa-trash trash-create" title="Trash"></i>
+                                    <button @onclick="(() => RemoveOption(question, option))" type="button" class="close">
+                                        <span aria-hidden="true" title="Eyða">&times;</span>
                                     </button>
                                 }
                             </div>
                         }
-                        <div class="form-group row">
+                        <div class="form-group row create-option">
                             <button @onclick="(() => AddOption(question))" data-toggle="modal" type="button" class="btn approve-btn add-option">
                                 <i class="far fa-plus-square"></i>Bæta við valkost
                             </button>
@@ -136,13 +137,18 @@ else
                 </div>
             </div>
         }
+        <div class="vl"></div>
         <div class="creation-buttons">
-            <button @onclick="(() => AddQuestion())" type="button" class="btn approve-btn add-question">
-                <i class="far fa-plus-square"></i>Bæta við spurningu
-            </button>
-            
+            <div class="left-div"></div>
+            <div class="add-question">
+                <button @onclick="(() => AddQuestion())" type="button" class="btn approve-btn">
+                    <i class="far fa-plus-square"></i>Bæta við spurningu
+                </button>
+            </div>
+            <div class="submit-creation">
+                <button type="submit" class="btn btn-light new-form">@CustomButtonText</button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-light new-form">@CustomButtonText</button>
     </EditForm>
     </div>
 }
