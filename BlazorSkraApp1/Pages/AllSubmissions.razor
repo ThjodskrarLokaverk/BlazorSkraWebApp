@@ -34,6 +34,9 @@ else
                     <th class="text-uppercase">Innsent
                         <button class="btn up-down" @onclick="(() => SortDate())"><i class="fas fa-sort-alpha-up"></i> </button>
                     </th>
+                    <th class="text-uppercase">Númer innsendingar
+                        <button class="btn up-down" @onclick="(() => SortSubmissionId())"><i class="fas fa-sort-alpha-up"></i> </button>
+                    </th>
                 </tr>
             </thead>
             <tbody class="table-body">
@@ -45,6 +48,7 @@ else
                             <td>@submission.Form.FormName</td>
                             <td>@submission.Submission.UserId</td>
                             <td>@submission.Submission.SubmissionDate.ToString("dd/MM/yy")</td>
+                            <td>@submission.Submission.SubmissionId</td>
                         </tr>
                     }
                 }
@@ -60,6 +64,7 @@ else
     bool isSortedFormName = false;
     bool isSortedUserEmail = false;
     bool isSortedDate = false;
+    bool isSortedId = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -125,6 +130,22 @@ else
         {
             submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionDate).ToList();
             isSortedDate = false;
+        }
+        alreadyPosted = new List<Submissions>();
+        StateHasChanged();
+    }
+
+    void SortSubmissionId()
+    {
+        if(!isSortedId)
+        {
+            submissionList = submissionList.OrderBy(x => x.Submission.SubmissionId).ToList();
+            isSortedId = true;
+        }
+        else
+        {
+            submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionId).ToList();
+            isSortedId = false;
         }
         alreadyPosted = new List<Submissions>();
         StateHasChanged();
