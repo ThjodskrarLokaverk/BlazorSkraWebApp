@@ -16,14 +16,13 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal" aria-label="Submit" @onclick="OnClick">@CustomButtonText</button>
-                <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">Hætta við</button>
+                <button type="button" class="btn cancel-btn" data-dismiss="modal" aria-label="Close">@CustomCloseButtonText</button>
             </div>
         </div>
     </div>
 </div>
 
 @code {
-    //Runs a function passed as a parameter by the parent component
     [Parameter]
     public EventCallback<MouseEventArgs> OnClick { get; set; }
     [Parameter]
@@ -32,4 +31,6 @@
     public RenderFragment CustomBody { get; set; }
     [Parameter]
     public RenderFragment CustomButtonText { get; set; }
+    [Parameter]
+    public RenderFragment CustomCloseButtonText { get; set; }
 }

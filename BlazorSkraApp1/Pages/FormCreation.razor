@@ -20,8 +20,8 @@
     @if (!formCreated)
     {
         <!-- Create form -->
-        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId">
-            <CustomButtonText>Búa til eyðublað</CustomButtonText>
+        <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId" formParameter="createdForm">
+            <CustomButtonText>Forskoða eyðublað</CustomButtonText>
         </FormEditComponent>
     }
 
@@ -29,8 +29,18 @@
     {
         <!-- Display the created Form -->
         <FormViewComponent Form="@createdForm"></FormViewComponent>
-        <button @onclick="SaveForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
-        <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
+        @if (IsClicked)
+        {
+            <button type="button" class="btn approve-btn" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Í vinnslu...
+            </button>
+        }
+        else
+        {
+            <button @onclick="SaveForm" type="button" class="btn approve-btn">Birta eyðublað</button>
+        }
+        <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
         <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
         <!-- Delete created form popup -->
@@ -38,6 +48,7 @@
             <CustomHeader>Eyða eyðublaði</CustomHeader>
             <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
             <CustomButtonText>Eyða</CustomButtonText>
+            <CustomCloseButtonText>Hætta við</CustomCloseButtonText> 
         </ConfirmationModalComponent>
     }
 
@@ -54,11 +65,10 @@
 @code {
     [Parameter]
     public string selectedCategoryId{ get; set; }
-
-    Categories currentCategory = new Categories();
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
+    private bool IsClicked;
 
     private void EditForm()
     {
@@ -67,7 +77,16 @@
 
     protected void DeleteFormHandler()
     {
-        NavigationManager.NavigateTo("/", true);
+        if (selectedCategoryId != null)
+        {
+            //Navigate to the category user was in?
+            NavigationManager.NavigateTo("/", true);
+        }
+        else
+        {
+            NavigationManager.NavigateTo("/", true);
+        }
+
     }
 
     private async void CreateFormHandler(FormsInputModel formInputModel)
@@ -109,6 +128,10 @@
     //Save form to Db
     private async void SaveForm()
     {
+        //Disable save button
+        IsClicked = true;
+        StateHasChanged();
+
         //Gera þetta allt í einu falli í formservice?
 
         //Add formInfo to Db
@@ -158,6 +181,7 @@
         }
 
         formPublished = true;
+        IsClicked = false;
         StateHasChanged();
     }
 }

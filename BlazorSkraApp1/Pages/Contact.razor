@@ -87,7 +87,7 @@
             //receiver of email
             message.To.Add(new MailboxAddress("bbaldvinsson@gmail.com"));
             message.Subject = "Athugasemd/Fyrirspurn " + System.DateTime.Now.ToShortDateString() + " Frá: " + currentUser.Email;
-            //aðaltextinn byggður upp
+            //Main text build up
             message.Body = new TextPart("html")
             {
                 Text = "Message: " + mailForm.Body
@@ -96,12 +96,11 @@
             using (var client = new SmtpClient())
             {
                 client.Connect("smtp.gmail.com", 587);
-                //notendanafn og lykilorð á pósthólfinu sem er sent úr
+                //Email of the sender
                 client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
                 client.Send(message);
                 client.Disconnect(false);
-                //Notandinn sendur á heimasíðuna eftir að hafa sent póst
-                //Hægt að senda hann t.d á confirmation page seinna meir
+                //User sent to home page after having received a notification
                 faded = "faded";
                 confirmation = true;
                 StateHasChanged();

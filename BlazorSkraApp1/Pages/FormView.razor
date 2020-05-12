@@ -4,7 +4,8 @@
 @using BlazorSkraApp1.Models.InputModels
 @using System
 @using BlazorSkraApp1.Components
-@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Identity;
+@inject NavigationManager NavigationManager
 @inject IQuestionsFormAssignmentService questionservice
 @inject IOptionsQuestionAssignmnentsService optionservice
 @inject IOptionsService oservice
@@ -23,6 +24,20 @@
             <span class="sr-only">Augnablik...</span>
         </div>
     </div>
+}
+else if (form == null) //no instance of form
+{
+    <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
+    <meta http-equiv="refresh" content="5; url = /" />
+    <img src="Images/meditation-bw.png" class="mediationIMG" alt="noinstance">
+}
+else if (confirmation)
+{
+    <div class="d-flex justify-content-center">
+        <h2>Eyðublaðinu hefur verið komið til skila</h2>
+    </div>
+    <br />
+    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Aftur á upphafssíðu</a>
 }
 else
 {
@@ -87,7 +102,7 @@ else
             <div class="container">
                 <div class="card">
                     <div class="card-body form-check">
-                        @if(hasAnonymousOption)
+                        @if (hasAnonymousOption)
                         {
                             <div class="card-body form-check">
                                 <input class="check-box @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
@@ -105,42 +120,14 @@ else
     <br>
 }
 
-@if (confirmation)
-{
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> Staðfesting</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Svar þitt hefur verið móttekið.</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
 @if (_subFail)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" id="modal-content-exception">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Svar komst ekki til skila, vinsamlegast reyndur aftur.</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ConfirmationModalComponent OnClick="SubmissionFailHandler">
+        <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
+        <CustomBody>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
+        <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
+        <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
+    </ConfirmationModalComponent>
 }
 
 @code{
@@ -181,8 +168,14 @@ else
         //Get current user
         var userName = (await authenticationStateTask).User.Identity.Name;
         currentUser = await adminService.Get(userName);
-
-        submissionInput.FormId = Int16.Parse(id);
+        try
+        {
+            submissionInput.FormId = Int16.Parse(id);
+        }
+        catch (Exception)
+        {
+            form = null;
+        }
         questionsList = await questionservice.Get(submissionInput.FormId);
         optionsList = await optionservice.Get(submissionInput.FormId);
 
@@ -219,25 +212,28 @@ else
         {
             submissionInput.Date[i] = new RequiredDate();
         }
-        try{
-           form = await formService.Get(System.Convert.ToInt32(id));
-           hasAnonymousOption = form.IsAnonymous;
-        }
-        catch(Exception)
+        try
         {
-            //pass
+            form = await formService.Get(System.Convert.ToInt32(id));
+            hasAnonymousOption = form.IsAnonymous;
+        }
+        catch (Exception)
+        {
+            form = null;
         }
     }
 
     protected async Task SelectedDateChanged(int questionTypeOrderNum, string name)
     {
-        string str = await jsRuntime.InvokeAsync<string>("GetSelectedDate", name);
+        string str = await jsRuntime.InvokeAsync<string>
+            ("GetSelectedDate", name);
         submissionInput.Date[questionTypeOrderNum].Value = str;
     }
 
     private async Task SaveCheckboxValue(int questionTypeOrderNum, string name)
     {
-        var value = await jsRuntime.InvokeAsync<object>("GetCheckedBoxes", name);
+        var value = await jsRuntime.InvokeAsync<object>
+            ("GetCheckedBoxes", name);
         submissionInput.Checkbox[questionTypeOrderNum].Value = value.ToString();
     }
 
@@ -324,5 +320,10 @@ else
         {
             _subFail = true;
         }
+    }
+
+    private void SubmissionFailHandler()
+    {
+        NavigationManager.NavigateTo("/", true);
     }
 }

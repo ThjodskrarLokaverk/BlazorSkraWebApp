@@ -80,11 +80,12 @@
         <UserAdminRoleToggleComponent selectedUser="selectedUser" OnMakeAdmin="MakeAdminHandler" OnRemoveAdmin="RemoveAdminHandler"></UserAdminRoleToggleComponent>
 
         @* Delete Category popup modal *@
-        <ConfirmationModalComponent OnClick="DeleteUser">
-            <CustomHeader>Eyða notanda</CustomHeader>
-            <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
-            <CustomButtonText>Eyða</CustomButtonText>
-        </ConfirmationModalComponent>
+<ConfirmationModalComponent OnClick="DeleteUser">
+    <CustomHeader>Eyða notanda</CustomHeader>
+    <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
+    <CustomButtonText>Eyða</CustomButtonText>
+    <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
+</ConfirmationModalComponent>
     }
     @if (showPopup)
     {

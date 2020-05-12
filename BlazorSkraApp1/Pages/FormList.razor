@@ -16,6 +16,13 @@
         </div>
     </div>
 }
+
+else if(category == null) //no instance of form
+{
+    <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
+    <meta http-equiv = "refresh" content = "5; url = /" />
+    <img src="Images/meditation-bw.png" class="mediationIMG" alt="noinstance">
+}
 else
 {
     <div class="md-form mt-0 index-search">
@@ -84,6 +91,7 @@ else
         <CustomHeader>Eyða eyðublaði</CustomHeader>
         <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
+        <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
     </ConfirmationModalComponent>
 }
 
@@ -102,8 +110,15 @@ else
         selectedCategoryAssignment = new CategoriesAssignments();
         selectedCategoryAssignment.FormsInfo = new FormsInfo();
 
-        categoryId = Int16.Parse(id);
-
+        try
+        {
+            categoryId = Int16.Parse(id);
+        }
+        catch(Exception)
+        {
+            // if parameter sent by route is not convertable to int
+            category = null;
+        }
         //Get info about the category
         category = await catService.Get(categoryId);
 
@@ -113,7 +128,8 @@ else
     }
     private void SelectCategoryAssignment(CategoriesAssignments categoryassignment)
     {
-        try {
+        try 
+        {
             selectedCategoryAssignment = categoryassignment;
         }
         catch(Exception)

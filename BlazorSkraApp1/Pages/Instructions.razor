@@ -1,47 +1,47 @@
 ﻿@page "/Instructions"
-<h3>Instructions</h3>
-
-
-
 <AuthorizeView Roles="Admin">
     <Authorized>
-        <h3>Notendahandbók fyrir stjórnendur (admins)</h3>
-        <h4>Efni sent á ytri kerfi</h4>
+        <h2>Vísir að notendahandbók fyrir stjórnendur (admins)</h2>
+        <p>
+            Hér er ekki um ítarlega handbók að ræða þar sem farið er í allar aðgerðir kerfisins,
+            heldur týndir til nokkrir hlutir sem tímafrekt gæti verið að finna út úr.
+        </p>
+        <h3>1. Efni sent á ytri kerfi</h3>
         Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
         Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa netfang á hverju verkefni (board),
         og tölvupóstur sem sendur er inn á verkefni stofnast sem atriði (task).
         <br />
         <hr />
 
-        <h5>Sendingar á Jira </h5>
+        <h5>1.1 Sendingar á Jira </h5>
         <p>
             Til að stilla móttöku tölvupósts í Jira hugbúnaði:
+            <br />
             1. Farið á Jira stillinga síðu (administration site).
+            <br />
             2. Opnið "settings" og veljið system.
+            <br />
             3. Veljið "Incomming mail / Add mail handler".
+            <br />
             4. Stillið hvað það ætti að gera, s.s. að stofna nýtt atriði (task) á Jira borðinu.
             <img src="Images/Instructions/email_Jira.png" alt="Jira software, email handler" height="407" width="800">
-
-
-
         </p>
-
-
         <br />
         <hr />
-        <h5>Sendingar á Trello</h5>
+        <h5>1.2 Sendingar á Trello</h5>
         <p>
             Það er auðvelt að finna leiðbeiningar um þetta á internetinu, en í stuttu máli:
+            <br />
             Til að stilla móttöku tölvupósts í Trello hugbúnaði:
+            <br />
             1. Farið inn á viðkomandi Trello board.
+            <br />
             2. Stillið hvar tölvupósturinn á að birtast, þ.e. í hvaða lista á borðinu (væntanlega í lista yfir óleyst verkefni)
-
         </p>
         <img src="Images/Instructions/email_TrelloBoard.png" alt="Trello software, email handler">
-
         <br />
         <hr />
-        <h5>Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h5>
+        <h3>2. Task scheduler til að eyða færslum (eldri en 7 daga gömlum)</h3>
         <p>
             Ýmsar leiðir eru notaðar til þess að keyra viðhaldskeyrslur á gagnagrunna. Þetta kerfi notar Microsoft SQL gagnagrunn.
             Þar sem kerfið keyrir á fríum aðgangi að Azure gagnaveitunni, þá eru ekki margar leiðir færar við að keyra viðhaldsþjónustur,
@@ -53,13 +53,19 @@
         <img src="Images/Instructions/win-task-scheduler-general.png" alt="Windows Scheduler General">
         <p>Ath: Mikilvægt er að stilla eftirtaldar breytur: Að user account hafi "local admin" réttindi á tölvunni sem keyrir keyrsluna. - Að stilla á "Run whether the user is logged on or not, til þess að keyrslan keyri ekki bara þegar ákveðinn notandi er innskráður á tölvu, "Run with highest privilidges" ætti ekki að þurfa, en skaðar ekki. Og að lokum, "Configure for": Veljið þar stýrikerfið sem á að keyra aðgerðina. Í þessu tilfelli er Windows 10 valið.   </p>
         <img src="Images/Instructions/win-task-scheduler-action.png" alt="Windows Scheduler Actions">
-        <p>Ath: Á netinu eru sýndar ýmsar útgáfur af því hvernig tilgreina skal að forritið PowerShell skuli keyra ákveðið handrit (script). Svona fengum við það til að keyra, og mælum því með þessum stillingum.</p>
         <br />
         <hr />
-
-        <p>Hér að neðan er dæmi um scriptu sem eyðir færslu úr grunninum að 7 dögum liðnum. Þessa scriptu má keyra með windows task scheduler, líkt og nefnt er hér að ofan.</p>
+        <p>Ath: Á netinu eru sýndar ýmsar útgáfur af því hvernig tilgreina skal að skelin PowerShell geti keyrt ákveðið handrit (script). Svona fengum við það til að keyra, og mælum því með þessum stillingum.</p>
+        <p>Hér að neðan er dæmi um handrit (script) sem eyðir færslu úr grunninum að 7 dögum liðnum. Þetta handrit má keyra með "windows task scheduler" (sjá texta hér f. ofan um hvernig stilla má keyrslutíðni og slíkt).</p>
         <img src="Images/Instructions/script-example1.png" alt="Powershell Script, part 1">
         <img src="Images/Instructions/script-example2.png" alt="Powershell Script, part 2">
+        <br />
+        <hr />
+        <h3>3. Skilgreiningar ýmissa tölvupóstfanga</h3>
+        <p></p>
+        <img src="Images/Instructions/systems_email.png" alt="Trello software, email handler">
+        <br />
+
 
     </Authorized>
 </AuthorizeView>

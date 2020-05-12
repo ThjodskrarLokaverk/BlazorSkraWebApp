@@ -25,9 +25,15 @@ else
         <table class="table table-striped table-md">
             <thead id="user-thead">
                 <tr>
-                    <th class="text-uppercase">Nafn eyðublaðs</th>
-                    <th class="text-uppercase">Notandi</th>
-                    <th class="text-uppercase">Innsent</th>
+                    <th class="text-uppercase">Nafn eyðublaðs
+                        <button class="btn up-down" @onclick="(() => SortFormName())"><i class="fas fa-sort-alpha-up"></i> </button>
+                    </th>
+                    <th class="text-uppercase">Notandi
+                        <button class="btn up-down" @onclick="(() => SortUserEmail())"><i class="fas fa-sort-alpha-up"></i> </button>
+                    </th>
+                    <th class="text-uppercase">Innsent
+                        <button class="btn up-down" @onclick="(() => SortDate())"><i class="fas fa-sort-alpha-up"></i> </button>
+                    </th>
                 </tr>
             </thead>
             <tbody class="table-body">
@@ -51,6 +57,10 @@ else
 @code{
     List<Submissions> alreadyPosted = new List<Submissions>();
     List<Submissions> submissionList;
+    bool isSortedFormName = false;
+    bool isSortedUserEmail = false;
+    bool isSortedDate = false;
+
     protected override async Task OnInitializedAsync()
     {
         submissionList = await submissionservice.Get();
@@ -70,5 +80,53 @@ else
 
         alreadyPosted.Add(s);
         return true;
+    }
+
+    void SortFormName()
+    {
+        if(!isSortedFormName)
+        {
+            submissionList = submissionList.OrderBy(x => x.Form.FormName).ToList();
+            isSortedFormName = true;
+        }
+        else
+        {
+            submissionList = submissionList.OrderByDescending(x => x.Form.FormName).ToList();
+            isSortedFormName = false;
+        }
+        alreadyPosted = new List<Submissions>();
+        StateHasChanged();
+    }
+
+    void SortUserEmail()
+    {
+        if(!isSortedUserEmail)
+        {
+            submissionList = submissionList.OrderBy(x => x.Submission.UserId).ToList();
+            isSortedUserEmail = true;
+        }
+        else
+        {
+            submissionList = submissionList.OrderByDescending(x => x.Submission.UserId).ToList();
+            isSortedUserEmail = false;
+        }
+        alreadyPosted = new List<Submissions>();
+        StateHasChanged();
+    }
+
+    void SortDate()
+    {
+        if(!isSortedDate)
+        {
+            submissionList = submissionList.OrderBy(x => x.Submission.SubmissionDate).ToList();
+            isSortedDate = true;
+        }
+        else
+        {
+            submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionDate).ToList();
+            isSortedDate = false;
+        }
+        alreadyPosted = new List<Submissions>();
+        StateHasChanged();
     }
 }
