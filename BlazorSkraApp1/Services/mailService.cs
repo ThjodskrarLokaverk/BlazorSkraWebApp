@@ -122,6 +122,7 @@ namespace BlazorSkraApp1.Services
                    emailBody += "Svar: " + answer.Answer + newLine + newLine;  
                 }
             }
+            emailBody += "Númer innsendingar: " + submissionId;
             sendMail();
         }
 

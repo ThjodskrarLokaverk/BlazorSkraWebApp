@@ -306,13 +306,26 @@ html, body {
 }
 
 /* Form create/edit */
+.email-info {
+    color: var(--five);
+}
+
+.email-info:hover {
+    color: grey;
+}
+
 #radio-create {
     margin-top: 8px;
     margin-left: -15px;
 }
 
 .question-create-card {
-    margin-top: 5px;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.card-header {
+    background-color: white;
 }
 
 .info-card {
@@ -320,27 +333,43 @@ html, body {
     border-radius: 4px;
 }
 
-.trash-create {
-    color: var(--four);
-    border-radius: 10px;
+.create-option {
+    margin-left: -8px;
 }
 
-.trash-create:hover {
-    color: var(--three);
+#option-name {
+    margin-left: 0.5em;
 }
 
 .add-option {
-    margin-left: 10px;
+    margin-left: 12px;
 }
 
-.creation-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.vl {
+    border-right: 1.5px solid black;
+    height: 15px;
+    width: 50%
+}
+
+.add-question {
+    display: inline-block;
+    width: 33%;
+    text-align: center;
+}
+
+.left-div {
+    display: inline-block;
+    width: 33%;
+}
+
+.submit-creation {
+    display: inline-block;
+    text-align: end;
+    width: 33%;
 }
 
 .new-form {
-    float: right;
+    border-radius: 10px;
 }
 
 /* Dropdown menu */
@@ -540,7 +569,10 @@ ul{
 
 #anon-label {
     margin-top: 1em;
-    margin-left: 1em;
+}
+
+#anon-check {
+    margin-left: 0.5em;
 }
 
 /* Other */
@@ -568,16 +600,19 @@ ul{
 .approve-btn {
     background-color: var(--five);
     color: white;
+    border-radius: 10px;
 }
 
 .cancel-btn {
     background-color: var(--two);
     color: white;
+    border-radius: 10px;
 }
 
 .delete-btn {
     background-color: var(--four);
     color: white;
+    border-radius: 10px;
 }
 
 app {
