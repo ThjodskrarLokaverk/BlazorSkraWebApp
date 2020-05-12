@@ -79,7 +79,7 @@ else
                 <div class="card-header">
                     @if (formInputModel.Questions.Count() > 1)
                     {
-                        <button @onclick="(() => RemoveQuestion(question))" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button @onclick="(() => RemoveQuestion(question))" type="button" id="remove-question" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     }
@@ -211,7 +211,10 @@ else
     {
         if(check)
         {
-            formInputModel.IsAnonymous = check;
+            formInputModel.IsAnonymous = true;
+        }
+        else {
+            formInputModel.IsAnonymous = false;
         }
     }
 
