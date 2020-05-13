@@ -1,4 +1,4 @@
-﻿@page "/Form/{id}"
+﻿@page "/eydublad/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -17,6 +17,8 @@
 @inject IAdminService adminService
 @inject IFormsInfoService formService
 
+@* *** A form created by an admin for users to fill out and submit *** *@
+
 @if (questionsList == null)
 {
     <div class="d-flex justify-content-center">
@@ -33,16 +35,15 @@ else if (form == null) //no instance of form
 }
 else if (confirmation)
 {
-    <div class="d-flex justify-content-center">
-        <h2>Eyðublaðinu hefur verið komið til skila</h2>
-    </div>
-    <br />
-    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Aftur á upphafssíðu</a>
+    <br>
+    <h2 style="text-align:center">Innsendingu hefur verið komið til skila.</h2>
+    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms.</h5>
+    <meta http-equiv="refresh" content="5; url = /" />
 }
 else
 {
-    <div class="container @faded sub-container">
-        <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
+    <div class="container sub-container">
+        <EditForm EditContext="editContext" OnSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
             <h3 class="form-list-heading" style="color:black"> @form.FormName</h3>
             @foreach (var question in questionsList)
@@ -56,7 +57,8 @@ else
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
                                     <label>
-                                        <InputRadioComponent SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                        <InputRadioComponent SelectedValue="@option.Options.OptionName"
+                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                         @option.Options.OptionName
                                     </label><br>
                                 }
@@ -64,12 +66,14 @@ else
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
-                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
                             {
-                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
@@ -87,7 +91,8 @@ else
                             {
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
-                                <input class="form-control date-picker date-type" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                <input class="form-control date-picker date-type"
+                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
@@ -105,11 +110,12 @@ else
                         @if (hasAnonymousOption)
                         {
                             <div class="card-body form-check">
-                                <input class="check-box @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
+                                    @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
-                        <button type="submit" class="@faded submit-form btn approve-btn">Senda inn</button>
+                        <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
                     </div>
                 </div>
             </div>
@@ -143,6 +149,8 @@ else
     public bool anonymous { get; set; }
     private bool hasAnonymousOption;
 
+    private EditContext editContext;
+
     //Listar til þess að birta eyðublað
     List<QuestionsFormAssignments> questionsList;
     List<OptionsQuestionAssignmnents> optionsList;
@@ -150,16 +158,10 @@ else
     //Breytur til þess að skrifa í gagnagrunninn
     SubmissionsInfo submissionsInfo = new SubmissionsInfo();
     Submissions submission = new Submissions();
-
-    //Til þess að fylla inn í SubmissionInputModel
     SubmissionInputModel submissionInput = new SubmissionInputModel();
 
-    //Confirmation popup
-    bool confirmation = false;
-    //Class til þess að lækka opacity þegar það er skilað
-    string faded = "";
-
-    bool _subFail = false;
+    private bool confirmation = false;
+    private bool _subFail = false;
 
     FormsInfo form = new FormsInfo();
 
@@ -221,6 +223,7 @@ else
         {
             form = null;
         }
+        editContext = new EditContext(submissionInput);
     }
 
     protected async Task SelectedDateChanged(int questionTypeOrderNum, string name)
@@ -237,83 +240,86 @@ else
         submissionInput.Checkbox[questionTypeOrderNum].Value = value.ToString();
     }
 
-    void updateAnon(bool anon)
+    void UpdateAnon(bool anon)
     {
         anonymous = anon;
     }
 
     private async void SubmitForm()
     {
-        try
+        if(!editContext.Validate())
         {
-            //Create a submission in the database
-            submissionsInfo.UserId = currentUser.UserName;
-            DateTime dt = DateTime.UtcNow;
-            submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
-            submissionsInfo = await subinfoservice.Add(submissionsInfo);
-
-
-            //Save the Id of the form and the submission with all answers
-            submission.FormId = submissionInput.FormId;
-            submission.SubmissionId = submissionsInfo.SubmissionId;
-
-
-            //Save the answer to each question and save to database
-            foreach (var question in questionsList)
+            await jsRuntime.InvokeAsync<object>("ScrollToTop");
+        }
+        else {
+            try
             {
-                submission.QuestionsQuestionId = question.QuestionId;
-                submission.QuestionOrderNum = question.QuestionOrderNum;
-                // Short text
-                if (question.Questions.QuestionTypes.QuestionTypeId == 1)
-                {
-                    submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.Questions.QuestionTypes.QuestionTypeId == 3)
-                {
-                    submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.Questions.QuestionTypes.QuestionTypeId == 4)
-                {
-                    submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.Questions.QuestionTypes.QuestionTypeId == 5)
-                {
-                    submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.Questions.QuestionTypes.QuestionTypeId == 6)
-                {
-                    submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
-                }
+                //Create a submission in the database
+                submissionsInfo.UserId = currentUser.UserName;
+                DateTime dt = DateTime.UtcNow;
+                submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
+                submissionsInfo = await subinfoservice.Add(submissionsInfo);
 
-                //Save answer to the question in the database
-                await subservice.Add(submission);
+                //Save the Id of the form and the submission with all answers
+                submission.FormId = submissionInput.FormId;
+                submission.SubmissionId = submissionsInfo.SubmissionId;
+
+                //Save the answer to each question and save to database
+                foreach (var question in questionsList)
+                {
+                    submission.QuestionsQuestionId = question.QuestionId;
+                    submission.QuestionOrderNum = question.QuestionOrderNum;
+                    // Short text
+                    if (question.Questions.QuestionTypes.QuestionTypeId == 1)
+                    {
+                        submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.Questions.QuestionTypes.QuestionTypeId == 3)
+                    {
+                        submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.Questions.QuestionTypes.QuestionTypeId == 4)
+                    {
+                        submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.Questions.QuestionTypes.QuestionTypeId == 5)
+                    {
+                        submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.Questions.QuestionTypes.QuestionTypeId == 6)
+                    {
+                        submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
+                    }
+
+                    //Save answer to the question in the database
+                    await subservice.Add(submission);
+                }
+                SendMail(currentUser.Email);
+                confirmation = true;
+                StateHasChanged();
             }
-            sendMail(currentUser.Email);
-            faded = "faded";
-            confirmation = true;
-            StateHasChanged();
-        }
-        catch (System.InvalidOperationException)
-        {
-            // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
-            _subFail = false;
-            //bæta við í logfile?
-            StateHasChanged();
-        }
-        catch (Exception)
-        {
-            //unknown exception
-            _subFail = true;
-            StateHasChanged();
+            catch (System.InvalidOperationException)
+            {
+                // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
+                _subFail = false;
+                //bæta við í logfile?
+                StateHasChanged();
+            }
+            catch (Exception)
+            {
+                //unknown exception
+                _subFail = true;
+                StateHasChanged();
+            }
         }
     }
 
-    private void sendMail(string userEmail)
+    private void SendMail(string userEmail)
     {
         try
         {
             var FormId = Int16.Parse(id);
-            mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
+            mailservice.MailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
             StateHasChanged();
         }
         catch (Exception)

@@ -25,7 +25,7 @@ namespace BlazorSkraApp1.Services
     public class AdminService : IAdminService
     {
         private readonly ApplicationDbContext _context;
-        private UserManager<IdentityUser> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
 
         public AdminService(ApplicationDbContext context, UserManager<IdentityUser> userManager)
         {

@@ -1,5 +1,5 @@
-@page "/FormCreation"
-@page "/FormCreation/{selectedCategoryId}"
+@page "/nytt-eydublad"
+@page "/nytt-eydublad/{selectedCategoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -17,6 +17,8 @@
 @inject IOptionsService optionsService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using Serilog
+
+@* *** A form for admin to create and publish new forms *** *@
 
 <AuthorizeView Roles="Admin" Context="AuthContext">
     @if (!formCreated)
@@ -47,8 +49,8 @@
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">
-            <CustomHeader>Eyða eyðublaði</CustomHeader>
-            <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
+            <CustomHeader>Eyða eyðublaði?</CustomHeader>
+            <CustomBody>Það verður ekki hægt að endurheimta það</CustomBody>
             <CustomButtonText>Eyða</CustomButtonText>
             <CustomCloseButtonText>Hætta við</CustomCloseButtonText> 
         </ConfirmationModalComponent>
@@ -66,7 +68,7 @@
 
 @code {
     [Parameter]
-    public string selectedCategoryId{ get; set; }
+    public string selectedCategoryId { get; set; }
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     protected FormsViewModel createdForm;
@@ -87,16 +89,7 @@
 
     protected void DeleteFormHandler()
     {
-        if (selectedCategoryId != null)
-        {
-            //Navigate to the category user was in?
-            NavigationManager.NavigateTo("/", true);
-        }
-        else
-        {
-            NavigationManager.NavigateTo("/", true);
-        }
-
+        NavigationManager.NavigateTo("/", true);
     }
 
     private async void CreateFormHandler(FormsInputModel formInputModel)
@@ -141,8 +134,6 @@
         //Disable save button
         IsClicked = true;
         StateHasChanged();
-
-        //Gera þetta allt í einu falli í formservice?
 
         //Add formInfo to Db
         FormsInfo formInfo = new FormsInfo();

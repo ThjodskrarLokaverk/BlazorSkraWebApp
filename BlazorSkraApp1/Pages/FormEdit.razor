@@ -1,4 +1,4 @@
-﻿@page "/FormEdit/{id}"
+﻿@page "/breyta-eydubladi/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -15,42 +15,50 @@
 @inject IQuestionsService questionsService
 @inject IOptionsService optionsService
 
-    <AuthorizeView Roles="Admin" Context="AuthContext">
-        @if (!formEdited)
+<AuthorizeView Roles="Admin" Context="AuthContext">
+    @if (!formEdited)
+    {
+        <FormEditComponent OnEdit="EditFormHandler" formIdParameter="formId"  formParameter="editedForm">
+            <CustomButtonText>Uppfæra eyðublað</CustomButtonText>
+        </FormEditComponent>
+    }
+
+    @if (formEdited && !formPublished)
+    {
+        <!-- Display the created Form -->
+        <FormViewComponent Form="@editedForm"></FormViewComponent>
+        @if (IsClicked)
         {
-            <FormEditComponent formIdParameter="formId" OnEdit="EditFormHandler">
-                <CustomButtonText>Uppfæra eyðublað</CustomButtonText>
-            </FormEditComponent>
+            <button type="button" class="btn approve-btn" disabled>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Í vinnslu...
+            </button>
         }
-
-        @if (formEdited && !formPublished)
+        else
         {
-            <!-- Display the created Form -->
-            <FormViewComponent Form="@editedForm"></FormViewComponent>
-            <button @onclick="UpdateForm" type="button" class="btn approve-btn">Staðfesta birtingu eyðublaðs</button>
-            <button @onclick="EditForm" type="button" class="btn approve-btn">Halda áfram með eyðublaðs</button>
-            <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
-
-            <!-- Delete created form popup -->
-    <ConfirmationModalComponent OnClick="DeleteFormHandler">
-        <CustomHeader>Eyða eyðublaði</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir henda eyðublaðinu?</CustomBody>
-        <CustomButtonText>Eyða</CustomButtonText>
-        <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
-    </ConfirmationModalComponent>
+            <button @onclick="UpdateForm" type="button" class="btn approve-btn">Birta eyðublað</button>
         }
+        <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
+        <button type="button" class="btn delete-btn" data-toggle="modal" data-target="#confirmationModal">Eyða breytingum</button>
 
-        @if (formPublished)
-        {
-            <div class="d-flex justify-content-center">
-                <h2>Eyðublað hefur verið birt</h2>
-            </div>
-            <br />
-            <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
-        }
-    </AuthorizeView>
+        <!-- Delete created form popup -->
+        <ConfirmationModalComponent OnClick="DeleteFormHandler">
+            <CustomHeader>Eyða breytingum?</CustomHeader>
+            <CustomBody>Það verður ekki hægt að endurheimta gerðar breytingar</CustomBody>
+            <CustomButtonText>Eyða</CustomButtonText>
+            <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
+        </ConfirmationModalComponent>
+    }
 
-
+    @if (formPublished)
+    {
+        <div class="d-flex justify-content-center">
+            <h2>Eyðublað hefur verið birt</h2>
+        </div>
+        <br />
+        <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
+    }
+</AuthorizeView>
 
 @code {
     [Parameter]
@@ -59,6 +67,7 @@
     protected FormsViewModel editedForm;
     bool formEdited = false;
     bool formPublished = false;
+    private bool IsClicked;
 
     protected override void OnInitialized()
     {
@@ -86,6 +95,7 @@
         editedForm.CategoryName = category.CategoryName;
         editedForm.FormName = formInputModel.FormName;
         editedForm.DestinationEmail = formInputModel.DestinationEmail;
+        editedForm.IsAnonymous = formInputModel.IsAnonymous;
 
         //Vista questions
         foreach (var question in formInputModel.Questions)
@@ -113,11 +123,16 @@
     //Save form to Db
     private async void UpdateForm()
     {
+        //Disable update button
+        IsClicked = true;
+        StateHasChanged();
+
         //Update formInfo
         FormsInfo formInfo = new FormsInfo();
         formInfo.FormName = editedForm.FormName;
         formInfo.DestinationEmail = editedForm.DestinationEmail;
         formInfo.FormId = formId.GetValueOrDefault();
+        formInfo.IsAnonymous = editedForm.IsAnonymous;
         formInfo = await formsInfoService.Update(formInfo);
 
         //update FormsCategoryAssignments
@@ -166,6 +181,7 @@
         }
 
         formPublished = true;
+        IsClicked = false;
         StateHasChanged();
     }
 }

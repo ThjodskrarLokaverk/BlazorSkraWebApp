@@ -21,9 +21,9 @@ namespace BlazorSkraApp1.IntegrationTests.Helpers
         {
             return new List<FormsInfo>()
             {
-                new FormsInfo(){ FormId = 1, FormName = "Form 1", DestinationEmail = "test1@test.com"},
-                new FormsInfo(){ FormId = 2, FormName = "Form 2", DestinationEmail = "test2@test.com"},
-                new FormsInfo(){ FormId = 3, FormName = "Form 3", DestinationEmail = "test3@test.com"}
+                new FormsInfo(){ FormId = 1, FormName = "Form 1", DestinationEmail = "test1@test.com", IsAnonymous = false},
+                new FormsInfo(){ FormId = 2, FormName = "Form 2", DestinationEmail = "test2@test.com", IsAnonymous = true},
+                new FormsInfo(){ FormId = 3, FormName = "Form 3", DestinationEmail = "test3@test.com", IsAnonymous = false}
             };
         }
         public static List<CategoriesAssignments> GetSeedingCategoriesAssignments()

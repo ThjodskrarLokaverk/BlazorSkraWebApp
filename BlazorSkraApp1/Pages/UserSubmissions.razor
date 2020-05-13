@@ -1,4 +1,4 @@
-@page "/Submissions"
+@page "/minar-innsendingar"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject IAdminService adminservice
@@ -6,6 +6,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice;
+
+@* *** A table containing all of user's submissions younger than 7 days old *** *@
 
 @if (submissionList == null)
 {
@@ -19,7 +21,7 @@ else
 {
     <AuthorizeView>
         <div class="container">
-            <h2>Innsend eyðublöð</h2>
+            <h2>Mínar innsendingar</h2>
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>

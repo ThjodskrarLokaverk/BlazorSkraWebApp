@@ -10,7 +10,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IFormsService
     {
-        Task<FormsViewModel> Get(int FormId);
+        Task<FormsViewModel> Get(int formId);
     }
 
     public class FormsService : IFormsService
@@ -22,52 +22,58 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public async Task<FormsViewModel> Get(int FormId)
+        public async Task<FormsViewModel> Get(int formId)
         {
             var formCategoryAssignment = await _context.CategoriesAssignments
-                .Where(c => c.FormId == FormId)
+                .Where(c => c.FormId == formId)
                 .Include(f => f.FormsInfo)
                 .Include(c => c.Categories)
                 .FirstOrDefaultAsync();
 
             var questions = await _context.QuestionsFormAssignments
-                .Where(qfa => qfa.FormId == FormId)
+                .Where(qfa => qfa.FormId == formId)
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
             
             var options = await _context.OptionsQuestionAssignmnents
-                .Where(oqa => oqa.FormId == FormId)
+                .Where(oqa => oqa.FormId == formId)
                 .Include(o => o.Options)
                 .ToListAsync();
-            
+
             //Save fetched data to FormsViewModel
-            var form = new FormsViewModel();
-            form.Questions = new List<QuestionsViewModel>();
-            form.CategoryId = formCategoryAssignment.CategoryId;
-            form.CategoryName = formCategoryAssignment.Categories.CategoryName;
-            form.DestinationEmail = formCategoryAssignment.FormsInfo.DestinationEmail;
-            form.FormName = formCategoryAssignment.FormsInfo.FormName;
-            
-            foreach(var fetchedQuestion in questions)
+            var form = new FormsViewModel
             {
-                var question = new QuestionsViewModel();
-                question.QuestionName = fetchedQuestion.Questions.QuestionName;
-                question.QuestionOrderNum = fetchedQuestion.QuestionOrderNum;
-                question.QuestionTypeId = fetchedQuestion.Questions.QuestionTypes.QuestionTypeId;
-                question.QuestionTypeOrderNum = fetchedQuestion.QuestionTypeOrderNum;
-                question.Options = new List<OptionsViewModel>();
-                
-                foreach(var fetchedOption in options.Where(o => o.QuestionOrderNum == question.QuestionOrderNum))
+                Questions = new List<QuestionsViewModel>(),
+                CategoryId = formCategoryAssignment.CategoryId,
+                CategoryName = formCategoryAssignment.Categories.CategoryName,
+                DestinationEmail = formCategoryAssignment.FormsInfo.DestinationEmail,
+                FormName = formCategoryAssignment.FormsInfo.FormName,
+                IsAnonymous = formCategoryAssignment.FormsInfo.IsAnonymous
+            };
+
+            foreach (var fetchedQuestion in questions)
+            {
+                var question = new QuestionsViewModel
                 {
-                    var option = new OptionsViewModel();
-                    option.OptionName = fetchedOption.Options.OptionName;
-                    option.OptionOrderNum = fetchedOption.OptionOrderNum;
+                    QuestionName = fetchedQuestion.Questions.QuestionName,
+                    QuestionOrderNum = fetchedQuestion.QuestionOrderNum,
+                    QuestionTypeId = fetchedQuestion.Questions.QuestionTypes.QuestionTypeId,
+                    QuestionTypeOrderNum = fetchedQuestion.QuestionTypeOrderNum,
+                    Options = new List<OptionsViewModel>()
+                };
+
+                foreach (var fetchedOption in options.Where(o => o.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    var option = new OptionsViewModel
+                    {
+                        OptionName = fetchedOption.Options.OptionName,
+                        OptionOrderNum = fetchedOption.OptionOrderNum
+                    };
                     question.Options.Add(option);
                 }
                 form.Questions.Add(question);
             }
-
             return form;
         }
     }

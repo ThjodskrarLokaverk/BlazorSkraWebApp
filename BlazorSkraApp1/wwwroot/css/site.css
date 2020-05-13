@@ -135,7 +135,7 @@ html, body {
 
 .table-trash{
     float: right;
-    margin-left: -10px;
+    padding-left: -10px;
     margin-top: 25px;
     margin-bottom: none;
     color: var(--four);
@@ -261,10 +261,7 @@ html, body {
 }
 
 .add-category {
-    color: white;
-    border-radius: 10px;
     display: block;
-    background-color: var(--five);
     margin-bottom:20px;
 }
 
@@ -281,10 +278,18 @@ html, body {
     float: left;
 }
 
+.truncate {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .category-pen{
     margin-bottom: -20px;
     padding: 5px;
     display:block;
+    margin: none;
     border: 2px solid;
     background-color: white;
     border-color: var(--three);
@@ -421,6 +426,7 @@ html, body {
     background-color: black;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+    margin: none;
 }
 
 .second-dropdown-wrapper{
@@ -472,6 +478,7 @@ html, body {
 .first-dropdown-wrapper .dropdown-menu :first-child{
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    border-bottom: solid #ccd4dc 0.6px;
 }
 
 .dropdown-menu :last-child{
