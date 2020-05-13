@@ -47,9 +47,9 @@ namespace BlazorSkraApp1.IntegrationTests
             var subId = 1;
             var expectedSubmission = new List<Submissions>()
             {
-                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 2, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2},
-                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 3, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 3", QuestionsQuestionId = 3}
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 1, AnswerOrderNum = 1, Answer = "Yes", QuestionName = "Question 1"},
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 2, AnswerOrderNum = 0, Answer = "Answer 2", QuestionName = "Question 2"},
+                new Submissions(){ SubmissionId = subId, QuestionOrderNum = 3, AnswerOrderNum = 0, Answer = "Answer 3", QuestionName = "Question 3"}
             };
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
@@ -70,18 +70,18 @@ namespace BlazorSkraApp1.IntegrationTests
         public async Task AddSubmissionAsync_SubmissionIsAdded()
         {
             // Arrange
+            var qn = "Question 1";
             var qon = 1;
             var aon = 1;
-            var formid = 2;
             var subId = 3;
 
-            var expectedSubmission = new Submissions(){ SubmissionId = subId, QuestionOrderNum = qon, AnswerOrderNum = aon, FormId = formid, Answer = "Maybe", QuestionsQuestionId = 4};
+            var expectedSubmission = new Submissions(){ SubmissionId = subId, QuestionOrderNum = qon, AnswerOrderNum = aon, Answer = "Maybe", QuestionName = qn};
 
             // Act
             await service.Add(expectedSubmission);
 
             // Assert
-            var actualSubmission = await db.Submissions.FirstOrDefaultAsync(s => s.SubmissionId == subId && s.AnswerOrderNum == aon && s.FormId == formid && s.QuestionOrderNum == qon);
+            var actualSubmission = await db.Submissions.FirstOrDefaultAsync(s => s.SubmissionId == subId && s.AnswerOrderNum == aon && s.QuestionName == qn);
             Assert.Equal(expectedSubmission, actualSubmission);
         }
         [Fact]
@@ -92,9 +92,9 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.SaveChangesAsync();
             var recId = 1;
             List<Submissions> deletedSubmission = new List<Submissions>() {
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, FormId = 1, Answer = "Yes", QuestionsQuestionId = 1},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 2", QuestionsQuestionId = 2},
-                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 3, AnswerOrderNum = 0, FormId = 1, Answer = "Answer 3", QuestionsQuestionId = 3}
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 1, AnswerOrderNum = 1, Answer = "Yes", QuestionName = "Question 1"},
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 2, AnswerOrderNum = 0, Answer = "Answer 2", QuestionName = "Question 2"},
+                new Submissions(){ SubmissionId = 1, QuestionOrderNum = 3, AnswerOrderNum = 0, Answer = "Answer 3", QuestionName = "Question 3"}
             };
             var expectedSubmission = seedSubmissions.Where(s => s.SubmissionId != recId).ToList();
 

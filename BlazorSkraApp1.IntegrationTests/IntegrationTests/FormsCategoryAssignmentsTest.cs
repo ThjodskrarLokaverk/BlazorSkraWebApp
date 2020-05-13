@@ -10,23 +10,23 @@ using System;
 
 namespace BlazorSkraApp1.IntegrationTests
 {
-    public class CategoriesAssignmentsTest
+    public class FormsCategoryAssignmentsTest
     {
-        private List<CategoriesAssignments> seedCategoriesAssignments;
+        private List<FormsCategoryAssignments> seedFormsCategoryAssignments;
         private ApplicationDbContext db;
-        private CategoriesAssignmentsService service;
-        public CategoriesAssignmentsTest()
+        private FormsCategoryAssignmentsService service;
+        public FormsCategoryAssignmentsTest()
         {
             db = new ApplicationDbContext(Utilities.TestDbContextOptions());
-            seedCategoriesAssignments = SeedData.GetSeedingCategoriesAssignments();
-            service = new CategoriesAssignmentsService(db);
+            seedFormsCategoryAssignments = SeedData.GetSeedingFormsCategoryAssignments();
+            service = new FormsCategoryAssignmentsService(db);
         }
 
         [Fact]
         public async Task GetCategoriesAssignmentsAsync_CategoriesAssignmentsAreReturned()
         {
             // Arrange
-            await db.AddRangeAsync(seedCategoriesAssignments);
+            await db.AddRangeAsync(seedFormsCategoryAssignments);
             await db.AddRangeAsync(SeedData.GetSeedingCategories());
             await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
             await db.SaveChangesAsync(); 
@@ -35,10 +35,10 @@ namespace BlazorSkraApp1.IntegrationTests
             var result = await service.Get();
 
             // Assert
-            var actualCategoriesAssignments = Assert.IsAssignableFrom<List<CategoriesAssignments>>(result);
+            var actualFormsCategoryAssignments = Assert.IsAssignableFrom<List<FormsCategoryAssignments>>(result);
             Assert.Equal(
-                seedCategoriesAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId),
-                actualCategoriesAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId));
+                seedFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId),
+                actualFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId));
         }
         
         [Fact]
@@ -47,14 +47,14 @@ namespace BlazorSkraApp1.IntegrationTests
             // Arrange
             var catId = 5;
             var formId = 1;
-            var expectedCategoryAssignment = new CategoriesAssignments(){ CategoryId = catId, FormId = formId};
+            var expectedFormsCategoryAssignment = new FormsCategoryAssignments(){ CategoryId = catId, FormId = formId};
 
             // Act
-            await service.Add(expectedCategoryAssignment);
+            await service.Add(expectedFormsCategoryAssignment);
 
             // Assert
-            var actualCategoryAssignment = await db.CategoriesAssignments.FindAsync(catId, formId);
-            Assert.Equal(expectedCategoryAssignment, actualCategoryAssignment);
+            var actualFormsCategoryAssignment = await db.CategoriesAssignments.FindAsync(catId, formId);
+            Assert.Equal(expectedFormsCategoryAssignment, actualFormsCategoryAssignment);
         }
         
         [Fact]
@@ -63,7 +63,7 @@ namespace BlazorSkraApp1.IntegrationTests
             // Arrange
             var catId = 2;
             var formId = 1;
-            var expectedCategoryAssignment = new CategoriesAssignments(){ CategoryId = catId, FormId = formId};
+            var expectedCategoryAssignment = new FormsCategoryAssignments(){ CategoryId = catId, FormId = formId};
             await db.AddRangeAsync(expectedCategoryAssignment);
             await db.SaveChangesAsync();
 
@@ -79,11 +79,11 @@ namespace BlazorSkraApp1.IntegrationTests
         public async Task DeleteCategoryAssignmentAsync_CategoryAssignmentIsDeleted()
         {
             // Arrange
-            await db.AddRangeAsync(seedCategoriesAssignments);
+            await db.AddRangeAsync(seedFormsCategoryAssignments);
             await db.SaveChangesAsync();
             var recId = 3;
-            var deletedCategoriesAssignments = new CategoriesAssignments(){ CategoryId = recId, FormId = 3};
-            var expectedCategoriesAssignments = seedCategoriesAssignments.Where(c => c.CategoryId != recId).ToList();
+            var deletedCategoriesAssignments = new FormsCategoryAssignments(){ CategoryId = recId, FormId = 3};
+            var expectedCategoriesAssignments = seedFormsCategoryAssignments.Where(c => c.CategoryId != recId).ToList();
 
             // Act
             await service.Delete(deletedCategoriesAssignments);
