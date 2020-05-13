@@ -58,6 +58,9 @@
             val = val.split('-').reverse().join('/');
             return val;
         }
+        function ScrollToTop() { 
+            $(window).scrollTop(0);
+        } 
 
         window.anchorLink = {
             scrollIntoView: function (elementId) {
