@@ -1,6 +1,6 @@
 # Form Portal
 A web application that can submit forms to predefined email addresses. This application is the outcome of the 
-Final Assignment of 5 students at [Reykjavik University](https://ru.is), where they studied Computer Science (B.Sc.)
+Final Assignment of 5 students at [Reykjavik University](https://www.ru.is), where they studied Computer Science (B.Sc.)
 
 ## Getting Started
 This sofware was made using .Net Core 3.1 and Blazor Components. It was created using Mac and Windows operating systems, using Visual Studio Code and Visual Studio.
@@ -15,7 +15,9 @@ Don't know what Blazor is? [Read here](https://docs.microsoft.com/en-us/aspnet/c
 
 
 ## Installing
-Start by installing software bundles:
+As mentioned before, this solution is cross-platform, i.e. it can be modified and run on varios operating systems, including MacOs and Windows.
+
+Here are for example instructions on how to edit/run the solution on Windows 10.
 # Windows 10 OS
 1) Make sure Internet Information Service is enabled in Contol Panel.
 2) Download and install the latest stable release of [.Net Core SDK](https://dotnet.microsoft.com/download). Currently, that is version 3.1. 
@@ -34,7 +36,7 @@ run the solution on your computer by typing the following in command prompt (ter
     dotnet.run 
 
 ## Built With
-* [VS Code ](https://code.visualstudio.com/) - A nice editor. Other editors will also work fine.
+* [VS Code ](https://code.visualstudio.com/) - A nice editor. Other editors such as Atom will also work fine.
 
 ## Authors
 * Benedikt Rúnar Valtýsson - [Benedikt on Github](https://github.com/BenediktRunar)
