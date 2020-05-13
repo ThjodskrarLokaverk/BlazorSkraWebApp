@@ -1,5 +1,5 @@
-@page "/FormCreation"
-@page "/FormCreation/{selectedCategoryId}"
+@page "/nytt-eydublad"
+@page "/nytt-eydublad/{selectedCategoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -17,6 +17,8 @@
 @inject IOptionsService optionsService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @using Serilog
+
+@* *** A form for admin to create and publish new forms *** *@
 
 <AuthorizeView Roles="Admin" Context="AuthContext">
     @if (!formCreated)
@@ -40,10 +42,10 @@
         }
         else
         {
-            <button @onclick="SaveForm" type="button" class="btn approve-btn form-view-btn">Birta eyðublað</button>
+            <button type="button" class="btn btn-outline-danger form-view-btn" data-toggle="modal" data-target="#confirmationModal form-view-btn">Eyða eyðublaði</button>
+            <button type="button" class="btn btn-outline-success form-view-btn">Breyta eyðublaði</button>
+            <button @onclick="SaveForm" type="button" class="btn approve-btn new-form-btn">Skrá Eyðublað</button>
         }
-        <button @onclick="EditForm" type="button" class="btn approve-btn form-view-btn">Breyta eyðublaði</button>
-        <button type="button" class="btn btn-danger form-view-btn" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">
@@ -66,7 +68,7 @@
 
 @code {
     [Parameter]
-    public string selectedCategoryId{ get; set; }
+    public string selectedCategoryId { get; set; }
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     protected FormsViewModel createdForm;

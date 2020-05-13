@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Data
         public int QuestionId { get; set; }
         public int QuestionOrderNum { get; set; }
         public int QuestionTypeOrderNum { get; set; }
-
+        
         public virtual FormsInfo FormsInfo { get; set; }
         public virtual Questions Questions { get; set; }
     }

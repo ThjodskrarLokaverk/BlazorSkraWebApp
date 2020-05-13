@@ -1,4 +1,4 @@
-﻿@page "/FormEdit/{id}"
+﻿@page "/breyta-eydubladi/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -39,7 +39,7 @@
             <button @onclick="UpdateForm" type="button" class="btn approve-btn">Birta eyðublað</button>
         }
         <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirmationModal">Eyða breytingum</button>
+        <button type="button" class="btn delete-btn" data-toggle="modal" data-target="#confirmationModal">Eyða breytingum</button>
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">

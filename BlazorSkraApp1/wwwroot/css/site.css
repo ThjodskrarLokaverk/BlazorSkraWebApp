@@ -135,7 +135,7 @@ html, body {
 
 .table-trash{
     float: right;
-    margin-left: -10px;
+    padding-left: -10px;
     margin-top: 25px;
     margin-bottom: none;
     color: var(--four);
@@ -261,10 +261,7 @@ html, body {
 }
 
 .add-category {
-    color: white;
-    border-radius: 10px;
     display: block;
-    background-color: var(--five);
     margin-bottom:20px;
 }
 
@@ -281,10 +278,18 @@ html, body {
     float: left;
 }
 
+.truncate {
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .category-pen{
     margin-bottom: -20px;
     padding: 5px;
     display:block;
+    margin: none;
     border: 2px solid;
     background-color: white;
     border-color: var(--three);
@@ -380,6 +385,12 @@ html, body {
 
 .new-form {
     border-radius: 10px;
+}
+
+.new-form-btn{
+    margin-top:20px;
+    float:right;
+    margin-left:10px;
 }
 
 /* Dropdown menu */
@@ -614,6 +625,32 @@ ul{
     background-color: var(--five);
     color: white;
     border-radius: 10px;
+}
+
+.btn-outline-success:hover{
+    background-color:var(--five);
+    color:white;
+    border-radius:10px;
+}
+
+.btn-outline-success{
+    color:var(--five);
+    border-radius:10px;
+    border-color:var(--five);
+    background-color: var(--one);
+}
+
+.btn-outline-danger:hover{
+    background-color:var(--four);
+    color:white;
+    border-radius:10px;
+}
+
+.btn-outline-danger{
+    color:  var(--four); 
+    background-color: var(--one);
+    border-radius:10px;
+    border-color:var(--four)
 }
 
 .btn-danger{

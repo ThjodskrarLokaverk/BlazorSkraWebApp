@@ -16,13 +16,12 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
-        void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
+        void MailBuilder(short formId,  int submissionId, string userEmail, bool anonymous);
+        void PDFBuilder(int formId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
     public class MailService : IMailService
     {
-        MailForm mailForm = new MailForm();
         List<QuestionsFormAssignments> questionsList ;
         string emailBody = "";
         List<Submissions> subList;
@@ -36,7 +35,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public void sendMail()
+        public void SendMail()
         {   
             try{
             var message = new MimeMessage();
@@ -94,11 +93,11 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.FormsInfo.FindAsync(formId);
         }    
-        public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
+        public async void MailBuilder(short formId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            formsInfo = await GetForm(FormId);
+            questionsList = await GetQuestions(formId);
+            formsInfo = await GetForm(formId);
             userMail = userEmail;
 
             string newLine = Environment.NewLine;
@@ -122,15 +121,15 @@ namespace BlazorSkraApp1.Services
                    emailBody += "Svar: " + answer.Answer + newLine + newLine;  
                 }
             }
-            emailBody += "Númer innsendingar: " + submissionId;
-            sendMail();
+            emailBody += "Auðkenni innsendingar: " + submissionId;
+            SendMail();
         }
 
-        public async void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
+        public async void PDFBuilder(int formId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            var Form = await GetForm(FormId);
+            questionsList = await GetQuestions(formId);
+            var Form = await GetForm(formId);
             userMail = userEmail;
             List<Report> iReport = new List<Report>();
 
@@ -141,7 +140,6 @@ namespace BlazorSkraApp1.Services
                    iReport.Add(new Report(){ UserName = userEmail, FormName = Form.FormName, Question = question.Questions.QuestionName, Answer = answer.Answer});
                 }
             }
-
             GeneratePDF(js, iReport);
         }
 
