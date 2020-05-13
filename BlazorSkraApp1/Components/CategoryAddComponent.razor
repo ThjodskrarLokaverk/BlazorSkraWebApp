@@ -5,7 +5,6 @@
 @inject IJSRuntime jsRuntime
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IAdminService adminService
-@using Microsoft.AspNetCore.Identity;
 @using Serilog
 
 
@@ -75,7 +74,7 @@
 
 
             //todo - bæta við nafni flokksins sem var stofnaður
-            Log.Information($"Nýr flokkur stofnaður: {DateTime.Now} - Nafn flokks: bæta við nafni - Stofnað af: {currentUser}");
+            Log.Information($"Nýr flokkur stofnaður: {DateTime.Now} - Nafn flokks: {newCategory.CategoryName}Stofnað af: {currentUser}");
 
         }
         catch (System.InvalidOperationException)

@@ -1,5 +1,8 @@
-﻿@page "/Instructions"
+﻿@page "/notkunarleidbeiningar"
 @using BlazorSkraApp1.Components
+
+@* *** Instructions for admins *** *@
+
 <AuthorizeView Roles="Admin">
     <Authorized>
         <h2>Vísir að notendahandbók fyrir stjórnendur (admins)</h2>
@@ -7,7 +10,6 @@
             Hér er ekki um ítarlega handbók að ræða þar sem farið er í allar aðgerðir kerfisins,
             heldur týndir til nokkrir hlutir sem tímafrekt gæti verið að finna út úr.
         </p>
-        <br />
         <hr />
         <h5>Hlekkir á helstu atriði þessarar síðu</h5>
         <li><AnchorLinkComponent href="#send_to_jira">Sendingar á Jira</AnchorLinkComponent></li>
@@ -72,11 +74,8 @@
 
         <h3 id="send_to_sysadmin">3. Skilgreiningar á tölvupóstföngum kerfisins</h3>
         <p>Hér er sýnt hvernig tvö tölvupóstföng eru stillt, þ.e. annars vegar tölvupóstfangið sem kerfið notar til að senda póst og hinsvegar tölvupóstfang kerfisstjóra. 
-        Tölvupóstfang kerfisstjóra er það netfang sem kerfið sendir póst á, á síðunni <a href="/contact">Hafa samband</a></p>
+        Tölvupóstfang kerfisstjóra er það netfang sem kerfið sendir póst á, á síðunni <a href="/hafa-samband">Hafa samband</a></p>
         <img src="Images/Instructions/systems_email.png" alt="Trello software, email handler">
         <br />
     </Authorized>
 </AuthorizeView>
-@code {
-
-}

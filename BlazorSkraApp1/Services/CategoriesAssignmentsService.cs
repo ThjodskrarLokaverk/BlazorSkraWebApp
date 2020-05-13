@@ -10,7 +10,7 @@ namespace BlazorSkraApp1.Services
     public interface ICategoriesAssignmentsService
     {
         Task<List<CategoriesAssignments>> Get();
-        Task<List<CategoriesAssignments>> Get(int CategoryId);
+        Task<List<CategoriesAssignments>> Get(int categoryId);
         Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
         Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
         Task<CategoriesAssignments> Update(CategoriesAssignments categoryAssignment);
@@ -35,10 +35,10 @@ namespace BlazorSkraApp1.Services
         }
 
         // Returns a list of all category assignments for the specified category
-        public async Task<List<CategoriesAssignments>> Get(int CategoryId)
+        public async Task<List<CategoriesAssignments>> Get(int categoryId)
         {
             var categories = (from category in _context.CategoriesAssignments
-                              where category.CategoryId == CategoryId
+                              where category.CategoryId == categoryId
                               select category)
             .Include(c => c.Categories)
             .Include(f => f.FormsInfo)

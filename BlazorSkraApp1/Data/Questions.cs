@@ -14,8 +14,8 @@ namespace BlazorSkraApp1.Data
         [StringLength(200, ErrorMessage = "Spurning má ekki innihalda fleiri en 200 stafi")]
         public string QuestionName { get; set; }
 
-        //public int QuestionTypeId { get; set; }
         [Required(ErrorMessage = "Velja þarf spurningategund")]
+        
         public QuestionTypes QuestionTypes { get; set; }
     }
 }

@@ -1,5 +1,5 @@
-@page "/Search/{searchString}"
-@page "/Search"
+@page "/leita/{searchString}"
+@page "/leita"
 @using Microsoft.AspNetCore.Components
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
@@ -7,16 +7,17 @@
 @inject ICategoriesService catService
 @inject IFormsInfoService formService
 
+@* *** Lists all search results from home page *** *@
 
 @if (formList == null)
-    {
-        <div class="d-flex justify-content-center">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Augnablik...</span>
-            </div>
+{
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+            <span class="sr-only">Augnablik...</span>
         </div>
-    }
-else{   
+    </div>
+}
+else {   
     <div class="md-form mt-0 index-search">
         <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
         <button class="btn search-button" @onclick="@SearchLists"><i class="fas fa-search" title="Leita"></i> </button>
@@ -25,18 +26,16 @@ else{
     <div class="search-wrapper container">
         <h5 class="table-heading">Flokkar </h5>
         <ul class="list-group search-list">
-        
         @foreach (var category in categoriesList)
         {
-            <a href="/FormList/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
+            <a href="/eydublod/@category.CategoryId"><li class="list-group-item">@category.CategoryName</li></a>
         }
         </ul>
         <h5 class="table-heading">Eyðublöð</h5>
         <ul class="list-group search-list">
-        
         @foreach (var form in formList)
         {
-            <a href="/Form/@form.FormId"><li class="list-group-item">@form.FormName</li></a>
+            <a href="/eydublad/@form.FormId"><li class="list-group-item">@form.FormName</li></a>
         }
         </ul>
     </div>
@@ -44,39 +43,36 @@ else{
 
 
 @code{
-[Parameter]
-//searchstring is sent by route from index page.
-public string searchString{ get; set; }
+    [Parameter]
+    //searchstring is sent by route from index page.
+    public string searchString{ get; set; }
 
-//Holds form that contains the searchString
-public List<FormsInfo> formList;
+    //Holds form that contains the searchString
+    public List<FormsInfo> formList;
 
-//Holds categories that contains the searchString
-public List<Categories> categoriesList;
+    //Holds categories that contains the searchString
+    public List<Categories> categoriesList;
 
-
-protected override async Task OnInitializedAsync()
-{
-  formList = await formService.GetSearch(searchString);
-  categoriesList = await catService.GetSearch(searchString);
-}
-
-async Task SearchLists()
-{
-    //Get list of categories and forms that match(name) the search string
-    formList = await formService.GetSearch(searchString);
-    categoriesList = await catService.GetSearch(searchString);
-    StateHasChanged();
-}
-
-private async void NavigateToSearch( KeyboardEventArgs eventArgs)
-{
-    if (eventArgs.Key == "Enter" )
-    {   
-        await SearchLists();
-    
+    protected override async Task OnInitializedAsync()
+    {
+        formList = await formService.GetSearch(searchString);
+        categoriesList = await catService.GetSearch(searchString);
     }
-}
 
+    async Task SearchLists()
+    {
+        //Get list of categories and forms that match(name) the search string
+        formList = await formService.GetSearch(searchString);
+        categoriesList = await catService.GetSearch(searchString);
+        StateHasChanged();
+    }
 
+    private async void NavigateToSearch( KeyboardEventArgs eventArgs)
+    {
+        if (eventArgs.Key == "Enter" )
+        {   
+            await SearchLists();
+        
+        }
+    }
 }

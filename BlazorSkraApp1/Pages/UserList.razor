@@ -1,4 +1,4 @@
-@page "/UserList"
+@page "/notendalisti"
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Services
 @using Microsoft.AspNetCore.Identity
@@ -6,6 +6,8 @@
 @inject IAdminService service
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<IdentityUser> _UserManager
+
+@* *** A table containing all users *** *@
 
 <AuthorizeView Roles="Admin" Context="authContext">
     @if (userList == null)
@@ -23,7 +25,7 @@
             <a class="btn search-button" @onclick="@SearchUsers"><i class="fas fa-search" title="Leita"></i> </a>
         </div>
         <div class="container">
-            <button @onclick="AddNewUser" class="btn add-category">
+            <button @onclick="AddNewUser" class="btn approve-btn add-category">
                 <i class="far fa-plus-square"></i>Bæta við notanda
             </button>
             <table class="table table-striped table-md">
@@ -80,12 +82,12 @@
         <UserAdminRoleToggleComponent selectedUser="selectedUser" OnMakeAdmin="MakeAdminHandler" OnRemoveAdmin="RemoveAdminHandler"></UserAdminRoleToggleComponent>
 
         @* Delete Category popup modal *@
-<ConfirmationModalComponent OnClick="DeleteUser">
-    <CustomHeader>Eyða notanda</CustomHeader>
-    <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
-    <CustomButtonText>Eyða</CustomButtonText>
-    <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
-</ConfirmationModalComponent>
+        <ConfirmationModalComponent OnClick="DeleteUser">
+            <CustomHeader>Eyða notanda</CustomHeader>
+            <CustomBody>Ertu viss um að þú viljir eyða notandanum @(selectedUser.Email)?</CustomBody>
+            <CustomButtonText>Eyða</CustomButtonText>
+            <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
+        </ConfirmationModalComponent>
     }
     @if (showPopup)
     {
@@ -132,11 +134,11 @@
     // Options to display in the roles dropdown when editing a user
     List<string> Options = new List<string>() { "Almennur notandi", "Stjórnandi" };
 
-    string strError = "";
-    bool isSortedEmails = false;
+    private string strError = "";
+    private bool isSortedEmails = false;
 
     // To enable showing the Popup
-    bool showPopup = false;
+    private bool showPopup = false;
     // Collection to display the users
 
     void ClosePopup()
@@ -162,12 +164,10 @@
         //Get a list of users
         userList = await service.Get();
     }
-
     private void SelectUser(IdentityUser user)
     {
         selectedUser = user;
     }
-
     protected async void DeleteUser()
     {
         try
@@ -177,33 +177,26 @@
             StateHasChanged();
         }
         catch(Exception)
-        {
-
-        }
+        { }
     }
-
     protected void MakeAdminHandler(IdentityUser user)
     {
         adminUsersList.Add(user);
     }
-
     protected void RemoveAdminHandler(IdentityUser user)
     {
         adminUsersList.Remove(user);
     }
-
     private async void  SearchOnKeyUp(KeyboardEventArgs eventArgs)
     {
         await SearchUsers();
     }
-
     async Task SearchUsers()
     {
         //Get list of users that match the search string
         userList = await service.GetSearchList(searchString);
         StateHasChanged();
     }
-
     void SortUserEmails()
     {
         if(!isSortedEmails)
@@ -218,7 +211,6 @@
         }
         StateHasChanged();
     }
-
     void AddNewUser()
     {
         // Make new user

@@ -1,4 +1,4 @@
-﻿@page "/Form/{id}"
+﻿@page "/eydublad/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -19,6 +19,8 @@
 @inject IFormsInfoService formsInfoService
 @inject IFormsService formsService
 
+@* *** A form created by an admin for users to fill out and submit *** *@
+
 @if (form == null)
 {
     <div class="d-flex justify-content-center">
@@ -35,16 +37,15 @@ else if (!formFound)
 }
 else if (confirmation)
 {
-    <div class="d-flex justify-content-center">
-        <h2>Innsendingu hefur verið komið til skila</h2>
-    </div>
-    <br />
-    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Aftur á upphafssíðu</a>
+    <br>
+    <h2 style="text-align:center">Innsendingu hefur verið komið til skila.</h2>
+    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms.</h5>
+    <meta http-equiv="refresh" content="5; url = /" />
 }
 else
 {
     <div class="container sub-container">
-        <EditForm Model="@submissionInput" OnValidSubmit="@SubmitForm">
+        <EditForm EditContext="editContext" OnSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
             <h3 class="form-list-heading" style="color:black"> @form.FormName</h3>
             @foreach (var question in form.Questions)
@@ -58,7 +59,8 @@ else
                                 @foreach (var option in question.Options)
                                 {
                                     <label>
-                                        <InputRadioComponent SelectedValue="@option.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                        <InputRadioComponent SelectedValue="@option.OptionName" 
+                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                         @option.OptionName
                                     </label><br>
                                 }
@@ -66,12 +68,14 @@ else
                             }
                             else if (@question.QuestionTypeId == 1)
                             {
-                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 3)
                             {
-                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 5)
@@ -89,7 +93,8 @@ else
                             {
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
-                                <input class="form-control date-picker date-type" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                <input class="form-control date-picker date-type"
+                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
@@ -107,7 +112,8 @@ else
                         @if (form.IsAnonymous)
                         {
                             <div class="card-body form-check">
-                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous" 
+                                    @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
@@ -143,10 +149,11 @@ else
 
     //References whether a submission is anonymous or not
     public bool anonymous { get; set; }
-    FormsViewModel form;
 
     //Til þess að fylla inn í SubmissionInputModel
     SubmissionInputModel submissionInput = new SubmissionInputModel();
+    private EditContext editContext;
+    FormsViewModel form;
 
     //Confirmation popup
     bool confirmation;
@@ -180,86 +187,92 @@ else
         submissionInput.Checkbox = Enumerable.Repeat(new RequiredCheckbox(), checkboxCount).ToList();
         submissionInput.Date = Enumerable.Repeat(new RequiredDate(), dateCount).ToList();
         submissionInput.MultipleAnswers = new List<string>();
+      
+        editContext = new EditContext(submissionInput);
     }
 
     protected async Task SelectedDateChanged(int questionTypeOrderNum, string name)
     {
-        string str = await jsRuntime.InvokeAsync<string>
-            ("GetSelectedDate", name);
+        string str = await jsRuntime.InvokeAsync<string>("GetSelectedDate", name);
         submissionInput.Date[questionTypeOrderNum].Value = str;
     }
 
     private async Task SaveCheckboxValue(int questionTypeOrderNum, string name)
     {
-        var value = await jsRuntime.InvokeAsync<object>
-            ("GetCheckedBoxes", name);
+        var value = await jsRuntime.InvokeAsync<object>("GetCheckedBoxes", name);
         submissionInput.Checkbox[questionTypeOrderNum].Value = value.ToString();
     }
 
-    void updateAnon(bool anon)
+    void UpdateAnon(bool anon)
     {
         anonymous = anon;
     }
 
     private async void SubmitForm()
     {
-        try
+        if(!editContext.Validate())
         {
-            //Save submission in database
-            SubmissionsInfo submissionsInfo = new SubmissionsInfo();
-            submissionsInfo.UserId = currentUser.UserName;
-            DateTime dt = DateTime.UtcNow;
-            submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
-            submissionsInfo.FormName = form.FormName;
-            submissionsInfo.DestinationEmail = form.DestinationEmail;
-            submissionsInfo = await subinfoservice.Add(submissionsInfo);
-
-            foreach (var question in form.Questions)
+            await jsRuntime.InvokeAsync<object>("ScrollToTop");
+        }
+        else {
+            try
             {
-                Submissions submission = new Submissions();
-                submission.SubmissionId = submissionsInfo.SubmissionId;
-                submission.QuestionName = question.QuestionName;
-                submission.QuestionOrderNum = question.QuestionOrderNum;
-                if (question.QuestionTypeId == 1)
-                {
-                    submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.QuestionTypeId == 3)
-                {
-                    submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.QuestionTypeId == 4)
-                {
-                    submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.QuestionTypeId == 5)
-                {
-                    submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
-                }
-                else if (question.QuestionTypeId == 6)
-                {
-                    submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
-                }
+                //Save submission in database
+                SubmissionsInfo submissionsInfo = new SubmissionsInfo();
+                submissionsInfo.UserId = currentUser.UserName;
+                DateTime dt = DateTime.UtcNow;
+                submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
+                submissionsInfo.FormName = form.FormName;
+                submissionsInfo.DestinationEmail = form.DestinationEmail;
+                submissionsInfo = await subinfoservice.Add(submissionsInfo);
 
-                await subservice.Add(submission);
+                foreach (var question in form.Questions)
+                {
+                    Submissions submission = new Submissions();
+                    submission.SubmissionId = submissionsInfo.SubmissionId;
+                    submission.QuestionName = question.QuestionName;
+                    submission.QuestionOrderNum = question.QuestionOrderNum;
+                    if (question.QuestionTypeId == 1)
+                    {
+                        submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.QuestionTypeId == 3)
+                    {
+                        submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.QuestionTypeId == 4)
+                    {
+                        submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.QuestionTypeId == 5)
+                    {
+                        submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
+                    }
+                    else if (question.QuestionTypeId == 6)
+                    {
+                        submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
+                    }
+
+                    await subservice.Add(submission);
+                }
+      
+                sendMail(currentUser.Email, submissionsInfo.SubmissionId);
+                confirmation = true;
+                StateHasChanged();
             }
-            sendMail(currentUser.Email, submissionsInfo.SubmissionId);
-            confirmation = true;
-            StateHasChanged();
-        }
-        catch (System.InvalidOperationException)
-        {
-            // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
-            _subFail = false;
-            //bæta við í logfile?
-            StateHasChanged();
-        }
-        catch (Exception)
-        {
-            //unknown exception
-            _subFail = true;
-            StateHasChanged();
-        }
+            catch (System.InvalidOperationException)
+            {
+                // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
+                _subFail = false;
+                //bæta við í logfile?
+                StateHasChanged();
+            }
+            catch (Exception)
+            {
+                //unknown exception
+                _subFail = true;
+                StateHasChanged();
+            }
     }
 
     private void sendMail(string userEmail, int submissionId)

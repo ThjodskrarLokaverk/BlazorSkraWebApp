@@ -8,22 +8,19 @@
 }
 else
 {
-    <div class="card">
+    <div class="container card sub-container">
         <div class="card-header">
             <h3 class="d-flex justify-content-center">@Form.FormName</h3>
             <p>Flokkur: @Form.CategoryName</p>
-            <p>Tölvupóstsfang: @Form.DestinationEmail</p>
+            <p>Viðtökunetfang: @Form.DestinationEmail</p>
         </div>
         <div class="card-body">
             @foreach (var question in Form.Questions)
             {
                 <div class="card">
-                    <div class="card-header">
-                        <div id="title-edit">
-                            <h5 id="question-title" class="card-title">@question.QuestionName</h5>
-                        </div>
-                    </div>
-                    <div class="card-body">
+                        <div class="card-body form-check">
+                            <h5 id="question-title" class="card-title form-check-view">@(question.QuestionOrderNum+1). @question.QuestionName</h5>
+                        <div class="form-check-view">
                         @if (@question.QuestionTypeId == 1)
                         {
                             <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox" />
@@ -58,6 +55,7 @@ else
                         {
                             <h5>Question type not handled...</h5>
                         }
+                        </div>
                     </div>
                 </div>
             }

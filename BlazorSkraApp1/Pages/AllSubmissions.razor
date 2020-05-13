@@ -1,4 +1,4 @@
-@page "/AllSubmissions"
+@page "/allar-innsendingar"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject ISubmissionsInfoService submissionsInfoService
@@ -6,9 +6,10 @@
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice;
 
+@* *** A table containing all submissions younger than 7 days old *** *@
+
 <AuthorizeView Roles="Admin">
     <Authorized>
-
         @if (submissionsInfoList == null)
         {
             <div class="d-flex justify-content-center">
@@ -37,7 +38,7 @@
                                 <button class="btn up-down" @onclick="(() => SortDate())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
                             <th class="text-uppercase">
-                                Númer innsendingar
+                                Auðkenni
                                 <button class="btn up-down" @onclick="(() => SortSubmissionId())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
                         </tr>
@@ -70,6 +71,7 @@
         submissionsInfoList = await submissionsInfoService.Get();
     }
 
+    // Sorts elements in table by the form name
     void SortFormName()
     {
         if (!isSortedFormName)
@@ -85,6 +87,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the user email
     void SortUserEmail()
     {
         if (!isSortedUserEmail)
@@ -100,6 +103,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the submission date
     void SortDate()
     {
         if (!isSortedDate)
@@ -115,6 +119,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the submission id
     void SortSubmissionId()
     {
         if (!isSortedId)

@@ -34,7 +34,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public void SendMail()
+        public void SendMail(string userEmail)
         {   
             try{
             var message = new MimeMessage();
@@ -42,7 +42,7 @@ namespace BlazorSkraApp1.Services
             //Sender of email here
             message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
             //receiver of email
-            message.To.Add(new MailboxAddress(formsInfo.DestinationEmail));
+            message.To.Add(new MailboxAddress(userEmail));
             message.Subject = "Ný innsending - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
 
             builder.TextBody = emailBody;
@@ -90,6 +90,7 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.FormsInfo.FindAsync(formId);
         }    
+
         public async void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
@@ -112,22 +113,21 @@ namespace BlazorSkraApp1.Services
                 emailBody += submissionLine.QuestionOrderNum+1 + ". " + submissionLine.QuestionName + newLine;
                 emailBody += "Svar: " + submissionLine.Answer + newLine + newLine;  
             }
-            emailBody += "Númer innsendingar: " + submissionId;
-            SendMail();
+            emailBody += "Auðkenni innsendingar: " + submissionId;
+            SendMail(userEmail);
         }
 
         public async void PDFBuilder(string formName, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
         {
             subList = await GetAnswers(submissionId);
             //var Form = await GetForm(FormId);
-
+            
             List<Report> iReport = new List<Report>();
 
             foreach(var submissionLine in subList)
             {      
                 iReport.Add(new Report(){ UserName = userEmail, FormName = formName, Question = submissionLine.QuestionName, Answer = submissionLine.Answer});
             }
-
             GeneratePDF(js, iReport);
         }
 
