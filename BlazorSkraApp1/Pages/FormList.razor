@@ -4,7 +4,7 @@
 @using BlazorSkraApp1.Services
 @using Serilog
 @inject NavigationManager NavigationManager
-@inject ICategoriesAssignmentsService catAssignService
+@inject IFormsCategoryAssignmentsService formsCategoryService
 @inject IFormsInfoService formservice
 @inject IJSRuntime jsRuntime
 @inject ICategoriesService catService
@@ -12,7 +12,7 @@
 
 @* *** A list of all forms created by admins *** *@
 
-@if (categoriesAssignmentsList == null)
+@if (formsCategoryAssignmentsList == null)
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
@@ -34,7 +34,7 @@ else
         <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search" title="Leita"></i> </a>
     </div>
     <div class="container">
-        @if (categoriesAssignmentsList.Any())
+        @if (formsCategoryAssignmentsList.Any())
         {
             <h3 class="form-list-heading"> @category.CategoryName</h3>
         }
@@ -47,31 +47,31 @@ else
         </div>
         </AuthorizeView>
             <div class="row">
-                @foreach (var categoryAssignment in categoriesAssignmentsList)
+                @foreach (var formCategoryAssignment in formsCategoryAssignmentsList)
                 {
                     <div class="col-md-4">
                         <AuthorizeView Roles="Admin">
-                            <a href="breyta-eydubladi/@categoryAssignment.FormsInfo.FormId">
+                            <a href="breyta-eydubladi/@formCategoryAssignment.FormsInfo.FormId">
                                 <button class="btn btn-link btn-xs table-icon" data-toggle="modal">
                                     <i class="fas fa-pen sub-list-pen" title="Breyta eyðublaði"></i>
                                 </button>
                             </a>
-                            <button @onclick="(() => SelectCategoryAssignment(categoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
+                            <button @onclick="(() => SelectCategoryAssignment(formCategoryAssignment))" class="btn btn-link btn-xs table-trash" data-toggle="modal" data-target="#confirmationModal">
                                 <i class="fas fa-trash sub-list-trash" title="Eyða eyðublaði"></i>
                             </button>
                         </AuthorizeView> 
-                    <div class="card card-list" title="@categoryAssignment.FormsInfo.FormName">
+                    <div class="card card-list" title="@formCategoryAssignment.FormsInfo.FormName">
                         <img src="Images/form.svg" class="card-img-top" alt="form form">
                         <div class="card-body body-list">
-                            <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
-                            <a href="/eydublad/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
+                            <h5 class="card-title title-list">@formCategoryAssignment.FormsInfo.FormName</h5>
+                            <a href="/eydublad/@formCategoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
                 }
             </div> 
              
-            @if (!categoriesAssignmentsList.Any())
+            @if (!formsCategoryAssignmentsList.Any())
             // only displayed when there is no assignment in the category
             {
                  <AuthorizeView Roles="Admin">
@@ -89,7 +89,7 @@ else
 
     <ConfirmationModalComponent OnClick="DeleteFormHandler">
         <CustomHeader>Eyða eyðublaði</CustomHeader>
-        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedCategoryAssignment.FormsInfo.FormName)?</CustomBody>
+        <CustomBody>Ertu viss um að þú viljir eyða eyðublaðinu @(selectedFormCategoryAssignment.FormsInfo.FormName)?</CustomBody>
         <CustomButtonText>Eyða</CustomButtonText>
         <CustomCloseButtonText>Hætta við</CustomCloseButtonText>
     </ConfirmationModalComponent>
@@ -102,16 +102,16 @@ else
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     private int categoryId;
-    List<CategoriesAssignments> categoriesAssignmentsList;
+    List<FormsCategoryAssignments> formsCategoryAssignmentsList;
     Categories category = new Categories();
-    CategoriesAssignments selectedCategoryAssignment;
+    FormsCategoryAssignments selectedFormCategoryAssignment;
     string searchString="";
     string currentUser;
     protected override async Task OnInitializedAsync()
     {
         //init selectedCategoryAssignment
-        selectedCategoryAssignment = new CategoriesAssignments();
-        selectedCategoryAssignment.FormsInfo = new FormsInfo();
+        selectedFormCategoryAssignment = new FormsCategoryAssignments();
+        selectedFormCategoryAssignment.FormsInfo = new FormsInfo();
 
         //get the current user
         var user = (await authenticationStateTask).User.Identity.Name;
@@ -130,14 +130,14 @@ else
         category = await catService.Get(categoryId);
 
         //Get a list of forms assigned to the relevant category
-        categoriesAssignmentsList = await catAssignService.Get(categoryId);
+        formsCategoryAssignmentsList = await formsCategoryService.Get(categoryId);
 
     }
-    private void SelectCategoryAssignment(CategoriesAssignments categoryassignment)
+    private void SelectCategoryAssignment(FormsCategoryAssignments categoryassignment)
     {
-        try 
+        try
         {
-            selectedCategoryAssignment = categoryassignment;
+            selectedFormCategoryAssignment = categoryassignment;
         }
         catch(Exception)
         {}
@@ -146,18 +146,18 @@ else
     protected async void DeleteFormHandler()
     {
         //Remove the form from the list of forms in this category
-        await catAssignService.Delete(selectedCategoryAssignment);
+        await formsCategoryService.Delete(selectedFormCategoryAssignment);
 
         //Delete the form from the database
-        await formservice.Delete(selectedCategoryAssignment.FormId);
+        await formservice.Delete(selectedFormCategoryAssignment.FormId);
 
         //remove the form from the list on this page
-        categoriesAssignmentsList.Remove(selectedCategoryAssignment);
+        formsCategoryAssignmentsList.Remove(selectedFormCategoryAssignment);
 
         //refresh UI
         StateHasChanged();
 
-        Log.Information($"Nýtt eyðublað hefur verið stofnað: {DateTime.Now} - Nafn eyðublaðs: {selectedCategoryAssignment.FormsInfo.FormName} Eytt af: {currentUser} ");
+        Log.Information($"Nýtt eyðublað hefur verið stofnað: {DateTime.Now} - Nafn eyðublaðs: {selectedFormCategoryAssignment.FormsInfo.FormName} Eytt af: {currentUser} ");
     }
 
     private void NavigateToSearch(KeyboardEventArgs eventArgs)

@@ -3,7 +3,7 @@
 @using BlazorSkraApp1.Services
 @using Serilog
 @inject ICategoriesService service
-@inject ICategoriesAssignmentsService caservice
+@inject IFormsCategoryAssignmentsService formsCategoryService
 @inject IFormsInfoService fiservice
 @inject IJSRuntime jsRuntime
 
@@ -105,7 +105,7 @@
         try
         {
             //List that holds id's of all forms that are about to be deleted
-            var categoriesAssignmentsList = await caservice.Get(selectedCategory.CategoryId);
+            var categoriesAssignmentsList = await formsCategoryService.Get(selectedCategory.CategoryId);
 
             //Delete the forms
             foreach(var form in categoriesAssignmentsList)

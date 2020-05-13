@@ -1,6 +1,8 @@
 @page "/minar-innsendingar"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
+@using Microsoft.AspNetCore.Identity;
+@inject ISubmissionsInfoService submissionsInfoService
 @inject IAdminService adminservice
 @inject ISubmissionsService submissionservice
 @inject AuthenticationStateProvider AuthenticationStateProvider
@@ -9,7 +11,7 @@
 
 @* *** A table containing all of user's submissions younger than 7 days old *** *@
 
-@if (submissionList == null)
+@if (submissionsInfoList == null)
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
@@ -25,29 +27,28 @@ else
             <table class="table table-striped table-md">
                 <thead id="user-thead">
                     <tr>
-                        <th class="text-uppercase">Nafn eyðublaðs
+                        <th class="text-uppercase">
+                            Nafn eyðublaðs
                             <button class="btn up-down" @onclick="(() => SortFormName())"><i class="fas fa-sort-alpha-up"></i> </button>
                         </th>
                         <th class="text-uppercase">Notandi</th>
-                        <th class="text-uppercase">Innsent
+                        <th class="text-uppercase">
+                            Innsent
                             <button class="btn up-down" @onclick="(() => SortDate())"><i class="fas fa-sort-alpha-up"></i> </button>
                         </th>
                         <th class="text-uppercase">PDF</th>
                     </tr>
                 </thead>
                 <tbody class="table-body">
-                @foreach(var submission in submissionList)
-                {
-                    if((GetForUser(submission, @context.User.Identity.Name)) == true)
+                    @foreach (var submissionInfo in submissionsInfoList)
                     {
                         <tr>
-                            <td>@submission.Form.FormName</td>
-                            <td>@submission.Submission.UserId</td>
-                            <td>@submission.Submission.SubmissionDate.ToString("dd/MM/yy")</td>
-                            <td><button class="btn approve-btn" @onclick="@((eventArgs) => GeneratePDFFile(submission.Form.FormId, submission.SubmissionId, submission.Submission.UserId))">Sækja</button></td>
+                            <td>@submissionInfo.FormName</td>
+                            <td>@submissionInfo.UserId</td>
+                            <td>@submissionInfo.SubmissionDate.ToString("dd/MM/yy")</td>
+                            <td><button class="btn approve-btn" @onclick="@((eventArgs) => GeneratePDFFile(submissionInfo.FormName, submissionInfo.SubmissionId, submissionInfo.UserId))">Sækja</button></td>
                         </tr>
                     }
-                }
                 </tbody>
             </table>
         </div>
@@ -55,74 +56,57 @@ else
 }
 
 @code{
-    List<Submissions> alreadyPosted = new List<Submissions>();
-    List<Submissions> submissionList;
+    //To access info about current user
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+    //IdentityUser currentUser;
+
+    List<SubmissionsInfo> submissionsInfoList;
     bool isSortedFormName = false;
     bool isSortedDate = false;
 
     protected override async Task OnInitializedAsync()
     {
-        submissionList = await submissionservice.Get();
-    }
-    
-    public bool GetForUser(Submissions s, string name)
-    {
-        if(s.Submission.UserId == name)
-        {
-        Submissions sub = alreadyPosted.Find(id => id.SubmissionId == s.SubmissionId);
+        var userName = (await authenticationStateTask).User.Identity.Name;
+        //currentUser = await adminService.Get(userName);
 
-        foreach(var submission in alreadyPosted)
-        {
-            if(s.SubmissionId == submission.SubmissionId)
-            {
-                return false;
-            }
-        }
+        submissionsInfoList = await submissionsInfoService.Get();
+        submissionsInfoList = submissionsInfoList.Where(s => s.UserId == userName).ToList();
 
-        alreadyPosted.Add(s);
-        return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     void SortFormName()
     {
-        if(!isSortedFormName)
+        if (!isSortedFormName)
         {
-            submissionList = submissionList.OrderBy(x => x.Form.FormName).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(x => x.FormName).ToList();
             isSortedFormName = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Form.FormName).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(x => x.FormName).ToList();
             isSortedFormName = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 
     void SortDate()
     {
-        if(!isSortedDate)
+        if (!isSortedDate)
         {
-            submissionList = submissionList.OrderBy(x => x.Submission.SubmissionDate).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(x => x.SubmissionDate).ToList();
             isSortedDate = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionDate).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(x => x.SubmissionDate).ToList();
             isSortedDate = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 
-    public void GeneratePDFFile(int FormId, int submissionId, string userEmail)
+    public void GeneratePDFFile(string FormName, int submissionId, string userEmail)
     {
-        mailservice.PDFBuilder(FormId, submissionId, userEmail, false, jsRuntime);
-        alreadyPosted = new List<Submissions>();
+        mailservice.PDFBuilder(FormName, submissionId, userEmail, false, jsRuntime);
     }
 }

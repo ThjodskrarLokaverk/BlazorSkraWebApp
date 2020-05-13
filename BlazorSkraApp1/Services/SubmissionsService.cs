@@ -37,7 +37,6 @@ namespace BlazorSkraApp1.Services
             var deletedSubmission = await _context.Submissions
             .FirstOrDefaultAsync(s => s.SubmissionId == submission.SubmissionId
             && s.AnswerOrderNum == submission.AnswerOrderNum
-            && s.FormId == submission.FormId
             && s.QuestionOrderNum == submission.QuestionOrderNum);
 
             _context.Submissions.Remove(deletedSubmission);
@@ -49,15 +48,13 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.Submissions
                 .Where(s => s.SubmissionId == submissionId)
-                .Include(f => f.Form)
                 .ToListAsync();
         }
         public async Task<List<Submissions>> Get()
         {
             return await _context.Submissions
-                .Include(s => s.Submission)
-                .Include(f => f.Form)
-                .OrderByDescending(x => x.Submission.SubmissionDate)
+                .Include(s => s.SubmissionInfo)
+                .OrderByDescending(x => x.SubmissionInfo.SubmissionDate)
                 .ToListAsync();
         }
     }

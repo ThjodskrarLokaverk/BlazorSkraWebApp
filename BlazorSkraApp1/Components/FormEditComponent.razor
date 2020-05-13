@@ -197,7 +197,7 @@ else
         if (formIdParameter != null)
         {
             int formId = formIdParameter ?? default(int);
-            var form = await formsService.Get(formId);
+            FormsViewModel form = await formsService.Get(formId);
             PopulateInputModel(form);
         }
         else if(formParameter != null)

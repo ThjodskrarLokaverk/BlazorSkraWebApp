@@ -2,6 +2,7 @@
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
+@using BlazorSkraApp1.Models.ViewModels
 @using System
 @using BlazorSkraApp1.Components
 @using Microsoft.AspNetCore.Identity;
@@ -15,11 +16,11 @@
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice
 @inject IAdminService adminService
-@inject IFormsInfoService formService
+@inject IFormsInfoService formsInfoService
+@inject IFormsService formsService
+<!-- *** A form created by an admin for users to fill out and submit *** -->
 
-@* *** A form created by an admin for users to fill out and submit *** *@
-
-@if (questionsList == null)
+@if (form == null)
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
@@ -27,9 +28,9 @@
         </div>
     </div>
 }
-else if (form == null) //no instance of form
+else if (!formFound)
 {
-    <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
+    <h5 style="text-align:center">Eyðublað fannst ekki. Þú verður aftur á forsíðu innan skamms</h5>
     <meta http-equiv="refresh" content="5; url = /" />
     <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
 }
@@ -46,59 +47,59 @@ else
         <EditForm EditContext="editContext" OnSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
             <h3 class="form-list-heading" style="color:black"> @form.FormName</h3>
-            @foreach (var question in questionsList)
+            @foreach (var question in form.Questions)
             {
                 <div class="container">
                     <div class="card">
                         <div class="card-body form-check">
-                            <h5 class="question-title">@(question.QuestionOrderNum+1). @question.Questions.QuestionName</h5>
-                            @if (@question.Questions.QuestionTypes.QuestionTypeId == 4)
+                            <h5 class="question-title">@(question.QuestionOrderNum+1). @question.QuestionName</h5>
+                            @if (@question.QuestionTypeId == 4)
                             {
-                                @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                @foreach (var option in question.Options)
                                 {
                                     <label>
-                                        <InputRadioComponent SelectedValue="@option.Options.OptionName"
-                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
-                                        @option.Options.OptionName
+                                        <InputRadioComponent SelectedValue="@option.OptionName"
+                                                             @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                        @option.OptionName
                                     </label><br>
                                 }
                                 <ValidationMessage For="@(() => submissionInput.Radio[question.QuestionTypeOrderNum].Value)" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
+                            else if (@question.QuestionTypeId == 1)
                             {
                                 <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
-                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                               @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
+                            else if (@question.QuestionTypeId == 3)
                             {
                                 <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
-                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                               @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
+                            else if (@question.QuestionTypeId == 5)
                             {
-                                @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
+                                @foreach (var option in question.Options)
                                 {
                                     string checkboxName = question.QuestionOrderNum.ToString();
-                                    <input type="checkbox" name="@checkboxName" value="@option.Options.OptionName"
+                                    <input type="checkbox" name="@checkboxName" value="@option.OptionName"
                                            @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
-                                    <label for="@option.Options.OptionName">@option.Options.OptionName</label><br>
+                                    <label for="@option.OptionName">@option.OptionName</label><br>
                                 }
                                 <ValidationMessage For="@(() => submissionInput.Checkbox[question.QuestionTypeOrderNum].Value)" />
                             }
-                            else if (@question.Questions.QuestionTypes.QuestionTypeId == 6)
+                            else if (@question.QuestionTypeId == 6)
                             {
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
                                 <input class="form-control date-picker date-type"
-                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                       @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
                             else
                             {
-                                <h5>Eitthvað fór úrskeiðis...</h5>
+                                <h5>Óþekkt spurningartýpa...</h5>
                             }
                         </div>
                     </div>
@@ -107,11 +108,11 @@ else
             <div class="container">
                 <div class="card">
                     <div class="card-body form-check">
-                        @if (hasAnonymousOption)
+                        @if (form.IsAnonymous)
                         {
                             <div class="card-body form-check">
                                 <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
-                                    @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
+                                       @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
@@ -147,23 +148,16 @@ else
 
     //References whether a submission is anonymous or not
     public bool anonymous { get; set; }
-    private bool hasAnonymousOption;
 
-    private EditContext editContext;
-
-    //Listar til þess að birta eyðublað
-    List<QuestionsFormAssignments> questionsList;
-    List<OptionsQuestionAssignmnents> optionsList;
-
-    //Breytur til þess að skrifa í gagnagrunninn
-    SubmissionsInfo submissionsInfo = new SubmissionsInfo();
-    Submissions submission = new Submissions();
+    //Til þess að fylla inn í SubmissionInputModel
     SubmissionInputModel submissionInput = new SubmissionInputModel();
+    private EditContext editContext;
+    FormsViewModel form;
 
-    private bool confirmation = false;
-    private bool _subFail = false;
-
-    FormsInfo form = new FormsInfo();
+    //Confirmation popup
+    bool confirmation;
+    bool _subFail;
+    bool formFound = true;
 
     protected override async Task OnInitializedAsync()
     {
@@ -172,71 +166,39 @@ else
         currentUser = await adminService.Get(userName);
         try
         {
-            submissionInput.FormId = Int16.Parse(id);
+            form = await formsService.Get(Int16.Parse(id));
+            formFound = true;
         }
         catch (Exception)
         {
-            form = null;
+            formFound = false;
         }
-        questionsList = await questionservice.Get(submissionInput.FormId);
-        optionsList = await optionservice.Get(submissionInput.FormId);
 
-        var radioCount = questionsList.Where(t => t.Questions.QuestionTypes.QuestionTypeId == 4).Count();
-        var shortCount = questionsList.Where(t => t.Questions.QuestionTypes.QuestionTypeId == 1).Count();
-        var longCount = questionsList.Where(t => t.Questions.QuestionTypes.QuestionTypeId == 3).Count();
-        var checkboxCount = questionsList.Where(t => t.Questions.QuestionTypes.QuestionTypeId == 5).Count();
-        var dateCount = questionsList.Where(t => t.Questions.QuestionTypes.QuestionTypeId == 6).Count();
+        var radioCount = form.Questions.Where(t => t.QuestionTypeId == 4).Count();
+        var shortCount = form.Questions.Where(t => t.QuestionTypeId == 1).Count();
+        var longCount = form.Questions.Where(t => t.QuestionTypeId == 3).Count();
+        var checkboxCount = form.Questions.Where(t => t.QuestionTypeId == 5).Count();
+        var dateCount = form.Questions.Where(t => t.QuestionTypeId == 6).Count();
 
-        submissionInput.ShortText = new RequiredShortText[shortCount];
-        submissionInput.LongText = new RequiredLongText[longCount];
-        submissionInput.Radio = new RequiredRadio[radioCount];
-        submissionInput.Checkbox = new RequiredCheckbox[checkboxCount];
-        submissionInput.Date = new RequiredDate[dateCount];
+        submissionInput.ShortText = Enumerable.Repeat(new RequiredShortText(), shortCount).ToList();
+        submissionInput.LongText = Enumerable.Repeat(new RequiredLongText(), longCount).ToList();
+        submissionInput.Radio = Enumerable.Repeat(new RequiredRadio(), radioCount).ToList();
+        submissionInput.Checkbox = Enumerable.Repeat(new RequiredCheckbox(), checkboxCount).ToList();
+        submissionInput.Date = Enumerable.Repeat(new RequiredDate(), dateCount).ToList();
         submissionInput.MultipleAnswers = new List<string>();
 
-        for (int i = 0; i < submissionInput.ShortText.Length; i++)
-        {
-            submissionInput.ShortText[i] = new RequiredShortText();
-        }
-        for (int i = 0; i < submissionInput.LongText.Length; i++)
-        {
-            submissionInput.LongText[i] = new RequiredLongText();
-        }
-        for (int i = 0; i < submissionInput.Radio.Length; i++)
-        {
-            submissionInput.Radio[i] = new RequiredRadio();
-        }
-        for (int i = 0; i < submissionInput.Checkbox.Length; i++)
-        {
-            submissionInput.Checkbox[i] = new RequiredCheckbox();
-        }
-        for (int i = 0; i < submissionInput.Date.Length; i++)
-        {
-            submissionInput.Date[i] = new RequiredDate();
-        }
-        try
-        {
-            form = await formService.Get(System.Convert.ToInt32(id));
-            hasAnonymousOption = form.IsAnonymous;
-        }
-        catch (Exception)
-        {
-            form = null;
-        }
         editContext = new EditContext(submissionInput);
     }
 
     protected async Task SelectedDateChanged(int questionTypeOrderNum, string name)
     {
-        string str = await jsRuntime.InvokeAsync<string>
-            ("GetSelectedDate", name);
+        string str = await jsRuntime.InvokeAsync<string>("GetSelectedDate", name);
         submissionInput.Date[questionTypeOrderNum].Value = str;
     }
 
     private async Task SaveCheckboxValue(int questionTypeOrderNum, string name)
     {
-        var value = await jsRuntime.InvokeAsync<object>
-            ("GetCheckedBoxes", name);
+        var value = await jsRuntime.InvokeAsync<object>("GetCheckedBoxes", name);
         submissionInput.Checkbox[questionTypeOrderNum].Value = value.ToString();
     }
 
@@ -247,54 +209,54 @@ else
 
     private async void SubmitForm()
     {
-        if(!editContext.Validate())
+        if (!editContext.Validate())
         {
             await jsRuntime.InvokeAsync<object>("ScrollToTop");
         }
-        else {
+        else
+        {
             try
             {
-                //Create a submission in the database
+                //Save submission in database
+                SubmissionsInfo submissionsInfo = new SubmissionsInfo();
                 submissionsInfo.UserId = currentUser.UserName;
                 DateTime dt = DateTime.UtcNow;
                 submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
+                submissionsInfo.FormName = form.FormName;
+                submissionsInfo.DestinationEmail = form.DestinationEmail;
                 submissionsInfo = await subinfoservice.Add(submissionsInfo);
 
-                //Save the Id of the form and the submission with all answers
-                submission.FormId = submissionInput.FormId;
-                submission.SubmissionId = submissionsInfo.SubmissionId;
-
-                //Save the answer to each question and save to database
-                foreach (var question in questionsList)
+                foreach (var question in form.Questions)
                 {
-                    submission.QuestionsQuestionId = question.QuestionId;
+                    Submissions submission = new Submissions();
+                    submission.SubmissionId = submissionsInfo.SubmissionId;
+                    submission.QuestionName = question.QuestionName;
                     submission.QuestionOrderNum = question.QuestionOrderNum;
-                    // Short text
-                    if (question.Questions.QuestionTypes.QuestionTypeId == 1)
+                    if (question.QuestionTypeId == 1)
                     {
                         submission.Answer = submissionInput.ShortText[question.QuestionTypeOrderNum].Value;
                     }
-                    else if (question.Questions.QuestionTypes.QuestionTypeId == 3)
+                    else if (question.QuestionTypeId == 3)
                     {
                         submission.Answer = submissionInput.LongText[question.QuestionTypeOrderNum].Value;
                     }
-                    else if (question.Questions.QuestionTypes.QuestionTypeId == 4)
+                    else if (question.QuestionTypeId == 4)
                     {
                         submission.Answer = submissionInput.Radio[question.QuestionTypeOrderNum].Value;
                     }
-                    else if (question.Questions.QuestionTypes.QuestionTypeId == 5)
+                    else if (question.QuestionTypeId == 5)
                     {
                         submission.Answer = submissionInput.Checkbox[question.QuestionTypeOrderNum].Value;
                     }
-                    else if (question.Questions.QuestionTypes.QuestionTypeId == 6)
+                    else if (question.QuestionTypeId == 6)
                     {
                         submission.Answer = submissionInput.Date[question.QuestionTypeOrderNum].Value;
                     }
 
-                    //Save answer to the question in the database
                     await subservice.Add(submission);
                 }
-                SendMail(currentUser.Email);
+
+                sendMail(currentUser.Email, submissionsInfo.SubmissionId);
                 confirmation = true;
                 StateHasChanged();
             }
@@ -314,12 +276,12 @@ else
         }
     }
 
-    private void SendMail(string userEmail)
+    private void sendMail(string userEmail, int submissionId)
     {
         try
         {
             var FormId = Int16.Parse(id);
-            mailservice.MailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
+            mailservice.MailBuilder(FormId, submissionId, userEmail, anonymous);
             StateHasChanged();
         }
         catch (Exception)

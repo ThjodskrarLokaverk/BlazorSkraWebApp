@@ -10,7 +10,7 @@
 @inject ICategoriesService categoriesService
 @inject IQuestionTypesService questionTypesService
 @inject IFormsInfoService formsInfoService
-@inject ICategoriesAssignmentsService formsCategoryAssignmentsService
+@inject IFormsCategoryAssignmentsService formsCategoryAssignmentsService
 @inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
 @inject IQuestionsFormAssignmentService questionsFormAssignmentsService
 @inject IQuestionsService questionsService
@@ -143,7 +143,7 @@
         formInfo = await formsInfoService.Add(formInfo);
 
         //Add FormsCategoryAssignments (CategoriesAssignments) to Db
-        CategoriesAssignments formsCategoryAssignment = new CategoriesAssignments();
+        FormsCategoryAssignments formsCategoryAssignment = new FormsCategoryAssignments();
         formsCategoryAssignment.FormId = formInfo.FormId;
         formsCategoryAssignment.CategoryId = createdForm.CategoryId;
         formsCategoryAssignment = await formsCategoryAssignmentsService.Add(formsCategoryAssignment);

@@ -1,8 +1,7 @@
 @page "/allar-innsendingar"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
-@inject IAdminService adminservice
-@inject ISubmissionsService submissionservice
+@inject ISubmissionsInfoService submissionsInfoService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice;
@@ -11,7 +10,7 @@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
-        @if (submissionList == null)
+        @if (submissionsInfoList == null)
         {
             <div class="d-flex justify-content-center">
                 <div class="spinner-border" role="status">
@@ -26,32 +25,33 @@
                 <table class="table table-striped table-md">
                     <thead id="user-thead">
                         <tr>
-                            <th class="text-uppercase">Nafn eyðublaðs
+                            <th class="text-uppercase">
+                                Nafn eyðublaðs
                                 <button class="btn up-down" @onclick="(() => SortFormName())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
-                            <th class="text-uppercase">Notandi
+                            <th class="text-uppercase">
+                                Notandi
                                 <button class="btn up-down" @onclick="(() => SortUserEmail())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
-                            <th class="text-uppercase">Innsent
+                            <th class="text-uppercase">
+                                Innsent
                                 <button class="btn up-down" @onclick="(() => SortDate())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
-                            <th class="text-uppercase">Auðkenni
+                            <th class="text-uppercase">
+                                Auðkenni
                                 <button class="btn up-down" @onclick="(() => SortSubmissionId())"><i class="fas fa-sort-alpha-up"></i> </button>
                             </th>
                         </tr>
                     </thead>
                     <tbody class="table-body">
-                        @foreach(var submission in submissionList)
+                        @foreach (var submissionInfo in submissionsInfoList)
                         {
-                            if((GetAll(submission)) == true)
-                            {
-                                <tr>
-                                    <td>@submission.Form.FormName</td>
-                                    <td>@submission.Submission.UserId</td>
-                                    <td>@submission.Submission.SubmissionDate.ToString("dd/MM/yy")</td>
-                                    <td>@submission.Submission.SubmissionId</td>
-                                </tr>
-                            }
+                            <tr>
+                                <td>@submissionInfo.FormName</td>
+                                <td>@submissionInfo.UserId</td>
+                                <td>@submissionInfo.SubmissionDate.ToString("dd/MM/yy")</td>
+                                <td>@submissionInfo.SubmissionId</td>
+                            </tr>
                         }
                     </tbody>
                 </table>
@@ -60,98 +60,78 @@
     </Authorized>
 </AuthorizeView>
 @code{
-    List<Submissions> alreadyPosted = new List<Submissions>();
-    List<Submissions> submissionList;
-    private bool isSortedFormName = false;
-    private bool isSortedUserEmail = false;
-    private bool isSortedDate = false;
-    private bool isSortedId = false;
+    List<SubmissionsInfo> submissionsInfoList;
+    bool isSortedFormName = false;
+    bool isSortedUserEmail = false;
+    bool isSortedDate = false;
+    bool isSortedId = false;
 
     protected override async Task OnInitializedAsync()
     {
-        submissionList = await submissionservice.Get();
-    }
-    public bool GetAll(Submissions s)
-    {
-        Submissions sub = alreadyPosted.Find(id => id.SubmissionId == s.SubmissionId);
-
-        foreach(var submission in alreadyPosted)
-        {
-            if(s.SubmissionId == submission.SubmissionId)
-            {
-                return false;
-            }
-        }
-
-        alreadyPosted.Add(s);
-        return true;
+        submissionsInfoList = await submissionsInfoService.Get();
     }
 
     // Sorts elements in table by the form name
     void SortFormName()
     {
-        if(!isSortedFormName)
+        if (!isSortedFormName)
         {
-            submissionList = submissionList.OrderBy(x => x.Form.FormName).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(s => s.FormName).ToList();
             isSortedFormName = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Form.FormName).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(s => s.FormName).ToList();
             isSortedFormName = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 
     // Sorts elements in table by the user email
     void SortUserEmail()
     {
-        if(!isSortedUserEmail)
+        if (!isSortedUserEmail)
         {
-            submissionList = submissionList.OrderBy(x => x.Submission.UserId).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(s => s.UserId).ToList();
             isSortedUserEmail = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Submission.UserId).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(s => s.UserId).ToList();
             isSortedUserEmail = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 
     // Sorts elements in table by the submission date
     void SortDate()
     {
-        if(!isSortedDate)
+        if (!isSortedDate)
         {
-            submissionList = submissionList.OrderBy(x => x.Submission.SubmissionDate).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(s => s.SubmissionDate).ToList();
             isSortedDate = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionDate).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(s => s.SubmissionDate).ToList();
             isSortedDate = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 
     // Sorts elements in table by the submission id
     void SortSubmissionId()
     {
-        if(!isSortedId)
+        if (!isSortedId)
         {
-            submissionList = submissionList.OrderBy(x => x.Submission.SubmissionId).ToList();
+            submissionsInfoList = submissionsInfoList.OrderBy(s => s.SubmissionId).ToList();
             isSortedId = true;
         }
         else
         {
-            submissionList = submissionList.OrderByDescending(x => x.Submission.SubmissionId).ToList();
+            submissionsInfoList = submissionsInfoList.OrderByDescending(s => s.SubmissionId).ToList();
             isSortedId = false;
         }
-        alreadyPosted = new List<Submissions>();
         StateHasChanged();
     }
 }
