@@ -17,7 +17,6 @@ namespace BlazorSkraApp1.Models.InputModels
         public RequiredCheckbox[] Checkbox { get; set; }
         [ValidateComplexType]
         public RequiredDate[] Date { get; set; }
-        //public int[] AnswersOrderNum { get; set; }
         public List<string> MultipleAnswers { get; set; }
     }
 

@@ -16,13 +16,12 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
+        void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
         void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
     public class MailService : IMailService
     {
-        MailForm mailForm = new MailForm();
         List<QuestionsFormAssignments> questionsList ;
         string emailBody = "";
         List<Submissions> subList;
@@ -36,7 +35,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public void sendMail()
+        public void SendMail()
         {   
             try{
             var message = new MimeMessage();
@@ -94,7 +93,7 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.FormsInfo.FindAsync(formId);
         }    
-        public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
+        public async void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
             questionsList = await GetQuestions(FormId);
@@ -123,7 +122,7 @@ namespace BlazorSkraApp1.Services
                 }
             }
             emailBody += "Númer innsendingar: " + submissionId;
-            sendMail();
+            SendMail();
         }
 
         public async void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
@@ -141,7 +140,6 @@ namespace BlazorSkraApp1.Services
                    iReport.Add(new Report(){ UserName = userEmail, FormName = Form.FormName, Question = question.Questions.QuestionName, Answer = answer.Answer});
                 }
             }
-
             GeneratePDF(js, iReport);
         }
 

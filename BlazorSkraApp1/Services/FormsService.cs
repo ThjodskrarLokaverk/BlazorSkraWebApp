@@ -40,30 +40,36 @@ namespace BlazorSkraApp1.Services
                 .Where(oqa => oqa.FormId == FormId)
                 .Include(o => o.Options)
                 .ToListAsync();
-            
+
             //Save fetched data to FormsViewModel
-            var form = new FormsViewModel();
-            form.Questions = new List<QuestionsViewModel>();
-            form.CategoryId = formCategoryAssignment.CategoryId;
-            form.CategoryName = formCategoryAssignment.Categories.CategoryName;
-            form.DestinationEmail = formCategoryAssignment.FormsInfo.DestinationEmail;
-            form.FormName = formCategoryAssignment.FormsInfo.FormName;
-            form.IsAnonymous = formCategoryAssignment.FormsInfo.IsAnonymous;
+            var form = new FormsViewModel
+            {
+                Questions = new List<QuestionsViewModel>(),
+                CategoryId = formCategoryAssignment.CategoryId,
+                CategoryName = formCategoryAssignment.Categories.CategoryName,
+                DestinationEmail = formCategoryAssignment.FormsInfo.DestinationEmail,
+                FormName = formCategoryAssignment.FormsInfo.FormName,
+                IsAnonymous = formCategoryAssignment.FormsInfo.IsAnonymous
+            };
 
             foreach (var fetchedQuestion in questions)
             {
-                var question = new QuestionsViewModel();
-                question.QuestionName = fetchedQuestion.Questions.QuestionName;
-                question.QuestionOrderNum = fetchedQuestion.QuestionOrderNum;
-                question.QuestionTypeId = fetchedQuestion.Questions.QuestionTypes.QuestionTypeId;
-                question.QuestionTypeOrderNum = fetchedQuestion.QuestionTypeOrderNum;
-                question.Options = new List<OptionsViewModel>();
-                
-                foreach(var fetchedOption in options.Where(o => o.QuestionOrderNum == question.QuestionOrderNum))
+                var question = new QuestionsViewModel
                 {
-                    var option = new OptionsViewModel();
-                    option.OptionName = fetchedOption.Options.OptionName;
-                    option.OptionOrderNum = fetchedOption.OptionOrderNum;
+                    QuestionName = fetchedQuestion.Questions.QuestionName,
+                    QuestionOrderNum = fetchedQuestion.QuestionOrderNum,
+                    QuestionTypeId = fetchedQuestion.Questions.QuestionTypes.QuestionTypeId,
+                    QuestionTypeOrderNum = fetchedQuestion.QuestionTypeOrderNum,
+                    Options = new List<OptionsViewModel>()
+                };
+
+                foreach (var fetchedOption in options.Where(o => o.QuestionOrderNum == question.QuestionOrderNum))
+                {
+                    var option = new OptionsViewModel
+                    {
+                        OptionName = fetchedOption.Options.OptionName,
+                        OptionOrderNum = fetchedOption.OptionOrderNum
+                    };
                     question.Options.Add(option);
                 }
                 form.Questions.Add(question);

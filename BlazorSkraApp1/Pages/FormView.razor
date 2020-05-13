@@ -323,7 +323,7 @@ else
         try
         {
             var FormId = Int16.Parse(id);
-            mailservice.mailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
+            mailservice.MailBuilder(FormId, submission.SubmissionId, userEmail, anonymous);
             StateHasChanged();
         }
         catch (Exception)
