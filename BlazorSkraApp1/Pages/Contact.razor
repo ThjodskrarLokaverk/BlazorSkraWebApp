@@ -1,4 +1,4 @@
-﻿@page "/Contact"
+﻿@page "/hafa-samband"
 @using MailKit.Net.Smtp
 @using MimeKit
 @using System
@@ -9,7 +9,9 @@
 @inject NavigationManager NavigationManager
 @inject IAdminService adminService
 
-if (confirmation)
+@* *** A text box for users to send in an inquiry *** *@
+
+@if (confirmation)
 {
     <div class="d-flex justify-content-center">
         <h2>Innsendingu hefur verið komið til skila</h2>

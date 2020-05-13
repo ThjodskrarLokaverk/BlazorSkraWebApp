@@ -1,4 +1,4 @@
-@page "/AllSubmissions"
+@page "/allar-innsendingar"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @inject IAdminService adminservice
@@ -6,6 +6,8 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
 @inject IMailService mailservice;
+
+@* *** A table containing all submissions younger than 7 days old *** *@
 
 <AuthorizeView Roles="Admin">
     <Authorized>
@@ -71,7 +73,6 @@
     }
     public bool GetAll(Submissions s)
     {
-        
         Submissions sub = alreadyPosted.Find(id => id.SubmissionId == s.SubmissionId);
 
         foreach(var submission in alreadyPosted)
@@ -86,6 +87,7 @@
         return true;
     }
 
+    // Sorts elements in table by the form name
     void SortFormName()
     {
         if(!isSortedFormName)
@@ -102,6 +104,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the user email
     void SortUserEmail()
     {
         if(!isSortedUserEmail)
@@ -118,6 +121,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the submission date
     void SortDate()
     {
         if(!isSortedDate)
@@ -134,6 +138,7 @@
         StateHasChanged();
     }
 
+    // Sorts elements in table by the submission id
     void SortSubmissionId()
     {
         if(!isSortedId)

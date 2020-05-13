@@ -1,4 +1,4 @@
-@page "/UserList"
+@page "/notendalisti"
 @using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Services
 @using Microsoft.AspNetCore.Identity
@@ -6,6 +6,8 @@
 @inject IAdminService service
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject UserManager<IdentityUser> _UserManager
+
+@* *** A table containing all users *** *@
 
 <AuthorizeView Roles="Admin" Context="authContext">
     @if (userList == null)

@@ -1,4 +1,4 @@
-﻿@page "/Form/{id}"
+﻿@page "/eydublad/{id}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -16,6 +16,8 @@
 @inject IMailService mailservice
 @inject IAdminService adminService
 @inject IFormsInfoService formService
+
+@* *** A form created by an admin for users to fill out and submit *** *@
 
 @if (questionsList == null)
 {
@@ -110,7 +112,7 @@ else
                         {
                             <div class="card-body form-check">
                                 <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
-                                    @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                    @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
@@ -157,13 +159,9 @@ else
     //Breytur til þess að skrifa í gagnagrunninn
     SubmissionsInfo submissionsInfo = new SubmissionsInfo();
     Submissions submission = new Submissions();
-
-    //Til þess að fylla inn í SubmissionInputModel
     SubmissionInputModel submissionInput = new SubmissionInputModel();
 
-    //Confirmation popup
     private bool confirmation = false;
-
     private bool _subFail = false;
 
     FormsInfo form = new FormsInfo();
@@ -243,7 +241,7 @@ else
         submissionInput.Checkbox[questionTypeOrderNum].Value = value.ToString();
     }
 
-    void updateAnon(bool anon)
+    void UpdateAnon(bool anon)
     {
         anonymous = anon;
     }

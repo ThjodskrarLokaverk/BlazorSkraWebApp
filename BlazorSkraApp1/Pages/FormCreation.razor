@@ -1,5 +1,5 @@
-@page "/FormCreation"
-@page "/FormCreation/{selectedCategoryId}"
+@page "/nytt-eydublad"
+@page "/nytt-eydublad/{selectedCategoryId}"
 @using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Services
 @using BlazorSkraApp1.Models.InputModels
@@ -15,6 +15,8 @@
 @inject IQuestionsFormAssignmentService questionsFormAssignmentsService
 @inject IQuestionsService questionsService
 @inject IOptionsService optionsService
+
+@* *** A form for admin to create and publish new forms *** *@
 
 <AuthorizeView Roles="Admin" Context="AuthContext">
     @if (!formCreated)
