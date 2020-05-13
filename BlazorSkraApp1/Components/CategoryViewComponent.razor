@@ -17,7 +17,7 @@ else if (categoriesList.Count() == 0)
         <Authorized>
             <h5 class="empty-state">Enginn flokkur hefur verið stofnaður.</h5>
             <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
-            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn add-category">
+            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn approve-btn add-category">
                 <i class="far fa-plus-square"></i>Bæta við flokk
             </button>
         </Authorized>
@@ -31,7 +31,7 @@ else
 {
     <AuthorizeView Roles="Admin">
         <div class="container">
-            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn btn-success add-category">
+            <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn approve-btn add-category">
                 <i class="far fa-plus-square"></i>Bæta við flokk
             </button>
         </div>
@@ -42,14 +42,14 @@ else
         <div class="linkboxes" title="@category.CategoryName">
             <div class="col-md-4 col-xs-6">
                 <AuthorizeView Roles="Admin">
-                    <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link edit-icon">
+                    <button @onclick="(() => SelectCategory(category))" data-toggle="modal" data-target="#editCategoryModal" class="btn btn-link btn-xs edit-icon">
                         <i class="fas fa-pen category-pen" title="Breyta/eyða flokk"></i>
                     </button>
                 </AuthorizeView>
 
-                <a class="button" href="/FormList/@category.CategoryId">
+                <a class="button" href="/eydublod/@category.CategoryId">
                     <div class="boxes btn">
-                        <p class="text-uppercase">@category.CategoryName</p>
+                        <p title="@category.CategoryName" class="text-uppercase">@category.CategoryName</p>
                     </div>
                 </a>
             </div>

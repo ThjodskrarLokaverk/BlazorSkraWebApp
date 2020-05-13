@@ -8,7 +8,7 @@ using BlazorSkraApp1.Data;
 public interface IQuestionTypesService
 {
     Task<List<QuestionTypes>> Get();
-    Task <QuestionTypes> Get(int typeid);
+    Task <QuestionTypes> Get(int typeId);
 }
 
 namespace BlazorSkraApp1.Services
@@ -26,9 +26,9 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.QuestionTypes.ToListAsync();
         }
-        public async Task<QuestionTypes> Get(int typeid)
+        public async Task<QuestionTypes> Get(int typeId)
         {
-            return await _context.QuestionTypes.FindAsync(typeid);
+            return await _context.QuestionTypes.FindAsync(typeId);
         }
     }
 }

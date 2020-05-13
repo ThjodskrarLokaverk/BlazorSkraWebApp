@@ -20,6 +20,7 @@ namespace BlazorSkraApp1.Data
         public int FormId { get; set; }
         [Required]
         public int QuestionsQuestionId { get; set; }
+        
         //[Required]
         public virtual SubmissionsInfo Submission { get; set; }
         //[Required]
