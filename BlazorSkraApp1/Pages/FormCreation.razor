@@ -15,6 +15,8 @@
 @inject IQuestionsFormAssignmentService questionsFormAssignmentsService
 @inject IQuestionsService questionsService
 @inject IOptionsService optionsService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@using Serilog
 
 @* *** A form for admin to create and publish new forms *** *@
 
@@ -23,7 +25,7 @@
     {
         <!-- Create form -->
         <FormEditComponent OnEdit="CreateFormHandler" selectedCategoryId="@selectedCategoryId" formParameter="createdForm">
-            <CustomButtonText>Forskoða eyðublað</CustomButtonText>
+            <CustomButtonText>Halda áfram</CustomButtonText>
         </FormEditComponent>
     }
 
@@ -33,17 +35,17 @@
         <FormViewComponent Form="@createdForm"></FormViewComponent>
         @if (IsClicked)
         {
-            <button type="button" class="btn approve-btn" disabled>
+            <button type="button" class="btn approve-btn" id="in-work-btn"disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Í vinnslu...
             </button>
         }
         else
         {
-            <button @onclick="SaveForm" type="button" class="btn approve-btn">Birta eyðublað</button>
+            <button @onclick="SaveForm" type="button" class="btn approve-btn form-view-btn">Birta eyðublað</button>
         }
         <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
-        <button type="button" class="btn delete-btn" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
+        <button type="button" class="btn delete-btn form-view-btn" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">
@@ -67,11 +69,19 @@
 @code {
     [Parameter]
     public string selectedCategoryId { get; set; }
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
     protected FormsViewModel createdForm;
     bool formCreated = false;
     bool formPublished = false;
     private bool IsClicked;
+    string currentUser;
 
+    protected override async Task OnInitializedAsync()
+    {
+        var user = (await authenticationStateTask).User.Identity.Name;
+        currentUser = user;
+    }
     private void EditForm()
     {
         formCreated = false;
@@ -174,5 +184,6 @@
         formPublished = true;
         IsClicked = false;
         StateHasChanged();
+        Log.Information($"Nýtt eyðublað hefur verið stofnað: {DateTime.Now} - Nafn eyðublaðs: {createdForm.CategoryName} Stofnað af: {currentUser}");
     }
 }
