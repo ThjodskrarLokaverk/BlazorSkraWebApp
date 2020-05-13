@@ -9,7 +9,7 @@
 @inject ICategoriesService categoriesService
 @inject IQuestionTypesService questionTypesService
 @inject IFormsInfoService formsInfoService
-@inject ICategoriesAssignmentsService formsCategoryAssignmentsService
+@inject IFormsCategoryAssignmentsService formsCategoryAssignmentsService
 @inject IOptionsQuestionAssignmnentsService optionsQuestionAssignmentsService
 @inject IQuestionsFormAssignmentService questionsFormAssignmentsService
 @inject IQuestionsService questionsService
@@ -136,7 +136,7 @@
         formInfo = await formsInfoService.Update(formInfo);
 
         //update FormsCategoryAssignments
-        CategoriesAssignments formsCategoryAssignment = new CategoriesAssignments();
+        FormsCategoryAssignments formsCategoryAssignment = new FormsCategoryAssignments();
         formsCategoryAssignment.FormId = formInfo.FormId;
         formsCategoryAssignment.CategoryId = editedForm.CategoryId;
         formsCategoryAssignment = await formsCategoryAssignmentsService.Update(formsCategoryAssignment);

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorSkraApp1.Data
 {
-    public class CategoriesAssignments
+    public class FormsCategoryAssignments
     {
         public int CategoryId { get; set; }
         public int FormId { get; set; }

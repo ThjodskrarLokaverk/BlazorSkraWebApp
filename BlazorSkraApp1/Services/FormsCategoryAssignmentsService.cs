@@ -7,26 +7,26 @@ using BlazorSkraApp1.Data;
 
 namespace BlazorSkraApp1.Services
 {
-    public interface ICategoriesAssignmentsService
+    public interface IFormsCategoryAssignmentsService
     {
-        Task<List<CategoriesAssignments>> Get();
-        Task<List<CategoriesAssignments>> Get(int categoryId);
-        Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment);
-        Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment);
-        Task<CategoriesAssignments> Update(CategoriesAssignments categoryAssignment);
+        Task<List<FormsCategoryAssignments>> Get();
+        Task<List<FormsCategoryAssignments>> Get(int categoryId);
+        Task<FormsCategoryAssignments> Add(FormsCategoryAssignments categoryAssignment);
+        Task<FormsCategoryAssignments> Delete(FormsCategoryAssignments categoryAssignment);
+        Task<FormsCategoryAssignments> Update(FormsCategoryAssignments categoryAssignment);
     }
 
-    public class CategoriesAssignmentsService : ICategoriesAssignmentsService
+    public class FormsCategoryAssignmentsService : IFormsCategoryAssignmentsService
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesAssignmentsService(ApplicationDbContext context)
+        public FormsCategoryAssignmentsService(ApplicationDbContext context)
         {
             _context = context;
         }
 
         // Returns a list of category assignments
-        public async Task<List<CategoriesAssignments>> Get()
+        public async Task<List<FormsCategoryAssignments>> Get()
         {
             return await _context.CategoriesAssignments
                 .Include(c => c.Categories)
@@ -35,7 +35,7 @@ namespace BlazorSkraApp1.Services
         }
 
         // Returns a list of all category assignments for the specified category
-        public async Task<List<CategoriesAssignments>> Get(int categoryId)
+        public async Task<List<FormsCategoryAssignments>> Get(int categoryId)
         {
             var categories = (from category in _context.CategoriesAssignments
                               where category.CategoryId == categoryId
@@ -47,7 +47,7 @@ namespace BlazorSkraApp1.Services
         }
 
         // Creates the specified category assignment in the database
-        public async Task<CategoriesAssignments> Add(CategoriesAssignments categoryAssignment)
+        public async Task<FormsCategoryAssignments> Add(FormsCategoryAssignments categoryAssignment)
         {
             _context.CategoriesAssignments.Add(categoryAssignment);
             await _context.SaveChangesAsync();
@@ -55,7 +55,7 @@ namespace BlazorSkraApp1.Services
         }
 
         // Deletes the specified category assignment from the database
-        public async Task<CategoriesAssignments> Delete(CategoriesAssignments categoryAssignment)
+        public async Task<FormsCategoryAssignments> Delete(FormsCategoryAssignments categoryAssignment)
         {
             var category = await _context.CategoriesAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);
             _context.CategoriesAssignments.Remove(category);
@@ -63,7 +63,7 @@ namespace BlazorSkraApp1.Services
             return category;
         }
 
-        public async Task<CategoriesAssignments> Update(CategoriesAssignments editedCategoryAssignment)
+        public async Task<FormsCategoryAssignments> Update(FormsCategoryAssignments editedCategoryAssignment)
         {
             var categoryAssignment = await _context.CategoriesAssignments
                 .Where(ca => ca.FormId == editedCategoryAssignment.FormId)

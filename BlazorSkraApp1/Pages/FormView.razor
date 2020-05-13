@@ -18,8 +18,7 @@
 @inject IAdminService adminService
 @inject IFormsInfoService formsInfoService
 @inject IFormsService formsService
-
-@* *** A form created by an admin for users to fill out and submit *** *@
+<!-- *** A form created by an admin for users to fill out and submit *** -->
 
 @if (form == null)
 {
@@ -59,8 +58,8 @@ else
                                 @foreach (var option in question.Options)
                                 {
                                     <label>
-                                        <InputRadioComponent SelectedValue="@option.OptionName" 
-                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                        <InputRadioComponent SelectedValue="@option.OptionName"
+                                                             @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                         @option.OptionName
                                     </label><br>
                                 }
@@ -69,13 +68,13 @@ else
                             else if (@question.QuestionTypeId == 1)
                             {
                                 <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
-                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                               @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 3)
                             {
                                 <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
-                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                               @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 5)
@@ -94,7 +93,7 @@ else
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
                                 <input class="form-control date-picker date-type"
-                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                       @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
@@ -112,8 +111,8 @@ else
                         @if (form.IsAnonymous)
                         {
                             <div class="card-body form-check">
-                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous" 
-                                    @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
+                                       @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
@@ -187,7 +186,7 @@ else
         submissionInput.Checkbox = Enumerable.Repeat(new RequiredCheckbox(), checkboxCount).ToList();
         submissionInput.Date = Enumerable.Repeat(new RequiredDate(), dateCount).ToList();
         submissionInput.MultipleAnswers = new List<string>();
-      
+
         editContext = new EditContext(submissionInput);
     }
 
@@ -210,11 +209,12 @@ else
 
     private async void SubmitForm()
     {
-        if(!editContext.Validate())
+        if (!editContext.Validate())
         {
             await jsRuntime.InvokeAsync<object>("ScrollToTop");
         }
-        else {
+        else
+        {
             try
             {
                 //Save submission in database
@@ -255,7 +255,7 @@ else
 
                     await subservice.Add(submission);
                 }
-      
+
                 sendMail(currentUser.Email, submissionsInfo.SubmissionId);
                 confirmation = true;
                 StateHasChanged();
@@ -273,6 +273,7 @@ else
                 _subFail = true;
                 StateHasChanged();
             }
+        }
     }
 
     private void sendMail(string userEmail, int submissionId)
