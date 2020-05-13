@@ -345,6 +345,16 @@ html, body {
     margin-left: 12px;
 }
 
+.form-view-btn{
+    margin-top:20px;
+    float:right;
+    margin-left:10px;
+}
+
+.form-check-view{
+    margin-top:15px;
+}
+
 .vl {
     border-right: 1.5px solid black;
     height: 15px;
@@ -599,12 +609,23 @@ ul{
     color:white;
     height: 1.95rem;
 }
+
 .approve-btn {
     background-color: var(--five);
     color: white;
     border-radius: 10px;
 }
 
+.btn-danger{
+    background-color: var(--four);
+    border-radius:10px;
+}
+
+#in-work-btn{
+    float:right;
+    border-radius:10px;
+    margin-top:10px;
+}
 .cancel-btn {
     background-color: var(--two);
     color: white;
