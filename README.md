@@ -10,7 +10,19 @@ In order to run it on older legacy operating systems (OS) or even Linux operatin
 
 To give an idea of running requirements: If one downloads the bundle and extracts it, it will take 8 MB of memory. After "dotnet build" has been ran, it will take about 90 MB of space. As a rule of thumb; any *ok student laptop* can run this solution.
 
-### Installing
+## Prerequisites
+Don't know what Blazor is? [Read here](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-3.1)
+
+
+## Installing
+Start by installing software bundles:
+# Windows 10 OS
+1) Make sure Internet Information Service is enabled in Contol Panel.
+2) Download and install the latest stable release of [.Net Core SDK](https://dotnet.microsoft.com/download). Currently, that is version 3.1. 
+3) Download and install [Visual Studio Core](https://code.visualstudio.com/download). Choose "Add to path" when installing Visual Studio Code. 
+4) Clone or download this git repository.
+5) Open the solution in Visual Studio Code, then build the solution running "dotnet build" in terminal, and then run "dotnet ef migrations 'name of migration'" to migrate a database on your pc.
+
 
 To Compile
 1) In command prompt (terminal), start by unzipping the files. 
