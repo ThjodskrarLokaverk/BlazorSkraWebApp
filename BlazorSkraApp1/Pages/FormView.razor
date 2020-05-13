@@ -41,7 +41,7 @@ else if (confirmation)
 }
 else
 {
-    <div class="container @faded sub-container">
+    <div class="container sub-container">
         <EditForm EditContext="editContext" OnSubmit="@SubmitForm">
             <ObjectGraphDataAnnotationsValidator />
             <h3 class="form-list-heading" style="color:black"> @form.FormName</h3>
@@ -56,7 +56,8 @@ else
                                 @foreach (var option in optionsList.Where(option => option.QuestionOrderNum == question.QuestionOrderNum))
                                 {
                                     <label>
-                                        <InputRadioComponent SelectedValue="@option.Options.OptionName" @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                        <InputRadioComponent SelectedValue="@option.Options.OptionName"
+                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                         @option.Options.OptionName
                                     </label><br>
                                 }
@@ -64,12 +65,14 @@ else
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 1)
                             {
-                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 3)
                             {
-                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..." @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
+                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.Questions.QuestionTypes.QuestionTypeId == 5)
@@ -87,7 +90,8 @@ else
                             {
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
-                                <input class="form-control date-picker date-type" @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                <input class="form-control date-picker date-type"
+                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
                                        type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
@@ -105,11 +109,12 @@ else
                         @if (hasAnonymousOption)
                         {
                             <div class="card-body form-check">
-                                <input class="check-box @faded" type="checkbox" name="anonymous" bind="@anonymous" @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
+                                <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
+                                    @onchange="@((eventArgs) => updateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
-                        <button type="submit" class="@faded submit-form btn approve-btn">Senda inn</button>
+                        <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
                     </div>
                 </div>
             </div>
@@ -157,11 +162,9 @@ else
     SubmissionInputModel submissionInput = new SubmissionInputModel();
 
     //Confirmation popup
-    bool confirmation = false;
-    //Class til þess að lækka opacity þegar það er skilað
-    string faded = "";
+    private bool confirmation = false;
 
-    bool _subFail = false;
+    private bool _subFail = false;
 
     FormsInfo form = new FormsInfo();
 
@@ -260,11 +263,9 @@ else
                 submissionsInfo.SubmissionDate = DateTime.UtcNow; //https://stackoverflow.com/questions/22225701/inserting-current-database-date-time-via-entity-framework
                 submissionsInfo = await subinfoservice.Add(submissionsInfo);
 
-
                 //Save the Id of the form and the submission with all answers
                 submission.FormId = submissionInput.FormId;
                 submission.SubmissionId = submissionsInfo.SubmissionId;
-
 
                 //Save the answer to each question and save to database
                 foreach (var question in questionsList)
@@ -296,8 +297,7 @@ else
                     //Save answer to the question in the database
                     await subservice.Add(submission);
                 }
-                sendMail(currentUser.Email);
-                faded = "faded";
+                SendMail(currentUser.Email);
                 confirmation = true;
                 StateHasChanged();
             }
@@ -314,11 +314,10 @@ else
                 _subFail = true;
                 StateHasChanged();
             }
-
         }
     }
 
-    private void sendMail(string userEmail)
+    private void SendMail(string userEmail)
     {
         try
         {

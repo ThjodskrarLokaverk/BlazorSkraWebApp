@@ -1,76 +1,55 @@
 ﻿@page "/Contact"
-@using MailKit.Net.Smtp;
-@using MimeKit;
+@using MailKit.Net.Smtp
+@using MimeKit
 @using System
 @using BlazorSkraApp1.Services
-@inject NavigationManager NavigationManager
+@using BlazorSkraApp1.Components
 @using BlazorSkraApp1.Data
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
+@inject NavigationManager NavigationManager
 @inject IAdminService adminService
 
-
-<div class="container @faded">
-    <div class="header">
-        <h4 class="modal-title">Hafa samband</h4>
-    </div>
-                
-    <EditForm Model="@mailForm" OnValidSubmit="@SendMail">
-        <div class="form-group">
-            <label for="To">Skilaboð:</label>
-            <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
-        </div>
-        <button type="submit" class="btn approve-btn">Senda skilaboð</button>
-        <DataAnnotationsValidator />
-    </EditForm>
-</div>
-
-@if (confirmation)
+if (confirmation)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Staðfesting</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Skilaboðum hefur verið komið áleiðis</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
+    <div class="d-flex justify-content-center">
+        <h2>Innsendingu hefur verið komið til skila</h2>
+    </div>
+    <br />
+    <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Aftur á upphafssíðu</a>
+}
+else {
+    <div class="container">
+        <div class="header">
+            <h4 class="modal-title">Hafa samband</h4>
         </div>
+        <EditForm Model="@mailForm" OnValidSubmit="@SendMail">
+            <div class="form-group">
+                <label for="To">Skilaboð:</label>
+                <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
+            </div>
+            <button type="submit" class="btn approve-btn">Senda skilaboð</button>
+            <DataAnnotationsValidator />
+        </EditForm>
     </div>
 }
 
 @if (_subFail)
 {
-    <div class="modal" tabindex="-1" style="display:block" role="dialog">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content" id="modal-content-exception">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="ExceptionModal"> Eitthvað fór úrskeiðis</h5>
-                </div>
-                <div class="modal-body">
-                    <p>Eitthvað fór úrskeiðis, vinsamlegast reyndur aftur.</p>
-                </div>
-                <div class="modal-footer">
-                    <a type="button" class="btn approve-btn" href="/">Aftur á upphafssíðu</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <ConfirmationModalComponent OnClick="SubmissionFailHandler">
+        <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
+        <CustomBody>Skilaboðin komust ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
+        <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
+        <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
+    </ConfirmationModalComponent>
 }
 
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     IdentityUser currentUser;
-    bool confirmation = false;
-    bool _subFail = false;
+    private bool confirmation = false;
+    private bool _subFail = false;
     MailForm mailForm = new MailForm();
-
-    string faded = "";
     protected override async Task OnInitializedAsync()
     {
         //Get current user
@@ -101,7 +80,6 @@
                 client.Send(message);
                 client.Disconnect(false);
                 //User sent to home page after having received a notification
-                faded = "faded";
                 confirmation = true;
                 StateHasChanged();
             }
@@ -112,5 +90,10 @@
             StateHasChanged();
         }
 
+    }
+
+    private void SubmissionFailHandler()
+    {
+        NavigationManager.NavigateTo("/", true);
     }
 }

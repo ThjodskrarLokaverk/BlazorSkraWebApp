@@ -10,7 +10,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IFormsService
     {
-        Task<FormsViewModel> Get(int FormId);
+        Task<FormsViewModel> Get(int formId);
     }
 
     public class FormsService : IFormsService
@@ -22,22 +22,22 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public async Task<FormsViewModel> Get(int FormId)
+        public async Task<FormsViewModel> Get(int formId)
         {
             var formCategoryAssignment = await _context.CategoriesAssignments
-                .Where(c => c.FormId == FormId)
+                .Where(c => c.FormId == formId)
                 .Include(f => f.FormsInfo)
                 .Include(c => c.Categories)
                 .FirstOrDefaultAsync();
 
             var questions = await _context.QuestionsFormAssignments
-                .Where(qfa => qfa.FormId == FormId)
+                .Where(qfa => qfa.FormId == formId)
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
             
             var options = await _context.OptionsQuestionAssignmnents
-                .Where(oqa => oqa.FormId == FormId)
+                .Where(oqa => oqa.FormId == formId)
                 .Include(o => o.Options)
                 .ToListAsync();
 

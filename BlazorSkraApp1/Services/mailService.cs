@@ -16,8 +16,8 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
-        void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
+        void MailBuilder(short formId,  int submissionId, string userEmail, bool anonymous);
+        void PDFBuilder(int formId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
     public class MailService : IMailService
@@ -93,11 +93,11 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.FormsInfo.FindAsync(formId);
         }    
-        public async void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
+        public async void MailBuilder(short formId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            formsInfo = await GetForm(FormId);
+            questionsList = await GetQuestions(formId);
+            formsInfo = await GetForm(formId);
             userMail = userEmail;
 
             string newLine = Environment.NewLine;
@@ -121,15 +121,15 @@ namespace BlazorSkraApp1.Services
                    emailBody += "Svar: " + answer.Answer + newLine + newLine;  
                 }
             }
-            emailBody += "Númer innsendingar: " + submissionId;
+            emailBody += "Auðkenni innsendingar: " + submissionId;
             SendMail();
         }
 
-        public async void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
+        public async void PDFBuilder(int formId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            var Form = await GetForm(FormId);
+            questionsList = await GetQuestions(formId);
+            var Form = await GetForm(formId);
             userMail = userEmail;
             List<Report> iReport = new List<Report>();
 
