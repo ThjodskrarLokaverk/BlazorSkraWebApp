@@ -74,7 +74,6 @@ namespace BlazorSkraApp1.Services
                 }
                 form.Questions.Add(question);
             }
-
             return form;
         }
     }

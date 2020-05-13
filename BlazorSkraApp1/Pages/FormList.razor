@@ -64,7 +64,7 @@ else
                         <img src="Images/form.svg" class="card-img-top" alt="form form">
                         <div class="card-body body-list">
                             <h5 class="card-title title-list">@categoryAssignment.FormsInfo.FormName</h5>
-                            <a href="/Form/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
+                            <a href="/eydublad/@categoryAssignment.FormsInfo.FormId" class="stretched-link"></a>
                         </div>
                     </div>
                 </div>
@@ -145,13 +145,13 @@ else
 
     protected async void DeleteFormHandler()
     {
-        //Remove the form/form from the list of forms in this category
+        //Remove the form from the list of forms in this category
         await catAssignService.Delete(selectedCategoryAssignment);
 
-        //Delete the form/form from the database
+        //Delete the form from the database
         await formservice.Delete(selectedCategoryAssignment.FormId);
 
-        //remove the form/form from the list on this page
+        //remove the form from the list on this page
         categoriesAssignmentsList.Remove(selectedCategoryAssignment);
 
         //refresh UI
