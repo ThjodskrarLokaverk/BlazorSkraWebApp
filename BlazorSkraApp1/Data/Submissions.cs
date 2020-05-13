@@ -15,14 +15,10 @@ namespace BlazorSkraApp1.Data
         [Required]
         public string Answer { get; set; }
         [Required]
+        [StringLength(250, ErrorMessage = "Spurning má ekki innihalda fleiri en 250 stafi")]
+        public string QuestionName { get; set; }
+        [Required]
         public int SubmissionId { get; set; }
-        [Required]
-        public int FormId { get; set; }
-        [Required]
-        public int QuestionsQuestionId { get; set; }
-        //[Required]
-        public virtual SubmissionsInfo Submission { get; set; }
-        //[Required]
-        public virtual FormsInfo Form { get; set; }
+        public virtual SubmissionsInfo SubmissionInfo { get; set; }
     }
 }

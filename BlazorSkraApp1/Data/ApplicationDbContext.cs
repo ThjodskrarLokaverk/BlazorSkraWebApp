@@ -19,26 +19,21 @@ namespace BlazorSkraApp1.Data
 
             //Create the Composite key for the Submissions table
             modelBuilder.Entity<Submissions>()
-                .HasOne<SubmissionsInfo>(si => si.Submission)
+                .HasOne(si => si.SubmissionInfo)
                 .WithMany()
                 .HasForeignKey(si => si.SubmissionId);
 
             modelBuilder.Entity<Submissions>()
-                .HasOne<FormsInfo>(fi => fi.Form)
-                .WithMany()
-                .HasForeignKey(fi => fi.FormId);
-
-            modelBuilder.Entity<Submissions>()
-                .HasKey(s => new { s.SubmissionId, s.FormId, s.QuestionOrderNum, s.AnswerOrderNum });
+                .HasKey(s => new { s.SubmissionId, s.QuestionOrderNum, s.AnswerOrderNum });
 
             //Create the Composite key for the CategoriesAssignments table
             modelBuilder.Entity<CategoriesAssignments>()
-                    .HasOne<Categories>(c => c.Categories)
+                    .HasOne(c => c.Categories)
                     .WithMany()
                     .HasForeignKey(c => c.CategoryId);
             
             modelBuilder.Entity<CategoriesAssignments>()
-                    .HasOne<FormsInfo>(f => f.FormsInfo)
+                    .HasOne(f => f.FormsInfo)
                     .WithMany()
                     .HasForeignKey(f => f.FormId);
 
@@ -47,12 +42,12 @@ namespace BlazorSkraApp1.Data
 
             //Create the Composite key for the QuestionsFormAssignments table
             modelBuilder.Entity<QuestionsFormAssignments>()
-                    .HasOne<Questions>(q => q.Questions)
+                    .HasOne(q => q.Questions)
                     .WithMany()
                     .HasForeignKey(q => q.QuestionId);
 
             modelBuilder.Entity<QuestionsFormAssignments>()
-                    .HasOne<FormsInfo>(f => f.FormsInfo)
+                    .HasOne(f => f.FormsInfo)
                     .WithMany()
                     .HasForeignKey(f => f.FormId);
 
@@ -61,12 +56,12 @@ namespace BlazorSkraApp1.Data
 
             //Create the Composite key for the OptionsQuestionAssignmnents table
             modelBuilder.Entity<OptionsQuestionAssignmnents>()
-                    .HasOne<Options>(o => o.Options)
+                    .HasOne(o => o.Options)
                     .WithMany()
                     .HasForeignKey(o => o.OptionId);
 
             modelBuilder.Entity<OptionsQuestionAssignmnents>()
-                    .HasOne<QuestionsFormAssignments>(qfa => qfa.QuestionsFormAssignments)
+                    .HasOne(qfa => qfa.QuestionsFormAssignments)
                     .WithMany()
                     .HasForeignKey(qfa => new { qfa.FormId, qfa.QuestionOrderNum });
 

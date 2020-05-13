@@ -10,9 +10,15 @@ namespace BlazorSkraApp1.Data
     {
         [Key]
         public int SubmissionId { get; set; }
-
         public DateTime SubmissionDate { get; set; }  // To be able to identify submissions by date, and delete old submissions
         [Required]
         public string UserId { get; set; }
+        [Required]
+        [StringLength(250, ErrorMessage = "Nafn eyðublaðs má ekki innihalda fleiri en 250 stafi")]
+        public string FormName { get; set; }
+        [Required]
+        [StringLength(320, ErrorMessage = "Netfang má ekki innihalda fleiri en 320 stafi")]
+        [EmailAddress]
+        public string DestinationEmail { get; set; }
     }
 }

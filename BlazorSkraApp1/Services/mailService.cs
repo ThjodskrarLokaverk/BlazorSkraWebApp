@@ -16,17 +16,15 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
-        void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
+        void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
+        void PDFBuilder(string formName, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
     public class MailService : IMailService
     {
         MailForm mailForm = new MailForm();
-        List<QuestionsFormAssignments> questionsList ;
         string emailBody = "";
         List<Submissions> subList;
-        string userMail;
         FormsInfo formsInfo = new FormsInfo();
 
         private readonly ApplicationDbContext _context;
@@ -36,7 +34,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public void sendMail()
+        public void SendMail()
         {   
             try{
             var message = new MimeMessage();
@@ -69,9 +67,7 @@ namespace BlazorSkraApp1.Services
         public async Task<List<Submissions>> GetAnswers(int submissionId)
         {
             return await _context.Submissions
-                .Include(i => i.Submission)
-                .Include(f => f.Form)
-                .Where(s => s.Submission.SubmissionId == submissionId)
+                .Where(s => s.SubmissionId == submissionId)
                 .ToListAsync();
         }
 
@@ -94,12 +90,10 @@ namespace BlazorSkraApp1.Services
         {
             return await _context.FormsInfo.FindAsync(formId);
         }    
-        public async void mailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
+        public async void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            formsInfo = await GetForm(FormId);
-            userMail = userEmail;
+            //formsInfo = await GetForm(FormId);
 
             string newLine = Environment.NewLine;
 
@@ -113,33 +107,25 @@ namespace BlazorSkraApp1.Services
             }
             
             //Answers added to email body
-            foreach(var question in questionsList)
+            foreach(var submissionLine in subList)
             {
-                emailBody += question.QuestionOrderNum+1 + ". " +question.Questions.QuestionName + newLine;
-                
-                foreach(var answer in subList.Where(answer => answer.QuestionsQuestionId == question.Questions.QuestionId))
-                {
-                   emailBody += "Svar: " + answer.Answer + newLine + newLine;  
-                }
+                emailBody += submissionLine.QuestionOrderNum+1 + ". " + submissionLine.QuestionName + newLine;
+                emailBody += "Svar: " + submissionLine.Answer + newLine + newLine;  
             }
             emailBody += "Númer innsendingar: " + submissionId;
-            sendMail();
+            SendMail();
         }
 
-        public async void PDFBuilder(int FormId, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
+        public async void PDFBuilder(string formName, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
         {
             subList = await GetAnswers(submissionId);
-            questionsList = await GetQuestions(FormId);
-            var Form = await GetForm(FormId);
-            userMail = userEmail;
+            //var Form = await GetForm(FormId);
+
             List<Report> iReport = new List<Report>();
 
-            foreach(var question in questionsList)
+            foreach(var submissionLine in subList)
             {      
-                foreach(var answer in subList.Where(answer => answer.QuestionsQuestionId == question.Questions.QuestionId))
-                {
-                   iReport.Add(new Report(){ UserName = userEmail, FormName = Form.FormName, Question = question.Questions.QuestionName, Answer = answer.Answer});
-                }
+                iReport.Add(new Report(){ UserName = userEmail, FormName = formName, Question = submissionLine.QuestionName, Answer = submissionLine.Answer});
             }
 
             GeneratePDF(js, iReport);

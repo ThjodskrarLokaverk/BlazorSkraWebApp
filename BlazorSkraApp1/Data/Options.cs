@@ -11,7 +11,7 @@ namespace BlazorSkraApp1.Data
         [Key]
         public int OptionId { get; set; }
         [Required(ErrorMessage = "Velja þarf nafn á valkost")]
-        [StringLength(50, ErrorMessage = "Nafn valkosts má ekki innihalda fleiri en 50 stafi")]
+        [StringLength(200, ErrorMessage = "Nafn valkosts má ekki innihalda fleiri en 200 stafi")]
         public string OptionName { get; set; }
     }
 }
