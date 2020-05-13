@@ -50,6 +50,7 @@ namespace BlazorSkraApp1.Services
             var form = await _context.FormsInfo.FindAsync(editedForm.FormId);
             form.FormName = editedForm.FormName;
             form.DestinationEmail = editedForm.DestinationEmail;
+            form.IsAnonymous = editedForm.IsAnonymous;
             _context.Entry(form).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return form;
@@ -60,7 +61,7 @@ namespace BlazorSkraApp1.Services
             return await _context.FormsInfo.FindAsync(formId);
         }
 
-        public async Task<List<FormsInfo>> GetSearch(String SearchString)
+        public async Task<List<FormsInfo>> GetSearch(string SearchString)
         {
             var searchList = _context.FormsInfo.Where(x => x.FormName.Contains(SearchString)).ToListAsync();
             return await searchList;
@@ -68,7 +69,7 @@ namespace BlazorSkraApp1.Services
 
         public async Task<FormsInfo> GetEmail(string DestinationEmail)
         {
-            return await _context.FormsInfo.FindAsync(DestinationEmail);
+            return await _context.FormsInfo.FirstOrDefaultAsync(d => d.DestinationEmail == DestinationEmail);
         }
         public async Task<List<FormsInfo>> Get()
         {

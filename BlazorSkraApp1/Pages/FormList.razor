@@ -44,8 +44,7 @@ else
         </AuthorizeView>
             <div class="row">
             @foreach (var categoryAssignment in categoriesAssignmentsList)
-            {       
-                
+            {
                 <div class="col-md-4">
                     <AuthorizeView Roles="Admin">
                         <a href="FormEdit/@categoryAssignment.FormsInfo.FormId">

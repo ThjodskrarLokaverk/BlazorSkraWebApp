@@ -38,26 +38,30 @@ else
                 <div class="form-group row">
                     <label for="categories" class="col-sm-2 col-form-label">Flokkur</label>
                     <div class="col-sm-10">
-                        <InputSelect id="categories" class="form-control" @bind-Value="@formInputModel.CategoryId" >
+                        <InputSelect id="categories" class="form-control" @bind-Value="@formInputModel.CategoryId">
                             <option value="">Veldu flokk</option>
                             @if (categoriesList == null)
-                            {
-                                <option>Augnablik...</option>
-                            }
-                            else
-                            {
-                                foreach (var category in categoriesList)
                                 {
-                                  <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
+                                <option>Augnablik...</option>
                                 }
-                            }
+                                else
+                                {
+                                    foreach (var category in categoriesList)
+                                    {
+                                    <option value="@System.Convert.ToString(category.CategoryId)">@category.CategoryName</option>
+                                    }
+                                }
+                            /**/
+                            /**/
+                            /**/
                         </InputSelect>
                         <ValidationMessage For="@(() => formInputModel.CategoryId)" />
                     </div>
                 </div>
-                
+
                 <div class="form-group row">
-                    <label class="col-sm-2 col-form-label">Viðtökunetfang
+                    <label class="col-sm-2 col-form-label">
+                        Viðtökunetfang
                         <a href="/Instructions" target="_blank" class="email-info">
                             <i class="fas fa-info-circle" title="Leiðbeiningar fyrir sendingar með Trello og Jira"></i>
                         </a>
@@ -67,8 +71,15 @@ else
                         <ValidationMessage For="@(() => formInputModel.DestinationEmail)" />
                     </div>
                 </div>
-                <label id="anon-label" >Leyfa svaranda að svara nafnlaust</label>
-                <input id="anon-check" type="checkbox" @onchange="@((eventArgs) => SaveAnonymousValue((bool)eventArgs.Value))" />
+                <label id="anon-label">Leyfa svaranda að svara nafnlaust</label>
+                @if (formInputModel.IsAnonymous)
+                {
+                    <input id="anon-check" type="checkbox" checked @onchange="@((eventArgs) => SaveAnonymousValue((bool)eventArgs.Value))" />
+                }
+                else
+                {
+                    <input id="anon-check" type="checkbox" @onchange="@((eventArgs) => SaveAnonymousValue((bool)eventArgs.Value))" />
+                }
             </div>
         </div>
         <!-- Questions input fields -->
@@ -287,6 +298,7 @@ else
         formInputModel.FormName = form.FormName;
         formInputModel.DestinationEmail = form.DestinationEmail;
         formInputModel.CategoryId = form.CategoryId.ToString();
+        formInputModel.IsAnonymous = form.IsAnonymous;
 
         foreach (var formQuestion in form.Questions)
         {

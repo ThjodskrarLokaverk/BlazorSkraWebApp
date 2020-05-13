@@ -405,6 +405,7 @@ html, body {
     background-color: black;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
+    margin: none;
 }
 
 .second-dropdown-wrapper{
@@ -456,6 +457,7 @@ html, body {
 .first-dropdown-wrapper .dropdown-menu :first-child{
     border-top-right-radius: 10px;
     border-top-left-radius: 10px;
+    border-bottom: solid #ccd4dc 0.6px;
 }
 
 .dropdown-menu :last-child{

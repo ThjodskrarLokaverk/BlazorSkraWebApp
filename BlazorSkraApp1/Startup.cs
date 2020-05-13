@@ -41,6 +41,15 @@ namespace BlazorSkraApp1
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.Configure<IdentityOptions>(config => {
+                config.User.RequireUniqueEmail = true;
+                config.Password.RequireDigit = false;
+                config.Password.RequireNonAlphanumeric = false;
+                config.Password.RequiredLength = 6;
+                config.Password.RequireUppercase = false;
+                config.Password.RequireLowercase = false;
+            });
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
