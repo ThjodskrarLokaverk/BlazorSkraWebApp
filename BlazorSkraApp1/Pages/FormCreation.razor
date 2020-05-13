@@ -42,10 +42,10 @@
         }
         else
         {
-            <button @onclick="SaveForm" type="button" class="btn approve-btn form-view-btn">Birta eyðublað</button>
+            <button type="button" class="btn btn-outline-danger form-view-btn" data-toggle="modal" data-target="#confirmationModal form-view-btn">Eyða eyðublaði</button>
+            <button type="button" class="btn btn-outline-success form-view-btn">Breyta eyðublaði</button>
+            <button @onclick="SaveForm" type="button" class="btn approve-btn new-form-btn">Skrá Eyðublað</button>
         }
-        <button @onclick="EditForm" type="button" class="btn approve-btn">Breyta eyðublaði</button>
-        <button type="button" class="btn delete-btn form-view-btn" data-toggle="modal" data-target="#confirmationModal">Eyða eyðublaði</button>
 
         <!-- Delete created form popup -->
         <ConfirmationModalComponent OnClick="DeleteFormHandler">
