@@ -15,11 +15,11 @@ else if (categoriesList.Count() == 0)
 {
     <AuthorizeView Roles="Admin">
         <Authorized>
-            <h5 class="empty-state">Enginn flokkur hefur verið stofnaður.</h5>
-            <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
             <button data-toggle="modal" type="button" data-target="#addCategoryModal" class="btn approve-btn add-category">
                 <i class="far fa-plus-square"></i>Bæta við flokk
             </button>
+            <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Bættu við flokk með því að smella á <strong><b>"Bæta við flokk"</b></strong> uppi í vinstra horninu. </h5>
+            <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
         </Authorized>
         <NotAuthorized>
             <h5 class="empty-state"> Enginn flokkur hefur verið stofnaður. Hafðu samband við stjórnendur. </h5>
