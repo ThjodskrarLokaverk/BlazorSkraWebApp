@@ -27,9 +27,11 @@
     {
         <!-- Display the created Form -->
         <FormViewComponent Form="@editedForm"></FormViewComponent>
+        <button type="button" class="btn btn-outline-danger form-view-btn" data-toggle="modal" data-target="#confirmationModal">Eyða breytingum</button>
+        <button @onclick="EditForm" type="button" class="btn btn-outline-success form-view-btn">Breyta eyðublaði</button>
         @if (IsClicked)
         {
-            <button type="button" class="btn approve-btn" disabled>
+            <button type="button" class="btn approve-btn new-form-btn" disabled>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 Í vinnslu...
             </button>
@@ -37,8 +39,6 @@
         else
         {
             <button @onclick="UpdateForm" type="button" class="btn approve-btn new-form-btn">Skrá eyðublað</button>
-            <button @onclick="EditForm" type="button" class="btn btn-outline-success form-view-btn">Breyta eyðublaði</button>
-            <button type="button" class="btn btn-outline-danger form-view-btn" data-toggle="modal" data-target="#confirmationModal form-view-btn">Eyða breytingum</button>
         }
 
         <!-- Delete created form popup -->
@@ -52,11 +52,10 @@
 
     @if (formPublished)
     {
-        <div class="d-flex justify-content-center">
-            <h2>Eyðublað hefur verið birt</h2>
-        </div>
-        <br />
-        <a class="btn approve-btn btn-lg d-flex justify-content-center" href="/" role="button">Fara á forsíðu</a>
+        <br>
+        <h2 style="text-align:center">Eyðublað hefur verið skráð</h2>
+        <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms</h5>
+        <meta http-equiv="refresh" content="3; url = /" />
     }
 </AuthorizeView>
 

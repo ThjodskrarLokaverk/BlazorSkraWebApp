@@ -5,9 +5,9 @@
         </Found>
         <NotFound>
             <LayoutView Layout="@typeof(MainLayout)">
-                <h3 class="text-center">Síða fannst ekki</h3>
-                <p class="text-center">Því miður getum við ekki fundið síðuna sem þú baðst um</p>
-                <a class="btn approve-btn btn-lg d-flex justify-content-center vert" href="/" role="button">Fara á forsíðu</a>
+                <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
+                <meta http-equiv = "refresh" content = "3; url = /" />
+                <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
             </LayoutView>
         </NotFound>
     </Router>
