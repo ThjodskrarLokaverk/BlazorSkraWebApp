@@ -44,12 +44,14 @@ else
                             @foreach (var option in question.Options)
                             {
                                 <input type="checkbox" name="@option.OptionName" value="@option.OptionName" />
-                                <label for="@option.OptionName">@option.OptionName</label>
+                                <label for="@option.OptionName">@option.OptionName</label><br>
                             }
                         }
                         else if (@question.QuestionType == "Date")
                         {
-                            <DatePicker DateSelected="OnDateSelected"> </DatePicker>
+                            <label for="date-name"></label>
+                            <input class="form-control date-picker date-type"
+                                type="date" name="date-name" min="1900-01-01" max="3000-01-01" />
                         }
                         else
                         {
