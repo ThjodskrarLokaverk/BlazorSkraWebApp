@@ -10,7 +10,7 @@
 @inject ICategoriesService catService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 
-@* *** A list of all forms created by admins *** *@
+@* *** A list of all forms in chosen category created by admins *** *@
 
 @if (formsCategoryAssignmentsList == null)
 {
@@ -24,7 +24,7 @@
 else if(category == null) //no instance of form
 {
     <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
-    <meta http-equiv = "refresh" content = "5; url = /" />
+    <meta http-equiv = "refresh" content = "3; url = /" />
     <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
 }
 else
