@@ -22,7 +22,7 @@ namespace BlazorSkraApp1.Services
 
     public class MailService : IMailService
     {
-        MailForm mailForm = new MailForm();
+        //MailForm mailForm = new MailForm();
         string emailBody = "";
         List<Submissions> subList;
         FormsInfo formsInfo = new FormsInfo();

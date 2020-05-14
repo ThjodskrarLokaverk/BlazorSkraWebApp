@@ -1,7 +1,7 @@
 ﻿@page "/notkunarleidbeiningar"
 @using BlazorSkraApp1.Components
 
-@* *** Instructions for admins *** *@
+<!-- Instructions for admins -->
 
 <AuthorizeView Roles="Admin">
     <Authorized>
@@ -17,9 +17,9 @@
         <li><AnchorLinkComponent href="#send_to_sysadmin">Tilkynning send á Kerfisstjóra</AnchorLinkComponent></li>
 
         <h3>1. Efni sent á ytri kerfi</h3>
-            Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
-            Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa netfang á hverju verkefni (board),
-            og tölvupóstur sem sendur er inn á verkefni stofnast sem atriði (task).
+        Kerfið er hannað þannig að það getur sent tölvupóst með útfylltum eyðublöðum. Ýmis kerfi geta tekið á móti tölvupóstum og meðhöndlað þá, dæmi um það eru kerfin Jira og Trello.
+        Jira hefur fleiri stillingar á þessu en Trello. Í grunninn er þetta þó eins, þ.e. bæði þessi kerfi hafa netfang á hverju verkefni (board),
+        og tölvupóstur sem sendur er inn á verkefni stofnast sem atriði (task).
         <br />
         <hr />
 
@@ -62,20 +62,20 @@
 
         <img src="Images/Instructions/win-task-scheduler-general.png" alt="Windows Scheduler General">
         <p>
-            Ath: Mikilvægt er að stilla eftirtaldar breytur: Að user account hafi "local admin" réttindi á tölvunni sem keyrir keyrsluna. 
-            - Að stilla á "Run whether the user is logged on or not, til þess að keyrslan keyri ekki bara þegar ákveðinn notandi er innskráður á tölvu, 
-            "Run with highest privilidges" ætti ekki að þurfa, en skaðar ekki. Og að lokum, "Configure for": Veljið þar stýrikerfið sem á að keyra aðgerðina. 
+            Ath: Mikilvægt er að stilla eftirtaldar breytur: Að user account hafi "local admin" réttindi á tölvunni sem keyrir keyrsluna.
+            - Að stilla á "Run whether the user is logged on or not, til þess að keyrslan keyri ekki bara þegar ákveðinn notandi er innskráður á tölvu,
+            "Run with highest privilidges" ætti ekki að þurfa, en skaðar ekki. Og að lokum, "Configure for": Veljið þar stýrikerfið sem á að keyra aðgerðina.
             Í þessu tilfelli er Windows 10 valið.
         </p>
         <img src="Images/Instructions/win-task-scheduler-action.png" alt="Windows Scheduler Actions">
         <br />
         <hr />
         <p>
-            Ath: Á netinu eru sýndar ýmsar útgáfur af því hvernig tilgreina skal að skelin PowerShell geti keyrt ákveðið handrit (script). 
+            Ath: Á netinu eru sýndar ýmsar útgáfur af því hvernig tilgreina skal að skelin PowerShell geti keyrt ákveðið handrit (script).
             Svona fengum við það til að keyra, og mælum því með þessum stillingum.
         </p>
         <p>
-            Hér að neðan er dæmi um handrit (script) sem eyðir færslu úr grunninum að 7 dögum liðnum. Þetta handrit má keyra með "windows task scheduler" 
+            Hér að neðan er dæmi um handrit (script) sem eyðir færslu úr grunninum að 7 dögum liðnum. Þetta handrit má keyra með "windows task scheduler"
             (sjá texta hér f. ofan um hvernig stilla má keyrslutíðni og slíkt).
         </p>
         <img src="Images/Instructions/script-example1.png" alt="Powershell Script, part 1">
@@ -85,8 +85,8 @@
 
         <h3 id="send_to_sysadmin">3. Skilgreiningar á tölvupóstföngum kerfisins</h3>
         <p>
-            Hér er sýnt hvernig tvö tölvupóstföng eru stillt, þ.e. annars vegar tölvupóstfangið sem kerfið notar til að senda póst og hinsvegar tölvupóstfang kerfisstjóra. 
-            Tölvupóstfang kerfisstjóra er það netfang sem kerfið sendir póst á, á síðunni 
+            Hér er sýnt hvernig tvö tölvupóstföng eru stillt, þ.e. annars vegar tölvupóstfangið sem kerfið notar til að senda póst og hinsvegar tölvupóstfang kerfisstjóra.
+            Tölvupóstfang kerfisstjóra er það netfang sem kerfið sendir póst á, á síðunni
             <a href="/hafa-samband">Hafa samband</a>
         </p>
         <img src="Images/Instructions/systems_email.png" alt="Trello software, email handler">

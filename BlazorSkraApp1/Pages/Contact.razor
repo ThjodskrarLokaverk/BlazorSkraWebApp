@@ -8,8 +8,7 @@
 @using Microsoft.AspNetCore.Identity
 @inject NavigationManager NavigationManager
 @inject IAdminService adminService
-
-@* *** A text box for users to send in an inquiry *** *@
+<!-- A text box for users to send in an inquiry -->
 
 @if (confirmation)
 {
@@ -18,7 +17,8 @@
     <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms</h5>
     <meta http-equiv="refresh" content="3; url = /" />
 }
-else {
+else
+{
     <div class="container">
         <div class="header">
             <h4 class="modal-title">Hafa samband</h4>

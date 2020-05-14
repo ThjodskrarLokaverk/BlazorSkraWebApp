@@ -4,9 +4,7 @@
 @inject ISubmissionsInfoService submissionsInfoService
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject IJSRuntime jsRuntime
-@inject IMailService mailservice;
-
-@* *** A table containing all submissions younger than 7 days old *** *@
+@inject IMailService mailservice
 
 <AuthorizeView Roles="Admin">
     <Authorized>

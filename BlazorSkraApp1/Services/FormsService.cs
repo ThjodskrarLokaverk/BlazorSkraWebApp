@@ -58,7 +58,7 @@ namespace BlazorSkraApp1.Services
                 {
                     QuestionName = fetchedQuestion.Questions.QuestionName,
                     QuestionOrderNum = fetchedQuestion.QuestionOrderNum,
-                    QuestionTypeId = fetchedQuestion.Questions.QuestionTypes.QuestionTypeId,
+                    QuestionType = fetchedQuestion.Questions.QuestionTypes.QuestionType,
                     QuestionTypeOrderNum = fetchedQuestion.QuestionTypeOrderNum,
                     Options = new List<OptionsViewModel>()
                 };
