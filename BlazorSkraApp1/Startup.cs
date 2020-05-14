@@ -101,28 +101,26 @@ namespace BlazorSkraApp1
                 endpoints.MapFallbackToPage("/_Host");
             });
             //Create an admin user and a normal user
-            CreateUserAndRoles(serviceProvider).Wait();
+            SystemInitialization(serviceProvider).Wait();
         }
 
         //Create dummy admin and dummy user
-        private async Task CreateUserAndRoles(IServiceProvider serviceProvider)
+        private async Task SystemInitialization(IServiceProvider serviceProvider)
         {
             //initializing custom roles   
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            string[] roleNames = { "Admin", "User" };
             IdentityResult roleResult;
 
-            foreach (var roleName in roleNames)
+            //Create Admin Role
+            var roleExist = await RoleManager.RoleExistsAsync("Admin");
+            if (!roleExist)
             {
-                var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    //create the roles and seed them to the database: Question 1  
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
-                }
+                //create the roles and seed them to the database: Question 1  
+                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
+            //Create Admin User
             IdentityUser user = await UserManager.FindByEmailAsync("admin@admin.is");
 
             if (user == null)
@@ -133,9 +131,10 @@ namespace BlazorSkraApp1
                     Email = "admin@admin.is",
                 };
                 await UserManager.CreateAsync(user, "Qwerty&123");
+                await UserManager.AddToRoleAsync(user, "Admin");
             }
-            await UserManager.AddToRoleAsync(user, "Admin");
 
+            //Create normal user
             IdentityUser user1 = await UserManager.FindByEmailAsync("user@user.is");
 
             if (user1 == null)
@@ -147,7 +146,9 @@ namespace BlazorSkraApp1
                 };
                 await UserManager.CreateAsync(user1, "Qwerty&123");
             }
-            await UserManager.AddToRoleAsync(user1, "User");
+
+            //Create QuestionTypes
+
 
 
         }
