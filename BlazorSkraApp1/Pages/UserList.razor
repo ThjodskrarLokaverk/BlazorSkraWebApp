@@ -42,7 +42,7 @@
                 <tbody class="table-body">
                     @foreach (var admin in adminUsersList)
                     {
-                        if(searchString == "")
+                        if(searchString == null || searchString == "")
                         {
                             <tr>
                                 <td>@admin.Email</td>
@@ -64,8 +64,8 @@
                     }
                     @foreach (var user in userList)
                     {
-                        if(adminUsersList.Contains(user) && searchString == ""){}
-                        else if(adminUsersList.Contains(user) && searchString != "")
+                        if(adminUsersList.Contains(user) && (searchString == "" || searchString == null)){}
+                        else if(adminUsersList.Contains(user) && (searchString != "" || searchString != null))
                         {
                             <tr>
                                 <td>@user.Email</td>
