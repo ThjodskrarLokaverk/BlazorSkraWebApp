@@ -26,9 +26,9 @@ Here are for example instructions on how to edit/run the solution on Windows 10.
 5) Open the solution in Visual Studio, then build the solution. 
 Run the following commands in Package Manager:
 <br/>
-    add-migration 'your description goes here'  
+&nbsp;&nbsp;&nbsp;&nbsp;add-migration 'your description goes here'  
  <br/>
-    update-database
+&nbsp;&nbsp;&nbsp;&nbsp;update-database
 
 6) Run the solution from Visual Studio.
 
