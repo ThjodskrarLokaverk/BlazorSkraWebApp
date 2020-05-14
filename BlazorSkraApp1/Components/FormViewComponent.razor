@@ -21,15 +21,15 @@ else
                         <div class="card-body form-check">
                             <h5 id="question-title" class="card-title form-check-view">@(question.QuestionOrderNum+1). @question.QuestionName</h5>
                         <div class="form-check-view">
-                        @if (@question.QuestionTypeId == 1)
+                        @if (@question.QuestionType == "ShortText")
                         {
                             <textarea placeholder="Skrifið hér..." rows="1" class="form-control textbox" />
                         }
-                        else if (@question.QuestionTypeId == 3)
+                        else if (@question.QuestionType == "LongText")
                         {
                             <textarea placeholder="Skrifið hér..." rows="5" class="form-control textbox" />
                         }
-                        else if (@question.QuestionTypeId == 4)
+                        else if (@question.QuestionType == "Radio")
                         {
                             <fieldset id="radio-group">
                                 @foreach (var option in question.Options)
@@ -39,7 +39,7 @@ else
                                 }
                             </fieldset>
                         }
-                        else if (@question.QuestionTypeId == 5)
+                        else if (@question.QuestionType == "Checkbox")
                         {
                             @foreach (var option in question.Options)
                             {
@@ -47,7 +47,7 @@ else
                                 <label for="@option.OptionName">@option.OptionName</label>
                             }
                         }
-                        else if (@question.QuestionTypeId == 6)
+                        else if (@question.QuestionType == "Date")
                         {
                             <DatePicker DateSelected="OnDateSelected"> </DatePicker>
                         }

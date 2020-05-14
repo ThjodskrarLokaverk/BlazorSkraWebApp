@@ -24,12 +24,10 @@ namespace BlazorSkraApp1.Services
     }
     public class AdminService : IAdminService
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public AdminService(ApplicationDbContext context, UserManager<IdentityUser> userManager)
+        public AdminService(UserManager<IdentityUser> userManager)
         {
-            _context = context;
             _userManager = userManager;
         }
         // Returns a list of all users
@@ -73,7 +71,7 @@ namespace BlazorSkraApp1.Services
             //Update attributes we want to change
             //await _userManager.AddToRoleAsync(user, "Admin");
 
-            return user;
+            return userfound;
         }
 
         // Deletes the specified user

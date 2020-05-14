@@ -9,6 +9,7 @@ public interface IQuestionTypesService
 {
     Task<List<QuestionTypes>> Get();
     Task<QuestionTypes> Get(int typeId);
+    Task<QuestionTypes> Get(string questionType);
 }
 
 namespace BlazorSkraApp1.Services
@@ -29,6 +30,11 @@ namespace BlazorSkraApp1.Services
         public async Task<QuestionTypes> Get(int typeId)
         {
             return await _context.QuestionTypes.FindAsync(typeId);
+        }
+
+        public async Task<QuestionTypes> Get(string questionType)
+        {
+            return await _context.QuestionTypes.Where(qt => qt.QuestionType.Equals(questionType)).FirstOrDefaultAsync();
         }
     }
 }

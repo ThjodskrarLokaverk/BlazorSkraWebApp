@@ -102,9 +102,9 @@
             var editedQuestion = new QuestionsViewModel();
             editedQuestion.Options = new List<OptionsViewModel>();
             editedQuestion.QuestionName = question.QuestionName;
-            editedQuestion.QuestionTypeId = Int16.Parse(question.QuestionTypeId);
+            editedQuestion.QuestionType = question.QuestionType;
             editedQuestion.QuestionOrderNum = editedForm.Questions.Count();
-            editedQuestion.QuestionTypeOrderNum = editedForm.Questions.Count(o => o.QuestionTypeId == editedQuestion.QuestionTypeId);
+            editedQuestion.QuestionTypeOrderNum = editedForm.Questions.Count(o => o.QuestionType == editedQuestion.QuestionType);
             // Save options for each question
             foreach (var option in question.Options)
             {
@@ -152,7 +152,7 @@
         {
             Questions question = new Questions();
             question.QuestionTypes = new QuestionTypes();
-            question.QuestionTypes = await questionTypesService.Get(editedQuestion.QuestionTypeId);
+            question.QuestionTypes = await questionTypesService.Get(editedQuestion.QuestionType);
             question.QuestionName = editedQuestion.QuestionName;
             question = await questionsService.Add(question);
 

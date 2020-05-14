@@ -104,7 +104,7 @@ else
                             </div>
                             <div class="form-group col">
                                 <label for="question-type">Spurningategund</label>
-                                <InputSelect @bind-Value="@question.QuestionTypeId" id="question-type" class="form-control">
+                                <InputSelect @bind-Value="@question.QuestionType" id="question-type" class="form-control">
                                     <option value="">Veldu tegund</option>
                                     @if (questionTypesList == null)
                                     {
@@ -118,12 +118,12 @@ else
                                         }
                                     }
                                 </InputSelect>
-                                <ValidationMessage For="@(() => question.QuestionTypeId)" />
+                                <ValidationMessage For="@(() => question.QuestionType)" />
                             </div>
                         </div>
                         
                         <!-- Options input fields -->
-                        @if (question.QuestionTypeId == "4" || question.QuestionTypeId == "5")
+                        @if (question.QuestionType == "Radio" || question.QuestionType == "Checkbox")
                         {
                             @foreach (var option in question.Options)
                             {
@@ -265,7 +265,7 @@ else
         //Remove unnecessary options
         foreach (var question in formInputModel.Questions)
         {
-            if (question.QuestionTypeId != "4" && question.QuestionTypeId != "5")
+            if (question.QuestionType != "Radio" && question.QuestionType != "Checkbox")
             {
                 question.Options = new List<OptionsInputModel>();
             }
@@ -281,7 +281,7 @@ else
             //Add formerly removed options
             foreach (var question in formInputModel.Questions)
             {
-                if (question.QuestionTypeId != "4" && question.QuestionTypeId != "5")
+                if (question.QuestionType != "Radio" && question.QuestionType != "Checkbox")
                 {
                     question.Options.Add(new OptionsInputModel());
                     question.Options.Add(new OptionsInputModel());
@@ -303,7 +303,7 @@ else
         {
             QuestionsInputModel question = new QuestionsInputModel();
             question.QuestionName = formQuestion.QuestionName;
-            question.QuestionTypeId = formQuestion.QuestionTypeId.ToString();
+            question.QuestionType = formQuestion.QuestionType;
             question.Options = new List<OptionsInputModel>();
             foreach (var formOption in formQuestion.Options)
             {
