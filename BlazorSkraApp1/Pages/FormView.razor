@@ -117,6 +117,7 @@ else
                             </div>
                         }
                         <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
+                        <button @onclick="Cancel" type="button" class="submit-form btn delete-btn">Hætta við</button>
                     </div>
                 </div>
             </div>
@@ -204,6 +205,11 @@ else
         }
 
         editContext = new EditContext(submissionInput);
+    }
+
+    protected void Cancel()
+    {
+        NavigationManager.NavigateTo("/", true);
     }
 
     protected async Task SelectedDateChanged(int questionTypeOrderNum, string name)
