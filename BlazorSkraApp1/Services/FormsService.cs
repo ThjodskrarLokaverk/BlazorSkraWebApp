@@ -24,7 +24,7 @@ namespace BlazorSkraApp1.Services
 
         public async Task<FormsViewModel> Get(int formId)
         {
-            var formCategoryAssignment = await _context.CategoriesAssignments
+            var formCategoryAssignment = await _context.FormsCategoryAssignments
                 .Where(c => c.FormId == formId)
                 .Include(f => f.FormsInfo)
                 .Include(c => c.Categories)
