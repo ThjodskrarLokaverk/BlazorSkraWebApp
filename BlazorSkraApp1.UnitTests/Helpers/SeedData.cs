@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BlazorSkraApp1.Data;
 using System;
 
-namespace BlazorSkraApp1.IntegrationTests.Helpers
+namespace BlazorSkraApp1.UnitTests.Helpers
 {
     public class SeedData
     {

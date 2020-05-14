@@ -21,7 +21,7 @@
     </div>
 }
 
-else if(category == null) //no instance of form
+else if(category == null) // No instance of form
 {
     <h5 style="text-align:center">Þessi síða er ekki til. Þú verður aftur á forsíðu innan skamms</h5>
     <meta http-equiv = "refresh" content = "3; url = /" />
@@ -72,7 +72,7 @@ else
             </div> 
              
             @if (!formsCategoryAssignmentsList.Any())
-            // only displayed when there is no assignment in the category
+            // Only displayed when there is no assignment in the category
             {
                  <AuthorizeView Roles="Admin">
                     <Authorized>
