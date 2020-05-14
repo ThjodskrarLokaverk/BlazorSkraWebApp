@@ -59,7 +59,7 @@ else
                                 {
                                     <label>
                                         <InputRadioComponent SelectedValue="@option.OptionName"
-                                                             @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
+                                            @bind-Value="@submissionInput.Radio[question.QuestionTypeOrderNum].Value" />
                                         @option.OptionName
                                     </label><br>
                                 }
@@ -68,13 +68,13 @@ else
                             else if (@question.QuestionTypeId == 1)
                             {
                                 <InputTextArea rows="1" class="form-control textbox" placeholder="Skrifið hér..."
-                                               @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
+                                    @bind-Value="@submissionInput.ShortText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.ShortText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 3)
                             {
                                 <InputTextArea rows="5" class="form-control textbox" placeholder="Skrifið hér..."
-                                               @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
+                                    @bind-Value="@submissionInput.LongText[question.QuestionTypeOrderNum].Value" />
                                 <ValidationMessage For="@(() => submissionInput.LongText[question.QuestionTypeOrderNum].Value)" />
                             }
                             else if (@question.QuestionTypeId == 5)
@@ -83,7 +83,7 @@ else
                                 {
                                     string checkboxName = question.QuestionOrderNum.ToString();
                                     <input type="checkbox" name="@checkboxName" value="@option.OptionName"
-                                           @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
+                                        @onchange="@(() => SaveCheckboxValue(question.QuestionTypeOrderNum, checkboxName))" />
                                     <label for="@option.OptionName">@option.OptionName</label><br>
                                 }
                                 <ValidationMessage For="@(() => submissionInput.Checkbox[question.QuestionTypeOrderNum].Value)" />
@@ -93,8 +93,8 @@ else
                                 string dateName = question.QuestionOrderNum.ToString();
                                 <label for="@dateName"></label>
                                 <input class="form-control date-picker date-type"
-                                       @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
-                                       type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
+                                    @onchange="@(() => SelectedDateChanged(question.QuestionTypeOrderNum, dateName))"
+                                    type="date" id="@dateName" name="@dateName" min="1900-01-01" max="3000-01-01" />
                                 <ValidationMessage For="@(() => submissionInput.Date[question.QuestionTypeOrderNum].Value)" />
                             }
                             else
@@ -112,7 +112,7 @@ else
                         {
                             <div class="card-body form-check">
                                 <input class="check-box" type="checkbox" name="anonymous" bind="@anonymous"
-                                       @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
+                                    @onchange="@((eventArgs) => UpdateAnon((bool)eventArgs.Value))" />
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
@@ -128,9 +128,9 @@ else
                             <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
                         }
                         <button @onclick="Cancel" type="button" class="submit-form btn delete-btn">Hætta við</button>
+                    </div>
                 </div>
             </div>
-        </div>
         </EditForm>
     </div>
     <br>

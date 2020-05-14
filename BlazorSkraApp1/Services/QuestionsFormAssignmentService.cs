@@ -9,7 +9,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IQuestionsFormAssignmentService
     {
-        Task <List<QuestionsFormAssignments>> Get(int formId);
+        Task<List<QuestionsFormAssignments>> Get(int formId);
         Task<QuestionsFormAssignments> Add(QuestionsFormAssignments question);
         Task<QuestionsFormAssignments> Delete(QuestionsFormAssignments question);
         Task<List<QuestionsFormAssignments>> DeleteAll(int formId);

@@ -6,8 +6,10 @@
 
 <!-- Search form -->
 <div class="md-form mt-0 index-search">
-  <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
-   <a class="btn search-button"  href='/Search/@searchString'><i class="fas fa-search" title="Leita"></i> </a>
+    <input class="form-control" type="text" placeholder="Leita.." aria-label="Search" @bind-value='searchString' @bind-value:event="oninput" @onkeyup="NavigateToSearch">
+    <a class="btn search-button"  href='/Search/@searchString'>
+        <i class="fas fa-search" title="Leita"></i>
+    </a>
 </div>
 
 <CategoryViewComponent></CategoryViewComponent>
@@ -18,7 +20,7 @@
     [CascadingParameter]
     private Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
-    string searchString="";
+    string searchString = "";
 
     protected override async Task OnInitializedAsync()
     {

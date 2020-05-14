@@ -35,14 +35,16 @@ namespace BlazorSkraApp1
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => {
+            services.AddDefaultIdentity<IdentityUser>(options =>
+            {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.User.AllowedUserNameCharacters = String.Empty;
             })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            services.Configure<IdentityOptions>(config => {
+            services.Configure<IdentityOptions>(config =>
+            {
                 config.User.RequireUniqueEmail = true;
                 config.Password.RequireDigit = false;
                 config.Password.RequireNonAlphanumeric = false;
@@ -101,7 +103,7 @@ namespace BlazorSkraApp1
             //Create an admin user and a normal user
             CreateUserAndRoles(serviceProvider).Wait();
         }
-        
+
         //Create dummy admin and dummy user
         private async Task CreateUserAndRoles(IServiceProvider serviceProvider)
         {
@@ -120,7 +122,7 @@ namespace BlazorSkraApp1
                     roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
-            
+
             IdentityUser user = await UserManager.FindByEmailAsync("admin@admin.is");
 
             if (user == null)

@@ -36,11 +36,11 @@ namespace BlazorSkraApp1.Services
         // Returns the specified category
         public async Task<Categories> Get(int CategoryId)
         {
-            return await _context.Categories.FindAsync(CategoryId); 
+            return await _context.Categories.FindAsync(CategoryId);
         }
         public async Task<List<Categories>> GetSearch(String searchString)
         {
-            var searchList = _context.Categories.Where(x => x.CategoryName.Contains(searchString)).ToListAsync(); 
+            var searchList = _context.Categories.Where(x => x.CategoryName.Contains(searchString)).ToListAsync();
             return await searchList;
         }
 
@@ -64,7 +64,7 @@ namespace BlazorSkraApp1.Services
         public async Task<Categories> Delete(int CategoryId)
         {
             var category = await _context.Categories.FindAsync(CategoryId);
-            if(category != null)
+            if (category != null)
             {
                 _context.Categories.Remove(category);
                 await _context.SaveChangesAsync();

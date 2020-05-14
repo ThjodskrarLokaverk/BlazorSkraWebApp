@@ -22,7 +22,7 @@ namespace BlazorSkraApp1.IntegrationTests
             seedAssignments = SeedData.GetSeedingQuestionsFormAssignment();
             service = new QuestionsFormAssignmentService(db);
         }
-        
+
         /*[Fact]
         public async Task GetQuestionsFormAssignmentAsync_QuestionsFormAssignmentIsReturned()
         {
@@ -48,7 +48,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 expectedAssignment.OrderBy(o => o.QuestionOrderNum).Where(o => o.FormId == formId).Select(o => o.QuestionId),
                 actualAssignments.OrderBy(o => o.QuestionOrderNum).Select(o => o.QuestionId));
         }*/
-        
+
         [Fact]
         public async Task AddQuestionsFormAssignmentAsync_QuestionsFormAssignmentAssignmentIsAdded()
         {
@@ -56,7 +56,7 @@ namespace BlazorSkraApp1.IntegrationTests
             int formId = 2;
             int qon = 4;
             int questionId = 7;
-            var expectedAssignment = new QuestionsFormAssignments(){ FormId = 2, QuestionOrderNum = 4, QuestionId = 7, QuestionTypeOrderNum = 0};
+            var expectedAssignment = new QuestionsFormAssignments() { FormId = 2, QuestionOrderNum = 4, QuestionId = 7, QuestionTypeOrderNum = 0 };
 
             // Act
             await service.Add(expectedAssignment);
@@ -65,7 +65,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var actualAssignment = await db.QuestionsFormAssignments.FirstOrDefaultAsync(o => o.FormId == formId && o.QuestionOrderNum == qon && o.QuestionId == questionId);
             Assert.Equal(expectedAssignment, actualAssignment);
         }
-        
+
         [Fact]
         public async Task DeleteQuestionsFormAssignmentAsync_QuestionsFormAssignmentIsDeleted()
         {
@@ -74,20 +74,20 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.SaveChangesAsync();
             int questionId = 2;
 
-            var deletedQuestionsFormAssignment = new QuestionsFormAssignments(){ FormId = 1, QuestionOrderNum = 2, QuestionId = questionId, QuestionTypeOrderNum = 0};
+            var deletedQuestionsFormAssignment = new QuestionsFormAssignments() { FormId = 1, QuestionOrderNum = 2, QuestionId = questionId, QuestionTypeOrderNum = 0 };
 
             var expectedQuestionsFormAssignment = seedAssignments.Where(a => a.QuestionId != questionId);
 
             // Act
             await service.Delete(deletedQuestionsFormAssignment);
-        
+
             // Assert
             var actualQuestionsFormAssignment = await db.QuestionsFormAssignments.ToListAsync();
             Assert.Equal(
                 expectedQuestionsFormAssignment.OrderBy(o => o.QuestionId).Select(o => o.QuestionId),
                 actualQuestionsFormAssignment.OrderBy(o => o.QuestionId).Select(o => o.QuestionId));
         }
-        
+
         [Fact]
         public async Task DeleteAllQuestionsFormAssignmentsAsync_QuestionsFormAssignmentAsyncsAreDeleted()
         {
@@ -107,7 +107,7 @@ namespace BlazorSkraApp1.IntegrationTests
 
             // Act
             await service.DeleteAll(formId);
-        
+
             // Assert
             var actualQuestionsFormAssignments = await db.QuestionsFormAssignments.ToListAsync();
             Assert.Equal(

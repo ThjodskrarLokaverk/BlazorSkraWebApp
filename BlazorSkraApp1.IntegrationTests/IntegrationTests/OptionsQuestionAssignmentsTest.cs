@@ -22,7 +22,7 @@ namespace BlazorSkraApp1.IntegrationTests
             seedAssignments = SeedData.GetSeedingOptionsQuestionAssignments();
             service = new OptionsQuestionAssignmnentsService(db);
         }
-        
+
         [Fact]
         public async Task GetOptionAssignmentsAsync_OptionAssignmentsAreReturned()
         {
@@ -30,7 +30,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedAssignments);
             await db.AddRangeAsync(SeedData.GetSeedingOptions());
             await db.AddRangeAsync(SeedData.GetSeedingQuestionsFormAssignment());
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get();
@@ -41,7 +41,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedAssignments.OrderBy(o => o.QuestionOrderNum),
                 actualAssignments.OrderBy(o => o.QuestionOrderNum));
         }
-        
+
         [Fact]
         public async Task GetOptionAssignmentAsync_OptionAssignmentIsReturned()
         {
@@ -56,7 +56,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedAssignments);
             await db.AddRangeAsync(SeedData.GetSeedingOptions());
             await db.AddRangeAsync(SeedData.GetSeedingQuestionsFormAssignment());
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get(recId);
@@ -75,7 +75,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var formid = 2;
             var qon = 1;
 
-            var expectedAssignment = new OptionsQuestionAssignmnents(){ OptionOrderNum = oon, FormId = formid, QuestionOrderNum = qon, OptionId = 4};
+            var expectedAssignment = new OptionsQuestionAssignmnents() { OptionOrderNum = oon, FormId = formid, QuestionOrderNum = qon, OptionId = 4 };
 
             // Act
             await service.Add(expectedAssignment);
@@ -92,13 +92,13 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.SaveChangesAsync();
             int optionId = 1;
 
-            var deletedOptionsQuestionAssignmnent = new OptionsQuestionAssignmnents(){ OptionOrderNum = 1, FormId = 1, QuestionOrderNum = 1, OptionId = optionId};
+            var deletedOptionsQuestionAssignmnent = new OptionsQuestionAssignmnents() { OptionOrderNum = 1, FormId = 1, QuestionOrderNum = 1, OptionId = optionId };
 
             var expectedOptionsQuestionAssignmnent = seedAssignments.Where(a => a.OptionId != optionId);
 
             // Act
             await service.Delete(deletedOptionsQuestionAssignmnent);
-        
+
             // Assert
             var actualOptionsQuestionAssignmnent = await db.OptionsQuestionAssignmnents.ToListAsync();
             Assert.Equal(
@@ -126,7 +126,7 @@ namespace BlazorSkraApp1.IntegrationTests
 
             // Act
             await service.DeleteAll(formId);
-        
+
             // Assert
             var actualOptionsQuestionAssignmnents = await db.OptionsQuestionAssignmnents.ToListAsync();
             Assert.Equal(
