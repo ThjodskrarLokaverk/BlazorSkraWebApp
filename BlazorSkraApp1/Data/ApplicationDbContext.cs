@@ -38,7 +38,7 @@ namespace BlazorSkraApp1.Data
                     .HasForeignKey(f => f.FormId);
 
             modelBuilder.Entity<FormsCategoryAssignments>()
-                .HasKey(ca => new { ca.CategoryId, ca.FormId });
+                .HasKey(ca => new { ca.FormId });
 
             //Create the Composite key for the QuestionsFormAssignments table
             modelBuilder.Entity<QuestionsFormAssignments>()
