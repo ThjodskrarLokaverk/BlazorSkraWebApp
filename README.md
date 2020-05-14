@@ -26,9 +26,9 @@ Here are for example instructions on how to edit/run the solution on Windows 10.
 5) Open the solution in Visual Studio, then build the solution. 
 Run the following commands in Package Manager:
 <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;add-migration 'your description goes here'  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add-migration 'your description goes here'  
  <br/>
-&nbsp;&nbsp;&nbsp;&nbsp;update-database
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update-database
 
 6) Run the solution from Visual Studio.
 
@@ -47,8 +47,9 @@ The solution can als be built and run from terminal (command prompt) or editors 
 
 ## Acknowledgments
 * Bjarni Konráð Árnason, programmer at [Registers Iceland](https://skra.is/english/individuals)
-* Tryggvi R. Jónsson, Quality- Security and Data Protection Officer at [Registers Iceland](https://skra.is/english/individuals)
 * Hildur Andrjésdóttir, instructor during this project.
+* Tryggvi R. Jónsson, Quality- Security and Data Protection Officer at [Registers Iceland](https://skra.is/english/individuals)
+
 
 
 
