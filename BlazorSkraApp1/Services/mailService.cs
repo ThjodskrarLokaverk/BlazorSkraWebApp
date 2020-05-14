@@ -34,7 +34,7 @@ namespace BlazorSkraApp1.Services
             _context = context;
         }
 
-        public void SendMail(string userEmail)
+        public void SendMail()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace BlazorSkraApp1.Services
                 //Sender of email here
                 message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
                 //receiver of email
-                message.To.Add(new MailboxAddress(userEmail));
+                message.To.Add(new MailboxAddress(formsInfo.DestinationEmail));
                 message.Subject = "Ný innsending - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
 
                 builder.TextBody = emailBody;
@@ -115,7 +115,7 @@ namespace BlazorSkraApp1.Services
                 emailBody += "Svar: " + submissionLine.Answer + newLine + newLine;
             }
             emailBody += "Auðkenni innsendingar: " + submissionId;
-            SendMail(userEmail);
+            SendMail();
         }
 
         public async void PDFBuilder(string formName, int submissionId, string userEmail, bool anonymous, IJSRuntime js)
