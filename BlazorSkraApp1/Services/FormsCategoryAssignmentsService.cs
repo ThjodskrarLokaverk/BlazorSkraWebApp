@@ -57,7 +57,7 @@ namespace BlazorSkraApp1.Services
         // Deletes the specified category assignment from the database
         public async Task<FormsCategoryAssignments> Delete(FormsCategoryAssignments categoryAssignment)
         {
-            var category = await _context.FormsCategoryAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);
+            var category = await _context.FormsCategoryAssignments.FindAsync(categoryAssignment.FormId);
             _context.FormsCategoryAssignments.Remove(category);
             await _context.SaveChangesAsync();
             return category;

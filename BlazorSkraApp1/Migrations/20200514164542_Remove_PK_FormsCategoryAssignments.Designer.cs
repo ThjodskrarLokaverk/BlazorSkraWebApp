@@ -4,14 +4,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200514164542_Remove_PK_FormsCategoryAssignments")]
+    partial class Remove_PK_FormsCategoryAssignments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -38,15 +40,20 @@ namespace BlazorSkraApp1.Migrations
 
             modelBuilder.Entity("BlazorSkraApp1.Data.FormsCategoryAssignments", b =>
                 {
-                    b.Property<int>("FormId")
-                        .HasColumnType("int");
-
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.HasKey("FormId");
+                    b.Property<int>("FormId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("CategoryId");
+                    b.Property<int?>("CategoriesCategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("CategoryId", "FormId");
+
+                    b.HasIndex("CategoriesCategoryId");
+
+                    b.HasIndex("FormId");
 
                     b.ToTable("FormsCategoryAssignments");
                 });
@@ -432,9 +439,7 @@ namespace BlazorSkraApp1.Migrations
                 {
                     b.HasOne("BlazorSkraApp1.Data.Categories", "Categories")
                         .WithMany()
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CategoriesCategoryId");
 
                     b.HasOne("BlazorSkraApp1.Data.FormsInfo", "FormsInfo")
                         .WithMany()
