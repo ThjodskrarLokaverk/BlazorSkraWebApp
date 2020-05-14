@@ -82,7 +82,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedFormsCategoryAssignments);
             await db.SaveChangesAsync();
             var recId = 3;
-            var deletedFormsCategoryAssignments = new FormsCategoryAssignments() { CategoryId = recId, FormId = 3 };
+            var deletedFormsCategoryAssignments = new FormsCategoryAssignments() { FormId = 3 };
             var expectedFormsCategoryAssignments = seedFormsCategoryAssignments.Where(c => c.CategoryId != recId).ToList();
 
             // Act
