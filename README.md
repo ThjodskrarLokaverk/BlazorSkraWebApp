@@ -30,13 +30,17 @@ Here are for example instructions on how to edit/run the solution on Windows 10.
 
 Run the following commands in Package Manager (a console window within Visual Studio):
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add-migration 'your description goes here'  
- <br/>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update-database
 
 7) A website should show up in your web browser, shoing the application running at localhost.
 
 
 Note: The solution can also be built and run from terminal (command prompt) or editors such as Visual Studio Code.
+
+## Run tests
+This can be run in cmd prompt (terminal). Open the folder of the application and navigate to the folder BlazorSkraApp1.UnitTests
+Once you are located in that folder, give the following command:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info
 
 ## Built With
 * [Visual Studio Code](https://code.visualstudio.com/) 
