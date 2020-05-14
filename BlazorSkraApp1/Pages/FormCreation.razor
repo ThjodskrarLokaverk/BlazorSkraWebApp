@@ -142,7 +142,7 @@
         formInfo.IsAnonymous = createdForm.IsAnonymous;
         formInfo = await formsInfoService.Add(formInfo);
 
-        //Add FormsCategoryAssignments (CategoriesAssignments) to Db
+        //Add FormsCategoryAssignments to Db
         FormsCategoryAssignments formsCategoryAssignment = new FormsCategoryAssignments();
         formsCategoryAssignment.FormId = formInfo.FormId;
         formsCategoryAssignment.CategoryId = createdForm.CategoryId;

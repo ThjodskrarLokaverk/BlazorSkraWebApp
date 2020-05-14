@@ -105,10 +105,10 @@
         try
         {
             //List that holds id's of all forms that are about to be deleted
-            var categoriesAssignmentsList = await formsCategoryService.Get(selectedCategory.CategoryId);
+            var formsCategoryAssignmentsList = await formsCategoryService.Get(selectedCategory.CategoryId);
 
             //Delete the forms
-            foreach(var form in categoriesAssignmentsList)
+            foreach(var form in formsCategoryAssignmentsList)
             {
                 await fiservice.Delete(form.FormId);
             }

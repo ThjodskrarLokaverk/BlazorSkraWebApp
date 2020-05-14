@@ -116,11 +116,21 @@ else
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
-                        <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
+                        @if (IsClicked)
+                        {
+                            <button type="submit" class="submit-form btn approve-btn" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Í vinnslu...
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
+                        }
                         <button @onclick="Cancel" type="button" class="submit-form btn delete-btn">Hætta við</button>
-                    </div>
                 </div>
             </div>
+        </div>
         </EditForm>
     </div>
     <br>
@@ -149,6 +159,7 @@ else
     bool confirmation;
     bool _subFail;
     bool formFound;
+    private bool IsClicked;
     SubmissionInputModel submissionInput;
     private EditContext editContext;
     FormsViewModel form;
@@ -231,9 +242,16 @@ else
 
     private async void SubmitForm()
     {
+        //Disable submit button
+        IsClicked = true;
+        StateHasChanged();
+
         if (!editContext.Validate())
         {
             await jsRuntime.InvokeAsync<object>("ScrollToTop");
+            //Enable submit button
+            IsClicked = false;
+            StateHasChanged();
         }
         else
         {
@@ -280,19 +298,24 @@ else
 
                 sendMail(currentUser.Email, submissionsInfo.SubmissionId);
                 confirmation = true;
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
             catch (System.InvalidOperationException)
             {
                 // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
                 _subFail = false;
-                //bæta við í logfile?
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
             catch (Exception)
             {
                 //unknown exception
                 _subFail = true;
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
         }
