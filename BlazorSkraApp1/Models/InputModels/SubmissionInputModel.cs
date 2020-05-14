@@ -7,15 +7,15 @@ namespace BlazorSkraApp1.Models.InputModels
     public class SubmissionInputModel
     {
         [ValidateComplexType]
-        public List<RequiredShortText> ShortText { get; set; }
+        public RequiredShortText[] ShortText { get; set; }
         [ValidateComplexType]
-        public List<RequiredLongText> LongText { get; set; }
+        public RequiredLongText[] LongText { get; set; }
         [ValidateComplexType]
-        public List<RequiredRadio> Radio { get; set; }
+        public RequiredRadio[] Radio { get; set; }
         [ValidateComplexType]
-        public List<RequiredCheckbox> Checkbox { get; set; }
+        public RequiredCheckbox[] Checkbox { get; set; }
         [ValidateComplexType]
-        public List<RequiredDate> Date { get; set; }
+        public RequiredDate[] Date { get; set; }
         public List<string> MultipleAnswers { get; set; }
     }
 
