@@ -18,15 +18,18 @@ Don't know what Blazor is? [Read here](https://docs.microsoft.com/en-us/aspnet/c
 As mentioned before, this solution is cross-platform, i.e. it can be modified and run on varios operating systems, including MacOs and Windows.
 
 Here are for example instructions on how to edit/run the solution on Windows 10.
-# Windows 10 OS
+### Windows 10 OS
 1) Make sure Internet Information Service is enabled in Contol Panel.
 2) Download and install the latest stable release of [.Net Core SDK](https://dotnet.microsoft.com/download). Currently, that is version 3.1. 
 3) Download and install [Visual Studio](https://visualstudio.microsoft.com/downloads). 
 4) Clone or download this git repository.
 5) Open the solution in Visual Studio, then build the solution. 
 Run the following commands in Package Manager:
+<br/>
  add-migration 'your description goes here'  
+ <br/>
  update-database
+
 6) Run the solution from Visual Studio.
 
 The solution can als be built and run from terminal (command prompt) or editors such as Visual Studio Code.
