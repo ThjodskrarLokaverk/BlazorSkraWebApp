@@ -26,7 +26,7 @@ namespace BlazorSkraApp1.Data
             modelBuilder.Entity<Submissions>()
                 .HasKey(s => new { s.SubmissionId, s.QuestionOrderNum, s.AnswerOrderNum });
 
-            //Create the Composite key for the CategoriesAssignments table
+            //Create the Composite key for the FormsCategoryAssignments table
             modelBuilder.Entity<FormsCategoryAssignments>()
                     .HasOne(c => c.Categories)
                     .WithMany()
@@ -77,7 +77,7 @@ namespace BlazorSkraApp1.Data
         public DbSet<SubmissionsInfo> SubmissionsInfo { get; set; }
         public DbSet<Submissions> Submissions { get; set; }
         public DbSet<Categories> Categories { get; set; }
-        public DbSet<FormsCategoryAssignments> CategoriesAssignments { get; set; }
+        public DbSet<FormsCategoryAssignments> FormsCategoryAssignments { get; set; }
         public DbSet<QuestionsFormAssignments> QuestionsFormAssignments { get; set; }
         public DbSet<OptionsQuestionAssignmnents> OptionsQuestionAssignmnents { get; set; }
 

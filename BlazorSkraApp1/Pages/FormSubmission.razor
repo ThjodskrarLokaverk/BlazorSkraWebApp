@@ -20,7 +20,7 @@
 @inject IFormsService formsService
 <!-- *** A form created by an admin for users to fill out and submit *** -->
 
-@if (form == null)
+@if (editContext == null)
 {
     <div class="d-flex justify-content-center">
         <div class="spinner-border" role="status">
@@ -31,15 +31,15 @@
 else if (!formFound)
 {
     <h5 style="text-align:center">Eyðublað fannst ekki. Þú verður aftur á forsíðu innan skamms</h5>
-    <meta http-equiv="refresh" content="5; url = /" />
+    <meta http-equiv="refresh" content="3; url = /" />
     <img src="Images/meditation-bw.png" class="meditation-img" alt="Empty state">
 }
 else if (confirmation)
 {
     <br>
-    <h2 style="text-align:center">Innsendingu hefur verið komið til skila.</h2>
-    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms.</h5>
-    <meta http-equiv="refresh" content="5; url = /" />
+    <h2 style="text-align:center">Innsendingu hefur verið komið til skila</h2>
+    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms</h5>
+    <meta http-equiv="refresh" content="3; url = /" />
 }
 else
 {
@@ -99,7 +99,7 @@ else
                             }
                             else
                             {
-                                <h5>Óþekkt spurningartýpa...</h5>
+                                <h5>Óþekkt spurningategund...</h5>
                             }
                         </div>
                     </div>
@@ -116,7 +116,17 @@ else
                                 <label for="anonymous">Vinsamlegast hakaðu við ef þú vilt senda inn nafnlaust</label><br>
                             </div>
                         }
-                        <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
+                        @if (IsClicked)
+                        {
+                            <button type="submit" class="submit-form btn approve-btn" disabled>
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Í vinnslu...
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="submit" class="submit-form btn approve-btn">Senda inn</button>
+                        }
                     </div>
                 </div>
             </div>
@@ -140,24 +150,18 @@ else
 @code{
     [Parameter]
     public string id { get; set; }
-
     //To access info about current user
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     IdentityUser currentUser;
-
-    //References whether a submission is anonymous or not
     public bool anonymous { get; set; }
-
-    //Til þess að fylla inn í SubmissionInputModel
-    SubmissionInputModel submissionInput = new SubmissionInputModel();
-    private EditContext editContext;
-    FormsViewModel form;
-
-    //Confirmation popup
     bool confirmation;
     bool _subFail;
-    bool formFound = true;
+    bool formFound;
+    private bool IsClicked;
+    SubmissionInputModel submissionInput;
+    private EditContext editContext;
+    FormsViewModel form;
 
     protected override async Task OnInitializedAsync()
     {
@@ -174,18 +178,41 @@ else
             formFound = false;
         }
 
+        submissionInput = new SubmissionInputModel();
+
         var radioCount = form.Questions.Where(t => t.QuestionTypeId == 4).Count();
         var shortCount = form.Questions.Where(t => t.QuestionTypeId == 1).Count();
         var longCount = form.Questions.Where(t => t.QuestionTypeId == 3).Count();
         var checkboxCount = form.Questions.Where(t => t.QuestionTypeId == 5).Count();
         var dateCount = form.Questions.Where(t => t.QuestionTypeId == 6).Count();
 
-        submissionInput.ShortText = Enumerable.Repeat(new RequiredShortText(), shortCount).ToList();
-        submissionInput.LongText = Enumerable.Repeat(new RequiredLongText(), longCount).ToList();
-        submissionInput.Radio = Enumerable.Repeat(new RequiredRadio(), radioCount).ToList();
-        submissionInput.Checkbox = Enumerable.Repeat(new RequiredCheckbox(), checkboxCount).ToList();
-        submissionInput.Date = Enumerable.Repeat(new RequiredDate(), dateCount).ToList();
+        submissionInput.ShortText = new RequiredShortText[shortCount];
+        submissionInput.LongText = new RequiredLongText[longCount];
+        submissionInput.Radio = new RequiredRadio[radioCount];
+        submissionInput.Checkbox = new RequiredCheckbox[checkboxCount];
+        submissionInput.Date = new RequiredDate[dateCount];
         submissionInput.MultipleAnswers = new List<string>();
+
+        for (int i = 0; i < submissionInput.ShortText.Length; i++)
+        {
+            submissionInput.ShortText[i] = new RequiredShortText();
+        }
+        for (int i = 0; i < submissionInput.LongText.Length; i++)
+        {
+            submissionInput.LongText[i] = new RequiredLongText();
+        }
+        for (int i = 0; i < submissionInput.Radio.Length; i++)
+        {
+            submissionInput.Radio[i] = new RequiredRadio();
+        }
+        for (int i = 0; i < submissionInput.Checkbox.Length; i++)
+        {
+            submissionInput.Checkbox[i] = new RequiredCheckbox();
+        }
+        for (int i = 0; i < submissionInput.Date.Length; i++)
+        {
+            submissionInput.Date[i] = new RequiredDate();
+        }
 
         editContext = new EditContext(submissionInput);
     }
@@ -209,9 +236,16 @@ else
 
     private async void SubmitForm()
     {
+        //Disable submit button
+        IsClicked = true;
+        StateHasChanged();
+
         if (!editContext.Validate())
         {
             await jsRuntime.InvokeAsync<object>("ScrollToTop");
+            //Enable submit button
+            IsClicked = false;
+            StateHasChanged();
         }
         else
         {
@@ -258,19 +292,24 @@ else
 
                 sendMail(currentUser.Email, submissionsInfo.SubmissionId);
                 confirmation = true;
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
             catch (System.InvalidOperationException)
             {
                 // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
                 _subFail = false;
-                //bæta við í logfile?
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
             catch (Exception)
             {
                 //unknown exception
                 _subFail = true;
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
         }

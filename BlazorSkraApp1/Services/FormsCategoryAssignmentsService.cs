@@ -28,7 +28,7 @@ namespace BlazorSkraApp1.Services
         // Returns a list of category assignments
         public async Task<List<FormsCategoryAssignments>> Get()
         {
-            return await _context.CategoriesAssignments
+            return await _context.FormsCategoryAssignments
                 .Include(c => c.Categories)
                 .Include(f => f.FormsInfo)
                 .ToListAsync();
@@ -37,7 +37,7 @@ namespace BlazorSkraApp1.Services
         // Returns a list of all category assignments for the specified category
         public async Task<List<FormsCategoryAssignments>> Get(int categoryId)
         {
-            var categories = (from category in _context.CategoriesAssignments
+            var categories = (from category in _context.FormsCategoryAssignments
                               where category.CategoryId == categoryId
                               select category)
             .Include(c => c.Categories)
@@ -49,7 +49,7 @@ namespace BlazorSkraApp1.Services
         // Creates the specified category assignment in the database
         public async Task<FormsCategoryAssignments> Add(FormsCategoryAssignments categoryAssignment)
         {
-            _context.CategoriesAssignments.Add(categoryAssignment);
+            _context.FormsCategoryAssignments.Add(categoryAssignment);
             await _context.SaveChangesAsync();
             return categoryAssignment;
         }
@@ -57,15 +57,15 @@ namespace BlazorSkraApp1.Services
         // Deletes the specified category assignment from the database
         public async Task<FormsCategoryAssignments> Delete(FormsCategoryAssignments categoryAssignment)
         {
-            var category = await _context.CategoriesAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);
-            _context.CategoriesAssignments.Remove(category);
+            var category = await _context.FormsCategoryAssignments.FindAsync(categoryAssignment.CategoryId, categoryAssignment.FormId);
+            _context.FormsCategoryAssignments.Remove(category);
             await _context.SaveChangesAsync();
             return category;
         }
 
         public async Task<FormsCategoryAssignments> Update(FormsCategoryAssignments editedCategoryAssignment)
         {
-            var categoryAssignment = await _context.CategoriesAssignments
+            var categoryAssignment = await _context.FormsCategoryAssignments
                 .Where(ca => ca.FormId == editedCategoryAssignment.FormId)
                 .FirstOrDefaultAsync();
             categoryAssignment.CategoryId = editedCategoryAssignment.CategoryId;

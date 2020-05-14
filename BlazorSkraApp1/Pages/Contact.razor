@@ -14,9 +14,9 @@
 @if (confirmation)
 {
     <br>
-    <h2 style="text-align:center">Innsendingu hefur verið komið til skila.</h2>
-    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms.</h5>
-    <meta http-equiv="refresh" content="5; url = /" />
+    <h2 style="text-align:center">Innsendingu hefur verið komið til skila</h2>
+    <h5 style="text-align:center">Þú verður aftur á forsíðu innan skamms</h5>
+    <meta http-equiv="refresh" content="3; url = /" />
 }
 else {
     <div class="container">
@@ -28,7 +28,17 @@ else {
                 <label for="To">Skilaboð:</label>
                 <InputTextArea id="body" rows="10" class="form-control" @bind-Value="@mailForm.Body" />
             </div>
-            <button type="submit" class="btn approve-btn">Senda skilaboð</button>
+            @if (IsClicked)
+            {
+                <button type="submit" class="btn approve-btn" disabled>
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Í vinnslu...
+                </button>
+            }
+            else
+            {
+                <button type="submit" class="btn approve-btn">Senda skilaboð</button>
+            }
             <DataAnnotationsValidator />
         </EditForm>
     </div>
@@ -48,9 +58,11 @@ else {
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     IdentityUser currentUser;
-    private bool confirmation = false;
-    private bool _subFail = false;
+    private bool confirmation;
+    private bool _subFail;
+    private bool IsClicked;
     MailForm mailForm = new MailForm();
+
     protected override async Task OnInitializedAsync()
     {
         //Get current user
@@ -59,6 +71,10 @@ else {
     }
     protected void SendMail()
     {
+        //Disable save button
+        IsClicked = true;
+        StateHasChanged();
+
         try
         {
             var message = new MimeMessage();
@@ -82,12 +98,16 @@ else {
                 client.Disconnect(false);
                 //User sent to home page after having received a notification
                 confirmation = true;
+                //Enable submit button
+                IsClicked = false;
                 StateHasChanged();
             }
         }
         catch (Exception)
         {
             _subFail = true;
+            //Enable submit button
+            IsClicked = false;
             StateHasChanged();
         }
 
