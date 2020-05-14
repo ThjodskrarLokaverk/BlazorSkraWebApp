@@ -21,22 +21,19 @@ Here are for example instructions on how to edit/run the solution on Windows 10.
 # Windows 10 OS
 1) Make sure Internet Information Service is enabled in Contol Panel.
 2) Download and install the latest stable release of [.Net Core SDK](https://dotnet.microsoft.com/download). Currently, that is version 3.1. 
-3) Download and install [Visual Studio Core](https://code.visualstudio.com/download). Choose "Add to path" when installing Visual Studio Code. 
+3) Download and install [Visual Studio](https://visualstudio.microsoft.com/downloads). 
 4) Clone or download this git repository.
-5) Open the solution in Visual Studio Code, then build the solution running "dotnet build" in terminal, and then run "dotnet ef migrations 'name of migration'" to migrate a database on your pc.
+5) Open the solution in Visual Studio, then build the solution. 
+Run the following commands in Package Manager:
+ add-migration 'your description goes here'  
+ update-database
+6) Run the solution from Visual Studio.
 
-
-To Compile
-1) In command prompt (terminal), start by unzipping the files. 
-2) Then navigate to the folder where the unzipped files are, and type in: dotnet build 
-This will trigger the build of the solution.
-
-To run
-run the solution on your computer by typing the following in command prompt (terminal) in the solution is located:
-    dotnet.run 
+The solution can als be built and run from terminal (command prompt) or editors such as Visual Studio Code.
 
 ## Built With
-* [VS Code ](https://code.visualstudio.com/) - A nice editor. Other editors such as Atom will also work fine.
+* [Visual Studio Code](https://code.visualstudio.com/) 
+* [Visual Studio](https://visualstudio.microsoft.com/downloads/)
 
 ## Authors
 * Benedikt Rúnar Valtýsson - [Benedikt on Github](https://github.com/BenediktRunar)
