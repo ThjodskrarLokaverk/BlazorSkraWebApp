@@ -1,6 +1,5 @@
 ﻿@using BlazorSkraApp1.Data
 @using BlazorSkraApp1.Models.ViewModels
-@using BlazorSkraApp1.Shared.Components
 
 @if (Form == null)
 {
@@ -71,9 +70,4 @@ else
     public FormsViewModel Form { get; set; }
 
     public DateTime SelectedDate { get; set; }
-
-    public void OnDateSelected(DateTime dt)
-    {
-        SelectedDate = dt;
-    }
 }
