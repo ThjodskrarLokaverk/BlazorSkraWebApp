@@ -53,7 +53,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await service.Add(expectedFormsCategoryAssignment);
 
             // Assert
-            var actualFormsCategoryAssignment = await db.CategoriesAssignments.FindAsync(catId, formId);
+            var actualFormsCategoryAssignment = await db.FormsCategoryAssignments.FindAsync(catId, formId);
             Assert.Equal(expectedFormsCategoryAssignment, actualFormsCategoryAssignment);
         }
         
@@ -71,7 +71,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await service.Get(catId);
 
             // Assert
-            var actualCategoryAssignment = await db.CategoriesAssignments.FindAsync(catId, formId);
+            var actualCategoryAssignment = await db.FormsCategoryAssignments.FindAsync(catId, formId);
             Assert.Equal(expectedCategoryAssignment, actualCategoryAssignment);
         }
         
@@ -89,7 +89,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await service.Delete(deletedFormsCategoryAssignments);
 
             // Assert
-            var actualFormsCategoryAssignments = await db.CategoriesAssignments.ToListAsync();
+            var actualFormsCategoryAssignments = await db.FormsCategoryAssignments.ToListAsync();
             Assert.Equal(
                 expectedFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId),
                 actualFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId));
