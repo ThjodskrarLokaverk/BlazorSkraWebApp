@@ -28,7 +28,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedSubmissions);
             await db.AddRangeAsync(SeedData.GetSeedingSubmissionsInfo());
             await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get();
@@ -39,7 +39,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId),
                 actualSubmissions.OrderBy(c => c.SubmissionId).Select(c => c.SubmissionId));
         }
-        
+
         [Fact]
         public async Task GetSubmissionAsync_SubmissionIsReturned()
         {
@@ -65,7 +65,7 @@ namespace BlazorSkraApp1.IntegrationTests
                 expectedSubmission.OrderBy(s => s.SubmissionId).Where(s => s.SubmissionId == subId).Select(s => s.SubmissionId),
                 actualSubmission.OrderBy(s => s.SubmissionId).Select(s => s.SubmissionId));
         }
-        
+
         [Fact]
         public async Task AddSubmissionAsync_SubmissionIsAdded()
         {
@@ -75,7 +75,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var aon = 1;
             var subId = 3;
 
-            var expectedSubmission = new Submissions(){ SubmissionId = subId, QuestionOrderNum = qon, AnswerOrderNum = aon, Answer = "Maybe", QuestionName = qn};
+            var expectedSubmission = new Submissions() { SubmissionId = subId, QuestionOrderNum = qon, AnswerOrderNum = aon, Answer = "Maybe", QuestionName = qn };
 
             // Act
             await service.Add(expectedSubmission);
@@ -99,7 +99,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var expectedSubmission = seedSubmissions.Where(s => s.SubmissionId != recId).ToList();
 
             // Act
-            foreach(var d in deletedSubmission)
+            foreach (var d in deletedSubmission)
             {
                 await service.Delete(d);
             }

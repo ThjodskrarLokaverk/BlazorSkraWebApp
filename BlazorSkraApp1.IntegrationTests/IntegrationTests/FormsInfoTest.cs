@@ -28,7 +28,7 @@ namespace BlazorSkraApp1.IntegrationTests
         {
             // Arrange
             await db.AddRangeAsync(seedFormsInfo);
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get();
@@ -46,7 +46,7 @@ namespace BlazorSkraApp1.IntegrationTests
             // Arrange
             var recId = 1;
             await db.AddRangeAsync(seedFormsInfo);
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get(recId);
@@ -62,7 +62,7 @@ namespace BlazorSkraApp1.IntegrationTests
             // Arrange
             var recEmail = "test2@test.com";
             await db.AddRangeAsync(seedFormsInfo);
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.GetEmail(recEmail);
@@ -78,7 +78,7 @@ namespace BlazorSkraApp1.IntegrationTests
 
             // Arrange
             var recId = 5;
-            var addedFormInfo = new FormsInfo(){ FormId = 5, FormName = "FormInfo 5", DestinationEmail = "test5@test.com"};
+            var addedFormInfo = new FormsInfo() { FormId = 5, FormName = "FormInfo 5", DestinationEmail = "test5@test.com" };
 
             // Act
             await service.Add(addedFormInfo);
@@ -94,7 +94,7 @@ namespace BlazorSkraApp1.IntegrationTests
 
             // Arrange
             var recId = 3;
-            var addedFormInfo = new FormsInfo(){ FormId = 3, FormName = "UpdatedForm 3", DestinationEmail = "test3@test.com"};
+            var addedFormInfo = new FormsInfo() { FormId = 3, FormName = "UpdatedForm 3", DestinationEmail = "test3@test.com" };
             await db.AddRangeAsync(addedFormInfo);
             await db.SaveChangesAsync();
 

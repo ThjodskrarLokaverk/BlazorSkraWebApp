@@ -29,7 +29,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedFormsCategoryAssignments);
             await db.AddRangeAsync(SeedData.GetSeedingCategories());
             await db.AddRangeAsync(SeedData.GetSeedingFormsInfo());
-            await db.SaveChangesAsync(); 
+            await db.SaveChangesAsync();
 
             // Act
             var result = await service.Get();
@@ -40,14 +40,14 @@ namespace BlazorSkraApp1.IntegrationTests
                 seedFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId),
                 actualFormsCategoryAssignments.OrderBy(c => c.CategoryId).Select(c => c.CategoryId));
         }
-        
+
         [Fact]
         public async Task AddCategoryAssignmentAsync_CategoryAssignmentIsAdded()
         {
             // Arrange
             var catId = 5;
             var formId = 1;
-            var expectedFormsCategoryAssignment = new FormsCategoryAssignments(){ CategoryId = catId, FormId = formId};
+            var expectedFormsCategoryAssignment = new FormsCategoryAssignments() { CategoryId = catId, FormId = formId };
 
             // Act
             await service.Add(expectedFormsCategoryAssignment);
@@ -56,14 +56,14 @@ namespace BlazorSkraApp1.IntegrationTests
             var actualFormsCategoryAssignment = await db.FormsCategoryAssignments.FindAsync(catId, formId);
             Assert.Equal(expectedFormsCategoryAssignment, actualFormsCategoryAssignment);
         }
-        
+
         [Fact]
         public async Task GetCategoryAssignmentAsync_CategoryAssignmentIsReturned()
         {
             // Arrange
             var catId = 2;
             var formId = 1;
-            var expectedCategoryAssignment = new FormsCategoryAssignments(){ CategoryId = catId, FormId = formId};
+            var expectedCategoryAssignment = new FormsCategoryAssignments() { CategoryId = catId, FormId = formId };
             await db.AddRangeAsync(expectedCategoryAssignment);
             await db.SaveChangesAsync();
 
@@ -74,7 +74,7 @@ namespace BlazorSkraApp1.IntegrationTests
             var actualCategoryAssignment = await db.FormsCategoryAssignments.FindAsync(catId, formId);
             Assert.Equal(expectedCategoryAssignment, actualCategoryAssignment);
         }
-        
+
         [Fact]
         public async Task DeleteCategoryAssignmentAsync_CategoryAssignmentIsDeleted()
         {
@@ -82,7 +82,7 @@ namespace BlazorSkraApp1.IntegrationTests
             await db.AddRangeAsync(seedFormsCategoryAssignments);
             await db.SaveChangesAsync();
             var recId = 3;
-            var deletedFormsCategoryAssignments = new FormsCategoryAssignments(){ CategoryId = recId, FormId = 3};
+            var deletedFormsCategoryAssignments = new FormsCategoryAssignments() { CategoryId = recId, FormId = 3 };
             var expectedFormsCategoryAssignments = seedFormsCategoryAssignments.Where(c => c.CategoryId != recId).ToList();
 
             // Act
