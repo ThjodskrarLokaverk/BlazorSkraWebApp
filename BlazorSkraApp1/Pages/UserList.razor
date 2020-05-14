@@ -40,40 +40,85 @@
                     </tr>
                 </thead>
                 <tbody class="table-body">
-                    @foreach (var user in userList)
+                    @foreach (var admin in adminUsersList)
                     {
-                        <tr>
-                            <td>@user.Email</td>
-                            <td>
-                                @if(adminUsersList.Contains(user))
-                                {
+                        if(searchString == "")
+                        {
+                            <tr>
+                                <td>@admin.Email</td>
+                                <td>
                                     @Options[1];
-                                }
-                                else
-                                {
-                                    @Options[0];
-                                }
-                            </td>
-                            <td>
-                                @if(adminUsersList.Contains(user))
-                                {
-                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#removeAdminModal" class="btn cancel-btn">
+                                </td>
+                                <td>
+                                    <button @onclick="(() => SelectUser(admin))" data-toggle="modal" data-target="#removeAdminModal" class="btn cancel-btn">
                                         Óvirkja stjórnanda
                                     </button>
-                                }
-                                else
-                                {
+                                </td>
+                                <td>
+                                    <button @onclick="(() => SelectUser(admin))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
+                                        Eyða notanda
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    @foreach (var user in userList)
+                    {
+                        if(adminUsersList.Contains(user) && searchString == ""){}
+                        else if(adminUsersList.Contains(user) && searchString != "")
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>
+                                    @if(adminUsersList.Contains(user))
+                                    {
+                                        @Options[1];
+                                    }
+                                    else
+                                    {
+                                        @Options[0];
+                                    }
+                                </td>
+                                <td>
+                                    @if(adminUsersList.Contains(user))
+                                    {
+                                        <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#removeAdminModal" class="btn cancel-btn">
+                                            Óvirkja stjórnanda
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#makeAdminModal" class="btn approve-btn">
+                                            Virkja stjórnanda
+                                        </button>
+                                    }
+                                </td>
+                                <td>
+                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
+                                        Eyða notanda
+                                    </button>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>@user.Email</td>
+                                <td>
+                                    @Options[0];
+                                </td>
+                                <td>
                                     <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#makeAdminModal" class="btn approve-btn">
                                         Virkja stjórnanda
                                     </button>
-                                }
-                            </td>
-                            <td>
-                                <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
-                                    Eyða notanda
-                                </button>
-                            </td>
-                        </tr>
+                                </td>
+                                <td>
+                                    <button @onclick="(() => SelectUser(user))" data-toggle="modal" data-target="#confirmationModal" class="btn delete-btn">
+                                        Eyða notanda
+                                    </button>
+                                </td>
+                            </tr>
+                        }
                     }
                 </tbody>
             </table>
