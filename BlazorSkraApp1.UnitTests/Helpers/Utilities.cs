@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using BlazorSkraApp1.Data;
 
-namespace BlazorSkraApp1.IntegrationTests.Helpers
+namespace BlazorSkraApp1.UnitTests.Helpers
 {
     public static class Utilities
     {

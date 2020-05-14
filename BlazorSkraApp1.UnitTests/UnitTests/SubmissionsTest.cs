@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Xunit;
 using BlazorSkraApp1.Data;
 using BlazorSkraApp1.Services;
-using BlazorSkraApp1.IntegrationTests.Helpers;
+using BlazorSkraApp1.UnitTests.Helpers;
 using System;
 
-namespace BlazorSkraApp1.IntegrationTests
+namespace BlazorSkraApp1.UnitTests
 {
     public class SubmissionsTest
     {

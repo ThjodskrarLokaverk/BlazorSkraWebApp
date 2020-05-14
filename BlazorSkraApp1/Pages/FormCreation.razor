@@ -97,7 +97,7 @@
         createdForm = new FormsViewModel();
         createdForm.Questions = new List<QuestionsViewModel>();
 
-        //Vista formInfo
+        // Save form information
         createdForm.CategoryId = Int16.Parse(formInputModel.CategoryId);
         var category = await categoriesService.Get(createdForm.CategoryId);
         createdForm.CategoryName = category.CategoryName;
@@ -105,7 +105,7 @@
         createdForm.DestinationEmail = formInputModel.DestinationEmail;
         createdForm.IsAnonymous = formInputModel.IsAnonymous;
 
-        //Vista questions
+        // Save questions
         foreach (var question in formInputModel.Questions)
         {
             var createdQuestion = new QuestionsViewModel();
@@ -114,7 +114,7 @@
             createdQuestion.QuestionTypeId = Int16.Parse(question.QuestionTypeId);
             createdQuestion.QuestionOrderNum = createdForm.Questions.Count();
             createdQuestion.QuestionTypeOrderNum = createdForm.Questions.Count(o => o.QuestionTypeId == createdQuestion.QuestionTypeId);
-            //Vista options fyrir hverja question
+            // Save options for each question
             foreach (var option in question.Options)
             {
                 var createdOption = new OptionsViewModel();
@@ -128,27 +128,27 @@
         formCreated = true;
     }
 
-    //Save form to Db
+    // Save form to database
     private async void SaveForm()
     {
-        //Disable save button
+        // Disable save button
         IsClicked = true;
         StateHasChanged();
 
-        //Add formInfo to Db
+        // Add FormsInfo to database
         FormsInfo formInfo = new FormsInfo();
         formInfo.FormName = createdForm.FormName;
         formInfo.DestinationEmail = createdForm.DestinationEmail;
         formInfo.IsAnonymous = createdForm.IsAnonymous;
         formInfo = await formsInfoService.Add(formInfo);
 
-        //Add FormsCategoryAssignments to Db
+        // Add FormsCategoryAssignments to database
         FormsCategoryAssignments formsCategoryAssignment = new FormsCategoryAssignments();
         formsCategoryAssignment.FormId = formInfo.FormId;
         formsCategoryAssignment.CategoryId = createdForm.CategoryId;
         formsCategoryAssignment = await formsCategoryAssignmentsService.Add(formsCategoryAssignment);
 
-        //Add questions to Db
+        // Add questions to database
         List<Questions> questionsList = new List<Questions>();
         foreach (var createdQuestion in createdForm.Questions)
         {
@@ -165,7 +165,7 @@
             questionFormAssignment.QuestionTypeOrderNum = createdQuestion.QuestionTypeOrderNum;
             questionFormAssignment = await questionsFormAssignmentsService.Add(questionFormAssignment);
 
-            //Add the questions options to the Db
+            // Add the questions options to the database
             foreach (var createdOption in createdQuestion.Options)
             {
                 Options option = new Options();
