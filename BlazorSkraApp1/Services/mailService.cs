@@ -16,7 +16,7 @@ namespace BlazorSkraApp1.Services
 {
     public interface IMailService
     {
-        void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous);
+        void MailBuilder(short FormId, int submissionId, string userEmail, bool anonymous);
         void PDFBuilder(string formName, int submissionId, string userEmail, bool anonymous, IJSRuntime js);
     }
 
@@ -35,30 +35,31 @@ namespace BlazorSkraApp1.Services
         }
 
         public void SendMail(string userEmail)
-        {   
-            try{
-            var message = new MimeMessage();
-            var builder = new BodyBuilder ();
-            //Sender of email here
-            message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
-            //receiver of email
-            message.To.Add(new MailboxAddress(userEmail));
-            message.Subject = "Ný innsending - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
-
-            builder.TextBody = emailBody;
-
-            message.Body = builder.ToMessageBody();
-
-            using (var client = new SmtpClient())
+        {
+            try
             {
-                client.Connect("smtp.gmail.com", 587);
-                //notendanafn og lykilorð á pósthólfinu sem er sent úr
-                client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
-                client.Send(message);
-                client.Disconnect(false);
+                var message = new MimeMessage();
+                var builder = new BodyBuilder();
+                //Sender of email here
+                message.From.Add(new MailboxAddress("blazor.boiler@gmail.com"));
+                //receiver of email
+                message.To.Add(new MailboxAddress(userEmail));
+                message.Subject = "Ný innsending - " + formsInfo.FormName + " - " + DateTime.Now.ToString("dd/MM/yy");
+
+                builder.TextBody = emailBody;
+
+                message.Body = builder.ToMessageBody();
+
+                using (var client = new SmtpClient())
+                {
+                    client.Connect("smtp.gmail.com", 587);
+                    //notendanafn og lykilorð á pósthólfinu sem er sent úr
+                    client.Authenticate("blazor.boiler@gmail.com", "Trigger.0987");
+                    client.Send(message);
+                    client.Disconnect(false);
+                }
             }
-            }
-            catch(Exception)
+            catch (Exception)
             {
                 Log.Error($"Eitthvað fór úrskeiðis");
             }
@@ -89,9 +90,9 @@ namespace BlazorSkraApp1.Services
         public async Task<FormsInfo> GetForm(int formId)
         {
             return await _context.FormsInfo.FindAsync(formId);
-        }    
+        }
 
-        public async void MailBuilder(short FormId,  int submissionId, string userEmail, bool anonymous)
+        public async void MailBuilder(short FormId, int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
             //formsInfo = await GetForm(FormId);
@@ -106,12 +107,12 @@ namespace BlazorSkraApp1.Services
             {
                 emailBody += "Sendandi óskaði eftir nafnleynd" + newLine + newLine;
             }
-            
+
             //Answers added to email body
-            foreach(var submissionLine in subList)
+            foreach (var submissionLine in subList)
             {
-                emailBody += submissionLine.QuestionOrderNum+1 + ". " + submissionLine.QuestionName + newLine;
-                emailBody += "Svar: " + submissionLine.Answer + newLine + newLine;  
+                emailBody += submissionLine.QuestionOrderNum + 1 + ". " + submissionLine.QuestionName + newLine;
+                emailBody += "Svar: " + submissionLine.Answer + newLine + newLine;
             }
             emailBody += "Auðkenni innsendingar: " + submissionId;
             SendMail(userEmail);
@@ -121,12 +122,12 @@ namespace BlazorSkraApp1.Services
         {
             subList = await GetAnswers(submissionId);
             //var Form = await GetForm(FormId);
-            
+
             List<Report> iReport = new List<Report>();
 
-            foreach(var submissionLine in subList)
-            {      
-                iReport.Add(new Report(){ UserName = userEmail, FormName = formName, Question = submissionLine.QuestionName, Answer = submissionLine.Answer});
+            foreach (var submissionLine in subList)
+            {
+                iReport.Add(new Report() { UserName = userEmail, FormName = formName, Question = submissionLine.QuestionName, Answer = submissionLine.Answer });
             }
             GeneratePDF(js, iReport);
         }

@@ -16,21 +16,20 @@ namespace BlazorSkraApp1
     {
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()  
-                 .Enrich.FromLogContext()  
+            Log.Logger = new LoggerConfiguration()
+                 .Enrich.FromLogContext()
                 .WriteTo.File("./Logs/Log-.txt", rollingInterval: RollingInterval.Day,
-                outputTemplate:"{Timestamp:yyy-MM-dd HH:mm:ss zzz}[{Level:u3}]{Message:1j}{NewLine}{Exception}")
-                .CreateLogger();  
+                outputTemplate: "{Timestamp:yyy-MM-dd HH:mm:ss zzz}[{Level:u3}]{Message:1j}{NewLine}{Exception}")
+                .CreateLogger();
 
             CreateHostBuilder(args).Build().Run();
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-            .UseSerilog() 
+            .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
     }
 }
-

@@ -1,4 +1,4 @@
-﻿ using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,7 +15,7 @@ namespace BlazorSkraApp1.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);     
+            base.OnModelCreating(modelBuilder);
 
             //Create the Composite key for the Submissions table
             modelBuilder.Entity<Submissions>()
@@ -31,14 +31,14 @@ namespace BlazorSkraApp1.Data
                     .HasOne(c => c.Categories)
                     .WithMany()
                     .HasForeignKey(c => c.CategoryId);
-            
+
             modelBuilder.Entity<FormsCategoryAssignments>()
                     .HasOne(f => f.FormsInfo)
                     .WithMany()
                     .HasForeignKey(f => f.FormId);
 
             modelBuilder.Entity<FormsCategoryAssignments>()
-                .HasKey(ca => new { ca.CategoryId, ca.FormId});
+                .HasKey(ca => new { ca.CategoryId, ca.FormId });
 
             //Create the Composite key for the QuestionsFormAssignments table
             modelBuilder.Entity<QuestionsFormAssignments>()

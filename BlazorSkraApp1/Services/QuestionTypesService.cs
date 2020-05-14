@@ -8,7 +8,7 @@ using BlazorSkraApp1.Data;
 public interface IQuestionTypesService
 {
     Task<List<QuestionTypes>> Get();
-    Task <QuestionTypes> Get(int typeId);
+    Task<QuestionTypes> Get(int typeId);
 }
 
 namespace BlazorSkraApp1.Services

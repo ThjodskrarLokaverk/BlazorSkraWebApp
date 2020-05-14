@@ -49,13 +49,13 @@ namespace BlazorSkraApp1.Services
         public async Task<List<IdentityUser>> GetSearchList(string searchString)
         {
             var searchList = _userManager.Users.Where(x => x.UserName.Contains(searchString)).ToListAsync();
-            return  await searchList;
+            return await searchList;
         }
 
         public async Task<List<IdentityUser>> GetSortedList()
         {
             var sortedList = _userManager.Users.OrderBy(x => x.UserName).ToListAsync();
-            return  await sortedList;
+            return await sortedList;
         }
 
         // Creates the specified user in the database
@@ -72,7 +72,7 @@ namespace BlazorSkraApp1.Services
             var userfound = await _userManager.FindByIdAsync(user.Id);
             //Update attributes we want to change
             //await _userManager.AddToRoleAsync(user, "Admin");
-    
+
             return user;
         }
 
@@ -94,14 +94,14 @@ namespace BlazorSkraApp1.Services
         public async Task<IdentityUser> RemoveAdminRole(IdentityUser user)
         {
             await _userManager.RemoveFromRoleAsync(user, "Admin");
-            return user; 
+            return user;
         }
 
         // Returns a list of all admin users
         public async Task<List<IdentityUser>> GetAdminUsers()
         {
             var adminUsersList = (from userRoles in await _userManager.GetUsersInRoleAsync("Admin")
-                              select userRoles).ToList();
+                                  select userRoles).ToList();
             return adminUsersList;
         }
 

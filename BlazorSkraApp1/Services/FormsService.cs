@@ -35,7 +35,7 @@ namespace BlazorSkraApp1.Services
                 .Include(q => q.Questions)
                     .ThenInclude(qt => qt.QuestionTypes)
                 .ToListAsync();
-            
+
             var options = await _context.OptionsQuestionAssignmnents
                 .Where(oqa => oqa.FormId == formId)
                 .Include(o => o.Options)
