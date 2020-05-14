@@ -95,7 +95,7 @@ namespace BlazorSkraApp1.Services
         public async void MailBuilder(short FormId, int submissionId, string userEmail, bool anonymous)
         {
             subList = await GetAnswers(submissionId);
-            //formsInfo = await GetForm(FormId);
+            formsInfo = await GetForm(FormId);
 
             string newLine = Environment.NewLine;
 
