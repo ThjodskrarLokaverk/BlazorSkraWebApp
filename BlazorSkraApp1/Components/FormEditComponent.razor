@@ -194,15 +194,15 @@ else
             formInputModel.CategoryId = selectedCategoryId;
         }
 
-        if (formIdParameter != null)
+        if (formParameter != null)
+        {
+            PopulateInputModel(formParameter);
+        }
+        else if (formIdParameter != null)
         {
             int formId = formIdParameter ?? default(int);
             FormsViewModel form = await formsService.Get(formId);
             PopulateInputModel(form);
-        }
-        else if(formParameter != null)
-        {
-            PopulateInputModel(formParameter);
         }
         else
         {

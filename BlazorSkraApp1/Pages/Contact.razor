@@ -8,6 +8,8 @@
 @using Microsoft.AspNetCore.Identity
 @inject NavigationManager NavigationManager
 @inject IAdminService adminService
+@inject IJSRuntime jsRuntime
+
 <!-- A text box for users to send in an inquiry -->
 
 @if (confirmation)
@@ -44,22 +46,18 @@ else
     </div>
 }
 
-@if (_subFail)
-{
-    <ConfirmationModalComponent OnClick="SubmissionFailHandler">
-        <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
-        <CustomBody>Skilaboðin komust ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
-        <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
-        <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
-    </ConfirmationModalComponent>
-}
+<ConfirmationModalComponent OnClick="SubmissionFailHandler">
+    <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
+    <CustomBody>Skilaboðin komust ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
+    <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
+    <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
+</ConfirmationModalComponent>
 
 @code {
     [CascadingParameter]
     private Task<AuthenticationState> authenticationStateTask { get; set; }
     IdentityUser currentUser;
     private bool confirmation;
-    private bool _subFail;
     private bool IsClicked;
     MailForm mailForm = new MailForm();
 
@@ -69,7 +67,7 @@ else
         var userName = (await authenticationStateTask).User.Identity.Name;
         currentUser = await adminService.Get(userName);
     }
-    protected void SendMail()
+    protected async void SendMail()
     {
         //Disable save button
         IsClicked = true;
@@ -105,7 +103,7 @@ else
         }
         catch (Exception)
         {
-            _subFail = true;
+            await jsRuntime.InvokeAsync<object>("ShowModal", "confirmationModal");
             //Enable submit button
             IsClicked = false;
             StateHasChanged();

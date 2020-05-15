@@ -110,14 +110,13 @@ namespace BlazorSkraApp1
             //initializing custom roles   
             var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            IdentityResult roleResult;
 
             //Create Admin Role
             var roleExist = await RoleManager.RoleExistsAsync("Admin");
             if (!roleExist)
             {
                 //create the roles and seed them to the database: Question 1  
-                roleResult = await RoleManager.CreateAsync(new IdentityRole("Admin"));
+                await RoleManager.CreateAsync(new IdentityRole("Admin"));
             }
 
             //Create Admin User

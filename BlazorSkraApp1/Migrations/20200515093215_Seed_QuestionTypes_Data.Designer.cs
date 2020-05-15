@@ -4,14 +4,16 @@ using BlazorSkraApp1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BlazorSkraApp1.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200515093215_Seed_QuestionTypes_Data")]
+    partial class Seed_QuestionTypes_Data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -138,31 +140,31 @@ namespace BlazorSkraApp1.Migrations
                     b.HasData(
                         new
                         {
-                            QuestionTypeId = 1,
+                            QuestionTypeId = -1,
                             QuestionType = "ShortText",
                             QuestionTypeName = "Stuttur texti"
                         },
                         new
                         {
-                            QuestionTypeId = 3,
+                            QuestionTypeId = -2,
                             QuestionType = "LongText",
                             QuestionTypeName = "Langur texti"
                         },
                         new
                         {
-                            QuestionTypeId = 4,
+                            QuestionTypeId = -3,
                             QuestionType = "Radio",
                             QuestionTypeName = "Einval"
                         },
                         new
                         {
-                            QuestionTypeId = 5,
+                            QuestionTypeId = -4,
                             QuestionType = "Checkbox",
                             QuestionTypeName = "Fjölval"
                         },
                         new
                         {
-                            QuestionTypeId = 6,
+                            QuestionTypeId = -5,
                             QuestionType = "Date",
                             QuestionTypeName = "Dagsetning"
                         });
