@@ -67,6 +67,39 @@ namespace BlazorSkraApp1.Data
 
             modelBuilder.Entity<OptionsQuestionAssignmnents>()
                 .HasKey(oqa => new { oqa.FormId, oqa.QuestionOrderNum, oqa.OptionOrderNum });
+
+            //Seed the database with data on the questiontypes used in the application
+            modelBuilder.Entity<QuestionTypes>().HasData(
+                new QuestionTypes
+                {
+                    QuestionTypeId = 1,
+                    QuestionTypeName = "Stuttur texti",
+                    QuestionType = "ShortText"
+                },
+                new QuestionTypes
+                {
+                    QuestionTypeId = 3,
+                    QuestionTypeName = "Langur texti",
+                    QuestionType = "LongText"
+                },
+                new QuestionTypes
+                {
+                    QuestionTypeId = 4,
+                    QuestionTypeName = "Einval",
+                    QuestionType = "Radio"
+                },
+                new QuestionTypes
+                {
+                    QuestionTypeId = 5,
+                    QuestionTypeName = "Fjölval",
+                    QuestionType = "Checkbox"
+                },
+                new QuestionTypes
+                {
+                    QuestionTypeId = 6,
+                    QuestionTypeName = "Dagsetning",
+                    QuestionType = "Date"
+                });
         }
 
 
