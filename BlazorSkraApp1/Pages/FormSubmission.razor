@@ -138,15 +138,12 @@ else
     <br>
 }
 
-@if (_subFail)
-{
-    <ConfirmationModalComponent OnClick="SubmissionFailHandler">
-        <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
-        <CustomBody>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
-        <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
-        <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
-    </ConfirmationModalComponent>
-}
+<ConfirmationModalComponent OnClick="SubmissionFailHandler">
+    <CustomHeader>Eitthvað fór úrskeiðis</CustomHeader>
+    <CustomBody>Eyðublaðið komst ekki til skila, vinsamlegast reyndur aftur.</CustomBody>
+    <CustomButtonText>Aftur á upphafssíðu</CustomButtonText>
+    <CustomCloseButtonText>Reyna aftur</CustomCloseButtonText>
+</ConfirmationModalComponent>
 
 @code{
     [Parameter]
@@ -157,7 +154,6 @@ else
     IdentityUser currentUser;
     public bool anonymous { get; set; }
     bool confirmation;
-    bool _subFail;
     bool formFound;
     private bool IsClicked;
     SubmissionInputModel submissionInput;
@@ -305,7 +301,7 @@ else
             catch (System.InvalidOperationException)
             {
                 // Catch Exception that occur when user push twice on "senda eyðublað" - it doesn't have any affect.
-                _subFail = false;
+                await jsRuntime.InvokeAsync<object>("ShowModal", "confirmationModal");
                 //Enable submit button
                 IsClicked = false;
                 StateHasChanged();
@@ -313,7 +309,7 @@ else
             catch (Exception)
             {
                 //unknown exception
-                _subFail = true;
+                await jsRuntime.InvokeAsync<object>("ShowModal", "confirmationModal");
                 //Enable submit button
                 IsClicked = false;
                 StateHasChanged();
@@ -321,7 +317,7 @@ else
         }
     }
 
-    private void sendMail(string userEmail, int submissionId)
+    private async void sendMail(string userEmail, int submissionId)
     {
         try
         {
@@ -331,7 +327,7 @@ else
         }
         catch (Exception)
         {
-            _subFail = true;
+            await jsRuntime.InvokeAsync<object>("ShowModal", "confirmationModal");
         }
     }
 
